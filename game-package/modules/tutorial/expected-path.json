@@ -1,0 +1,211 @@
+{
+  "schema_version": "rules-residue.expected-path/0.1",
+  "module_id": "rr.tutorial.zero-platform",
+  "vectors": [
+    {
+      "id": "tutorial.investigate.mixed",
+      "action": {
+        "schema_version": "rules-residue.structured-action/0.1",
+        "action_id": "act.tut.001",
+        "idempotency_key": "idem-tutorial-0001",
+        "actor_id": "char.calibrator",
+        "actor_kind": "human_player",
+        "action_type": "investigate",
+        "target_id": "target.departure_board",
+        "goal": "判断电子屏为何固定在 23:17",
+        "approach": "analyze",
+        "stakes": null,
+        "parameters": {},
+        "source": {
+          "kind": "human_text",
+          "text_excerpt": "我对比所有电子屏的跳秒规律。",
+          "message_id": null
+        },
+        "visibility": "public"
+      },
+      "rule_input": {
+        "difficulty": 7,
+        "situational_modifier": 0,
+        "success_fact_id": "fact.clock_anchor",
+        "failure_fact_id": "fact.clock_anchor_partial",
+        "critical_path": true
+      },
+      "resolution_input": {
+        "kind": "roll",
+        "roll_result": {
+          "schema_version": "rules-residue.roll-result/0.1",
+          "request_id": "act.tut.001:roll",
+          "faces": [
+            1,
+            2
+          ],
+          "dice_total": 3,
+          "modifier": 2,
+          "total": 5,
+          "difficulty": 7,
+          "rng_event_id": "rng.tut.001"
+        }
+      },
+      "expected": {
+        "plan_kind": "roll",
+        "outcome": "success_with_cost",
+        "effect_types": [
+          "append_event",
+          "reveal_fact",
+          "adjust_resource"
+        ]
+      }
+    },
+    {
+      "id": "tutorial.influence.success",
+      "action": {
+        "schema_version": "rules-residue.structured-action/0.1",
+        "action_id": "act.tut.002",
+        "idempotency_key": "idem-tutorial-0002",
+        "actor_id": "char.calibrator",
+        "actor_kind": "ai_player",
+        "action_type": "influence",
+        "target_id": "npc.lin-que",
+        "goal": "让林雀带队进入零号站台",
+        "approach": "connect",
+        "stakes": null,
+        "parameters": {},
+        "source": {
+          "kind": "ai_tool",
+          "text_excerpt": "说明继续封锁只会让更多人听见广播，并请她带路。",
+          "message_id": null
+        },
+        "visibility": "public"
+      },
+      "rule_input": {
+        "difficulty": 9,
+        "situational_modifier": 1,
+        "target_status": "intent_shifted",
+        "critical_path": false
+      },
+      "resolution_input": {
+        "kind": "roll",
+        "roll_result": {
+          "schema_version": "rules-residue.roll-result/0.1",
+          "request_id": "act.tut.002:roll",
+          "faces": [
+            3,
+            4
+          ],
+          "dice_total": 7,
+          "modifier": 3,
+          "total": 10,
+          "difficulty": 9,
+          "rng_event_id": "rng.tut.002"
+        }
+      },
+      "expected": {
+        "plan_kind": "roll",
+        "outcome": "success",
+        "effect_types": [
+          "append_event",
+          "set_status"
+        ]
+      }
+    },
+    {
+      "id": "tutorial.failure.forward",
+      "action": {
+        "schema_version": "rules-residue.structured-action/0.1",
+        "action_id": "act.tut.003",
+        "idempotency_key": "idem-tutorial-0003",
+        "actor_id": "char.calibrator",
+        "actor_kind": "human_player",
+        "action_type": "intervene",
+        "target_id": "target.broadcast_console",
+        "goal": "恢复被删除的广播结束语",
+        "approach": "intervene",
+        "stakes": null,
+        "parameters": {},
+        "source": {
+          "kind": "human_text",
+          "text_excerpt": "我尝试从缓存中拼回最后一句。",
+          "message_id": null
+        },
+        "visibility": "public"
+      },
+      "rule_input": {
+        "difficulty": 11,
+        "situational_modifier": 0,
+        "success_flag": "closing_clause_restored",
+        "failure_fact_id": "fact.closing_clause_partial",
+        "critical_path": true,
+        "failure_track_id": "track.loop_pressure"
+      },
+      "resolution_input": {
+        "kind": "roll",
+        "roll_result": {
+          "schema_version": "rules-residue.roll-result/0.1",
+          "request_id": "act.tut.003:roll",
+          "faces": [
+            1,
+            1
+          ],
+          "dice_total": 2,
+          "modifier": 1,
+          "total": 3,
+          "difficulty": 11,
+          "rng_event_id": "rng.tut.003"
+        }
+      },
+      "expected": {
+        "plan_kind": "roll",
+        "outcome": "failure_with_consequence",
+        "effect_types": [
+          "append_event",
+          "reveal_fact",
+          "adjust_resource",
+          "advance_track"
+        ]
+      }
+    },
+    {
+      "id": "tutorial.insight.extra",
+      "action": {
+        "schema_version": "rules-residue.structured-action/0.1",
+        "action_id": "act.tut.004",
+        "idempotency_key": "idem-tutorial-0004",
+        "actor_id": "char.calibrator",
+        "actor_kind": "human_player",
+        "action_type": "spend_insight",
+        "target_id": "target.speaker",
+        "goal": "消耗洞见确认广播缺失内容",
+        "approach": "analyze",
+        "stakes": null,
+        "parameters": {
+          "mode": "extra_information"
+        },
+        "source": {
+          "kind": "human_text",
+          "text_excerpt": "消耗一点洞见，找出广播被截断的部分。",
+          "message_id": null
+        },
+        "visibility": "public"
+      },
+      "rule_input": {
+        "extra_fact_id": "fact.broadcast_pattern",
+        "critical_path": true
+      },
+      "resolution_input": {
+        "kind": "resource_spend",
+        "approved": true,
+        "resource": "insight",
+        "amount": 1
+      },
+      "expected": {
+        "plan_kind": "resource_spend",
+        "outcome": "resource_spent",
+        "effect_types": [
+          "append_event",
+          "adjust_resource",
+          "reveal_fact"
+        ]
+      }
+    }
+  ]
+}

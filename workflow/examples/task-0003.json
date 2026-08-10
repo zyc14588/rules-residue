@@ -1,0 +1,38 @@
+{
+  "schema_version": "rules-residue.task-packet/1.0",
+  "task_id": "RR-TASK-0003",
+  "status": "PLANNED",
+  "owner": "codex",
+  "task_type": "acceptance",
+  "objective": "独立验收 RR-TASK-0001 和 RR-TASK-0002 的返回产物并执行仓库级门禁。",
+  "authority": [
+    "docs/authority/09_ACCEPTANCE_STANDARD.md",
+    "docs/authority/12_HYBRID_DEVELOPMENT_WORKFLOW.md"
+  ],
+  "inputs": [
+    "workflow/returns/**",
+    "game-package/**"
+  ],
+  "allowed_paths": [
+    "reports/generated/**"
+  ],
+  "forbidden_paths": [
+    "game-package/**",
+    "governance/**",
+    "docs/authority/**"
+  ],
+  "open_decisions": [
+    "RR-O003",
+    "RR-O007"
+  ],
+  "acceptance": [
+    "检查委派范围",
+    "复跑脚本测试/素材 provenance 检查",
+    "python3 tools/run_acceptance.py"
+  ],
+  "expected_outputs": [
+    "PASS/FAIL/BLOCKED 结论",
+    "可复现证据"
+  ],
+  "notes": "示例，不作为真实任务。"
+}

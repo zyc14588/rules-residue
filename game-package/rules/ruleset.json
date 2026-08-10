@@ -1,0 +1,98 @@
+{
+  "schema_version": "rules-residue.ruleset/0.1",
+  "id": "rules-residue.core",
+  "version": "0.1.0-dev.1",
+  "status": "PROVISIONAL",
+  "approaches": [
+    {
+      "id": "analyze",
+      "name_key": "approach.analyze",
+      "minimum": 0,
+      "maximum": 3
+    },
+    {
+      "id": "connect",
+      "name_key": "approach.connect",
+      "minimum": 0,
+      "maximum": 3
+    },
+    {
+      "id": "intervene",
+      "name_key": "approach.intervene",
+      "minimum": 0,
+      "maximum": 3
+    },
+    {
+      "id": "endure",
+      "name_key": "approach.endure",
+      "minimum": 0,
+      "maximum": 3
+    }
+  ],
+  "check": {
+    "dice": {
+      "count": 2,
+      "sides": 6,
+      "source": "host_authoritative"
+    },
+    "formula": "dice_total + approach + proficiency + situational_modifier",
+    "difficulties": [
+      7,
+      9,
+      11,
+      13
+    ],
+    "outcomes": [
+      {
+        "id": "strong_success",
+        "condition": "total >= difficulty + 3"
+      },
+      {
+        "id": "success",
+        "condition": "total >= difficulty"
+      },
+      {
+        "id": "success_with_cost",
+        "condition": "total >= difficulty - 2"
+      },
+      {
+        "id": "failure_with_consequence",
+        "condition": "otherwise"
+      }
+    ]
+  },
+  "resources": [
+    {
+      "id": "insight",
+      "name_key": "resource.insight",
+      "minimum": 0,
+      "maximum": 3,
+      "default": 1,
+      "rare": true
+    },
+    {
+      "id": "strain",
+      "name_key": "resource.strain",
+      "minimum": 0,
+      "maximum": 6,
+      "default": 0,
+      "rare": false
+    }
+  ],
+  "fail_forward": {
+    "required_for_critical_path": true,
+    "allowed_fallbacks": [
+      "partial_fact",
+      "alternate_route",
+      "advance_threat",
+      "resource_cost",
+      "state_change"
+    ]
+  },
+  "quick_mode": {
+    "permanent_player_elimination": false
+  },
+  "pve": {
+    "platform_surrender_required": false
+  }
+}

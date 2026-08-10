@@ -1,0 +1,98 @@
+{
+  "schema_version": "rules-residue.governance.release-gates/1.0",
+  "profiles": {
+    "development": {
+      "required": [
+        "GATE-GOV-001",
+        "GATE-GAME-001",
+        "GATE-PKG-001",
+        "GATE-SEC-001",
+        "GATE-TEST-001",
+        "GATE-WORKFLOW-001"
+      ]
+    },
+    "integration": {
+      "required": [
+        "GATE-GOV-001",
+        "GATE-GAME-001",
+        "GATE-PKG-001",
+        "GATE-SEC-001",
+        "GATE-TEST-001",
+        "GATE-WORKFLOW-001",
+        "GATE-PLATFORM-001",
+        "GATE-CREATOR-001"
+      ]
+    },
+    "public_release": {
+      "required": [
+        "GATE-GOV-001",
+        "GATE-GAME-001",
+        "GATE-PKG-001",
+        "GATE-SEC-001",
+        "GATE-TEST-001",
+        "GATE-WORKFLOW-001",
+        "GATE-PLATFORM-001",
+        "GATE-CREATOR-001",
+        "GATE-REL-001",
+        "GATE-REL-002"
+      ]
+    }
+  },
+  "gates": [
+    {
+      "id": "GATE-GOV-001",
+      "status": "AUTOMATED",
+      "description": "机器决策、范围和追溯结构有效。"
+    },
+    {
+      "id": "GATE-GOV-002",
+      "status": "INFORMATIONAL",
+      "description": "所有 OPEN 决策均被保留且未伪装成已接受。"
+    },
+    {
+      "id": "GATE-GAME-001",
+      "status": "AUTOMATED",
+      "description": "规则、场景、Schema 与固定向量通过静态验证。"
+    },
+    {
+      "id": "GATE-PKG-001",
+      "status": "AUTOMATED",
+      "description": "package.lock 完整且确定性包可重复构建。"
+    },
+    {
+      "id": "GATE-SEC-001",
+      "status": "AUTOMATED",
+      "description": "Lua 未使用禁止 API，运行输入无受禁第三方标识。"
+    },
+    {
+      "id": "GATE-TEST-001",
+      "status": "AUTOMATED",
+      "description": "仓库级 unittest 全部通过。"
+    },
+    {
+      "id": "GATE-WORKFLOW-001",
+      "status": "AUTOMATED",
+      "description": "混合开发合同、Task Packet Schema 与示例任务有效，职责边界可验证。"
+    },
+    {
+      "id": "GATE-PLATFORM-001",
+      "status": "BLOCKED_EXTERNAL",
+      "description": "在 TRPG_PLATFORM 的真实 Lua 5.5 沙箱和 Host API 上通过集成测试。"
+    },
+    {
+      "id": "GATE-CREATOR-001",
+      "status": "BLOCKED_EXTERNAL",
+      "description": "Creator Tool 导入—编辑—导出后语义与锁文件一致。"
+    },
+    {
+      "id": "GATE-REL-001",
+      "status": "BLOCKED_DECISION",
+      "description": "最终第一方许可证获得批准并替换 LicenseRef-Pending-FirstParty。"
+    },
+    {
+      "id": "GATE-REL-002",
+      "status": "BLOCKED_EXTERNAL",
+      "description": "正式 Game Package API 版本、兼容范围和迁移策略已批准。"
+    }
+  ]
+}

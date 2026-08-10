@@ -1,0 +1,43 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "rules-residue.schema/plan-result/0.1",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "action_id",
+    "kind",
+    "rule_version"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "rules-residue.plan-result/0.1"
+    },
+    "action_id": {
+      "type": "string"
+    },
+    "kind": {
+      "enum": [
+        "roll",
+        "resource_spend"
+      ]
+    },
+    "rule_version": {
+      "type": "string"
+    },
+    "roll_request": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "additionalProperties": true
+    },
+    "resource_request": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "additionalProperties": true
+    }
+  },
+  "additionalProperties": false
+}

@@ -1,0 +1,28 @@
+{
+  "schema_version": "rules-residue.character-templates/0.1",
+  "templates": [
+    {
+      "id": "field_calibrator",
+      "name_key": "character_template.field_calibrator",
+      "status": "PROVISIONAL",
+      "approach_values": {
+        "analyze": 3,
+        "connect": 2,
+        "intervene": 1,
+        "endure": 1
+      },
+      "proficiencies": {
+        "investigate": 2,
+        "influence": 1,
+        "intervene": 0,
+        "assist": 1,
+        "stabilize": 0
+      },
+      "resources": {
+        "insight": 1,
+        "strain": 0
+      },
+      "notes_key": "character_template.field_calibrator.notes"
+    }
+  ]
+}

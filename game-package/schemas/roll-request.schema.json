@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "rules-residue.schema/roll-request/0.1",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "request_id",
+    "action_id",
+    "dice",
+    "modifier",
+    "difficulty",
+    "source"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "rules-residue.roll-request/0.1"
+    },
+    "request_id": {
+      "type": "string"
+    },
+    "action_id": {
+      "type": "string"
+    },
+    "dice": {
+      "type": "object",
+      "required": [
+        "count",
+        "sides"
+      ],
+      "properties": {
+        "count": {
+          "const": 2
+        },
+        "sides": {
+          "const": 6
+        }
+      },
+      "additionalProperties": false
+    },
+    "modifier": {
+      "type": "integer",
+      "minimum": -10,
+      "maximum": 20
+    },
+    "difficulty": {
+      "enum": [
+        7,
+        9,
+        11,
+        13
+      ]
+    },
+    "source": {
+      "const": "host_authoritative"
+    }
+  },
+  "additionalProperties": false
+}

@@ -1,0 +1,59 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "rules-residue.schema/participant-projection/0.1",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "audience_id",
+    "source_state_revision",
+    "phase",
+    "scene_id",
+    "visible_facts",
+    "visible_characters",
+    "visible_tracks",
+    "authority"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "rules-residue.participant-projection/0.1"
+    },
+    "audience_id": {
+      "type": "string"
+    },
+    "source_state_revision": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "phase": {
+      "type": "string"
+    },
+    "scene_id": {
+      "type": "string"
+    },
+    "visible_facts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": true
+      }
+    },
+    "visible_characters": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": true
+      }
+    },
+    "visible_tracks": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "integer"
+      }
+    },
+    "authority": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "additionalProperties": false
+}

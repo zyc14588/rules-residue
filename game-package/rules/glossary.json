@@ -1,0 +1,29 @@
+{
+  "schema_version": "rules-residue.glossary/0.1",
+  "terms": [
+    {
+      "id": "rules_residue",
+      "zh-CN": "规则残差",
+      "en": "rules residue",
+      "status": "ACCEPTED"
+    },
+    {
+      "id": "calibrator",
+      "zh-CN": "校准员",
+      "en": "calibrator",
+      "status": "PROVISIONAL"
+    },
+    {
+      "id": "insight",
+      "zh-CN": "洞见",
+      "en": "insight",
+      "status": "PROVISIONAL"
+    },
+    {
+      "id": "strain",
+      "zh-CN": "负荷",
+      "en": "strain",
+      "status": "PROVISIONAL"
+    }
+  ]
+}

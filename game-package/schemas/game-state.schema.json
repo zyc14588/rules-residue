@@ -1,0 +1,115 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "rules-residue.schema/game-state/0.1",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "campaign_id",
+    "package_id",
+    "package_version",
+    "revision",
+    "authority",
+    "phase",
+    "scene_id",
+    "participants",
+    "characters",
+    "world_truth",
+    "public_facts",
+    "tracks",
+    "flags",
+    "event_index"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "rules-residue.game-state/0.1"
+    },
+    "campaign_id": {
+      "type": "string"
+    },
+    "package_id": {
+      "const": "org.trpgplatform.rules-residue"
+    },
+    "package_version": {
+      "type": "string"
+    },
+    "revision": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "authority": {
+      "type": "object",
+      "required": [
+        "gm_mode",
+        "gm_participant_id",
+        "locked"
+      ],
+      "properties": {
+        "gm_mode": {
+          "enum": [
+            "human",
+            "ai"
+          ]
+        },
+        "gm_participant_id": {
+          "type": "string"
+        },
+        "locked": {
+          "const": true
+        }
+      },
+      "additionalProperties": false
+    },
+    "phase": {
+      "enum": [
+        "setup",
+        "free_play",
+        "structured_conflict",
+        "resolution",
+        "ended"
+      ]
+    },
+    "scene_id": {
+      "type": "string"
+    },
+    "participants": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": true
+      }
+    },
+    "characters": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": true
+      }
+    },
+    "world_truth": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "public_facts": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
+    },
+    "tracks": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "integer"
+      }
+    },
+    "flags": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "event_index": {
+      "type": "integer",
+      "minimum": 0
+    }
+  },
+  "additionalProperties": false
+}

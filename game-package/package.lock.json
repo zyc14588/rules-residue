@@ -1,0 +1,189 @@
+{
+  "schema_version": "rules-residue.package-lock/1.0",
+  "package_id": "org.trpgplatform.rules-residue",
+  "package_version": "0.1.0-dev.1",
+  "algorithm": "sha256",
+  "runtime_tree_sha256": "9e8a6e1ec38c0743925c356fe30e20b2475f657f15a95f5ac7d28ecf1658d9b8",
+  "files": [
+    {
+      "path": "locales/en.json",
+      "size": 975,
+      "sha256": "add818a0fe29bd9379921e9f986c96968a079be2224e79a95dff6bed448e5a78"
+    },
+    {
+      "path": "locales/zh-CN.json",
+      "size": 925,
+      "sha256": "917dd698e2329895221fc27767f02395f652fe57a329dc7c3f234a6c48fd0ce4"
+    },
+    {
+      "path": "manifest.json",
+      "size": 2465,
+      "sha256": "7aef550389511d26536032b7de9c9a21c8655b16fda4b30b8c2b6d7daba9d81d"
+    },
+    {
+      "path": "modules/golden/expected-path.json",
+      "size": 9198,
+      "sha256": "fbe0d879f459c04bacf165364b69dba99ef525e34db62de3d7c0af7e2acf6786"
+    },
+    {
+      "path": "modules/golden/manifest.json",
+      "size": 352,
+      "sha256": "d3557e5e05d0c659aa6804be66bbf0ddc14c27f9633ec2dfa2b1239d1cf894f4"
+    },
+    {
+      "path": "modules/golden/scenario.json",
+      "size": 4671,
+      "sha256": "fbf3f6b93ea5cee26fee589113a34e619256156f824f6005d89081c367099846"
+    },
+    {
+      "path": "modules/tutorial/expected-path.json",
+      "size": 6074,
+      "sha256": "20aa4702ec56ef9eed2ccdb59cfb2ee262b43b990636049ad4908ce39204d912"
+    },
+    {
+      "path": "modules/tutorial/manifest.json",
+      "size": 354,
+      "sha256": "605b3382c94b8ebdd575d70703ce303a43ffb022dfdc35c0dcdd40b03715cf09"
+    },
+    {
+      "path": "modules/tutorial/scenario.json",
+      "size": 7203,
+      "sha256": "d089d5fccd92380dc2b76975d0cdad19451e91479c5cd0424cdedcd0635d308e"
+    },
+    {
+      "path": "rules/action_catalog.json",
+      "size": 1956,
+      "sha256": "b7936e396169d536cafd176d882c5d3ffcecdbae00ccf4b9f436f4af9a923dfe"
+    },
+    {
+      "path": "rules/character_templates.json",
+      "size": 629,
+      "sha256": "df1a14c7ace242e8f6b4d8cb3c20bbf323ff0196651a3cc65a7c99326771fb25"
+    },
+    {
+      "path": "rules/glossary.json",
+      "size": 548,
+      "sha256": "7f7381537dd0729100602283cae7c561332661d5f3dabfcf8fdf5492b4acfa1e"
+    },
+    {
+      "path": "rules/ruleset.json",
+      "size": 1924,
+      "sha256": "271c0b5445f652841f6124c64a41efb6d153cccc2ac0133b9c92fb324bdaa107"
+    },
+    {
+      "path": "rules/status_catalog.json",
+      "size": 1126,
+      "sha256": "96e211418d215b9f3884f7b9af6c6b1ff6a9f38eee266e2c2cafd98c9694418e"
+    },
+    {
+      "path": "schemas/effect.schema.json",
+      "size": 1124,
+      "sha256": "fb70c638ca1f398c3a34affd6256feb467bf0c2657b1a87ea47a8f7a3533c987"
+    },
+    {
+      "path": "schemas/expected-path.schema.json",
+      "size": 1814,
+      "sha256": "6d19b10fc7597a8eda3352f9e01082a57b0fe42ca6d45a6e46b45d4ad3a07770"
+    },
+    {
+      "path": "schemas/game-state.schema.json",
+      "size": 2198,
+      "sha256": "affc7cbdd8715fb71dd51aedc05d79e62149ce26b6e1e454151f94599b604e1e"
+    },
+    {
+      "path": "schemas/manifest.schema.json",
+      "size": 5307,
+      "sha256": "8b41aaa91127891c1870cb3342b2a620862088b95b2682fc284d1080319025bc"
+    },
+    {
+      "path": "schemas/memory-record.schema.json",
+      "size": 1237,
+      "sha256": "faa8c62f7f7a2ed4a7ae61e257b656a861b2b751837321d0cca98dbf5f63f212"
+    },
+    {
+      "path": "schemas/module-manifest.schema.json",
+      "size": 1022,
+      "sha256": "955b86d35bfcb0c1ef0f4f65afbc05996737bfd07288c22d2a86be7219589c45"
+    },
+    {
+      "path": "schemas/package-lock.schema.json",
+      "size": 1215,
+      "sha256": "787deddd2823a0bcf224b3e8972b1f73eb0f4ed881eed5f6cf7e2508529f0dfb"
+    },
+    {
+      "path": "schemas/participant-projection.schema.json",
+      "size": 1212,
+      "sha256": "b962cf1a40aa91b80bd3c575c774570f823ddb3768c118cc2a40b412ac0a4e30"
+    },
+    {
+      "path": "schemas/plan-result.schema.json",
+      "size": 792,
+      "sha256": "ac6f26519f488176f60edc047d7e11b2a46aac1a86d8ad368f25021822f85f2c"
+    },
+    {
+      "path": "schemas/resolution.schema.json",
+      "size": 1262,
+      "sha256": "2ddf284bf07227ca4fd1d09342d3d4c74592f3e8ff5287413455f3cf088ba9cf"
+    },
+    {
+      "path": "schemas/roll-request.schema.json",
+      "size": 1026,
+      "sha256": "2d073b06bc841b3a9cf1d912229e64124d4cd331b35451c4dcdd5727870636ab"
+    },
+    {
+      "path": "schemas/roll-result.schema.json",
+      "size": 1098,
+      "sha256": "0f740d0ea92f68c775d47f6bec640d460b6a2c11043f447b1492dcc71f51f5e8"
+    },
+    {
+      "path": "schemas/scenario.schema.json",
+      "size": 7288,
+      "sha256": "9f87d8f0add542396bf24216b9e5b18c3a18367e234164d37f3dc89c24b8b6c3"
+    },
+    {
+      "path": "schemas/structured-action.schema.json",
+      "size": 2273,
+      "sha256": "2f5dddb4507d8ac9a2746d8ab5db03961f1693bc5d5b3052c2cf8be606e8f16d"
+    },
+    {
+      "path": "scripts/bootstrap.lua",
+      "size": 2624,
+      "sha256": "bebfb7b498bf54e4244fc0729cf1c1010bd95f3a1850cd64251312d3c12bf95d"
+    },
+    {
+      "path": "scripts/lib/check.lua",
+      "size": 1708,
+      "sha256": "82b386c33fc062a4fea68762071636f8f39db43a4e8a5bec65e852b09fcd321d"
+    },
+    {
+      "path": "scripts/lib/contract.lua",
+      "size": 2736,
+      "sha256": "d33bcd885d407c6ae0114cb2f6416007462212a9bcb830c588c1c2b833c00c44"
+    },
+    {
+      "path": "scripts/lib/effects.lua",
+      "size": 3062,
+      "sha256": "aa58d4ca3d52a0c24e7dc988fdadc7e0a62710bf5f5946ed05b9c8dd00e467f3"
+    },
+    {
+      "path": "scripts/lib/visibility.lua",
+      "size": 2005,
+      "sha256": "cfb0df0216fadb74def1e15b3f1e22fd271575318ebe5352e053b116e01ec802"
+    },
+    {
+      "path": "scripts/plan_action.lua",
+      "size": 2534,
+      "sha256": "6436eeced92d43343e64a5c833f640f49fae89344931750206e2f312951650ee"
+    },
+    {
+      "path": "scripts/project_state.lua",
+      "size": 1121,
+      "sha256": "107d119cc1b72e493122f23a4724146578738bc29f2924dbb6d6f925367c02c9"
+    },
+    {
+      "path": "scripts/resolve_action.lua",
+      "size": 9943,
+      "sha256": "5f327c81e9b417fc4853defc73c29fcc78a74e196f9fb4a76c5ad70df25c141a"
+    }
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "schema_version": "rules-residue.structured-action/0.1",
+  "action_id": "act.fixture.001",
+  "idempotency_key": "idem-fixture-0001",
+  "actor_id": "char.fixture",
+  "actor_kind": "human_player",
+  "action_type": "investigate",
+  "target_id": "target.fixture",
+  "goal": "检查索引差异",
+  "approach": "analyze",
+  "stakes": null,
+  "parameters": {},
+  "source": {
+    "kind": "human_text",
+    "text_excerpt": "我检查两个版本的差异。",
+    "message_id": null
+  },
+  "visibility": "public"
+}

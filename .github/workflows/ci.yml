@@ -1,0 +1,34 @@
+name: rules-residue-ci
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  acceptance:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout exact workflow commit without third-party actions
+        shell: bash
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          git init .
+          git remote add origin "${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}.git"
+          git -c http.extraheader="AUTHORIZATION: bearer ${GH_TOKEN}" \
+            fetch --no-tags --depth=1 origin "${GITHUB_SHA}"
+          git checkout --detach FETCH_HEAD
+      - name: Run strict acceptance
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 --version
+          python3 tools/run_acceptance.py
+      - name: Show package digest
+        shell: bash
+        run: cat dist/*.trpgpkg.sha256

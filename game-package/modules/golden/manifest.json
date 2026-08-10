@@ -1,0 +1,11 @@
+{
+  "schema_version": "rules-residue.module-manifest/0.1",
+  "id": "rr.golden.fifth-record",
+  "title": "第五份记录",
+  "version": "0.1.0-dev.1",
+  "classification": "golden",
+  "scenario": "scenario.json",
+  "expected_path": "expected-path.json",
+  "package_dependency": "org.trpgplatform.rules-residue@0.1.0-dev.1",
+  "original_content": true
+}

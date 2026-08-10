@@ -1,0 +1,86 @@
+{
+  "schema_version": "rules-residue.action-catalog/0.1",
+  "actions": [
+    {
+      "id": "investigate",
+      "name_key": "action.investigate",
+      "resolution": "check",
+      "default_approach": "analyze",
+      "allowed_effects": [
+        "append_event",
+        "reveal_fact",
+        "adjust_resource",
+        "advance_track"
+      ]
+    },
+    {
+      "id": "influence",
+      "name_key": "action.influence",
+      "resolution": "check",
+      "default_approach": "connect",
+      "allowed_effects": [
+        "append_event",
+        "set_status",
+        "adjust_resource",
+        "advance_track"
+      ],
+      "control_effect": {
+        "can_substitute_next_action": true,
+        "must_be_bounded": true,
+        "must_be_auditable": true,
+        "default_max_actions": 1
+      }
+    },
+    {
+      "id": "intervene",
+      "name_key": "action.intervene",
+      "resolution": "check",
+      "default_approach": "intervene",
+      "allowed_effects": [
+        "append_event",
+        "set_flag",
+        "adjust_resource",
+        "advance_track"
+      ]
+    },
+    {
+      "id": "assist",
+      "name_key": "action.assist",
+      "resolution": "check",
+      "default_approach": "connect",
+      "allowed_effects": [
+        "append_event",
+        "set_status",
+        "adjust_resource"
+      ]
+    },
+    {
+      "id": "stabilize",
+      "name_key": "action.stabilize",
+      "resolution": "check",
+      "default_approach": "endure",
+      "allowed_effects": [
+        "append_event",
+        "adjust_resource",
+        "clear_status"
+      ]
+    },
+    {
+      "id": "spend_insight",
+      "name_key": "action.spend_insight",
+      "resolution": "resource_spend",
+      "resource": "insight",
+      "cost": 1,
+      "modes": [
+        "reroll",
+        "extra_information"
+      ],
+      "allowed_effects": [
+        "append_event",
+        "adjust_resource",
+        "grant_reroll_token",
+        "reveal_fact"
+      ]
+    }
+  ]
+}

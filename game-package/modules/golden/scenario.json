@@ -1,0 +1,161 @@
+{
+  "schema_version": "rules-residue.scenario/0.1",
+  "metadata": {
+    "id": "rr.golden.fifth-record",
+    "title": "第五份记录",
+    "version": "0.1.0-dev.1",
+    "classification": "golden",
+    "recommended_players": {
+      "minimum": 1,
+      "maximum": 2
+    },
+    "gm_modes": [
+      "human",
+      "ai"
+    ],
+    "quick_mode_safe": true,
+    "entry_scene_id": "scene.archive",
+    "summary": "异世界档案塔的一个规则域只登记四份事故记录，但索引持续制造一份先于事故写成的“第五份记录”。"
+  },
+  "keeper_truth": {
+    "premise": "第五份记录是档案塔规则域中的自我证明规则：只要有人寻找它，它就会在索引中获得更早的时间戳。破解它需要让“有效的不存在”在更高优先级登记规则中成立。",
+    "immutable_facts": [
+      {
+        "id": "truth.self_precedence",
+        "text": "每次搜索都会让第五份记录的索引时间前移一分钟。",
+        "visibility": "gm_only"
+      },
+      {
+        "id": "truth.null_entry",
+        "text": "将空结果登记为有效记录可以终止自我证明。",
+        "visibility": "gm_only"
+      }
+    ]
+  },
+  "scenes": [
+    {
+      "id": "scene.archive",
+      "title": "索引室",
+      "summary": "四个实体档案盒与五条电子索引并列存在。",
+      "critical_path": true,
+      "exits": [
+        "scene.catalogue_core"
+      ],
+      "action_targets": [
+        {
+          "id": "target.index_terminal",
+          "type": "evidence",
+          "difficulty": 9,
+          "success_fact_id": "fact.timestamp_moves",
+          "failure_fact_id": "fact.timestamp_moves_partial"
+        },
+        {
+          "id": "npc.auditor",
+          "type": "npc",
+          "difficulty": 9,
+          "success_status": "intent_shifted"
+        }
+      ]
+    },
+    {
+      "id": "scene.catalogue_core",
+      "title": "目录核心",
+      "summary": "系统要求为第五份记录提供一个存在性结论。",
+      "critical_path": true,
+      "exits": [],
+      "action_targets": [
+        {
+          "id": "target.null_slot",
+          "type": "object",
+          "difficulty": 11,
+          "success_flag": "null_entry_registered",
+          "failure_fact_id": "fact.null_entry_partial"
+        }
+      ]
+    }
+  ],
+  "npcs": [
+    {
+      "id": "npc.auditor",
+      "name": "审录员七号",
+      "public_description": "只接受能被索引引用的陈述。",
+      "private_truth": "它并不要求第五份记录真实存在，只要求每次查询都有可登记结果。",
+      "initial_intent": "阻止任何人提交空值。"
+    }
+  ],
+  "clues": [
+    {
+      "id": "clue.timestamp_moves",
+      "fact_id": "fact.timestamp_moves",
+      "text": "每次查询后，第五条索引的时间戳都会向事故前移动一分钟。",
+      "source_scene_id": "scene.archive",
+      "critical": true,
+      "visibility": "public",
+      "failure_fallback": {
+        "fact_id": "fact.timestamp_moves_partial",
+        "text": "查询前后的索引校验值不同，说明搜索本身正在改写记录。",
+        "cost": {
+          "type": "advance_track",
+          "track_id": "track.precedence",
+          "amount": 1
+        }
+      }
+    },
+    {
+      "id": "clue.null_entry",
+      "fact_id": "fact.null_entry",
+      "text": "索引规则只要求一个可登记结果；明确的空值同样满足条件。",
+      "source_scene_id": "scene.catalogue_core",
+      "critical": true,
+      "visibility": "public",
+      "failure_fallback": {
+        "fact_id": "fact.null_entry_partial",
+        "text": "错误日志把‘没有记录’分类为格式错误而非事实错误。",
+        "cost": {
+          "type": "adjust_resource",
+          "resource": "strain",
+          "amount": 1
+        }
+      }
+    }
+  ],
+  "timeline": [
+    {
+      "tick": 1,
+      "event_id": "event.precedence_shift",
+      "description": "索引时间前移。",
+      "threat_delta": {
+        "track.precedence": 1
+      }
+    }
+  ],
+  "threats": [
+    {
+      "id": "track.precedence",
+      "name": "先行度",
+      "initial": 0,
+      "maximum": 4
+    }
+  ],
+  "endings": [
+    {
+      "id": "ending.null_registered",
+      "title": "有效的不存在",
+      "condition": {
+        "flag": "null_entry_registered",
+        "equals": true
+      },
+      "critical": true
+    }
+  ],
+  "safety_notes": [
+    "以逻辑型规则怪谈为主；可降低自我指涉和认知不安描写强度，不影响固定测试向量。"
+  ],
+  "visibility": {
+    "default": "public",
+    "gm_only_fields": [
+      "keeper_truth",
+      "npcs[].private_truth"
+    ]
+  }
+}

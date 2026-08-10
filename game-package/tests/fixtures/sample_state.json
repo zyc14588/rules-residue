@@ -1,0 +1,73 @@
+{
+  "schema_version": "rules-residue.game-state/0.1",
+  "campaign_id": "campaign.fixture",
+  "package_id": "org.trpgplatform.rules-residue",
+  "package_version": "0.1.0-dev.1",
+  "revision": 3,
+  "authority": {
+    "gm_mode": "ai",
+    "gm_participant_id": "participant.gm",
+    "locked": true
+  },
+  "phase": "free_play",
+  "scene_id": "scene.archive",
+  "participants": [
+    {
+      "id": "participant.gm",
+      "kind": "ai_gm",
+      "team_id": "team.one"
+    },
+    {
+      "id": "participant.player",
+      "kind": "human_player",
+      "team_id": "team.one"
+    }
+  ],
+  "characters": [
+    {
+      "id": "char.fixture",
+      "controller": "participant.player",
+      "approaches": {
+        "analyze": 3,
+        "connect": 2,
+        "intervene": 1,
+        "endure": 1
+      },
+      "proficiencies": {
+        "investigate": 2
+      },
+      "resources": {
+        "insight": 1,
+        "strain": 0
+      },
+      "statuses": []
+    }
+  ],
+  "world_truth": {
+    "facts": [
+      {
+        "id": "truth.hidden",
+        "text": "仅 GM 可见。",
+        "visibility": "gm_only"
+      },
+      {
+        "id": "fact.public",
+        "text": "公开事实。",
+        "visibility": "public"
+      },
+      {
+        "id": "fact.player",
+        "text": "仅玩家可见。",
+        "visibility": "participant:participant.player"
+      }
+    ]
+  },
+  "public_facts": [
+    "fact.public"
+  ],
+  "tracks": {
+    "track.precedence": 1
+  },
+  "flags": {},
+  "event_index": 12
+}

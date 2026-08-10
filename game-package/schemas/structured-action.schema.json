@@ -1,0 +1,118 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "rules-residue.schema/structured-action/0.1",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "action_id",
+    "idempotency_key",
+    "actor_id",
+    "actor_kind",
+    "action_type",
+    "goal",
+    "approach",
+    "parameters",
+    "source",
+    "visibility"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "rules-residue.structured-action/0.1"
+    },
+    "action_id": {
+      "type": "string",
+      "pattern": "^[a-zA-Z0-9._:-]{3,128}$"
+    },
+    "idempotency_key": {
+      "type": "string",
+      "minLength": 8,
+      "maxLength": 128
+    },
+    "actor_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "actor_kind": {
+      "enum": [
+        "human_player",
+        "ai_player",
+        "human_gm",
+        "ai_gm",
+        "system"
+      ]
+    },
+    "action_type": {
+      "enum": [
+        "investigate",
+        "influence",
+        "intervene",
+        "assist",
+        "stabilize",
+        "spend_insight"
+      ]
+    },
+    "target_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "goal": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 500
+    },
+    "approach": {
+      "enum": [
+        "analyze",
+        "connect",
+        "intervene",
+        "endure"
+      ]
+    },
+    "stakes": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "maxLength": 500
+    },
+    "parameters": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "source": {
+      "type": "object",
+      "required": [
+        "kind",
+        "text_excerpt"
+      ],
+      "properties": {
+        "kind": {
+          "enum": [
+            "human_text",
+            "ai_tool",
+            "ui_form",
+            "system"
+          ]
+        },
+        "text_excerpt": {
+          "type": "string",
+          "maxLength": 1000
+        },
+        "message_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "additionalProperties": false
+    },
+    "visibility": {
+      "type": "string",
+      "pattern": "^(public|gm_only|participant:[a-zA-Z0-9._:-]+|team:[a-zA-Z0-9._:-]+|agent:[a-zA-Z0-9._:-]+)$"
+    }
+  },
+  "additionalProperties": false
+}

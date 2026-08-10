@@ -1,0 +1,497 @@
+{
+  "schema_version": "rules-residue.governance.decisions/1.0",
+  "project": "org.trpgplatform.rules-residue",
+  "design_epoch": "RR-R1",
+  "generated_on": "2026-08-10",
+  "precedence": [
+    "ACCEPTED",
+    "PROVISIONAL",
+    "OPEN",
+    "REJECTED"
+  ],
+  "decisions": [
+    {
+      "id": "RR-D001",
+      "status": "ACCEPTED",
+      "title": "独立项目",
+      "statement": "《规则残差》作为独立第一方游戏项目维护，不属于平台核心源码。",
+      "authority": "restart-top-level-extraction",
+      "tags": [
+        "repo-boundary"
+      ],
+      "change_control": "required",
+      "verification": [
+        "GATE-GOV-001"
+      ]
+    },
+    {
+      "id": "RR-D002",
+      "status": "ACCEPTED",
+      "title": "第一方参考实现",
+      "statement": "该项目同时是官方原创游戏和标准 Game Package、AI、多人与 Creator Tool 的端到端参考实现。",
+      "authority": "restart-top-level-extraction",
+      "tags": [
+        "reference-game"
+      ],
+      "change_control": "required",
+      "verification": [
+        "GATE-GOV-001"
+      ]
+    },
+    {
+      "id": "RR-D003",
+      "status": "ACCEPTED",
+      "title": "原创内容",
+      "statement": "正式运行输入只允许项目自有原创内容；不得嵌入未经批准的第三方规则、模组、文本或素材。",
+      "authority": "restart-top-level-extraction",
+      "tags": [
+        "ip-originality"
+      ],
+      "change_control": "required",
+      "verification": [
+        "GATE-GOV-001"
+      ]
+    },
+    {
+      "id": "RR-D004",
+      "status": "ACCEPTED",
+      "title": "平台解耦",
+      "statement": "平台提供基础设施；本项目提供规则与内容。任何游戏特有逻辑不得硬编码进平台核心。",
+      "authority": "restart-top-level-extraction",
+      "tags": [
+        "platform-boundary"
+      ],
+      "change_control": "required",
+      "verification": [
+        "GATE-GOV-001"
+      ]
+    },
+    {
+      "id": "RR-D005",
+      "status": "ACCEPTED",
+      "title": "标准包格式",
+      "statement": "官方游戏不得使用特权格式，必须通过与第三方相同的标准 Game Package 接口装载。",
+      "authority": "restart-top-level-extraction",
+      "tags": [
+        "package-parity"
+      ],
+      "change_control": "required",
+      "verification": [
+        "GATE-GOV-001"
+      ]
+    },
+    {
+      "id": "RR-D006",
+      "status": "ACCEPTED",
+      "title": "Lua 运行时",
+      "statement": "游戏逻辑以 Lua 5.5 在确定性隔离沙箱中运行，只返回 Typed Effects，不直接访问数据库或外部系统。",
+      "authority": "restart-top-level-extraction",
+      "tags": [
+        "lua-contract"
+      ],
+      "change_control": "required",
+      "verification": [
+        "GATE-GOV-001"
+      ]
+    },
+    {
+      "id": "RR-D007",
+      "status": "ACCEPTED",
+      "title": "权威裁定流",
+      "statement": "自然语言先转结构化动作，再由规则计划、宿主随机、规则解析和原子事件提交产生权威结果，最后由 AI 叙事。",
+      "authority": "restart-top-level-extraction",
+      "tags": [
+        "authority-flow"
+      ],
+      "change_control": "required",
+      "verification": [
+        "GATE-GOV-001"
+      ]
+    },
+    {
+      "id": "RR-D008",
+      "status": "ACCEPTED",
+      "title": "AI 身份与主持权",
+      "statement": "AI 玩家与 AI GM 必须明确标记；Campaign 内主持模式由权威配置锁定，Agent 不得自行接管。",
+      "authority": "restart-top-level-extraction",
+      "tags": [
+        "ai-identity"
+      ],
+      "change_control": "required",
+      "verification": [
+        "GATE-GOV-001"
+      ]
+    },
+    {
+      "id": "RR-D009",
+      "status": "ACCEPTED",
+      "title": "真相与记忆分离",
+      "statement": "世界真相、参与者可见投影、Agent 长期记忆和上下文摘要为不同数据域；记忆不能反向覆盖权威状态。",
+      "authority": "restart-top-level-extraction",
+      "tags": [
+        "memory-separation"
+      ],
+      "change_control": "required",
+      "verification": [
+        "GATE-GOV-001"
+      ]
+    },
+    {
+      "id": "RR-D010",
+      "status": "ACCEPTED",
+      "title": "失败推进",
+      "statement": "关键路径检定允许全部失败但必须产生代价、备用路线或不完整信息以继续游戏；可选秘密与奖励允许错过。",
+      "authority": "restart-top-level-extraction",
+      "tags": [
+        "fail-forward"
+      ],
+      "change_control": "required",
+      "verification": [
+        "GATE-GOV-001"
+      ]
+    },
+    {
+      "id": "RR-D011",
+      "status": "ACCEPTED",
+      "title": "稀有资源",
+      "statement": "游戏必须支持消耗稀有资源换取重投或额外信息；具体数值可以在草案规则中迭代。",
+      "authority": "restart-top-level-extraction",
+      "tags": [
+        "insight-resource"
+      ],
+      "change_control": "required",
+      "verification": [
+        "GATE-GOV-001"
+      ]
+    },
+    {
+      "id": "RR-D012",
+      "status": "ACCEPTED",
+      "title": "快速模式",
+      "statement": "快速模式不得永久淘汰玩家，角色失能后必须提供继续参与的规则路径。",
+      "authority": "restart-top-level-extraction",
+      "tags": [
+        "quick-mode"
+      ],
+      "change_control": "required",
+      "verification": [
+        "GATE-GOV-001"
+      ]
+    },
+    {
+      "id": "RR-D013",
+      "status": "ACCEPTED",
+      "title": "PVE 结束",
+      "statement": "PVE 不要求平台级投降机制；撤退、任务失败、角色失能和 Session 结束由游戏规则表达。",
+      "authority": "restart-top-level-extraction",
+      "tags": [
+        "pve-end"
+      ],
+      "change_control": "required",
+      "verification": [
+        "GATE-GOV-001"
+      ]
+    },
+    {
+      "id": "RR-D014",
+      "status": "ACCEPTED",
+      "title": "严格验收",
+      "statement": "Tutorial Scenario 与 Golden Scenario 是硬门禁；不能通过它们验证的 P0 功能不视为完成。",
+      "authority": "restart-top-level-extraction",
+      "tags": [
+        "acceptance"
+      ],
+      "change_control": "required",
+      "verification": [
+        "GATE-GOV-001"
+      ]
+    },
+    {
+      "id": "RR-D015",
+      "status": "ACCEPTED",
+      "title": "Creator 往返",
+      "statement": "第一方内容必须可由 Creator Tool 导入、校验、编辑、导出并保持语义等价。",
+      "authority": "restart-top-level-extraction",
+      "tags": [
+        "creator-roundtrip"
+      ],
+      "change_control": "required",
+      "verification": [
+        "GATE-GOV-001"
+      ]
+    },
+    {
+      "id": "RR-D016",
+      "status": "ACCEPTED",
+      "title": "公开发行阻塞",
+      "statement": "在第一方内容许可证和平台 Game Package API 正式批准前，项目不得公开发行。",
+      "authority": "restart-top-level-extraction",
+      "tags": [
+        "release-block"
+      ],
+      "change_control": "required",
+      "verification": [
+        "GATE-GOV-001"
+      ]
+    },
+    {
+      "id": "RR-D017",
+      "status": "ACCEPTED",
+      "title": "生产最小暴露",
+      "statement": "生产包不加载 debug 组件，不向参与者投影服务器秘密、内部提示词、完整 Agent 推理或未授权日志。",
+      "authority": "restart-top-level-extraction",
+      "tags": [
+        "production-security"
+      ],
+      "change_control": "required",
+      "verification": [
+        "GATE-GOV-001"
+      ]
+    },
+    {
+      "id": "RR-D018",
+      "status": "ACCEPTED",
+      "title": "有界控制效果",
+      "statement": "控制类规则在判定生效后可以用明确、有限、可审计的状态替代目标角色的部分行动；这不是 Agent 的任意接管，具体范围、持续时间、解除和展示必须由规则数据表达。",
+      "authority": "restart-top-level-extraction",
+      "tags": [
+        "control-effect"
+      ],
+      "change_control": "required",
+      "verification": [
+        "GATE-GAME-001"
+      ]
+    },
+    {
+      "id": "RR-P001",
+      "status": "REJECTED",
+      "title": "旧题材基线（已取代）",
+      "statement": "M0 初始“近未来城市局部现实异常调查”题材已被正式产品定位取代，不再作为实现依据。",
+      "authority": "owner-direction-2026-08-10",
+      "tags": [
+        "superseded-pitch"
+      ],
+      "change_control": "none",
+      "verification": [
+        "GATE-GOV-001"
+      ]
+    },
+    {
+      "id": "RR-P002",
+      "status": "PROVISIONAL",
+      "title": "核心检定",
+      "statement": "首个垂直切片采用 2d6 + 方法值 + 熟练 + 情境修正，与难度比较并产生四档结果。",
+      "authority": "m0-initialization",
+      "tags": [
+        "check-system"
+      ],
+      "change_control": "document-and-test",
+      "verification": [
+        "GATE-GAME-001"
+      ]
+    },
+    {
+      "id": "RR-P003",
+      "status": "PROVISIONAL",
+      "title": "角色方法",
+      "statement": "首个垂直切片采用解析、联结、介入、承压四项方法值。",
+      "authority": "m0-initialization",
+      "tags": [
+        "character-model"
+      ],
+      "change_control": "document-and-test",
+      "verification": [
+        "GATE-GAME-001"
+      ]
+    },
+    {
+      "id": "RR-P004",
+      "status": "PROVISIONAL",
+      "title": "资源",
+      "statement": "首个垂直切片采用洞见与负荷两类核心资源；名称与上限仍可调整。",
+      "authority": "m0-initialization",
+      "tags": [
+        "resources"
+      ],
+      "change_control": "document-and-test",
+      "verification": [
+        "GATE-GAME-001"
+      ]
+    },
+    {
+      "id": "RR-P005",
+      "status": "PROVISIONAL",
+      "title": "首发场景",
+      "statement": "Tutorial 使用《零号站台》，Golden 使用《第五份记录》；二者改为同一异世界开放世界中的可重访规则域验证内容。",
+      "authority": "m0-initialization",
+      "tags": [
+        "scenarios"
+      ],
+      "change_control": "document-and-test",
+      "verification": [
+        "GATE-GAME-001"
+      ]
+    },
+    {
+      "id": "RR-O001",
+      "status": "OPEN",
+      "title": "最终许可证",
+      "statement": "确定源码、规则文本、场景与素材的最终许可证组合及商业权利安排。",
+      "authority": "unresolved",
+      "target_milestone": "M4",
+      "change_control": "owner-decision-required",
+      "verification": [
+        "GATE-GOV-002"
+      ]
+    },
+    {
+      "id": "RR-O002",
+      "status": "OPEN",
+      "title": "正式 Game Package API",
+      "statement": "平台发布正式 API 版本后替换 0.1-draft 并完成兼容认证。",
+      "authority": "unresolved",
+      "target_milestone": "M1",
+      "change_control": "owner-decision-required",
+      "verification": [
+        "GATE-GOV-002"
+      ]
+    },
+    {
+      "id": "RR-O003",
+      "status": "OPEN",
+      "title": "完整异世界与最终真相",
+      "statement": "决定世界地理、规则来源、无限流结构来源、组织、跨域历史、长期战役结构及真正归乡条件。",
+      "authority": "unresolved",
+      "target_milestone": "M2",
+      "change_control": "owner-decision-required",
+      "verification": [
+        "GATE-GOV-002"
+      ]
+    },
+    {
+      "id": "RR-O004",
+      "status": "OPEN",
+      "title": "角色成长",
+      "statement": "决定长期成长、创伤、退场与替换角色机制。",
+      "authority": "unresolved",
+      "target_milestone": "M2",
+      "change_control": "owner-decision-required",
+      "verification": [
+        "GATE-GOV-002"
+      ]
+    },
+    {
+      "id": "RR-O005",
+      "status": "OPEN",
+      "title": "冲突深度",
+      "statement": "决定 P0 之后是否加入位置、距离、Token、卡牌或更细粒度回合。",
+      "authority": "unresolved",
+      "target_milestone": "M3",
+      "change_control": "owner-decision-required",
+      "verification": [
+        "GATE-GOV-002"
+      ]
+    },
+    {
+      "id": "RR-O006",
+      "status": "OPEN",
+      "title": "玩家控制效果",
+      "statement": "确定控制类规则作用于真人控制角色时的边界、持续时间、解除与展示合同。",
+      "authority": "unresolved",
+      "target_milestone": "M2",
+      "change_control": "owner-decision-required",
+      "verification": [
+        "GATE-GOV-002"
+      ]
+    },
+    {
+      "id": "RR-O007",
+      "status": "OPEN",
+      "title": "正式美术与音频",
+      "statement": "确定原创视觉语言、Grok 素材生产规范、人工审美审批、版权凭证和包体预算。",
+      "authority": "unresolved",
+      "target_milestone": "M4",
+      "change_control": "owner-decision-required",
+      "verification": [
+        "GATE-GOV-002"
+      ]
+    },
+    {
+      "id": "RR-D019",
+      "status": "ACCEPTED",
+      "title": "正式类型与主题",
+      "statement": "《规则残差》定位为无限流叠加规则怪谈的异世界开放世界跑团；核心主题为破解规则、努力活着、查清真相并寻找回家方法。",
+      "authority": "owner-direction-2026-08-10",
+      "tags": [
+        "genre",
+        "core-theme"
+      ],
+      "change_control": "required",
+      "verification": [
+        "GATE-GAME-001"
+      ]
+    },
+    {
+      "id": "RR-D020",
+      "status": "ACCEPTED",
+      "title": "规则破解核心循环",
+      "statement": "异常规则必须成为可观察、可提出假设、可验证/反证、可利用/绕过/破解的游戏对象；AI 不得直接把隐藏规则答案交给玩家。",
+      "authority": "owner-direction-2026-08-10",
+      "tags": [
+        "rule-mystery",
+        "core-loop"
+      ],
+      "change_control": "required",
+      "verification": [
+        "GATE-GAME-001"
+      ]
+    },
+    {
+      "id": "RR-D021",
+      "status": "ACCEPTED",
+      "title": "持久开放世界",
+      "statement": "世界由可重访且持久的区域构成；规则域可相邻、嵌套或叠加，区域结束不得自动清除世界、NPC、规则知识和玩家影响。",
+      "authority": "owner-direction-2026-08-10",
+      "tags": [
+        "open-world",
+        "persistence"
+      ],
+      "change_control": "required",
+      "verification": [
+        "GATE-GAME-001"
+      ]
+    },
+    {
+      "id": "RR-D022",
+      "status": "ACCEPTED",
+      "title": "规则冲突可判定",
+      "statement": "规则必须能表达作用域、触发条件、效果、例外及优先级；叠加规则发生冲突时由机器可执行语义判定，不能仅靠 Agent 临场选择。",
+      "authority": "owner-direction-2026-08-10",
+      "tags": [
+        "rule-domain",
+        "precedence"
+      ],
+      "change_control": "required",
+      "verification": [
+        "GATE-GAME-001"
+      ]
+    },
+    {
+      "id": "RR-D023",
+      "status": "ACCEPTED",
+      "title": "混合开发职责",
+      "statement": "Game Package 采用混合开发：Codex 负责任务规划、编排、集成与最终验证；OpenCode 负责脚本编码；Grok 负责美术素材创作。跨模型交付必须使用 Task Packet，最终 PASS 由 Codex 基于仓库证据给出。",
+      "authority": "owner-direction-2026-08-10",
+      "tags": [
+        "workflow",
+        "codex",
+        "opencode",
+        "grok"
+      ],
+      "change_control": "required",
+      "verification": [
+        "GATE-WORKFLOW-001"
+      ]
+    }
+  ]
+}

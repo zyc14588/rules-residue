@@ -1,0 +1,26 @@
+{
+  "schema_version": "rules-residue.locale/0.1",
+  "locale": "en",
+  "strings": {
+    "game.title": "Rules Residue",
+    "approach.analyze": "Analyze",
+    "approach.connect": "Connect",
+    "approach.intervene": "Intervene",
+    "approach.endure": "Endure",
+    "resource.insight": "Insight",
+    "resource.strain": "Strain",
+    "action.investigate": "Investigate",
+    "action.influence": "Influence",
+    "action.intervene": "Intervene",
+    "action.assist": "Assist",
+    "action.stabilize": "Stabilize",
+    "action.spend_insight": "Spend Insight",
+    "status.focused": "Focused",
+    "status.exposed": "Exposed",
+    "status.restricted": "Restricted",
+    "status.intent_shifted": "Intent Shifted",
+    "status.overloaded": "Overloaded",
+    "character_template.field_calibrator": "Returner · Observer",
+    "character_template.field_calibrator.notes": "A starter template focused on forming rule hypotheses from anomalies and searching for counterexamples."
+  }
+}

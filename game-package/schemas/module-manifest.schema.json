@@ -1,0 +1,51 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "rules-residue.schema/module-manifest/0.1",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "id",
+    "title",
+    "version",
+    "classification",
+    "scenario",
+    "expected_path",
+    "package_dependency",
+    "original_content"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "rules-residue.module-manifest/0.1"
+    },
+    "id": {
+      "type": "string"
+    },
+    "title": {
+      "type": "string"
+    },
+    "version": {
+      "type": "string"
+    },
+    "classification": {
+      "enum": [
+        "tutorial",
+        "golden",
+        "scenario"
+      ]
+    },
+    "scenario": {
+      "const": "scenario.json"
+    },
+    "expected_path": {
+      "const": "expected-path.json"
+    },
+    "package_dependency": {
+      "type": "string",
+      "pattern": "^org\\.trpgplatform\\.rules-residue@0\\.1\\.0-dev\\.[0-9]+$"
+    },
+    "original_content": {
+      "const": true
+    }
+  },
+  "additionalProperties": false
+}

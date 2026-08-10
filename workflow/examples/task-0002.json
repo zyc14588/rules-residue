@@ -1,0 +1,38 @@
+{
+  "schema_version": "rules-residue.task-packet/1.0",
+  "task_id": "RR-TASK-0002",
+  "status": "PLANNED",
+  "owner": "grok",
+  "task_type": "art",
+  "objective": "为《零号站台》制作一张原创环境概念图。",
+  "authority": [
+    "docs/design/00_GAME_PITCH_DRAFT.md",
+    "docs/authority/12_HYBRID_DEVELOPMENT_WORKFLOW.md"
+  ],
+  "inputs": [
+    "game-package/modules/tutorial/scenario.json"
+  ],
+  "allowed_paths": [
+    "game-package/assets/tutorial/**",
+    "workflow/returns/**"
+  ],
+  "forbidden_paths": [
+    "game-package/scripts/**",
+    "governance/**",
+    "docs/authority/**"
+  ],
+  "open_decisions": [
+    "RR-O003",
+    "RR-O007"
+  ],
+  "acceptance": [
+    "原创异世界规则怪谈环境，不含第三方 IP/商标",
+    "输出规格和 provenance 信息完整"
+  ],
+  "expected_outputs": [
+    "概念图文件",
+    "素材元数据/提示词摘要",
+    "RETURNED 摘要"
+  ],
+  "notes": "示例，不作为真实任务。"
+}

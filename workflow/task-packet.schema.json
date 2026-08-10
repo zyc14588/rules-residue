@@ -1,0 +1,121 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "rules-residue.workflow/task-packet/1.0",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "task_id",
+    "status",
+    "owner",
+    "task_type",
+    "objective",
+    "authority",
+    "inputs",
+    "allowed_paths",
+    "forbidden_paths",
+    "open_decisions",
+    "acceptance",
+    "expected_outputs"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "rules-residue.task-packet/1.0"
+    },
+    "task_id": {
+      "type": "string",
+      "pattern": "^RR-TASK-[0-9]{4,}$"
+    },
+    "status": {
+      "enum": [
+        "PLANNED",
+        "IN_PROGRESS",
+        "RETURNED",
+        "PASS",
+        "FAIL",
+        "BLOCKED_SCOPE",
+        "BLOCKED_EXTERNAL"
+      ]
+    },
+    "owner": {
+      "enum": [
+        "codex",
+        "opencode",
+        "grok"
+      ]
+    },
+    "task_type": {
+      "enum": [
+        "spec",
+        "script",
+        "art",
+        "integration",
+        "acceptance"
+      ]
+    },
+    "objective": {
+      "type": "string",
+      "minLength": 1
+    },
+    "authority": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
+    },
+    "inputs": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
+    },
+    "allowed_paths": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
+    },
+    "forbidden_paths": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
+    },
+    "open_decisions": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
+    },
+    "acceptance": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
+    },
+    "expected_outputs": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
+    },
+    "notes": {
+      "type": [
+        "string",
+        "null"
+      ]
+    }
+  },
+  "additionalProperties": false
+}

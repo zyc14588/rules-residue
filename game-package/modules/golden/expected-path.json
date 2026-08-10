@@ -1,0 +1,321 @@
+{
+  "schema_version": "rules-residue.expected-path/0.1",
+  "module_id": "rr.golden.fifth-record",
+  "vectors": [
+    {
+      "id": "golden.boundary.strong",
+      "action": {
+        "schema_version": "rules-residue.structured-action/0.1",
+        "action_id": "act.gold.001",
+        "idempotency_key": "idem-golden-0001",
+        "actor_id": "char.calibrator",
+        "actor_kind": "human_player",
+        "action_type": "investigate",
+        "target_id": "target.index_terminal",
+        "goal": "比较查询前后的第五条索引",
+        "approach": "analyze",
+        "stakes": null,
+        "parameters": {},
+        "source": {
+          "kind": "human_text",
+          "text_excerpt": "我离线记录索引，再进行一次查询后比较。",
+          "message_id": null
+        },
+        "visibility": "public"
+      },
+      "rule_input": {
+        "difficulty": 9,
+        "situational_modifier": 0,
+        "success_fact_id": "fact.timestamp_moves",
+        "critical_path": true
+      },
+      "resolution_input": {
+        "kind": "roll",
+        "roll_result": {
+          "schema_version": "rules-residue.roll-result/0.1",
+          "request_id": "act.gold.001:roll",
+          "faces": [
+            5,
+            5
+          ],
+          "dice_total": 10,
+          "modifier": 2,
+          "total": 12,
+          "difficulty": 9,
+          "rng_event_id": "rng.gold.001"
+        }
+      },
+      "expected": {
+        "plan_kind": "roll",
+        "outcome": "strong_success",
+        "effect_types": [
+          "append_event",
+          "reveal_fact",
+          "adjust_resource"
+        ]
+      }
+    },
+    {
+      "id": "golden.boundary.success",
+      "action": {
+        "schema_version": "rules-residue.structured-action/0.1",
+        "action_id": "act.gold.002",
+        "idempotency_key": "idem-golden-0002",
+        "actor_id": "char.calibrator",
+        "actor_kind": "human_player",
+        "action_type": "investigate",
+        "target_id": "target.index_terminal",
+        "goal": "确认索引改写由查询触发",
+        "approach": "analyze",
+        "stakes": null,
+        "parameters": {},
+        "source": {
+          "kind": "human_text",
+          "text_excerpt": "确认索引改写由查询触发",
+          "message_id": null
+        },
+        "visibility": "public"
+      },
+      "rule_input": {
+        "difficulty": 9,
+        "situational_modifier": 0,
+        "success_fact_id": "fact.timestamp_moves",
+        "critical_path": true
+      },
+      "resolution_input": {
+        "kind": "roll",
+        "roll_result": {
+          "schema_version": "rules-residue.roll-result/0.1",
+          "request_id": "act.gold.002:roll",
+          "faces": [
+            3,
+            4
+          ],
+          "dice_total": 7,
+          "modifier": 2,
+          "total": 9,
+          "difficulty": 9,
+          "rng_event_id": "rng.gold.002"
+        }
+      },
+      "expected": {
+        "plan_kind": "roll",
+        "outcome": "success",
+        "effect_types": [
+          "append_event",
+          "reveal_fact"
+        ]
+      }
+    },
+    {
+      "id": "golden.boundary.mixed",
+      "action": {
+        "schema_version": "rules-residue.structured-action/0.1",
+        "action_id": "act.gold.003",
+        "idempotency_key": "idem-golden-0003",
+        "actor_id": "char.calibrator",
+        "actor_kind": "human_player",
+        "action_type": "investigate",
+        "target_id": "target.index_terminal",
+        "goal": "从错误日志中提取规律",
+        "approach": "analyze",
+        "stakes": null,
+        "parameters": {},
+        "source": {
+          "kind": "human_text",
+          "text_excerpt": "从错误日志中提取规律",
+          "message_id": null
+        },
+        "visibility": "public"
+      },
+      "rule_input": {
+        "difficulty": 9,
+        "situational_modifier": 0,
+        "success_fact_id": "fact.timestamp_moves",
+        "critical_path": true
+      },
+      "resolution_input": {
+        "kind": "roll",
+        "roll_result": {
+          "schema_version": "rules-residue.roll-result/0.1",
+          "request_id": "act.gold.003:roll",
+          "faces": [
+            2,
+            3
+          ],
+          "dice_total": 5,
+          "modifier": 2,
+          "total": 7,
+          "difficulty": 9,
+          "rng_event_id": "rng.gold.003"
+        }
+      },
+      "expected": {
+        "plan_kind": "roll",
+        "outcome": "success_with_cost",
+        "effect_types": [
+          "append_event",
+          "reveal_fact",
+          "adjust_resource"
+        ]
+      }
+    },
+    {
+      "id": "golden.boundary.failure",
+      "action": {
+        "schema_version": "rules-residue.structured-action/0.1",
+        "action_id": "act.gold.004",
+        "idempotency_key": "idem-golden-0004",
+        "actor_id": "char.calibrator",
+        "actor_kind": "human_player",
+        "action_type": "intervene",
+        "target_id": "target.null_slot",
+        "goal": "提交一个被索引承认的空值",
+        "approach": "intervene",
+        "stakes": null,
+        "parameters": {},
+        "source": {
+          "kind": "human_text",
+          "text_excerpt": "提交一个被索引承认的空值",
+          "message_id": null
+        },
+        "visibility": "public"
+      },
+      "rule_input": {
+        "difficulty": 11,
+        "situational_modifier": 0,
+        "success_flag": "null_entry_registered",
+        "failure_fact_id": "fact.null_entry_partial",
+        "critical_path": true,
+        "failure_track_id": "track.precedence"
+      },
+      "resolution_input": {
+        "kind": "roll",
+        "roll_result": {
+          "schema_version": "rules-residue.roll-result/0.1",
+          "request_id": "act.gold.004:roll",
+          "faces": [
+            1,
+            2
+          ],
+          "dice_total": 3,
+          "modifier": 1,
+          "total": 4,
+          "difficulty": 11,
+          "rng_event_id": "rng.gold.004"
+        }
+      },
+      "expected": {
+        "plan_kind": "roll",
+        "outcome": "failure_with_consequence",
+        "effect_types": [
+          "append_event",
+          "reveal_fact",
+          "adjust_resource",
+          "advance_track"
+        ]
+      }
+    },
+    {
+      "id": "golden.insight.reroll",
+      "action": {
+        "schema_version": "rules-residue.structured-action/0.1",
+        "action_id": "act.gold.005",
+        "idempotency_key": "idem-golden-0005",
+        "actor_id": "char.calibrator",
+        "actor_kind": "ai_player",
+        "action_type": "spend_insight",
+        "target_id": "act.gold.004",
+        "goal": "为失败的提交申请一次重投",
+        "approach": "analyze",
+        "stakes": null,
+        "parameters": {
+          "mode": "reroll"
+        },
+        "source": {
+          "kind": "ai_tool",
+          "text_excerpt": "为失败的提交申请一次重投",
+          "message_id": null
+        },
+        "visibility": "public"
+      },
+      "rule_input": {
+        "reroll_for_action_id": "act.gold.004"
+      },
+      "resolution_input": {
+        "kind": "resource_spend",
+        "approved": true,
+        "resource": "insight",
+        "amount": 1
+      },
+      "expected": {
+        "plan_kind": "resource_spend",
+        "outcome": "resource_spent",
+        "effect_types": [
+          "append_event",
+          "adjust_resource",
+          "grant_reroll_token"
+        ]
+      }
+    },
+    {
+      "id": "golden.control.player-substitution",
+      "action": {
+        "schema_version": "rules-residue.structured-action/0.1",
+        "action_id": "act.gold.006",
+        "idempotency_key": "idem-golden-0006",
+        "actor_id": "npc.auditor",
+        "actor_kind": "ai_gm",
+        "action_type": "influence",
+        "target_id": "char.calibrator",
+        "goal": "令校准员下一行动只能向目录核心提交一个明确的空值",
+        "approach": "connect",
+        "stakes": null,
+        "parameters": {},
+        "source": {
+          "kind": "ai_tool",
+          "text_excerpt": "审录员七号试图用目录规则约束校准员的下一行动。",
+          "message_id": null
+        },
+        "visibility": "public"
+      },
+      "rule_input": {
+        "difficulty": 9,
+        "situational_modifier": 0,
+        "target_status": "intent_shifted",
+        "critical_path": false,
+        "substitute_next_action": true,
+        "replacement_action": {
+          "action_type": "intervene",
+          "target_id": "target.null_slot",
+          "goal": "提交一个被索引承认的空值"
+        },
+        "max_substituted_actions": 1
+      },
+      "resolution_input": {
+        "kind": "roll",
+        "roll_result": {
+          "schema_version": "rules-residue.roll-result/0.1",
+          "request_id": "act.gold.006:roll",
+          "faces": [
+            4,
+            4
+          ],
+          "dice_total": 8,
+          "modifier": 2,
+          "total": 10,
+          "difficulty": 9,
+          "rng_event_id": "rng.gold.006"
+        }
+      },
+      "expected": {
+        "plan_kind": "roll",
+        "outcome": "success",
+        "effect_types": [
+          "append_event",
+          "set_status"
+        ]
+      }
+    }
+  ]
+}

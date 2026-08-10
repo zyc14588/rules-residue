@@ -1,0 +1,53 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "rules-residue.schema/effect/0.1",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "effect_id",
+    "type",
+    "source_action_id",
+    "reason",
+    "visibility",
+    "payload"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "rules-residue.effect/0.1"
+    },
+    "effect_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "type": {
+      "enum": [
+        "append_event",
+        "adjust_resource",
+        "set_status",
+        "clear_status",
+        "reveal_fact",
+        "advance_track",
+        "set_flag",
+        "grant_reroll_token"
+      ]
+    },
+    "source_action_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "reason": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 500
+    },
+    "visibility": {
+      "type": "string",
+      "pattern": "^(public|gm_only|participant:[a-zA-Z0-9._:-]+|team:[a-zA-Z0-9._:-]+|agent:[a-zA-Z0-9._:-]+)$"
+    },
+    "payload": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "additionalProperties": false
+}

@@ -1,0 +1,26 @@
+{
+  "schema_version": "rules-residue.locale/0.1",
+  "locale": "zh-CN",
+  "strings": {
+    "game.title": "规则残差",
+    "approach.analyze": "解析",
+    "approach.connect": "联结",
+    "approach.intervene": "介入",
+    "approach.endure": "承压",
+    "resource.insight": "洞见",
+    "resource.strain": "负荷",
+    "action.investigate": "调查",
+    "action.influence": "影响",
+    "action.intervene": "介入",
+    "action.assist": "协助",
+    "action.stabilize": "稳定",
+    "action.spend_insight": "消耗洞见",
+    "status.focused": "专注",
+    "status.exposed": "暴露",
+    "status.restricted": "受限",
+    "status.intent_shifted": "意图改变",
+    "status.overloaded": "过载",
+    "character_template.field_calibrator": "归途者·观察型",
+    "character_template.field_calibrator.notes": "擅长从异世界异常细节中建立规则假设并寻找反例的起始模板。"
+  }
+}

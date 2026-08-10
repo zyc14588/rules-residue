@@ -1,0 +1,40 @@
+{
+  "schema_version": "rules-residue.task-packet/1.0",
+  "task_id": "RR-TASK-0001",
+  "status": "PLANNED",
+  "owner": "opencode",
+  "task_type": "script",
+  "objective": "实现示例规则域的规则验证 Lua 逻辑，不改变规则语义。",
+  "authority": [
+    "docs/authority/03_DESIGN_PRINCIPLES.md",
+    "docs/authority/12_HYBRID_DEVELOPMENT_WORKFLOW.md"
+  ],
+  "inputs": [
+    "game-package/scripts/plan_action.lua",
+    "game-package/scripts/resolve_action.lua"
+  ],
+  "allowed_paths": [
+    "game-package/scripts/**",
+    "game-package/tests/fixtures/**"
+  ],
+  "forbidden_paths": [
+    "governance/**",
+    "docs/authority/**",
+    "game-package/manifest.json",
+    "TRPG_PLATFORM/**"
+  ],
+  "open_decisions": [
+    "RR-O003"
+  ],
+  "acceptance": [
+    "执行 Task Packet 指定的 Lua/fixture 局部测试",
+    "不使用禁止 Lua API",
+    "仅返回 Typed Effects"
+  ],
+  "expected_outputs": [
+    "脚本 diff",
+    "自测命令与退出码",
+    "RETURNED 摘要"
+  ],
+  "notes": "示例，不作为真实任务。"
+}

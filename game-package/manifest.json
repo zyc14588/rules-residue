@@ -1,0 +1,81 @@
+{
+  "schema_version": "trpg.game-package.manifest/0.1-draft",
+  "id": "org.trpgplatform.rules-residue",
+  "display_name": {
+    "zh-CN": "规则残差",
+    "en": "Rules Residue"
+  },
+  "version": "0.1.0-dev.1",
+  "publisher": {
+    "id": "org.trpgplatform.first-party",
+    "display_name": "TRPG_PLATFORM First-Party"
+  },
+  "classification": "first_party_reference_game",
+  "description": {
+    "zh-CN": "无限流叠加规则怪谈的异世界开放世界原创 TRPG：破解规则、努力存活、查清真相并寻找回家的方法。",
+    "en": "An original open-world isekai TRPG combining infinite-flow structures and rules-horror: decipher rules, survive, uncover the truth, and find a way home."
+  },
+  "runtime": {
+    "host_api": "trpg.game-package/0.1-draft",
+    "lua_version": "5.5",
+    "deterministic": true,
+    "network_access": false,
+    "filesystem_access": false,
+    "system_clock_access": false,
+    "environment_access": false,
+    "script_randomness": false,
+    "debug_library": false,
+    "state_mutation": "typed_effects_only"
+  },
+  "entrypoints": {
+    "bootstrap": "scripts/bootstrap.lua",
+    "plan_action": "scripts/plan_action.lua",
+    "resolve_action": "scripts/resolve_action.lua",
+    "project_state": "scripts/project_state.lua"
+  },
+  "content": {
+    "ruleset": "rules/ruleset.json",
+    "action_catalog": "rules/action_catalog.json",
+    "status_catalog": "rules/status_catalog.json",
+    "character_templates": "rules/character_templates.json",
+    "locales": [
+      "locales/zh-CN.json",
+      "locales/en.json"
+    ],
+    "modules": [
+      "modules/tutorial/manifest.json",
+      "modules/golden/manifest.json"
+    ]
+  },
+  "capabilities": [
+    "structured_actions",
+    "authoritative_host_rng",
+    "typed_effects",
+    "human_gm",
+    "ai_gm",
+    "human_player",
+    "ai_player",
+    "participant_projection",
+    "agent_memory_projection",
+    "checkpoint_resume",
+    "creator_roundtrip",
+    "rule_hypothesis_gameplay",
+    "persistent_open_world",
+    "overlapping_rule_domains"
+  ],
+  "compatibility": {
+    "save_schema": "rules-residue.game-state/0.1",
+    "action_schema": "rules-residue.structured-action/0.1",
+    "effect_schema": "rules-residue.effect/0.1",
+    "migration_entrypoint": null
+  },
+  "release": {
+    "channel": "internal-development",
+    "license": "LicenseRef-Pending-FirstParty",
+    "public_release_blocked": true,
+    "blockers": [
+      "RR-O001",
+      "RR-O002"
+    ]
+  }
+}

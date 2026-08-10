@@ -1,0 +1,67 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "rules-residue.schema/resolution/0.1",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "resolution_id",
+    "action_id",
+    "kind",
+    "outcome",
+    "rule_version",
+    "effects",
+    "narration_facts"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "rules-residue.resolution/0.1"
+    },
+    "resolution_id": {
+      "type": "string"
+    },
+    "action_id": {
+      "type": "string"
+    },
+    "kind": {
+      "enum": [
+        "roll",
+        "resource_spend"
+      ]
+    },
+    "outcome": {
+      "enum": [
+        "strong_success",
+        "success",
+        "success_with_cost",
+        "failure_with_consequence",
+        "resource_spent"
+      ]
+    },
+    "rule_version": {
+      "type": "string"
+    },
+    "roll_summary": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "additionalProperties": true
+    },
+    "effects": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": true
+      }
+    },
+    "narration_facts": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
+    }
+  },
+  "additionalProperties": false
+}

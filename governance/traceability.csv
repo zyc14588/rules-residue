@@ -1,0 +1,15 @@
+Requirement,Decision,Design,Runtime,Acceptance
+RR-P0-001,RR-D001,docs/authority/00_PROJECT_CHARTER.md,README.md,ACC-001
+RR-P0-002,RR-D005,docs/authority/07_GAME_PACKAGE_CONTRACT.md,game-package/manifest.json;game-package/package.lock.json,ACC-002;ACC-003
+RR-P0-003,RR-D006,docs/architecture/01_DETERMINISM_AND_SECURITY.md,game-package/scripts/*.lua,ACC-004;ACC-005
+RR-P0-004,RR-D007,docs/architecture/00_RUNTIME_FLOW.md,game-package/schemas/structured-action.schema.json;game-package/scripts/plan_action.lua;game-package/scripts/resolve_action.lua,ACC-006;ACC-007
+RR-P0-005,RR-D010;RR-D011;RR-D018;RR-P002;RR-P003;RR-P004,docs/design/03_CHECK_SYSTEM_DRAFT.md,game-package/rules/ruleset.json,ACC-008;ACC-009
+RR-P0-006,RR-D008,docs/authority/05_AI_AGENT_CONTRACT.md,game-package/schemas/structured-action.schema.json,ACC-010
+RR-P0-007,RR-D009;RR-D017,docs/authority/06_VISIBILITY_MEMORY_CONTRACT.md,game-package/schemas/memory-record.schema.json;game-package/scripts/project_state.lua,ACC-011;ACC-012
+RR-P0-008,RR-D014;RR-P005,docs/authority/08_TUTORIAL_AND_GOLDEN.md,game-package/modules/tutorial/scenario.json,ACC-013
+RR-P0-009,RR-D014;RR-P005,docs/authority/08_TUTORIAL_AND_GOLDEN.md,game-package/modules/golden/scenario.json;game-package/modules/golden/expected-path.json,ACC-014;ACC-015
+RR-P0-010,RR-D015,docs/architecture/03_CREATOR_TOOL_COMPATIBILITY.md,game-package/manifest.json,ACC-016
+RR-P0-011,RR-D003;RR-D016,LICENSE-PENDING.md,game-package/manifest.json,ACC-017;ACC-018
+RR-P0-012,RR-D014,docs/authority/09_ACCEPTANCE_STANDARD.md,tools/run_acceptance.py;tools/build_package.py,ACC-019;ACC-020
+RR-P0-013,RR-D019;RR-D020;RR-D021;RR-D022,docs/authority/00_PROJECT_CHARTER.md;docs/authority/03_DESIGN_PRINCIPLES.md,game-package/modules/tutorial/scenario.json;game-package/modules/golden/scenario.json,ACC-021
+RR-P0-014,RR-D023,docs/authority/12_HYBRID_DEVELOPMENT_WORKFLOW.md,workflow/task-packet.schema.json;workflow/examples/*.json,ACC-022

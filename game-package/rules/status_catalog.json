@@ -1,0 +1,51 @@
+{
+  "schema_version": "rules-residue.status-catalog/0.1",
+  "statuses": [
+    {
+      "id": "focused",
+      "name_key": "status.focused",
+      "stacking": "replace",
+      "default_duration": {
+        "kind": "next_action"
+      }
+    },
+    {
+      "id": "exposed",
+      "name_key": "status.exposed",
+      "stacking": "replace",
+      "default_duration": {
+        "kind": "scene"
+      }
+    },
+    {
+      "id": "restricted",
+      "name_key": "status.restricted",
+      "stacking": "replace",
+      "default_duration": {
+        "kind": "scene"
+      }
+    },
+    {
+      "id": "intent_shifted",
+      "name_key": "status.intent_shifted",
+      "stacking": "replace",
+      "default_duration": {
+        "kind": "scene"
+      },
+      "control_contract": {
+        "may_substitute_action": true,
+        "maximum_default_actions": 1,
+        "requires_replacement_action": true,
+        "requires_source_action_id": true
+      }
+    },
+    {
+      "id": "overloaded",
+      "name_key": "status.overloaded",
+      "stacking": "replace",
+      "default_duration": {
+        "kind": "until_recovery"
+      }
+    }
+  ]
+}

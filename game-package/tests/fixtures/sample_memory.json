@@ -1,0 +1,13 @@
+{
+  "schema_version": "rules-residue.memory-record/0.1",
+  "memory_id": "memory.fixture.001",
+  "subject_id": "participant.player",
+  "statement": "索引查询会改变第五条记录的时间戳。",
+  "source_event_ids": [
+    "event.fixture.011"
+  ],
+  "visibility": "participant:participant.player",
+  "confidence": "confirmed",
+  "created_at_event_index": 11,
+  "supersedes": null
+}

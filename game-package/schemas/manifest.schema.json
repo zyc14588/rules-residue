@@ -1,0 +1,253 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "rules-residue.schema/manifest/0.1",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "id",
+    "display_name",
+    "version",
+    "publisher",
+    "classification",
+    "runtime",
+    "entrypoints",
+    "content",
+    "capabilities",
+    "compatibility",
+    "release"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "trpg.game-package.manifest/0.1-draft"
+    },
+    "id": {
+      "const": "org.trpgplatform.rules-residue"
+    },
+    "display_name": {
+      "type": "object",
+      "required": [
+        "zh-CN",
+        "en"
+      ],
+      "properties": {
+        "zh-CN": {
+          "type": "string",
+          "minLength": 1
+        },
+        "en": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "additionalProperties": false
+    },
+    "version": {
+      "type": "string",
+      "pattern": "^0\\.1\\.0-dev\\.[0-9]+$"
+    },
+    "publisher": {
+      "type": "object",
+      "required": [
+        "id",
+        "display_name"
+      ],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "display_name": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "classification": {
+      "const": "first_party_reference_game"
+    },
+    "description": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string"
+      }
+    },
+    "runtime": {
+      "type": "object",
+      "required": [
+        "host_api",
+        "lua_version",
+        "deterministic",
+        "network_access",
+        "filesystem_access",
+        "system_clock_access",
+        "environment_access",
+        "script_randomness",
+        "debug_library",
+        "state_mutation"
+      ],
+      "properties": {
+        "host_api": {
+          "type": "string"
+        },
+        "lua_version": {
+          "const": "5.5"
+        },
+        "deterministic": {
+          "const": true
+        },
+        "network_access": {
+          "const": false
+        },
+        "filesystem_access": {
+          "const": false
+        },
+        "system_clock_access": {
+          "const": false
+        },
+        "environment_access": {
+          "const": false
+        },
+        "script_randomness": {
+          "const": false
+        },
+        "debug_library": {
+          "const": false
+        },
+        "state_mutation": {
+          "const": "typed_effects_only"
+        }
+      },
+      "additionalProperties": false
+    },
+    "entrypoints": {
+      "type": "object",
+      "required": [
+        "bootstrap",
+        "plan_action",
+        "resolve_action",
+        "project_state"
+      ],
+      "properties": {
+        "bootstrap": {
+          "type": "string"
+        },
+        "plan_action": {
+          "type": "string"
+        },
+        "resolve_action": {
+          "type": "string"
+        },
+        "project_state": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "content": {
+      "type": "object",
+      "required": [
+        "ruleset",
+        "action_catalog",
+        "status_catalog",
+        "character_templates",
+        "locales",
+        "modules"
+      ],
+      "properties": {
+        "ruleset": {
+          "type": "string"
+        },
+        "action_catalog": {
+          "type": "string"
+        },
+        "status_catalog": {
+          "type": "string"
+        },
+        "character_templates": {
+          "type": "string"
+        },
+        "locales": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string"
+          },
+          "uniqueItems": true
+        },
+        "modules": {
+          "type": "array",
+          "minItems": 2,
+          "items": {
+            "type": "string"
+          },
+          "uniqueItems": true
+        }
+      },
+      "additionalProperties": false
+    },
+    "capabilities": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
+    },
+    "compatibility": {
+      "type": "object",
+      "required": [
+        "save_schema",
+        "action_schema",
+        "effect_schema",
+        "migration_entrypoint"
+      ],
+      "properties": {
+        "save_schema": {
+          "type": "string"
+        },
+        "action_schema": {
+          "type": "string"
+        },
+        "effect_schema": {
+          "type": "string"
+        },
+        "migration_entrypoint": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "additionalProperties": false
+    },
+    "release": {
+      "type": "object",
+      "required": [
+        "channel",
+        "license",
+        "public_release_blocked",
+        "blockers"
+      ],
+      "properties": {
+        "channel": {
+          "const": "internal-development"
+        },
+        "license": {
+          "const": "LicenseRef-Pending-FirstParty"
+        },
+        "public_release_blocked": {
+          "const": true
+        },
+        "blockers": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string"
+          },
+          "uniqueItems": true
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

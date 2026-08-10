@@ -1,0 +1,236 @@
+{
+  "schema_version": "rules-residue.scenario/0.1",
+  "metadata": {
+    "id": "rr.tutorial.zero-platform",
+    "title": "零号站台",
+    "version": "0.1.0-dev.1",
+    "classification": "tutorial",
+    "recommended_players": {
+      "minimum": 1,
+      "maximum": 4
+    },
+    "gm_modes": [
+      "human",
+      "ai"
+    ],
+    "quick_mode_safe": true,
+    "entry_scene_id": "scene.concourse",
+    "summary": "玩家在异世界的零号站台醒来；告示、广播与时间循环互相矛盾，必须先验证规则并找到离开当前规则域的方法。"
+  },
+  "keeper_truth": {
+    "premise": "零号站台是异世界中的一个局部规则域。‘所有乘客必须等末班车离站后方可离开’与‘服务已经终止’两条残缺规则同时存在；广播、固定在 23:17 的钟和缺失结束语维持冲突。离开这里不等于回到原世界。",
+    "immutable_facts": [
+      {
+        "id": "truth.broadcast_binding",
+        "text": "完整听见广播的人会把自己视为尚未完成离站程序的乘客。",
+        "visibility": "gm_only"
+      },
+      {
+        "id": "truth.clock_anchor",
+        "text": "站台时钟固定在 23:17，是残差的时间锚。",
+        "visibility": "gm_only"
+      },
+      {
+        "id": "truth.closing_clause",
+        "text": "补回‘本次服务已经终止，乘客可自行离站’能够安全解除局部规则。",
+        "visibility": "gm_only"
+      }
+    ]
+  },
+  "scenes": [
+    {
+      "id": "scene.concourse",
+      "title": "封闭大厅",
+      "summary": "卷闸门半开，电子屏只显示 23:17。",
+      "critical_path": true,
+      "exits": [
+        "scene.platform_zero"
+      ],
+      "action_targets": [
+        {
+          "id": "target.departure_board",
+          "type": "evidence",
+          "difficulty": 7,
+          "success_fact_id": "fact.clock_anchor",
+          "failure_fact_id": "fact.clock_anchor_partial"
+        },
+        {
+          "id": "npc.lin-que",
+          "type": "npc",
+          "difficulty": 9,
+          "success_status": "intent_shifted"
+        }
+      ]
+    },
+    {
+      "id": "scene.platform_zero",
+      "title": "零号站台",
+      "summary": "不存在于公开线路图上的站台，每隔三分钟重复一次进站风声。",
+      "critical_path": true,
+      "exits": [
+        "scene.control_room"
+      ],
+      "action_targets": [
+        {
+          "id": "target.speaker",
+          "type": "evidence",
+          "difficulty": 9,
+          "success_fact_id": "fact.broadcast_pattern",
+          "failure_fact_id": "fact.broadcast_pattern_partial"
+        },
+        {
+          "id": "target.platform_clock",
+          "type": "object",
+          "difficulty": 9,
+          "success_flag": "clock_isolated"
+        }
+      ]
+    },
+    {
+      "id": "scene.control_room",
+      "title": "控制室",
+      "summary": "旧广播台保留了一段被删除的结束语。",
+      "critical_path": true,
+      "exits": [],
+      "action_targets": [
+        {
+          "id": "target.broadcast_console",
+          "type": "object",
+          "difficulty": 11,
+          "success_flag": "closing_clause_restored",
+          "failure_fact_id": "fact.closing_clause_partial"
+        }
+      ]
+    }
+  ],
+  "npcs": [
+    {
+      "id": "npc.lin-que",
+      "name": "林雀",
+      "public_description": "自称已经在零号站台困了很久的幸存者，反复确认每个人是否已经“检票”。",
+      "private_truth": "她比玩家更早进入这个异世界，知道控制室存在，但把一条错误的“绝不能进入站台”假设当成了规则事实。",
+      "initial_intent": "阻止任何人进入零号站台，直到有人用证据证明她的规则假设不完整。"
+    }
+  ],
+  "clues": [
+    {
+      "id": "clue.clock_anchor",
+      "fact_id": "fact.clock_anchor",
+      "text": "所有显示设备并非停电，而是在主动校正回 23:17。",
+      "source_scene_id": "scene.concourse",
+      "critical": true,
+      "visibility": "public",
+      "failure_fallback": {
+        "fact_id": "fact.clock_anchor_partial",
+        "text": "设备每次跳动后都会回到同一分钟；这足以证明异常与时间循环有关。",
+        "cost": {
+          "type": "advance_track",
+          "track_id": "track.loop_pressure",
+          "amount": 1
+        }
+      }
+    },
+    {
+      "id": "clue.broadcast_pattern",
+      "fact_id": "fact.broadcast_pattern",
+      "text": "广播缺少正式结束语，因此‘等待末班车’的义务从未完成。",
+      "source_scene_id": "scene.platform_zero",
+      "critical": true,
+      "visibility": "public",
+      "failure_fallback": {
+        "fact_id": "fact.broadcast_pattern_partial",
+        "text": "广播每次都在同一个句点前被截断。",
+        "cost": {
+          "type": "adjust_resource",
+          "resource": "strain",
+          "amount": 1
+        }
+      }
+    },
+    {
+      "id": "clue.closing_clause",
+      "fact_id": "fact.closing_clause",
+      "text": "控制台缓存保留了可解除规则的结束语。",
+      "source_scene_id": "scene.control_room",
+      "critical": true,
+      "visibility": "public",
+      "failure_fallback": {
+        "fact_id": "fact.closing_clause_partial",
+        "text": "残留波形显示必须补上一句明确终止服务的声明。",
+        "cost": {
+          "type": "advance_track",
+          "track_id": "track.loop_pressure",
+          "amount": 1
+        }
+      }
+    },
+    {
+      "id": "clue.old_ticket",
+      "fact_id": "fact.old_ticket",
+      "text": "一张从未启用的零号站台车票，可作为可选收藏与世界观线索。",
+      "source_scene_id": "scene.platform_zero",
+      "critical": false,
+      "visibility": "participant:discoverer",
+      "failure_fallback": null
+    }
+  ],
+  "timeline": [
+    {
+      "tick": 2,
+      "event_id": "event.echo_arrival",
+      "description": "无形列车进站的风压增强。",
+      "threat_delta": {
+        "track.loop_pressure": 1
+      }
+    },
+    {
+      "tick": 4,
+      "event_id": "event.repeat_compulsion",
+      "description": "所有听见广播的人必须承压或重复检票动作。",
+      "threat_delta": {
+        "track.loop_pressure": 1
+      }
+    }
+  ],
+  "threats": [
+    {
+      "id": "track.loop_pressure",
+      "name": "循环压力",
+      "initial": 0,
+      "maximum": 6
+    }
+  ],
+  "endings": [
+    {
+      "id": "ending.calibrated",
+      "title": "服务终止",
+      "condition": {
+        "flag": "closing_clause_restored",
+        "equals": true
+      },
+      "critical": true
+    },
+    {
+      "id": "ending.costly_exit",
+      "title": "切断锚点",
+      "condition": {
+        "flag": "clock_isolated",
+        "equals": true,
+        "track_at_least": {
+          "track.loop_pressure": 4
+        }
+      },
+      "critical": true
+    }
+  ],
+  "safety_notes": [
+    "包含封闭空间、强迫行为、时间循环与生存压力；可在开团前调整惊悚描写强度，不改变机器规则结构。"
+  ],
+  "visibility": {
+    "default": "public",
+    "gm_only_fields": [
+      "keeper_truth",
+      "npcs[].private_truth"
+    ]
+  }
+}
