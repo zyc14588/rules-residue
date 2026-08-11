@@ -26,6 +26,8 @@ RUNTIME_EXCLUDED_NAMES = {
     "package.lock.json",
 }
 
+NON_RUNTIME_MODULE_MARKER = ".non-runtime-module"
+
 
 def read_json(path: Path) -> Any:
     with path.open("r", encoding="utf-8") as handle:
@@ -60,8 +62,31 @@ def sha256_file(path: Path) -> str:
     return digest.hexdigest()
 
 
-def is_runtime_file(path: Path) -> bool:
-    relative = path.relative_to(GAME_PACKAGE_ROOT)
+def is_non_runtime_module_path(
+    path: Path,
+    game_package_root: Path = GAME_PACKAGE_ROOT,
+) -> bool:
+    modules_root = game_package_root / "modules"
+    try:
+        path.relative_to(modules_root)
+    except ValueError:
+        return False
+
+    current = path.parent
+    while current != modules_root:
+        if (current / NON_RUNTIME_MODULE_MARKER).is_file():
+            return True
+        if current == game_package_root or current.parent == current:
+            break
+        current = current.parent
+    return False
+
+
+def _has_runtime_path_shape(path: Path, game_package_root: Path) -> bool:
+    try:
+        relative = path.relative_to(game_package_root)
+    except ValueError:
+        return False
     if not relative.parts:
         return False
     if relative.parts[0] not in RUNTIME_TOP_LEVEL:
@@ -72,26 +97,50 @@ def is_runtime_file(path: Path) -> bool:
         return False
     if any(part.startswith(".") for part in relative.parts):
         return False
+    if is_non_runtime_module_path(path, game_package_root):
+        return False
+    return True
+
+
+def is_runtime_file(path: Path, game_package_root: Path = GAME_PACKAGE_ROOT) -> bool:
+    if not _has_runtime_path_shape(path, game_package_root):
+        return False
+    try:
+        resolved_root = game_package_root.resolve(strict=True)
+        resolved_path = path.resolve(strict=True)
+    except (OSError, RuntimeError):
+        return False
+    if not resolved_path.is_relative_to(resolved_root):
+        return False
+    if not _has_runtime_path_shape(resolved_path, resolved_root):
+        return False
     return path.is_file()
 
 
-def runtime_files() -> list[Path]:
-    files = [path for path in GAME_PACKAGE_ROOT.rglob("*") if is_runtime_file(path)]
-    return sorted(files, key=lambda path: path.relative_to(GAME_PACKAGE_ROOT).as_posix())
+def runtime_files(game_package_root: Path = GAME_PACKAGE_ROOT) -> list[Path]:
+    files = [
+        path
+        for path in game_package_root.rglob("*")
+        if is_runtime_file(path, game_package_root)
+    ]
+    return sorted(files, key=lambda path: path.relative_to(game_package_root).as_posix())
 
 
-def runtime_relative_paths() -> list[str]:
-    return [path.relative_to(GAME_PACKAGE_ROOT).as_posix() for path in runtime_files()]
+def runtime_relative_paths(game_package_root: Path = GAME_PACKAGE_ROOT) -> list[str]:
+    return [
+        path.relative_to(game_package_root).as_posix()
+        for path in runtime_files(game_package_root)
+    ]
 
 
-def compute_lock_document() -> dict[str, Any]:
-    manifest = read_json(GAME_PACKAGE_ROOT / "manifest.json")
+def compute_lock_document(game_package_root: Path = GAME_PACKAGE_ROOT) -> dict[str, Any]:
+    manifest = read_json(game_package_root / "manifest.json")
     entries: list[dict[str, Any]] = []
-    for path in runtime_files():
+    for path in runtime_files(game_package_root):
         data = path.read_bytes()
         entries.append(
             {
-                "path": path.relative_to(GAME_PACKAGE_ROOT).as_posix(),
+                "path": path.relative_to(game_package_root).as_posix(),
                 "size": len(data),
                 "sha256": sha256_bytes(data),
             }

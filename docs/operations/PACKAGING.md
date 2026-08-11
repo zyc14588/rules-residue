@@ -11,3 +11,5 @@
 7. 输出包和 `.sha256`。
 
 运行包排除 `game-package/tests/`。仓库 ZIP 与 `.trpgpkg` 用途不同：前者用于开发，后者供平台装载。
+
+`authoring/` 位于 `game-package/` 外，不参与 package lock，也不进入 `.trpgpkg`。构建前验证会拒绝未注册 Module、缺失的注册路径、重复 Module ID、越界引用或不符合 Schema 的 Scenario/expected path。

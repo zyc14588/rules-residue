@@ -39,3 +39,17 @@ persistence
 ```
 
 不得仅以一段自然语言文本作为机器执行规则的唯一来源。
+
+## 长期内容对象边界
+
+- `Region`：持久地理、社会、资源和重访状态；
+- `Rule Domain`：可执行异常规则的作用域，可相邻、嵌套、叠加、迁移或冲突；
+- `Arc`：由条件和世界状态连接的长期节点图；
+- `Module`：可装载的局部内容单元，可以引用 Region、Rule Domain 和 Arc，但不等同于其中任一对象；
+- `Campaign`：跨 Session 的权威状态与游玩历史，不由单个 Module 拥有。
+
+创作模板、真相图和索引位于 `authoring/`；运行转换边界见 `docs/operations/CONTENT_AUTHORING_PIPELINE.md`。当前不存在自动把创作 Markdown 编译为 runtime Module 的成熟编译器。
+
+## 运行 Module 登记
+
+所有可执行 Module 必须由 `game-package/manifest.json#/content/modules` 注册。验证器遍历每个注册项并检查 Module Manifest、Scenario、expected path、ID/分类一致性和确定性向量，同时拒绝 `game-package/modules/**/manifest.json` 下未注册的可执行 Module。Tutorial/Golden 专用检查不能替代普通 Module 验证。

@@ -26,3 +26,5 @@ python3 tools/run_acceptance.py
 ```
 
 修改 `game-package/` 运行文件后先更新锁文件，再运行验收。不要手工修改哈希。
+
+剧情创作从 `authoring/` 开始；创作源到运行内容的提升、Module 注册和泄漏边界见 `CONTENT_AUTHORING_PIPELINE.md`。不要直接把 Truth Bible 或创作模板复制进 Game Package。

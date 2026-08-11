@@ -104,6 +104,7 @@ docs/architecture/    运行流、状态投影、安全和 Creator 兼容
 docs/operations/      施工、素材、打包与发行流程
 governance/           机器决策、范围、发布门禁和追溯矩阵
 workflow/             Codex → OpenCode/Grok → Codex 的 Task Packet 与交付队列
+authoring/            剧情创作源、真相图、世界对象模板与美术 brief；不进入运行包
 game-package/         平台可装载的标准游戏包源码
 tools/                零依赖验证、锁文件和确定性构建工具
 tests/                仓库级自动验收

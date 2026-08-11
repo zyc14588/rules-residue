@@ -11,6 +11,7 @@ import json
 import re
 import shutil
 import subprocess
+from pathlib import PurePosixPath
 from typing import Any
 
 from tools.lib.common import (
@@ -19,8 +20,9 @@ from tools.lib.common import (
     compute_lock_document,
     find_duplicates,
     read_json,
+    runtime_relative_paths,
 )
-from tools.lib.reference_rules import classify, expected_effect_types, plan_kind
+from tools.lib.reference_rules import expected_effect_types, plan_kind
 from tools.lib.schema_subset import validate
 
 REQUIRED_ROOT_FILES = [
@@ -38,6 +40,36 @@ REQUIRED_ROOT_FILES = [
     "workflow/task-packet.schema.json",
     ".opencode/SCRIPT_TASK_PROMPT.md",
     ".grok/ART_TASK_PROMPT.md",
+    "tools/validate_opencode_task.py",
+]
+
+REQUIRED_AUTHORING_FILES = [
+    "authoring/README.md",
+    "authoring/story/00_STORY_BIBLE.md",
+    "authoring/story/01_TRUTH_BIBLE.md",
+    "authoring/story/02_MAIN_MYSTERY_GRAPH.md",
+    "authoring/story/03_RETURN_HOME_ARC.md",
+    "authoring/story/04_REVEAL_POLICY.md",
+    "authoring/world/README.md",
+    "authoring/world/regions/_template/REGION.md",
+    "authoring/world/rule-domains/_template/RULE_DOMAIN.md",
+    "authoring/arcs/README.md",
+    "authoring/arcs/_template/ARC.md",
+    "authoring/modules/README.md",
+    "authoring/modules/_template/MODULE.md",
+    "authoring/characters/README.md",
+    "authoring/characters/npcs/_template/NPC.md",
+    "authoring/characters/factions/_template/FACTION.md",
+    "authoring/characters/entities/_template/ENTITY.md",
+    "authoring/mysteries/README.md",
+    "authoring/mysteries/clues/_template/CLUE.md",
+    "authoring/mysteries/hypotheses/_template/HYPOTHESIS.md",
+    "authoring/mysteries/revelations/_template/REVELATION.md",
+    "authoring/art/README.md",
+    "authoring/art/briefs/README.md",
+    "authoring/art/briefs/_template/ART_BRIEF.md",
+    "authoring/art/references/README.md",
+    "docs/operations/CONTENT_AUTHORING_PIPELINE.md",
 ]
 
 SCHEMA_MAP = {
@@ -58,6 +90,15 @@ FORBIDDEN_IP_TERMS = [
     "dungeons & dragons",
     "pathfinder roleplaying game",
 ]
+
+ORIGINALITY_TEXT_ROOTS = (
+    "authoring",
+    "game-package",
+)
+
+UNAPPROVED_TOP_LEVEL_CONTENT_SOURCES = (
+    "knowledge",
+)
 
 FORBIDDEN_LUA_PATTERNS = {
     r"\bio\s*\.": "filesystem API io.*",
@@ -80,13 +121,27 @@ ALLOWED_REQUIRE_MODULES = {
 }
 
 
-def _schema(name: str) -> dict[str, Any]:
-    return read_json(GAME_PACKAGE_ROOT / "schemas" / SCHEMA_MAP[name])
+REQUIRED_MODULES = {
+    "rr.tutorial.zero-platform": "tutorial",
+    "rr.golden.fifth-record": "golden",
+}
 
 
-def _extend_schema_errors(errors: list[str], label: str, instance: Any, schema_name: str) -> None:
-    for issue in validate(instance, _schema(schema_name)):
+def _schema(name: str, game_package_root: Path = GAME_PACKAGE_ROOT) -> dict[str, Any]:
+    return read_json(game_package_root / "schemas" / SCHEMA_MAP[name])
+
+
+def _extend_schema_errors(
+    errors: list[str],
+    label: str,
+    instance: Any,
+    schema_name: str,
+    game_package_root: Path = GAME_PACKAGE_ROOT,
+) -> bool:
+    issues = validate(instance, _schema(schema_name, game_package_root))
+    for issue in issues:
         errors.append(f"{label}: {issue}")
+    return not issues
 
 
 def _check_json_files(errors: list[str]) -> None:
@@ -113,7 +168,6 @@ def _check_manifest(errors: list[str]) -> dict[str, Any]:
         ]
     )
     referenced.extend(content["locales"])
-    referenced.extend(content["modules"])
     for relative in referenced:
         if not (GAME_PACKAGE_ROOT / relative).is_file():
             errors.append(f"manifest references missing file: {relative}")
@@ -249,59 +303,328 @@ def _check_scenario_references(errors: list[str], scenario: dict[str, Any], labe
         errors.append(f"{label}: keeper_truth is not declared gm_only")
 
 
-def _check_roll_arithmetic(errors: list[str], roll: dict[str, Any], label: str) -> None:
-    _extend_schema_errors(errors, label, roll, "roll_result")
+def _check_roll_arithmetic(
+    errors: list[str],
+    roll: dict[str, Any],
+    label: str,
+    game_package_root: Path = GAME_PACKAGE_ROOT,
+) -> None:
+    if not _extend_schema_errors(errors, label, roll, "roll_result", game_package_root):
+        return
     if sum(roll["faces"]) != roll["dice_total"]:
         errors.append(f"{label}: dice_total mismatch")
     if roll["dice_total"] + roll["modifier"] != roll["total"]:
         errors.append(f"{label}: total mismatch")
 
 
-def _check_modules_and_vectors(errors: list[str]) -> None:
-    golden_outcomes: set[str] = set()
-    for module_name in ["tutorial", "golden"]:
-        base = GAME_PACKAGE_ROOT / "modules" / module_name
-        module_manifest = read_json(base / "manifest.json")
-        scenario = read_json(base / "scenario.json")
-        expected = read_json(base / "expected-path.json")
-        _extend_schema_errors(errors, f"{module_name} module manifest", module_manifest, "module_manifest")
-        _extend_schema_errors(errors, f"{module_name} scenario", scenario, "scenario")
-        _extend_schema_errors(errors, f"{module_name} expected path", expected, "expected_path")
-        if module_manifest["id"] != scenario["metadata"]["id"] or module_manifest["id"] != expected["module_id"]:
-            errors.append(f"{module_name}: module/scenario/expected IDs differ")
-        if module_manifest["classification"] != scenario["metadata"]["classification"]:
-            errors.append(f"{module_name}: classification mismatch")
-        if module_manifest["original_content"] is not True:
-            errors.append(f"{module_name}: original_content must be true")
-        _check_scenario_references(errors, scenario, module_name)
+def _resolve_relative_file(
+    errors: list[str],
+    raw_path: Any,
+    label: str,
+    base: Path,
+    containment_root: Path,
+) -> Path | None:
+    if not isinstance(raw_path, str) or not raw_path:
+        errors.append(f"{label}: path must be a non-empty string")
+        return None
+    if "\\" in raw_path:
+        errors.append(f"{label}: path must use POSIX separators")
+        return None
 
-        vector_ids = [vector["id"] for vector in expected["vectors"]]
-        for duplicate in find_duplicates(vector_ids):
-            errors.append(f"{module_name}: duplicate vector id {duplicate}")
-        for vector in expected["vectors"]:
-            label = f"{module_name}/{vector['id']}"
-            action = vector["action"]
-            _extend_schema_errors(errors, f"{label} action", action, "action")
+    relative = PurePosixPath(raw_path)
+    if relative.is_absolute() or ".." in relative.parts:
+        errors.append(f"{label}: path escapes its allowed root: {raw_path}")
+        return None
+    if relative.as_posix() != raw_path or any(part in {"", "."} for part in relative.parts):
+        errors.append(f"{label}: path is not canonical: {raw_path}")
+        return None
+
+    candidate = base.joinpath(*relative.parts)
+    try:
+        resolved_candidate = candidate.resolve()
+        resolved_root = containment_root.resolve()
+    except OSError as exc:
+        errors.append(f"{label}: cannot resolve path {raw_path}: {exc}")
+        return None
+    if not resolved_candidate.is_relative_to(resolved_root):
+        errors.append(f"{label}: path escapes its allowed root: {raw_path}")
+        return None
+    return candidate
+
+
+def _read_json_checked(errors: list[str], path: Path, label: str) -> Any | None:
+    try:
+        return read_json(path)
+    except (OSError, json.JSONDecodeError) as exc:
+        errors.append(f"{label}: cannot read JSON: {exc}")
+        return None
+
+
+def _require_runtime_membership(
+    errors: list[str],
+    path: Path,
+    label: str,
+    game_package_root: Path,
+    runtime_paths: set[str],
+) -> bool:
+    try:
+        relative = path.relative_to(game_package_root).as_posix()
+    except ValueError:
+        errors.append(f"{label}: path is outside the Game Package runtime root")
+        return False
+    if relative not in runtime_paths:
+        errors.append(f"{label}: file is not in the package runtime set: {relative}")
+        return False
+    return True
+
+
+def _check_expected_vectors(
+    errors: list[str],
+    expected: dict[str, Any],
+    label: str,
+    game_package_root: Path,
+    golden_outcomes: set[str] | None = None,
+) -> None:
+    vectors = expected["vectors"]
+    vector_ids = [vector["id"] for vector in vectors]
+    for duplicate in find_duplicates(vector_ids):
+        errors.append(f"{label}: duplicate vector id {duplicate}")
+
+    for vector in vectors:
+        vector_label = f"{label}/{vector['id']}"
+        action = vector["action"]
+        action_valid = _extend_schema_errors(
+            errors,
+            f"{vector_label} action",
+            action,
+            "action",
+            game_package_root,
+        )
+        if not action_valid:
+            continue
+
+        try:
             expected_kind = plan_kind(action)
             if vector["expected"]["plan_kind"] != expected_kind:
-                errors.append(f"{label}: plan kind mismatch")
+                errors.append(f"{vector_label}: plan kind mismatch")
             resolution_input = vector["resolution_input"]
-            if resolution_input["kind"] == "roll":
-                roll = resolution_input["roll_result"]
-                _check_roll_arithmetic(errors, roll, f"{label} roll")
-                if roll["request_id"] != action["action_id"] + ":roll":
-                    errors.append(f"{label}: roll request_id mismatch")
-            outcome, effect_types = expected_effect_types(action, vector["rule_input"], resolution_input)
-            if vector["expected"]["outcome"] != outcome:
-                errors.append(f"{label}: outcome mismatch; computed {outcome}")
-            if vector["expected"]["effect_types"] != effect_types:
-                errors.append(f"{label}: effect sequence mismatch; computed {effect_types}")
-            if module_name == "golden" and resolution_input["kind"] == "roll":
-                golden_outcomes.add(outcome)
+            if resolution_input.get("kind") == "roll":
+                roll = resolution_input.get("roll_result")
+                if not isinstance(roll, dict):
+                    errors.append(f"{vector_label}: roll resolution lacks roll_result")
+                    continue
+                _check_roll_arithmetic(
+                    errors,
+                    roll,
+                    f"{vector_label} roll",
+                    game_package_root,
+                )
+                if roll.get("request_id") != action["action_id"] + ":roll":
+                    errors.append(f"{vector_label}: roll request_id mismatch")
+            outcome, effect_types = expected_effect_types(
+                action,
+                vector["rule_input"],
+                resolution_input,
+            )
+        except (KeyError, TypeError, ValueError) as exc:
+            errors.append(f"{vector_label}: cannot evaluate vector semantics: {exc}")
+            continue
+
+        if vector["expected"]["outcome"] != outcome:
+            errors.append(f"{vector_label}: outcome mismatch; computed {outcome}")
+        if vector["expected"]["effect_types"] != effect_types:
+            errors.append(f"{vector_label}: effect sequence mismatch; computed {effect_types}")
+        if golden_outcomes is not None and resolution_input.get("kind") == "roll":
+            golden_outcomes.add(outcome)
+
+
+def validate_module_registry(
+    manifest: dict[str, Any],
+    game_package_root: Path = GAME_PACKAGE_ROOT,
+) -> list[str]:
+    """Validate every runtime Module declared by the package registry."""
+
+    errors: list[str] = []
+    content = manifest.get("content")
+    registered = content.get("modules") if isinstance(content, dict) else None
+    if not isinstance(registered, list):
+        errors.append("module registry: manifest.content.modules must be an array")
+        return errors
+
+    registered_strings = [item for item in registered if isinstance(item, str)]
+    for duplicate in find_duplicates(registered_strings):
+        errors.append(f"module registry: duplicate registered path {duplicate}")
+
+    runtime_paths = set(runtime_relative_paths(game_package_root))
+    discovered = {
+        relative
+        for relative in runtime_paths
+        if (
+            len(PurePosixPath(relative).parts) >= 3
+            and PurePosixPath(relative).parts[0] == "modules"
+            and PurePosixPath(relative).name == "manifest.json"
+        )
+    }
+    resolved_registrations: set[str] = set()
+    module_ids: list[str] = []
+    golden_outcomes: set[str] = set()
+
+    for index, raw_path in enumerate(registered):
+        registry_label = f"module registry[{index}]"
+        manifest_path = _resolve_relative_file(
+            errors,
+            raw_path,
+            registry_label,
+            game_package_root,
+            game_package_root,
+        )
+        if manifest_path is None:
+            continue
+
+        relative = manifest_path.relative_to(game_package_root).as_posix()
+        resolved_registrations.add(relative)
+        relative_parts = PurePosixPath(relative).parts
+        if len(relative_parts) < 3 or relative_parts[0] != "modules" or relative_parts[-1] != "manifest.json":
+            errors.append(f"{registry_label}: registered Module must be modules/**/manifest.json: {relative}")
+            continue
+        if not manifest_path.is_file():
+            errors.append(f"{registry_label}: registered Module does not exist: {relative}")
+            continue
+        if not _require_runtime_membership(
+            errors,
+            manifest_path,
+            f"{registry_label} manifest",
+            game_package_root,
+            runtime_paths,
+        ):
+            continue
+
+        label = relative.removesuffix("/manifest.json")
+        module_manifest = _read_json_checked(errors, manifest_path, f"{label} module manifest")
+        if not isinstance(module_manifest, dict):
+            continue
+        _extend_schema_errors(
+            errors,
+            f"{label} module manifest",
+            module_manifest,
+            "module_manifest",
+            game_package_root,
+        )
+
+        module_id = module_manifest.get("id")
+        if isinstance(module_id, str):
+            module_ids.append(module_id)
+            required_classification = REQUIRED_MODULES.get(module_id)
+            if (
+                required_classification is not None
+                and module_manifest.get("classification") != required_classification
+            ):
+                errors.append(
+                    f"{label}: required Module {module_id} must be classified "
+                    f"{required_classification}"
+                )
+        if module_manifest.get("original_content") is not True:
+            errors.append(f"{label}: original_content must be true")
+
+        module_root = manifest_path.parent
+        scenario_path = _resolve_relative_file(
+            errors,
+            module_manifest.get("scenario"),
+            f"{label} scenario reference",
+            module_root,
+            module_root,
+        )
+        expected_path = _resolve_relative_file(
+            errors,
+            module_manifest.get("expected_path"),
+            f"{label} expected path reference",
+            module_root,
+            module_root,
+        )
+
+        scenario: dict[str, Any] | None = None
+        scenario_valid = False
+        if scenario_path is not None:
+            scenario_is_runtime = _require_runtime_membership(
+                errors,
+                scenario_path,
+                f"{label} scenario reference",
+                game_package_root,
+                runtime_paths,
+            )
+            if not scenario_path.is_file():
+                errors.append(f"{label}: scenario does not exist: {module_manifest.get('scenario')}")
+            elif scenario_is_runtime:
+                loaded = _read_json_checked(errors, scenario_path, f"{label} scenario")
+                if isinstance(loaded, dict):
+                    scenario = loaded
+                    scenario_valid = _extend_schema_errors(
+                        errors,
+                        f"{label} scenario",
+                        scenario,
+                        "scenario",
+                        game_package_root,
+                    )
+
+        expected: dict[str, Any] | None = None
+        expected_valid = False
+        if expected_path is not None:
+            expected_is_runtime = _require_runtime_membership(
+                errors,
+                expected_path,
+                f"{label} expected path reference",
+                game_package_root,
+                runtime_paths,
+            )
+            if not expected_path.is_file():
+                errors.append(f"{label}: expected path does not exist: {module_manifest.get('expected_path')}")
+            elif expected_is_runtime:
+                loaded = _read_json_checked(errors, expected_path, f"{label} expected path")
+                if isinstance(loaded, dict):
+                    expected = loaded
+                    expected_valid = _extend_schema_errors(
+                        errors,
+                        f"{label} expected path",
+                        expected,
+                        "expected_path",
+                        game_package_root,
+                    )
+
+        if scenario is not None:
+            metadata = scenario.get("metadata")
+            scenario_id = metadata.get("id") if isinstance(metadata, dict) else None
+            scenario_classification = (
+                metadata.get("classification") if isinstance(metadata, dict) else None
+            )
+            if module_id != scenario_id:
+                errors.append(f"{label}: module/scenario IDs differ")
+            if module_manifest.get("classification") != scenario_classification:
+                errors.append(f"{label}: classification mismatch")
+            if scenario_valid:
+                _check_scenario_references(errors, scenario, label)
+        if expected is not None and module_id != expected.get("module_id"):
+            errors.append(f"{label}: module/expected IDs differ")
+        if expected is not None and expected_valid:
+            outcomes = golden_outcomes if module_id == "rr.golden.fifth-record" else None
+            _check_expected_vectors(errors, expected, label, game_package_root, outcomes)
+
+    for unregistered in sorted(discovered - resolved_registrations):
+        errors.append(f"unregistered executable Module manifest: {unregistered}")
+    for duplicate in find_duplicates(module_ids):
+        errors.append(f"duplicate Module ID: {duplicate}")
+
+    missing_required = sorted(set(REQUIRED_MODULES) - set(module_ids))
+    if missing_required:
+        errors.append(f"required Tutorial/Golden Module IDs missing: {missing_required}")
 
     required_outcomes = {"strong_success", "success", "success_with_cost", "failure_with_consequence"}
     if golden_outcomes != required_outcomes:
         errors.append(f"golden vectors do not cover all four outcomes: {sorted(golden_outcomes)}")
+    return errors
+
+
+def _check_modules_and_vectors(errors: list[str], manifest: dict[str, Any]) -> None:
+    errors.extend(validate_module_registry(manifest))
 
 
 def _check_fixtures(errors: list[str]) -> None:
@@ -375,21 +698,78 @@ def _check_hybrid_workflow(errors: list[str]) -> None:
     for duplicate in find_duplicates(seen_ids):
         errors.append(f"duplicate workflow example task id: {duplicate}")
 
-def _check_originality(errors: list[str]) -> None:
-    for path in sorted(GAME_PACKAGE_ROOT.rglob("*")):
-        if not path.is_file() or path.suffix.lower() not in {".json", ".lua", ".md", ".txt"}:
+    opencode_skills = PROJECT_ROOT / ".opencode" / "skills"
+    if opencode_skills.exists():
+        errors.append(
+            "OpenCode authority boundary: .opencode/skills/ is not authorized by RR-D023; "
+            "use only .opencode/SCRIPT_TASK_PROMPT.md with a valid script Task Packet"
+        )
+
+    prompt_path = PROJECT_ROOT / ".opencode" / "SCRIPT_TASK_PROMPT.md"
+    prompt = prompt_path.read_text(encoding="utf-8")
+    required_markers = {
+        "tools/validate_opencode_task.py": "Task Packet validator command",
+        "BLOCKED_NO_VALID_TASK_PACKET": "required refusal status",
+        'owner == "opencode"': "OpenCode owner precondition",
+        'task_type == "script"': "script task-type precondition",
+        "allowed_paths": "allowed-path precondition",
+        "default-deny": "positive default-deny authority model",
+    }
+    for marker, description in required_markers.items():
+        if marker not in prompt:
+            errors.append(f"OpenCode executor prompt lacks {description}: {marker}")
+
+
+def validate_originality(
+    project_root: Path = PROJECT_ROOT,
+    game_package_root: Path | None = None,
+) -> list[str]:
+    """Validate governed content roots and reject known ungoverned sources."""
+
+    errors: list[str] = []
+    if game_package_root is None:
+        game_package_root = project_root / "game-package"
+
+    for relative in UNAPPROVED_TOP_LEVEL_CONTENT_SOURCES:
+        path = project_root / relative
+        if path.exists() or path.is_symlink():
+            errors.append(
+                f"unapproved top-level content source directory: {relative}/; "
+                "RR-D003 requires content sources to use governed authoring/ or approved "
+                "game-package/ inputs"
+            )
+
+    text_roots = {
+        "authoring": project_root / "authoring",
+        "game-package": game_package_root,
+    }
+    for relative in ORIGINALITY_TEXT_ROOTS:
+        root = text_roots[relative]
+        if not root.is_dir():
             continue
-        text = path.read_text(encoding="utf-8", errors="strict").lower()
-        for term in FORBIDDEN_IP_TERMS:
-            if term in text:
-                errors.append(f"{path.relative_to(PROJECT_ROOT)}: forbidden third-party IP marker {term!r}")
+        for path in sorted(root.rglob("*")):
+            if not path.is_file() or path.suffix.lower() not in {".json", ".lua", ".md", ".txt"}:
+                continue
+            text = path.read_text(encoding="utf-8", errors="strict").lower()
+            for term in FORBIDDEN_IP_TERMS:
+                if term in text:
+                    errors.append(
+                        f"{path.relative_to(project_root)}: "
+                        f"forbidden third-party IP marker {term!r}"
+                    )
+
     binary_assets = [
-        path.relative_to(PROJECT_ROOT).as_posix()
-        for path in (GAME_PACKAGE_ROOT / "assets").rglob("*")
+        path.relative_to(project_root).as_posix()
+        for path in (game_package_root / "assets").rglob("*")
         if path.is_file() and path.name not in {"README.md", ".gitkeep"}
     ]
     if binary_assets:
         errors.append(f"M0 contains unapproved asset files: {binary_assets}")
+    return errors
+
+
+def _check_originality(errors: list[str]) -> None:
+    errors.extend(validate_originality())
 
 
 def _check_lock(errors: list[str]) -> None:
@@ -402,7 +782,7 @@ def _check_lock(errors: list[str]) -> None:
 
 def collect_errors() -> list[str]:
     errors: list[str] = []
-    for relative in REQUIRED_ROOT_FILES:
+    for relative in REQUIRED_ROOT_FILES + REQUIRED_AUTHORING_FILES:
         if not (PROJECT_ROOT / relative).is_file():
             errors.append(f"missing required file: {relative}")
     if errors:
@@ -412,7 +792,7 @@ def collect_errors() -> list[str]:
     _check_governance(errors, manifest)
     _check_control_contract(errors)
     _check_locales(errors)
-    _check_modules_and_vectors(errors)
+    _check_modules_and_vectors(errors, manifest)
     _check_fixtures(errors)
     _check_lua(errors)
     _check_hybrid_workflow(errors)
@@ -430,8 +810,9 @@ def main() -> int:
         return 1
     print("VALIDATION: PASS")
     print("- governance and traceability: PASS")
+    print("- authoring source structure: PASS")
     print("- manifest and package references: PASS")
-    print("- scenarios and golden vectors: PASS")
+    print("- registered Modules, scenarios, and golden vectors: PASS")
     print("- visibility/memory fixtures: PASS")
     print("- Lua static policy and available syntax check: PASS")
     print("- hybrid Codex/OpenCode/Grok workflow: PASS")

@@ -13,8 +13,11 @@ class RulesVectorTests(unittest.TestCase):
         self.assertEqual(classify(6, difficulty), "failure_with_consequence")
 
     def test_all_expected_vectors_match_reference(self) -> None:
-        for module in ["tutorial", "golden"]:
-            path = GAME_PACKAGE_ROOT / "modules" / module / "expected-path.json"
+        package_manifest = read_json(GAME_PACKAGE_ROOT / "manifest.json")
+        for module_registry_path in package_manifest["content"]["modules"]:
+            module_manifest_path = GAME_PACKAGE_ROOT / module_registry_path
+            module_manifest = read_json(module_manifest_path)
+            path = module_manifest_path.parent / module_manifest["expected_path"]
             data = read_json(path)
             for vector in data["vectors"]:
                 outcome, effects = expected_effect_types(
