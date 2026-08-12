@@ -1,0 +1,37 @@
+{
+  "schema_version": "1.0",
+  "milestone": "M1",
+  "batch_id": "M1-B001",
+  "state": "ACCEPTED",
+  "objective": "Maintain the Python-native Codex progressive-disclosure and freshness baseline required before an R2 authority installation retry.",
+  "route_policy": {
+    "request_format": ".codex/routes/baseline-request.json",
+    "generated_maps": ".codex/routes/generated/*.json",
+    "freshness_gate": "just codex-check",
+    "backend": "python3 tools/codex_route.py",
+    "source_binding": [
+      "commit",
+      "tree",
+      "document_sha256",
+      "section_id"
+    ],
+    "stale_action": "REJECT_AND_REGENERATE"
+  },
+  "soft_limit": 0.55,
+  "hard_limit": 0.70,
+  "allowed_states": [
+    "PLANNED",
+    "FROZEN",
+    "IMPLEMENTING",
+    "VERIFYING",
+    "ACCEPTED",
+    "BLOCKED"
+  ],
+  "forbidden_bulk_reads": [
+    "docs/**",
+    "authoring/**",
+    "*",
+    "git_history_all",
+    "prior_chat_transcripts"
+  ]
+}

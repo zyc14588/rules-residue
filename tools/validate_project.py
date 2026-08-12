@@ -24,6 +24,7 @@ from tools.lib.common import (
 )
 from tools.lib.reference_rules import expected_effect_types, plan_kind
 from tools.lib.schema_subset import validate
+from tools.codex_route import HARD_LIMIT, SOFT_LIMIT, RouteError, validate_request
 
 REQUIRED_ROOT_FILES = [
     "README.md",
@@ -41,6 +42,13 @@ REQUIRED_ROOT_FILES = [
     ".opencode/SCRIPT_TASK_PROMPT.md",
     ".grok/ART_TASK_PROMPT.md",
     "tools/validate_opencode_task.py",
+    ".codex/SESSION_START.md",
+    ".codex/state/MILESTONE_PLAN.yaml",
+    ".codex/schemas/reading-map-v1.schema.json",
+    ".codex/routes/baseline-request.json",
+    "tools/codex_route.py",
+    "tests/test_codex_route.py",
+    "reports/M1_CODEX_ROUTE_COMPATIBILITY.md",
 ]
 
 REQUIRED_AUTHORING_FILES = [
@@ -720,6 +728,143 @@ def _check_hybrid_workflow(errors: list[str]) -> None:
             errors.append(f"OpenCode executor prompt lacks {description}: {marker}")
 
 
+def _check_codex_route_infrastructure(errors: list[str]) -> None:
+    plan_path = PROJECT_ROOT / ".codex" / "state" / "MILESTONE_PLAN.yaml"
+    try:
+        plan = read_json(plan_path)
+    except (OSError, json.JSONDecodeError) as exc:
+        errors.append(f"Codex milestone plan is not JSON-compatible YAML: {exc}")
+        plan = None
+    if not isinstance(plan, dict):
+        if plan is not None:
+            errors.append("Codex milestone plan must be an object")
+    else:
+        if plan.get("schema_version") != "1.0":
+            errors.append("Codex milestone plan schema_version must be 1.0")
+        if plan.get("milestone") != "M1" or plan.get("batch_id") != "M1-B001":
+            errors.append("Codex milestone plan must bind milestone M1 / batch M1-B001")
+        if plan.get("state") != "ACCEPTED":
+            errors.append("Codex route bootstrap milestone state must be ACCEPTED")
+        if plan.get("soft_limit") != SOFT_LIMIT or plan.get("hard_limit") != HARD_LIMIT:
+            errors.append("Codex milestone plan context limits must be exactly 0.55 / 0.70")
+        required_states = {
+            "PLANNED",
+            "FROZEN",
+            "IMPLEMENTING",
+            "VERIFYING",
+            "ACCEPTED",
+            "BLOCKED",
+        }
+        states = plan.get("allowed_states")
+        if (
+            not isinstance(states, list)
+            or not all(isinstance(state, str) for state in states)
+            or not required_states.issubset(set(states))
+        ):
+            errors.append("Codex milestone plan lacks the required lifecycle states")
+        policy = plan.get("route_policy")
+        if not isinstance(policy, dict) or policy.get("freshness_gate") != "just codex-check":
+            errors.append("Codex milestone plan does not name just codex-check as freshness gate")
+
+    schema_path = PROJECT_ROOT / ".codex" / "schemas" / "reading-map-v1.schema.json"
+    try:
+        schema = read_json(schema_path)
+    except (OSError, json.JSONDecodeError) as exc:
+        errors.append(f"Codex Reading Map schema is invalid JSON: {exc}")
+        schema = None
+    if not isinstance(schema, dict):
+        if schema is not None:
+            errors.append("Codex Reading Map schema must be an object")
+    else:
+        expected_required = {
+            "schema_version",
+            "route_id",
+            "mode",
+            "milestone",
+            "batch_id",
+            "source_commit",
+            "source_tree",
+            "generated_at",
+            "context_budget",
+            "documents",
+            "forbidden_bulk_reads",
+            "binding_digest",
+        }
+        if schema.get("additionalProperties") is not False:
+            errors.append("Codex Reading Map schema must reject unknown root fields")
+        if set(schema.get("required", [])) != expected_required:
+            errors.append("Codex Reading Map schema required fields differ from R2 v1")
+        properties = schema.get("properties", {})
+        if not isinstance(properties, dict):
+            properties = {}
+            errors.append("Codex Reading Map schema properties must be an object")
+        context_schema = properties.get("context_budget", {})
+        if not isinstance(context_schema, dict):
+            context_schema = {}
+        context = context_schema.get("properties", {})
+        if not isinstance(context, dict):
+            context = {}
+        if context.get("soft_limit", {}).get("const") != SOFT_LIMIT:
+            errors.append("Codex Reading Map schema soft limit must be 0.55")
+        if context.get("hard_limit", {}).get("const") != HARD_LIMIT:
+            errors.append("Codex Reading Map schema hard limit must be 0.70")
+        statuses = set(context.get("status", {}).get("enum", []))
+        if statuses != {"OK", "SOFT_REDUCED", "HARD_BLOCKED"}:
+            errors.append("Codex Reading Map schema context statuses differ from R2 v1")
+
+    request_path = PROJECT_ROOT / ".codex" / "routes" / "baseline-request.json"
+    try:
+        request = read_json(request_path)
+        validate_request(request)
+    except (OSError, json.JSONDecodeError, RouteError) as exc:
+        errors.append(f"Codex baseline route request is invalid: {exc}")
+    else:
+        expected_identity = {
+            "route_id": "M1-CODEX-ROUTE-BASELINE",
+            "mode": "ACCEPT",
+            "milestone": "M1",
+            "batch_id": "M1-B001",
+        }
+        for field, expected in expected_identity.items():
+            if request.get(field) != expected:
+                errors.append(
+                    f"Codex baseline route request {field} must be {expected!r}"
+                )
+
+    marker_pattern = re.compile(
+        r"^<!-- SECTION-ID: ([A-Z0-9]+(?:-[A-Z0-9]+)+) -->[ \t]*$",
+        re.MULTILINE,
+    )
+    required_markers = {
+        "AGENTS.md": "M1-AGENTS-CONTRACT",
+        "README.md": "M1-README-ENTRY",
+        ".codex/SESSION_START.md": "M1-CODEX-SESSION-START",
+    }
+    all_markers: list[str] = []
+    for relative, required_marker in required_markers.items():
+        try:
+            markers = marker_pattern.findall((PROJECT_ROOT / relative).read_text(encoding="utf-8"))
+        except OSError as exc:
+            errors.append(f"cannot inspect stable Section IDs in {relative}: {exc}")
+            continue
+        all_markers.extend(markers)
+        if markers.count(required_marker) != 1:
+            errors.append(f"{relative}: stable Section ID {required_marker} must occur exactly once")
+    for duplicate in find_duplicates(all_markers):
+        errors.append(f"duplicate baseline stable Section ID: {duplicate}")
+
+    try:
+        ignore_lines = {
+            line.strip()
+            for line in (PROJECT_ROOT / ".gitignore").read_text(encoding="utf-8").splitlines()
+        }
+    except OSError as exc:
+        errors.append(f"cannot inspect .gitignore for generated Reading Maps: {exc}")
+    else:
+        if "/.codex/routes/generated/*.json" not in ignore_lines:
+            errors.append("generated Reading Maps are not explicitly ignored")
+
+
 def validate_originality(
     project_root: Path = PROJECT_ROOT,
     game_package_root: Path | None = None,
@@ -796,6 +941,7 @@ def collect_errors() -> list[str]:
     _check_fixtures(errors)
     _check_lua(errors)
     _check_hybrid_workflow(errors)
+    _check_codex_route_infrastructure(errors)
     _check_originality(errors)
     _check_lock(errors)
     return errors
@@ -816,6 +962,7 @@ def main() -> int:
     print("- visibility/memory fixtures: PASS")
     print("- Lua static policy and available syntax check: PASS")
     print("- hybrid Codex/OpenCode/Grok workflow: PASS")
+    print("- Codex progressive-disclosure route infrastructure: PASS")
     print("- originality and release block: PASS")
     print("- package lock: PASS")
     return 0

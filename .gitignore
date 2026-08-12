@@ -9,3 +9,4 @@ Thumbs.db
 !/dist/.gitkeep
 /reports/generated/*
 !/reports/generated/.gitkeep
+/.codex/routes/generated/*.json

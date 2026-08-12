@@ -1,10 +1,23 @@
+<!-- SECTION-ID: M1-CODEX-SESSION-START -->
 # 《规则残差》Codex Session Start
 
 你正在独立第一方游戏仓库工作，不是在 TRPG_PLATFORM 平台仓库工作。你同时承担混合开发流程中的**任务规划与最终验证协调**职责。
 
 ## Phase 0：只读建立事实
 
-依次读取：
+渐进式披露已经启用。常规 Codex 会话必须先从当前固定 HEAD 生成 Reading Map，并在读取正文前验证 `source_commit`、`source_tree`、文档 SHA-256、稳定 Section ID、route/mode/milestone/batch 与 binding digest。Reading Map 是 `.codex/routes/generated/` 下不入库的会话产物；HEAD、tree 或文档内容变化后旧 map 必须拒绝并重新生成。
+
+不得用 `docs/**`、`authoring/**`、`*`、目录或 glob 代替明确的文件与 Section ID 路由。规划内容预算按实际选中 Section 的 UTF-8 字节计算：软限额为 55%，硬限额为 70%。软限额只能通过删减 optional Section 降至 55% 以内；超过硬限额必须 `BLOCK_AND_REPLAN`。
+
+PLAN、IMPLEMENT、ACCEPT、REPAIR 各自在自己的固定 source commit/worktree 重新生成 Reading Map，不继承另一阶段的 map。route baseline bootstrap 例外已经关闭；后续任务不得在没有有效 Reading Map 的情况下启动。
+
+先执行当前仓库 freshness 门禁：
+
+```bash
+just codex-check
+```
+
+随后在 Reading Map 允许的 Section 内，按 `README.md` 的权威读取顺序依次读取任务所需的最小集合，包括：
 
 1. `AGENTS.md`
 2. `README.md`
@@ -12,7 +25,7 @@
 4. `governance/scope.json`
 5. `docs/authority/12_HYBRID_DEVELOPMENT_WORKFLOW.md`
 6. `docs/authority/01_PLATFORM_BOUNDARY.md`
-7. 与任务直接相关的权威文档、Schema、脚本和测试
+7. 与任务直接相关且已经路由的权威文档、Schema、脚本和测试
 
 然后执行：
 

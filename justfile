@@ -9,6 +9,16 @@ test:
 acceptance:
     python3 tools/run_acceptance.py
 
+codex-route request output:
+    python3 tools/codex_route.py generate --request "{{request}}" --output "{{output}}"
+
+codex-route-check route:
+    python3 tools/codex_route.py check --map "{{route}}" --route-id M1-CODEX-ROUTE-BASELINE --mode ACCEPT --milestone M1 --batch-id M1-B001
+
+codex-check:
+    python3 tools/codex_route.py self-check --request .codex/routes/baseline-request.json --route-id M1-CODEX-ROUTE-BASELINE --mode ACCEPT --milestone M1 --batch-id M1-B001
+    python3 -m unittest tests.test_codex_route.CodexRouteNegativeProbeTests -v
+
 lock:
     python3 tools/update_lock.py
 

@@ -1,3 +1,4 @@
+<!-- SECTION-ID: M1-README-ENTRY -->
 # 《规则残差》 / Rules Residue
 
 > 独立第一方原创 TRPG 项目；TRPG_PLATFORM 的标准 Game Package、AI Agent、多人与 Creator Tool 参考实现。
@@ -116,6 +117,8 @@ dist/                  构建产物；除 .gitkeep 外不作为源码维护
 ```
 
 ## 权威读取顺序
+
+Codex 会话先按 `.codex/SESSION_START.md` 生成并验证精确 Reading Map，再在该路由内执行以下权威读取顺序；禁止把目录通配符当作读取路由。实时 freshness 权威入口为 `just codex-check`。
 
 1. `docs/authority/00_PROJECT_CHARTER.md`
 2. `governance/decisions.json`

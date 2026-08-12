@@ -1,3 +1,4 @@
+<!-- SECTION-ID: M1-AGENTS-CONTRACT -->
 # AGENTS.md — 《规则残差》施工合同
 
 ## 1. 权威来源
