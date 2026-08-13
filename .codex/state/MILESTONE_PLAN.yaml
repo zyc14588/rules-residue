@@ -1,19 +1,25 @@
 {
   "schema_version": "1.0",
-  "milestone": "M1",
-  "batch_id": "M1-B001",
-  "state": "ACCEPTED",
-  "objective": "Maintain the Python-native Codex progressive-disclosure and freshness baseline required before an R2 authority installation retry.",
+  "milestone": "M2",
+  "batch_id": "M2-B001",
+  "state": "FROZEN",
+  "objective": "Deliver a complete technical vertical slice through 16 independently planned, implemented, accepted, and repairable batches without changing frozen R2 design.",
   "route_policy": {
-    "request_format": ".codex/routes/baseline-request.json",
+    "request_format": ".codex/routes/m2-vertical-slice-plan-request.json",
     "generated_maps": ".codex/routes/generated/*.json",
+    "current_ephemeral_map": "NOT_PERSISTED_REGENERATE_FROM_REQUEST_AFTER_ANY_COMMIT",
     "freshness_gate": "just codex-check",
     "backend": "python3 tools/codex_route.py",
     "source_binding": [
       "commit",
       "tree",
       "document_sha256",
-      "section_id"
+      "section_id",
+      "route_id",
+      "mode",
+      "milestone",
+      "batch_id",
+      "binding_digest"
     ],
     "stale_action": "REJECT_AND_REGENERATE"
   },
@@ -30,36 +36,72 @@
   "forbidden_bulk_reads": [
     "docs/**",
     "authoring/**",
+    "governance/**",
+    "schemas/**",
+    "workflow/**",
+    "game-package/**",
     "*",
     "git_history_all",
     "prior_chat_transcripts"
   ],
+  "completed_plans": [
+    {
+      "business_milestone": "R2-AUTHORITY-INSTALL",
+      "route_milestone": "M1",
+      "batch_id": "M1-B002",
+      "state": "ACCEPTED",
+      "accepted_commit": "a571bdfbabd4d4b8b2ba8957be09fc7d65dc5963",
+      "accepted_tree": "f22f7e2e57f5c0ad88b60c04da1ca75a04fbdccf",
+      "validation": "python3 tools/validate_r2_install.py PASS"
+    }
+  ],
   "active_plan": {
-    "business_milestone": "R2-AUTHORITY-INSTALL",
-    "route_milestone": "M1",
-    "batch_id": "M1-B002",
+    "business_milestone": "M2-VERTICAL-SLICE",
+    "route_milestone": "M2",
+    "batch_id": "M2-B001",
     "state": "FROZEN",
     "state_transition": [
       "PLANNED",
       "FROZEN"
     ],
     "role": "PLAN",
-    "objective": "Install the frozen R2 authority and progressive-delivery package without starting M2 implementation or changing runtime inputs.",
+    "objective": "Resolve R2-INT-001 through R2-INT-012 first, then deliver the M2 vertical slice through a specification-first dependency DAG.",
     "source_branch": "design/r1-story-architecture",
-    "source_commit": "e8e536fe5c96c389736ffcf8d4855fa146a2b9c2",
-    "source_tree": "d06c3e1e4f1984447caef3b3e9012f8adc7ae20c",
-    "package_path": "/home/zyc14588/RULE_RESIDUAL_R2_AUTHORITY_AND_PROGRESSIVE_DELIVERY_v1.0.0",
-    "package_version": "1.0.0",
-    "package_manifest_sha256": "a5adb9fad5439926e0c8d46f23f3e3e107812bdd9ce13097acea04b8cc0a7ba1",
-    "task_envelope": "workflow/queue/RR-TASK-0004.json",
-    "frozen_plan": ".codex/plans/r2-authority-install/INSTALL_PLAN.md",
-    "package_disposition": ".codex/plans/r2-authority-install/package-disposition.yaml",
-    "plan_route_request": ".codex/routes/r2-authority-install-plan-request.json",
-    "plan_route_binding_digest": "d6bbdced99464e6aad9216278cafa7bed2f42df54f3af9134853e81a53d36ff4",
-    "plan_context_ratio": 0.5246327718098959,
+    "source_commit": "a571bdfbabd4d4b8b2ba8957be09fc7d65dc5963",
+    "source_tree": "f22f7e2e57f5c0ad88b60c04da1ca75a04fbdccf",
+    "frozen_plan": ".codex/plans/m2-vertical-slice/M2_VERTICAL_SLICE_PLAN.md",
+    "batch_registry": ".codex/plans/m2-vertical-slice/batches.json",
+    "capability_probe_matrix": ".codex/plans/m2-vertical-slice/capability-probes.json",
+    "controls": ".codex/plans/m2-vertical-slice/controls.json",
+    "reading_map_blueprints": ".codex/plans/m2-vertical-slice/READING_MAP_REQUESTS.md",
+    "plan_route_request": ".codex/routes/m2-vertical-slice-plan-request.json",
+    "plan_route_binding_digest": "099d964a422fbce4f76a4a565d7dcabdcbe09a6afcff8a0c1204be730561e065",
+    "plan_context_ratio": 0.5291341145833334,
+    "frozen_batches": [
+      "M2-B001"
+    ],
+    "planned_batches": [
+      "M2-B002",
+      "M2-B003",
+      "M2-B004",
+      "M2-B005",
+      "M2-B006",
+      "M2-B007",
+      "M2-B008",
+      "M2-B009",
+      "M2-B010",
+      "M2-B011",
+      "M2-B012",
+      "M2-B013",
+      "M2-B014",
+      "M2-B015",
+      "M2-B016"
+    ],
     "implementation_state": "NOT_STARTED",
+    "external_capability_status": "NOT_RUN",
+    "task_packet_status": "PLANNED_NOT_ISSUED",
     "acceptance_context": "NEW_READ_ONLY_WORKTREE_AT_FIXED_CANDIDATE",
     "integration_policy": "FAST_FORWARD_ONLY_AFTER_INDEPENDENT_ACCEPT_PASS",
-    "next_allowed_action": "IMPLEMENT"
+    "next_allowed_action": "IMPLEMENT_M2_B001_CAPABILITY_PROBES_IN_NEW_WORKTREE"
   }
 }

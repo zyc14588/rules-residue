@@ -742,10 +742,19 @@ def _check_codex_route_infrastructure(errors: list[str]) -> None:
     else:
         if plan.get("schema_version") != "1.0":
             errors.append("Codex milestone plan schema_version must be 1.0")
-        if plan.get("milestone") != "M1" or plan.get("batch_id") != "M1-B001":
-            errors.append("Codex milestone plan must bind milestone M1 / batch M1-B001")
-        if plan.get("state") != "ACCEPTED":
-            errors.append("Codex route bootstrap milestone state must be ACCEPTED")
+        plan_identity = (plan.get("milestone"), plan.get("batch_id"), plan.get("state"))
+        if plan_identity == ("M1", "M1-B001", "ACCEPTED"):
+            pass
+        elif plan_identity == ("M2", "M2-B001", "FROZEN"):
+            from tools.validate_m2_plan import collect_errors as collect_m2_plan_errors
+
+            for error in collect_m2_plan_errors(PROJECT_ROOT):
+                errors.append(f"M2 frozen plan: {error}")
+        else:
+            errors.append(
+                "Codex milestone plan must be either accepted M1/M1-B001 or "
+                "frozen M2/M2-B001"
+            )
         if plan.get("soft_limit") != SOFT_LIMIT or plan.get("hard_limit") != HARD_LIMIT:
             errors.append("Codex milestone plan context limits must be exactly 0.55 / 0.70")
         required_states = {

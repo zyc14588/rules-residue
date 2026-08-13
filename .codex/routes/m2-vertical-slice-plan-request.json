@@ -1,0 +1,201 @@
+{
+  "schema_version": "1.0",
+  "route_id": "M2-VERTICAL-SLICE-PLAN",
+  "mode": "PLAN",
+  "milestone": "M2",
+  "batch_id": "M2-B001",
+  "capacity_bytes": 196608,
+  "documents": [
+    {
+      "path": "AGENTS.md",
+      "required_sections": ["M1-AGENTS-CONTRACT"],
+      "optional_sections": [],
+      "reason": "Bind the repository construction contract before M2 planning."
+    },
+    {
+      "path": "README.md",
+      "required_sections": ["M1-README-ENTRY"],
+      "optional_sections": [],
+      "reason": "Bind repository identity, authority order, and project boundaries."
+    },
+    {
+      "path": ".codex/SESSION_START.md",
+      "required_sections": ["M1-CODEX-SESSION-START", "R2-CODEX-SESSION-START"],
+      "optional_sections": [],
+      "reason": "Bind the repository-native PLAN and progressive-disclosure contract."
+    },
+    {
+      "path": ".codex/prompts/r2/README.md",
+      "required_sections": ["R2-CODEX-README"],
+      "optional_sections": [],
+      "reason": "Bind the installed R2 Codex prompt-set entry."
+    },
+    {
+      "path": ".codex/prompts/r2/M2-VERTICAL-SLICE/PLAN.md",
+      "required_sections": ["R2-CODEX-M2-PLAN"],
+      "optional_sections": [],
+      "reason": "Bind the installed M2 PLAN role contract."
+    },
+    {
+      "path": "docs/operations/r2/R2_PROGRESSIVE_DISCLOSURE_PROTOCOL.md",
+      "required_sections": ["R2-OPS-PROGRESSIVE-DISCLOSURE"],
+      "optional_sections": [],
+      "reason": "Bind the installed R2 routing, context isolation, and worktree protocol."
+    },
+    {
+      "path": "docs/operations/r2/integration/M1_R2_INTEGRATION_CONFLICTS.md",
+      "required_sections": ["R2-INTEGRATION-CONFLICTS"],
+      "optional_sections": [],
+      "reason": "Bind the detailed R2-INT-001 through R2-INT-012 probe classifications."
+    },
+    {
+      "path": "docs/implementation/r2/M2_VERTICAL_SLICE_INPUT_CONTRACT.md",
+      "required_sections": ["R2-M2-INPUT"],
+      "optional_sections": [],
+      "reason": "Bind the installed implementation-facing M2 input contract."
+    },
+    {
+      "path": "docs/implementation/r2/M2_TECHNICAL_VALIDATION_MATRIX.md",
+      "required_sections": ["R2-M2-VALIDATION-MATRIX"],
+      "optional_sections": [],
+      "reason": "Bind the M2 technical probe and validation matrix."
+    },
+    {
+      "path": "docs/implementation/r2/M2_STOP_CONDITIONS.md",
+      "required_sections": ["R2-M2-STOP-CONDITIONS"],
+      "optional_sections": [],
+      "reason": "Bind M2 planning, implementation, acceptance, and release stop conditions."
+    },
+    {
+      "path": "docs/acceptance/r2/M2_VERTICAL_SLICE_STRICT_ACCEPTANCE.md",
+      "required_sections": ["R2-ACC-M2-STRICT"],
+      "optional_sections": [],
+      "reason": "Bind independent M2 candidate acceptance requirements."
+    },
+    {
+      "path": "docs/acceptance/r2/PROGRESSIVE_DISCLOSURE_ACCEPTANCE.md",
+      "required_sections": ["R2-ACC-PROGRESSIVE-DISCLOSURE"],
+      "optional_sections": [],
+      "reason": "Bind negative and freshness acceptance for all batch routes."
+    },
+    {
+      "path": ".codex/plans/m2-vertical-slice/ROUTED_INPUT_PROJECTIONS.md",
+      "required_sections": ["R2-M2-REFERENCE-WORK-PACKAGES", "R2-INSTALL-INTEGRATION-CONFLICT-EVIDENCE"],
+      "optional_sections": [],
+      "reason": "Bind source-hashed, machine-checked routing projections of the repository-native M2 work packages and R2 installation classifications."
+    },
+    {
+      "path": "docs/authority/r2/R2_TERMINOLOGY.md",
+      "required_sections": ["R2-AUTH-TERMINOLOGY"],
+      "optional_sections": [],
+      "reason": "Bind normalized R2 terms used by every M2 batch."
+    },
+    {
+      "path": "docs/authority/r2/00_R2_AUTHORITY_ENTRY.md",
+      "required_sections": ["R2-AUTH-ENTRY"],
+      "optional_sections": [],
+      "reason": "Bind the installed R2 authority hierarchy and machine-source precedence."
+    },
+    {
+      "path": "docs/authority/r2/01_GAME_VISION_AND_PLAYER_CONTRACT.md",
+      "required_sections": ["R2-AUTH-VISION"],
+      "optional_sections": [],
+      "reason": "Bind the M2 player contract, tutorial, and player-count boundaries."
+    },
+    {
+      "path": "docs/authority/r2/02_WORLD_AND_MAIN_TRUTH.md",
+      "required_sections": ["R2-AUTH-WORLD-TRUTH"],
+      "optional_sections": [],
+      "reason": "Bind world-truth, seed, secrecy, and causal-answer invariants."
+    },
+    {
+      "path": "docs/authority/r2/03_RULE_CAUSALITY_LOOP_AND_COST.md",
+      "required_sections": ["R2-AUTH-RULE-LOOP"],
+      "optional_sections": [],
+      "reason": "Bind rule semantics, causality, death, loop, cost, anchor, and permanent-state decisions."
+    },
+    {
+      "path": "docs/authority/r2/04_CHARACTER_EQUIPMENT_AND_GROWTH.md",
+      "required_sections": ["R2-AUTH-CHARACTER-EQUIPMENT"],
+      "optional_sections": [],
+      "reason": "Bind character, equipment, key-item, death, and observer decisions."
+    },
+    {
+      "path": "docs/authority/r2/05_CONTINENT_REGIONS_AND_FACTIONS.md",
+      "required_sections": ["R2-AUTH-CONTINENT-REGIONS"],
+      "optional_sections": [],
+      "reason": "Bind the minimum major-region and fully anomalous-region vertical-slice content."
+    },
+    {
+      "path": "docs/authority/r2/06_FINAL_BOSS_ENDINGS_AND_RETURN.md",
+      "required_sections": ["R2-AUTH-ENDINGS"],
+      "optional_sections": [],
+      "reason": "Bind proxy-boss and three end-state simulation requirements without changing final truth."
+    },
+    {
+      "path": "docs/authority/r2/07_CAMPAIGN_HOSTING_AND_RUNTIME.md",
+      "required_sections": ["R2-AUTH-CAMPAIGN-HOSTING"],
+      "optional_sections": [],
+      "reason": "Bind deterministic hosting, visibility, AI authority, audit, and multiplayer runtime decisions."
+    },
+    {
+      "path": "docs/authority/r2/08_VISUAL_AUDIO_AND_TEXT_STYLE.md",
+      "required_sections": [],
+      "optional_sections": ["R2-AUTH-PRESENTATION"],
+      "reason": "Bind pure-2D, zh-CN, placeholder, and limited M2 art boundaries."
+    },
+    {
+      "path": "docs/authority/r2/09_CONTENT_SAFETY_AND_ABSOLUTE_RED_LINES.md",
+      "required_sections": ["R2-AUTH-SAFETY"],
+      "optional_sections": [],
+      "reason": "Bind repeated content filtering and absolute rejection requirements."
+    },
+    {
+      "path": "docs/authority/r2/10_CONTENT_VALIDATION_AND_RELEASE_GATES.md",
+      "required_sections": ["R2-AUTH-VALIDATION"],
+      "optional_sections": [],
+      "reason": "Bind technical validation, independent acceptance, and external gate semantics."
+    },
+    {
+      "path": "docs/authority/r2/11_M2_IMPLEMENTATION_INPUT_CONTRACT.md",
+      "required_sections": ["R2-AUTH-M2-CONTRACT"],
+      "optional_sections": [],
+      "reason": "Bind the M2 scope, reference work packages, technical matrix, and stop conditions."
+    },
+    {
+      "path": "docs/authority/r2/12_DEFERRED_DECISIONS_REGISTER.md",
+      "required_sections": ["R2-AUTH-DEFERRED"],
+      "optional_sections": [],
+      "reason": "Bind deferred items so planning cannot silently decide them."
+    },
+    {
+      "path": "docs/authority/r2/13_CHANGE_CONTROL_POLICY.md",
+      "required_sections": [],
+      "optional_sections": ["R2-AUTH-CHANGE-CONTROL"],
+      "reason": "Bind R2 freeze and compatibility/proposal escalation paths."
+    },
+    {
+      "path": "docs/authority/r2/14_M1_INTEGRATION_CONTRACT.md",
+      "required_sections": ["R2-AUTH-M1-INTEGRATION"],
+      "optional_sections": [],
+      "reason": "Bind R2-INT-001 through R2-INT-012 classifications and proof obligations."
+    },
+    {
+      "path": "docs/authority/r2/R2_TRACEABILITY.md",
+      "required_sections": ["R2-AUTH-TRACEABILITY"],
+      "optional_sections": [],
+      "reason": "Bind the installed decision-to-authority traceability contract."
+    }
+  ],
+  "forbidden_bulk_reads": [
+    "docs/**",
+    "authoring/**",
+    "governance/**",
+    "schemas/**",
+    "workflow/**",
+    "game-package/**",
+    "*",
+    "git_history_all",
+    "prior_chat_transcripts"
+  ]
+}
