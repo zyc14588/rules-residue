@@ -1,0 +1,352 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://rule-residual.invalid/schemas/r2/region-v1.schema.json",
+  "title": "R2 Region Authoring Contract",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "region_id",
+    "title",
+    "primary_entanglement",
+    "states",
+    "rule_domains",
+    "logical_anomaly_zones",
+    "factions",
+    "routes",
+    "rewards",
+    "boss_impacts",
+    "voices",
+    "provenance"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "1.0"
+    },
+    "region_id": {
+      "type": "string",
+      "pattern": "^[A-Z][A-Z0-9]*(?:-[A-Z0-9]+)+$",
+      "minLength": 3,
+      "maxLength": 128
+    },
+    "title": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": ".*\\S.*"
+    },
+    "primary_entanglement": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "external_collision",
+        "local_effects",
+        "observation_requirements",
+        "resolution_methods",
+        "permanent_stabilization_requirements"
+      ],
+      "properties": {
+        "external_collision": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": ".*\\S.*"
+        },
+        "local_effects": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": ".*\\S.*"
+          }
+        },
+        "observation_requirements": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "pattern": "^[A-Z][A-Z0-9]*(?:-[A-Z0-9]+)+$",
+            "minLength": 3,
+            "maxLength": 128
+          }
+        },
+        "resolution_methods": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "pattern": "^[A-Z][A-Z0-9]*(?:-[A-Z0-9]+)+$",
+            "minLength": 3,
+            "maxLength": 128
+          }
+        },
+        "permanent_stabilization_requirements": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "pattern": "^[A-Z][A-Z0-9]*(?:-[A-Z0-9]+)+$",
+            "minLength": 3,
+            "maxLength": 128
+          }
+        }
+      }
+    },
+    "states": {
+      "type": "array",
+      "uniqueItems": true,
+      "minItems": 3,
+      "items": {
+        "enum": [
+          "UNOBSERVED",
+          "DETAILED_OBSERVATION",
+          "RESOLVED",
+          "PERMANENTLY_STABILIZED"
+        ]
+      }
+    },
+    "rule_domains": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "pattern": "^[A-Z][A-Z0-9]*(?:-[A-Z0-9]+)+$",
+        "minLength": 3,
+        "maxLength": 128
+      }
+    },
+    "logical_anomaly_zones": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "pattern": "^[A-Z][A-Z0-9]*(?:-[A-Z0-9]+)+$",
+        "minLength": 3,
+        "maxLength": 128
+      }
+    },
+    "factions": {
+      "type": "array",
+      "minItems": 2,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "pattern": "^[A-Z][A-Z0-9]*(?:-[A-Z0-9]+)+$",
+        "minLength": 3,
+        "maxLength": 128
+      }
+    },
+    "routes": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "normal",
+        "skip"
+      ],
+      "properties": {
+        "normal": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/route"
+          }
+        },
+        "skip": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/route"
+          }
+        }
+      }
+    },
+    "rewards": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "equipment_refs",
+        "unique_rule_ref",
+        "universal_cost_sources",
+        "faction_relationships"
+      ],
+      "properties": {
+        "equipment_refs": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[A-Z][A-Z0-9]*(?:-[A-Z0-9]+)+$",
+            "minLength": 3,
+            "maxLength": 128
+          }
+        },
+        "unique_rule_ref": {
+          "type": "string",
+          "pattern": "^[A-Z][A-Z0-9]*(?:-[A-Z0-9]+)+$",
+          "minLength": 3,
+          "maxLength": 128
+        },
+        "universal_cost_sources": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[A-Z][A-Z0-9]*(?:-[A-Z0-9]+)+$",
+            "minLength": 3,
+            "maxLength": 128
+          }
+        },
+        "faction_relationships": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[A-Z][A-Z0-9]*(?:-[A-Z0-9]+)+$",
+            "minLength": 3,
+            "maxLength": 128
+          }
+        }
+      }
+    },
+    "boss_impacts": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/boss_impact"
+      }
+    },
+    "voices": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "primary",
+        "counter"
+      ],
+      "properties": {
+        "primary": {
+          "enum": [
+            "MANUAL_NOTICE",
+            "OFFICIAL_ARCHIVE_MEDIA",
+            "PRIVATE_NARRATIVE",
+            "POLITE_COMMERCIAL",
+            "DOCTRINAL_INTERTEXT",
+            "META_PARODY_DUAL_CHANNEL"
+          ]
+        },
+        "counter": {
+          "type": "array",
+          "minItems": 2,
+          "uniqueItems": true,
+          "items": {
+            "enum": [
+              "MANUAL_NOTICE",
+              "OFFICIAL_ARCHIVE_MEDIA",
+              "PRIVATE_NARRATIVE",
+              "POLITE_COMMERCIAL",
+              "DOCTRINAL_INTERTEXT",
+              "META_PARODY_DUAL_CHANNEL"
+            ]
+          }
+        }
+      }
+    },
+    "daily_life_emphasis": {
+      "enum": [
+        "LOW",
+        "MEDIUM"
+      ]
+    },
+    "provenance": {
+      "$ref": "https://rule-residual.invalid/schemas/r2/rule-semantic-v1.schema.json#/$defs/provenance"
+    }
+  },
+  "$defs": {
+    "route": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "route_id",
+        "entry_conditions",
+        "risks",
+        "losses",
+        "repeatable"
+      ],
+      "properties": {
+        "route_id": {
+          "type": "string",
+          "pattern": "^[A-Z][A-Z0-9]*(?:-[A-Z0-9]+)+$",
+          "minLength": 3,
+          "maxLength": 128
+        },
+        "entry_conditions": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": ".*\\S.*"
+          }
+        },
+        "risks": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": ".*\\S.*"
+          }
+        },
+        "losses": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": ".*\\S.*"
+          }
+        },
+        "repeatable": {
+          "type": "boolean"
+        }
+      }
+    },
+    "boss_impact": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "impact_id",
+        "kind",
+        "description",
+        "persistence"
+      ],
+      "properties": {
+        "impact_id": {
+          "type": "string",
+          "pattern": "^[A-Z][A-Z0-9]*(?:-[A-Z0-9]+)+$",
+          "minLength": 3,
+          "maxLength": 128
+        },
+        "kind": {
+          "enum": [
+            "REMOVE_PHASE",
+            "DISABLE_RULE",
+            "LOWER_DIFFICULTY",
+            "ADD_INTERVENTION",
+            "STABILIZE_PARAMETER",
+            "PROVIDE_PERMISSION",
+            "SEPARATE_PERSONA",
+            "TRANSFER_MAINTENANCE"
+          ]
+        },
+        "description": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": ".*\\S.*"
+        },
+        "persistence": {
+          "enum": [
+            "CURRENT_LOOP",
+            "PERMANENT_REWARD"
+          ]
+        }
+      }
+    }
+  }
+}

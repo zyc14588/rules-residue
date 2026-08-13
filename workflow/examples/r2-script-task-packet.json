@@ -1,0 +1,43 @@
+{
+  "schema_version": "rules-residue.task-packet/1.0",
+  "task_id": "RR-TASK-9001",
+  "status": "PLANNED",
+  "owner": "opencode",
+  "task_type": "script",
+  "objective": "Example-only R2 script packet for implementing pinned M2 key-item inversion and TPK information semantics after a future M2 PLAN; it does not authorize work now.",
+  "authority": [
+    "docs/authority/r2/03_RULE_CAUSALITY_LOOP_AND_COST.md#R2-AUTH-RULE-LOOP",
+    "schemas/r2/rule-semantic-v1.schema.json",
+    "governance/r2/decisions.r2.yaml#R2-C07,R2-C10"
+  ],
+  "inputs": [
+    "workflow/fixtures/m2/key-item-inversion.json#sha256=<PIN_AT_PLAN>",
+    "workflow/fixtures/m2/tpk-information-vector.json#sha256=<PIN_AT_PLAN>"
+  ],
+  "allowed_paths": [
+    "game-package/modules/m2-slice/lua/**",
+    "game-package/modules/m2-slice/tests/**"
+  ],
+  "forbidden_paths": [
+    "docs/**",
+    "governance/**",
+    "schemas/**",
+    "authoring/**",
+    "TRPG_PLATFORM/**"
+  ],
+  "open_decisions": [
+    "DEFER-R2-C14-001"
+  ],
+  "acceptance": [
+    "TPK inverts the current key-item form exactly once.",
+    "Weighted information selection uses a host-authoritative fixed seed and returns one unit.",
+    "No hidden truth is invented.",
+    "The production Lua profile passes."
+  ],
+  "expected_outputs": [
+    "Lua implementation candidate",
+    "Lua tests",
+    "Return manifest with candidate artifact, evidence, limitations, changed paths, commands, and hashes"
+  ],
+  "notes": "Converted without semantic loss from the immutable R2 YAML concept candidate. Example only: M2_IMPLEMENTATION_STARTED=NO; a future PLAN must pin real input hashes and sign a new packet."
+}

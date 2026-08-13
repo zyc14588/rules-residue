@@ -7,7 +7,7 @@
 
 ## 当前状态
 
-- **项目阶段**：M0 / Project Initialization Revision 1
+- **项目阶段**：M1 基线 + R2 权威已安装；M2 尚未实施
 - **版本**：`0.1.0-dev.1`
 - **发行通道**：仅内部开发与集成验证
 - **机器标识**：`org.trpgplatform.rules-residue`
@@ -72,6 +72,8 @@ Game Package 采用三角色混合开发：
 
 权威合同见 `docs/authority/12_HYBRID_DEVELOPMENT_WORKFLOW.md`；机器任务格式见 `workflow/task-packet.schema.json`。
 
+R2 的 Codex / OpenCode / Grok / portable-agent 渐进式披露合同分别从 `.codex/prompts/r2/README.md`、`.opencode/r2/README.md`、`.grok/r2/README.md` 和 `docs/operations/agents/r2/portable-agent/README.md` 发现。
+
 ## 最快使用方式
 
 需要 Python 3.11+；项目工具仅使用标准库。
@@ -120,20 +122,25 @@ dist/                  构建产物；除 .gitkeep 外不作为源码维护
 
 Codex 会话先按 `.codex/SESSION_START.md` 生成并验证精确 Reading Map，再在该路由内执行以下权威读取顺序；禁止把目录通配符当作读取路由。实时 freshness 权威入口为 `just codex-check`。
 
-1. `docs/authority/00_PROJECT_CHARTER.md`
-2. `governance/decisions.json`
-3. `governance/scope.json`
-4. `docs/authority/01_PLATFORM_BOUNDARY.md`
-5. `docs/authority/03_DESIGN_PRINCIPLES.md`
-6. `docs/authority/04_RULES_AND_STATE_MODEL.md`
-7. `docs/authority/05_AI_AGENT_CONTRACT.md`
-8. `docs/authority/06_VISIBILITY_MEMORY_CONTRACT.md`
-9. `docs/authority/07_GAME_PACKAGE_CONTRACT.md`
-10. `docs/authority/12_HYBRID_DEVELOPMENT_WORKFLOW.md`
-11. `docs/authority/09_ACCEPTANCE_STANDARD.md`
-12. `docs/authority/10_OPEN_DECISIONS.md`
+R2 安装后，`governance/r2/decisions.r2.yaml` 是 191 项冻结决策的机器权威，其级别高于 M1 历史 OPEN 容器。R2 导航从 `docs/authority/r2/00_R2_AUTHORITY_ENTRY.md` 开始；M1 与 R2 冲突时按 `governance/r2/authority-map.r2.yaml` 解决，不得把 deferred 内容擅自升级。
 
-发生冲突时，按上述顺序处理；机器登记中的 `ACCEPTED` 决策优先于草案文档。
+1. `governance/r2/decisions.r2.yaml`
+2. `docs/authority/r2/R2_TERMINOLOGY.md`
+3. `docs/authority/r2/00_R2_AUTHORITY_ENTRY.md` 及当前任务路由的 R2 Section
+4. `docs/authority/00_PROJECT_CHARTER.md`
+5. `governance/decisions.json`
+6. `governance/scope.json`
+7. `docs/authority/01_PLATFORM_BOUNDARY.md`
+8. `docs/authority/03_DESIGN_PRINCIPLES.md`
+9. `docs/authority/04_RULES_AND_STATE_MODEL.md`
+10. `docs/authority/05_AI_AGENT_CONTRACT.md`
+11. `docs/authority/06_VISIBILITY_MEMORY_CONTRACT.md`
+12. `docs/authority/07_GAME_PACKAGE_CONTRACT.md`
+13. `docs/authority/12_HYBRID_DEVELOPMENT_WORKFLOW.md`
+14. `docs/authority/09_ACCEPTANCE_STANDARD.md`
+15. `docs/authority/10_OPEN_DECISIONS.md`
+
+发生冲突时，按上述顺序处理；R2 `FROZEN` 和 M1 `ACCEPTED` 机器决策优先于草案文档，明确的 R2 supersession 优先于旧 M1 OPEN。
 
 ## 设计状态标识
 

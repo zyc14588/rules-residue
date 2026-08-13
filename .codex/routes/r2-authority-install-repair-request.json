@@ -1,0 +1,16 @@
+{
+  "schema_version": "1.0",
+  "route_id": "R2-AUTHORITY-INSTALL-REPAIR",
+  "mode": "REPAIR",
+  "milestone": "M1",
+  "batch_id": "M1-B002",
+  "capacity_bytes": 196608,
+  "documents": [
+    {"path":"AGENTS.md","required_sections":["M1-AGENTS-CONTRACT"],"optional_sections":[],"reason":"Bind repository boundaries for targeted repair."},
+    {"path":".codex/SESSION_START.md","required_sections":["M1-CODEX-SESSION-START","R2-CODEX-SESSION-START"],"optional_sections":[],"reason":"Bind isolated REPAIR freshness."},
+    {"path":".codex/plans/r2-authority-install/INSTALL_PLAN.md","required_sections":["R2-INSTALL-FROZEN-PLAN"],"optional_sections":[],"reason":"Prevent repair from expanding frozen scope."},
+    {"path":".codex/prompts/r2/R2-AUTHORITY-INSTALL/REPAIR.md","required_sections":["R2-CODEX-R2-INSTALL-REPAIR"],"optional_sections":[],"reason":"Bind the installed targeted REPAIR role contract."},
+    {"path":"docs/acceptance/r2/FAILED_ACCEPTANCE_REPAIR_PROMPT.md","required_sections":["R2-ACC-REPAIR-PROMPT"],"optional_sections":[],"reason":"Bind finding-to-repair evidence requirements."}
+  ],
+  "forbidden_bulk_reads":["docs/**","authoring/**","governance/**","schemas/**","workflow/**","*","git_history_all","prior_chat_transcripts","unrelated_findings"]
+}

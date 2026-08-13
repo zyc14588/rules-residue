@@ -1,0 +1,1500 @@
+schema_version: '1.0'
+decision_count: 191
+items:
+- decision_id: R2-A01
+  authority_document: docs/authority/r2/01_GAME_VISION_AND_PLAYER_CONTRACT.md
+  schemas:
+  - schemas/r2/region-v1.schema.json
+  m2_work_package: M2-WP-01
+  acceptance_id: ACC-R2-A01
+  implementation_status: NOT_IMPLEMENTED
+- decision_id: R2-A02
+  authority_document: docs/authority/r2/01_GAME_VISION_AND_PLAYER_CONTRACT.md
+  schemas:
+  - schemas/r2/region-v1.schema.json
+  m2_work_package: M2-WP-01
+  acceptance_id: ACC-R2-A02
+  implementation_status: NOT_IMPLEMENTED
+- decision_id: R2-A03
+  authority_document: docs/authority/r2/01_GAME_VISION_AND_PLAYER_CONTRACT.md
+  schemas:
+  - schemas/r2/region-v1.schema.json
+  m2_work_package: M2-WP-01
+  acceptance_id: ACC-R2-A03
+  implementation_status: NOT_IMPLEMENTED
+- decision_id: R2-A04
+  authority_document: docs/authority/r2/01_GAME_VISION_AND_PLAYER_CONTRACT.md
+  schemas:
+  - schemas/r2/region-v1.schema.json
+  m2_work_package: M2-WP-01
+  acceptance_id: ACC-R2-A04
+  implementation_status: NOT_IMPLEMENTED
+- decision_id: R2-A05
+  authority_document: docs/authority/r2/01_GAME_VISION_AND_PLAYER_CONTRACT.md
+  schemas:
+  - schemas/r2/region-v1.schema.json
+  m2_work_package: M2-WP-01
+  acceptance_id: ACC-R2-A05
+  implementation_status: NOT_IMPLEMENTED
+- decision_id: R2-A06
+  authority_document: docs/authority/r2/01_GAME_VISION_AND_PLAYER_CONTRACT.md
+  schemas:
+  - schemas/r2/region-v1.schema.json
+  m2_work_package: M2-WP-01
+  acceptance_id: ACC-R2-A06
+  implementation_status: NOT_IMPLEMENTED
+- decision_id: R2-A07
+  authority_document: docs/authority/r2/01_GAME_VISION_AND_PLAYER_CONTRACT.md
+  schemas:
+  - schemas/r2/region-v1.schema.json
+  m2_work_package: M2-WP-01
+  acceptance_id: ACC-R2-A07
+  implementation_status: NOT_IMPLEMENTED
+- decision_id: R2-A08
+  authority_document: docs/authority/r2/01_GAME_VISION_AND_PLAYER_CONTRACT.md
+  schemas:
+  - schemas/r2/region-v1.schema.json
+  m2_work_package: M2-WP-01
+  acceptance_id: ACC-R2-A08
+  implementation_status: NOT_IMPLEMENTED
+- decision_id: R2-A09
+  authority_document: docs/authority/r2/01_GAME_VISION_AND_PLAYER_CONTRACT.md
+  schemas:
+  - schemas/r2/region-v1.schema.json
+  m2_work_package: M2-WP-01
+  acceptance_id: ACC-R2-A09
+  implementation_status: NOT_IMPLEMENTED
+- decision_id: R2-A10
+  authority_document: docs/authority/r2/01_GAME_VISION_AND_PLAYER_CONTRACT.md
+  schemas:
+  - schemas/r2/region-v1.schema.json
+  m2_work_package: M2-WP-01
+  acceptance_id: ACC-R2-A10
+  implementation_status: NOT_IMPLEMENTED
+- decision_id: R2-B01
+  authority_document: docs/authority/r2/03_RULE_CAUSALITY_LOOP_AND_COST.md
+  schemas:
+  - schemas/r2/rule-semantic-v1.schema.json
+  - schemas/r2/logical-anomaly-zone-v1.schema.json
+  m2_work_package: M2-WP-02
+  acceptance_id: ACC-R2-B01
+  implementation_status: NOT_IMPLEMENTED
+- decision_id: R2-B02
+  authority_document: docs/authority/r2/03_RULE_CAUSALITY_LOOP_AND_COST.md
+  schemas:
+  - schemas/r2/rule-semantic-v1.schema.json
+  - schemas/r2/logical-anomaly-zone-v1.schema.json
+  m2_work_package: M2-WP-02
+  acceptance_id: ACC-R2-B02
+  implementation_status: NOT_IMPLEMENTED
+- decision_id: R2-B03
+  authority_document: docs/authority/r2/03_RULE_CAUSALITY_LOOP_AND_COST.md
+  schemas:
+  - schemas/r2/rule-semantic-v1.schema.json
+  - schemas/r2/logical-anomaly-zone-v1.schema.json
+  m2_work_package: M2-WP-02
+  acceptance_id: ACC-R2-B03
+  implementation_status: NOT_IMPLEMENTED
+- decision_id: R2-B04
+  authority_document: docs/authority/r2/03_RULE_CAUSALITY_LOOP_AND_COST.md
+  schemas:
+  - schemas/r2/rule-semantic-v1.schema.json
+  - schemas/r2/logical-anomaly-zone-v1.schema.json
+  m2_work_package: M2-WP-02
+  acceptance_id: ACC-R2-B04
+  implementation_status: NOT_IMPLEMENTED
+- decision_id: R2-B05
+  authority_document: docs/authority/r2/03_RULE_CAUSALITY_LOOP_AND_COST.md
+  schemas:
+  - schemas/r2/rule-semantic-v1.schema.json
+  - schemas/r2/logical-anomaly-zone-v1.schema.json
+  m2_work_package: M2-WP-02
+  acceptance_id: ACC-R2-B05
+  implementation_status: NOT_IMPLEMENTED
+- decision_id: R2-B06
+  authority_document: docs/authority/r2/03_RULE_CAUSALITY_LOOP_AND_COST.md
+  schemas:
+  - schemas/r2/rule-semantic-v1.schema.json
+  - schemas/r2/logical-anomaly-zone-v1.schema.json
+  m2_work_package: M2-WP-02
+  acceptance_id: ACC-R2-B06
+  implementation_status: NOT_IMPLEMENTED
+- decision_id: R2-B07
+  authority_document: docs/authority/r2/03_RULE_CAUSALITY_LOOP_AND_COST.md
+  schemas:
+  - schemas/r2/rule-semantic-v1.schema.json
+  - schemas/r2/logical-anomaly-zone-v1.schema.json
+  m2_work_package: M2-WP-02
+  acceptance_id: ACC-R2-B07
+  implementation_status: NOT_IMPLEMENTED
+- decision_id: R2-B08
+  authority_document: docs/authority/r2/03_RULE_CAUSALITY_LOOP_AND_COST.md
+  schemas:
+  - schemas/r2/rule-semantic-v1.schema.json
+  - schemas/r2/logical-anomaly-zone-v1.schema.json
+  m2_work_package: M2-WP-02
+  acceptance_id: ACC-R2-B08
+  implementation_status: NOT_IMPLEMENTED
+- decision_id: R2-B09
+  authority_document: docs/authority/r2/03_RULE_CAUSALITY_LOOP_AND_COST.md
+  schemas:
+  - schemas/r2/rule-semantic-v1.schema.json
+  - schemas/r2/logical-anomaly-zone-v1.schema.json
+  m2_work_package: M2-WP-02
+  acceptance_id: ACC-R2-B09
+  implementation_status: NOT_IMPLEMENTED
+- decision_id: R2-B10
+  authority_document: docs/authority/r2/03_RULE_CAUSALITY_LOOP_AND_COST.md
+  schemas:
+  - schemas/r2/rule-semantic-v1.schema.json
+  - schemas/r2/logical-anomaly-zone-v1.schema.json
+  m2_work_package: M2-WP-02
+  acceptance_id: ACC-R2-B10
+  implementation_status: NOT_IMPLEMENTED
+- decision_id: R2-B11
+  authority_document: docs/authority/r2/03_RULE_CAUSALITY_LOOP_AND_COST.md
+  schemas:
+  - schemas/r2/rule-semantic-v1.schema.json
+  - schemas/r2/logical-anomaly-zone-v1.schema.json
+  m2_work_package: M2-WP-02
+  acceptance_id: ACC-R2-B11
+  implementation_status: NOT_IMPLEMENTED
+- decision_id: R2-B12
+  authority_document: docs/authority/r2/03_RULE_CAUSALITY_LOOP_AND_COST.md
+  schemas:
+  - schemas/r2/rule-semantic-v1.schema.json
+  - schemas/r2/logical-anomaly-zone-v1.schema.json
+  m2_work_package: M2-WP-02
+  acceptance_id: ACC-R2-B12
+  implementation_status: NOT_IMPLEMENTED
+- decision_id: R2-B13
+  authority_document: docs/authority/r2/03_RULE_CAUSALITY_LOOP_AND_COST.md
+  schemas:
+  - schemas/r2/rule-semantic-v1.schema.json
+  - schemas/r2/logical-anomaly-zone-v1.schema.json
+  m2_work_package: M2-WP-02
+  acceptance_id: ACC-R2-B13
+  implementation_status: NOT_IMPLEMENTED
+- decision_id: R2-B14
+  authority_document: docs/authority/r2/03_RULE_CAUSALITY_LOOP_AND_COST.md
+  schemas:
+  - schemas/r2/rule-semantic-v1.schema.json
+  - schemas/r2/logical-anomaly-zone-v1.schema.json
+  m2_work_package: M2-WP-02
+  acceptance_id: ACC-R2-B14
+  implementation_status: NOT_IMPLEMENTED
+- decision_id: R2-C01
+  authority_document: docs/authority/r2/03_RULE_CAUSALITY_LOOP_AND_COST.md
+  schemas:
+  - schemas/r2/rule-semantic-v1.schema.json
+  - schemas/r2/campaign-seed-v1.schema.json
+  m2_work_package: M2-WP-03
+  acceptance_id: ACC-R2-C01
+  implementation_status: NOT_IMPLEMENTED
+- decision_id: R2-C02
+  authority_document: docs/authority/r2/03_RULE_CAUSALITY_LOOP_AND_COST.md
+  schemas:
+  - schemas/r2/rule-semantic-v1.schema.json
+  - schemas/r2/campaign-seed-v1.schema.json
+  m2_work_package: M2-WP-03
+  acceptance_id: ACC-R2-C02
+  implementation_status: NOT_IMPLEMENTED
+- decision_id: R2-C03
+  authority_document: docs/authority/r2/03_RULE_CAUSALITY_LOOP_AND_COST.md
+  schemas:
+  - schemas/r2/rule-semantic-v1.schema.json
+  - schemas/r2/campaign-seed-v1.schema.json
+  m2_work_package: M2-WP-03
+  acceptance_id: ACC-R2-C03
+  implementation_status: NOT_IMPLEMENTED
+- decision_id: R2-C04
+  authority_document: docs/authority/r2/03_RULE_CAUSALITY_LOOP_AND_COST.md
+  schemas:
+  - schemas/r2/rule-semantic-v1.schema.json
+  - schemas/r2/campaign-seed-v1.schema.json
+  m2_work_package: M2-WP-03
+  acceptance_id: ACC-R2-C04
+  implementation_status: NOT_IMPLEMENTED
+- decision_id: R2-C05
+  authority_document: docs/authority/r2/03_RULE_CAUSALITY_LOOP_AND_COST.md
+  schemas:
+  - schemas/r2/rule-semantic-v1.schema.json
+  - schemas/r2/campaign-seed-v1.schema.json
+  m2_work_package: M2-WP-03
+  acceptance_id: ACC-R2-C05
+  implementation_status: NOT_IMPLEMENTED
+- decision_id: R2-C06
+  authority_document: docs/authority/r2/03_RULE_CAUSALITY_LOOP_AND_COST.md
+  schemas:
+  - schemas/r2/rule-semantic-v1.schema.json
+  - schemas/r2/campaign-seed-v1.schema.json
+  m2_work_package: M2-WP-03
+  acceptance_id: ACC-R2-C06
+  implementation_status: NOT_IMPLEMENTED
+- decision_id: R2-C07
+  authority_document: docs/authority/r2/03_RULE_CAUSALITY_LOOP_AND_COST.md
+  schemas:
+  - schemas/r2/rule-semantic-v1.schema.json
+  - schemas/r2/campaign-seed-v1.schema.json
+  m2_work_package: M2-WP-03
+  acceptance_id: ACC-R2-C07
+  implementation_status: NOT_IMPLEMENTED
+- decision_id: R2-C08
+  authority_document: docs/authority/r2/03_RULE_CAUSALITY_LOOP_AND_COST.md
+  schemas:
+  - schemas/r2/rule-semantic-v1.schema.json
+  - schemas/r2/campaign-seed-v1.schema.json
+  m2_work_package: M2-WP-03
+  acceptance_id: ACC-R2-C08
+  implementation_status: NOT_IMPLEMENTED
+- decision_id: R2-C09
+  authority_document: docs/authority/r2/03_RULE_CAUSALITY_LOOP_AND_COST.md
+  schemas:
+  - schemas/r2/rule-semantic-v1.schema.json
+  - schemas/r2/campaign-seed-v1.schema.json
+  m2_work_package: M2-WP-03
+  acceptance_id: ACC-R2-C09
+  implementation_status: NOT_IMPLEMENTED
+- decision_id: R2-C10
+  authority_document: docs/authority/r2/03_RULE_CAUSALITY_LOOP_AND_COST.md
+  schemas:
+  - schemas/r2/rule-semantic-v1.schema.json
+  - schemas/r2/campaign-seed-v1.schema.json
+  m2_work_package: M2-WP-03
+  acceptance_id: ACC-R2-C10
+  implementation_status: NOT_IMPLEMENTED
+- decision_id: R2-C11
+  authority_document: docs/authority/r2/03_RULE_CAUSALITY_LOOP_AND_COST.md
+  schemas:
+  - schemas/r2/rule-semantic-v1.schema.json
+  - schemas/r2/campaign-seed-v1.schema.json
+  m2_work_package: M2-WP-03
+  acceptance_id: ACC-R2-C11
+  implementation_status: NOT_IMPLEMENTED
+- decision_id: R2-C12
+  authority_document: docs/authority/r2/03_RULE_CAUSALITY_LOOP_AND_COST.md
+  schemas:
+  - schemas/r2/rule-semantic-v1.schema.json
+  - schemas/r2/campaign-seed-v1.schema.json
+  m2_work_package: M2-WP-03
+  acceptance_id: ACC-R2-C12
+  implementation_status: NOT_IMPLEMENTED
+- decision_id: R2-C13
+  authority_document: docs/authority/r2/03_RULE_CAUSALITY_LOOP_AND_COST.md
+  schemas:
+  - schemas/r2/rule-semantic-v1.schema.json
+  - schemas/r2/campaign-seed-v1.schema.json
+  m2_work_package: M2-WP-03
+  acceptance_id: ACC-R2-C13
+  implementation_status: NOT_IMPLEMENTED
+- decision_id: R2-C14
+  authority_document: docs/authority/r2/03_RULE_CAUSALITY_LOOP_AND_COST.md
+  schemas:
+  - schemas/r2/rule-semantic-v1.schema.json
+  - schemas/r2/campaign-seed-v1.schema.json
+  m2_work_package: M2-WP-03
+  acceptance_id: ACC-R2-C14
+  implementation_status: NOT_IMPLEMENTED
+- decision_id: R2-C15
+  authority_document: docs/authority/r2/03_RULE_CAUSALITY_LOOP_AND_COST.md
+  schemas:
+  - schemas/r2/rule-semantic-v1.schema.json
+  - schemas/r2/campaign-seed-v1.schema.json
+  m2_work_package: M2-WP-03
+  acceptance_id: ACC-R2-C15
+  implementation_status: NOT_IMPLEMENTED
+- decision_id: R2-C16
+  authority_document: docs/authority/r2/03_RULE_CAUSALITY_LOOP_AND_COST.md
+  schemas:
+  - schemas/r2/rule-semantic-v1.schema.json
+  - schemas/r2/campaign-seed-v1.schema.json
+  m2_work_package: M2-WP-03
+  acceptance_id: ACC-R2-C16
+  implementation_status: NOT_IMPLEMENTED
+- decision_id: R2-D01
+  authority_document: docs/authority/r2/04_CHARACTER_EQUIPMENT_AND_GROWTH.md
+  schemas:
+  - schemas/r2/entangled-causality-v1.schema.json
+  - schemas/r2/equipment-rule-v1.schema.json
+  m2_work_package: M2-WP-04
+  acceptance_id: ACC-R2-D01
+  implementation_status: NOT_IMPLEMENTED
+- decision_id: R2-D02
+  authority_document: docs/authority/r2/04_CHARACTER_EQUIPMENT_AND_GROWTH.md
+  schemas:
+  - schemas/r2/entangled-causality-v1.schema.json
+  - schemas/r2/equipment-rule-v1.schema.json
+  m2_work_package: M2-WP-04
+  acceptance_id: ACC-R2-D02
+  implementation_status: NOT_IMPLEMENTED
+- decision_id: R2-D03
+  authority_document: docs/authority/r2/04_CHARACTER_EQUIPMENT_AND_GROWTH.md
+  schemas:
+  - schemas/r2/entangled-causality-v1.schema.json
+  - schemas/r2/equipment-rule-v1.schema.json
+  m2_work_package: M2-WP-04
+  acceptance_id: ACC-R2-D03
+  implementation_status: NOT_IMPLEMENTED
+- decision_id: R2-D04
+  authority_document: docs/authority/r2/04_CHARACTER_EQUIPMENT_AND_GROWTH.md
+  schemas:
+  - schemas/r2/entangled-causality-v1.schema.json
+  - schemas/r2/equipment-rule-v1.schema.json
+  m2_work_package: M2-WP-04
+  acceptance_id: ACC-R2-D04
+  implementation_status: NOT_IMPLEMENTED
+- decision_id: R2-D05
+  authority_document: docs/authority/r2/04_CHARACTER_EQUIPMENT_AND_GROWTH.md
+  schemas:
+  - schemas/r2/entangled-causality-v1.schema.json
+  - schemas/r2/equipment-rule-v1.schema.json
+  m2_work_package: M2-WP-04
+  acceptance_id: ACC-R2-D05
+  implementation_status: NOT_IMPLEMENTED
+- decision_id: R2-D06
+  authority_document: docs/authority/r2/04_CHARACTER_EQUIPMENT_AND_GROWTH.md
+  schemas:
+  - schemas/r2/entangled-causality-v1.schema.json
+  - schemas/r2/equipment-rule-v1.schema.json
+  m2_work_package: M2-WP-04
+  acceptance_id: ACC-R2-D06
+  implementation_status: NOT_IMPLEMENTED
+- decision_id: R2-D07
+  authority_document: docs/authority/r2/04_CHARACTER_EQUIPMENT_AND_GROWTH.md
+  schemas:
+  - schemas/r2/entangled-causality-v1.schema.json
+  - schemas/r2/equipment-rule-v1.schema.json
+  m2_work_package: M2-WP-04
+  acceptance_id: ACC-R2-D07
+  implementation_status: NOT_IMPLEMENTED
+- decision_id: R2-D08
+  authority_document: docs/authority/r2/04_CHARACTER_EQUIPMENT_AND_GROWTH.md
+  schemas:
+  - schemas/r2/entangled-causality-v1.schema.json
+  - schemas/r2/equipment-rule-v1.schema.json
+  m2_work_package: M2-WP-04
+  acceptance_id: ACC-R2-D08
+  implementation_status: NOT_IMPLEMENTED
+- decision_id: R2-D09
+  authority_document: docs/authority/r2/04_CHARACTER_EQUIPMENT_AND_GROWTH.md
+  schemas:
+  - schemas/r2/entangled-causality-v1.schema.json
+  - schemas/r2/equipment-rule-v1.schema.json
+  m2_work_package: M2-WP-04
+  acceptance_id: ACC-R2-D09
+  implementation_status: NOT_IMPLEMENTED
+- decision_id: R2-D10
+  authority_document: docs/authority/r2/04_CHARACTER_EQUIPMENT_AND_GROWTH.md
+  schemas:
+  - schemas/r2/entangled-causality-v1.schema.json
+  - schemas/r2/equipment-rule-v1.schema.json
+  m2_work_package: M2-WP-04
+  acceptance_id: ACC-R2-D10
+  implementation_status: NOT_IMPLEMENTED
+- decision_id: R2-D11
+  authority_document: docs/authority/r2/04_CHARACTER_EQUIPMENT_AND_GROWTH.md
+  schemas:
+  - schemas/r2/entangled-causality-v1.schema.json
+  - schemas/r2/equipment-rule-v1.schema.json
+  m2_work_package: M2-WP-04
+  acceptance_id: ACC-R2-D11
+  implementation_status: NOT_IMPLEMENTED
+- decision_id: R2-D12
+  authority_document: docs/authority/r2/04_CHARACTER_EQUIPMENT_AND_GROWTH.md
+  schemas:
+  - schemas/r2/entangled-causality-v1.schema.json
+  - schemas/r2/equipment-rule-v1.schema.json
+  m2_work_package: M2-WP-04
+  acceptance_id: ACC-R2-D12
+  implementation_status: NOT_IMPLEMENTED
+- decision_id: R2-D13
+  authority_document: docs/authority/r2/04_CHARACTER_EQUIPMENT_AND_GROWTH.md
+  schemas:
+  - schemas/r2/entangled-causality-v1.schema.json
+  - schemas/r2/equipment-rule-v1.schema.json
+  m2_work_package: M2-WP-04
+  acceptance_id: ACC-R2-D13
+  implementation_status: NOT_IMPLEMENTED
+- decision_id: R2-D14
+  authority_document: docs/authority/r2/04_CHARACTER_EQUIPMENT_AND_GROWTH.md
+  schemas:
+  - schemas/r2/entangled-causality-v1.schema.json
+  - schemas/r2/equipment-rule-v1.schema.json
+  m2_work_package: M2-WP-04
+  acceptance_id: ACC-R2-D14
+  implementation_status: NOT_IMPLEMENTED
+- decision_id: R2-D15
+  authority_document: docs/authority/r2/04_CHARACTER_EQUIPMENT_AND_GROWTH.md
+  schemas:
+  - schemas/r2/entangled-causality-v1.schema.json
+  - schemas/r2/equipment-rule-v1.schema.json
+  m2_work_package: M2-WP-04
+  acceptance_id: ACC-R2-D15
+  implementation_status: NOT_IMPLEMENTED
+- decision_id: R2-D16
+  authority_document: docs/authority/r2/04_CHARACTER_EQUIPMENT_AND_GROWTH.md
+  schemas:
+  - schemas/r2/entangled-causality-v1.schema.json
+  - schemas/r2/equipment-rule-v1.schema.json
+  m2_work_package: M2-WP-04
+  acceptance_id: ACC-R2-D16
+  implementation_status: NOT_IMPLEMENTED
+- decision_id: R2-D17
+  authority_document: docs/authority/r2/04_CHARACTER_EQUIPMENT_AND_GROWTH.md
+  schemas:
+  - schemas/r2/entangled-causality-v1.schema.json
+  - schemas/r2/equipment-rule-v1.schema.json
+  m2_work_package: M2-WP-04
+  acceptance_id: ACC-R2-D17
+  implementation_status: NOT_IMPLEMENTED
+- decision_id: R2-D18
+  authority_document: docs/authority/r2/04_CHARACTER_EQUIPMENT_AND_GROWTH.md
+  schemas:
+  - schemas/r2/entangled-causality-v1.schema.json
+  - schemas/r2/equipment-rule-v1.schema.json
+  m2_work_package: M2-WP-04
+  acceptance_id: ACC-R2-D18
+  implementation_status: NOT_IMPLEMENTED
+- decision_id: R2-E01
+  authority_document: docs/authority/r2/02_WORLD_AND_MAIN_TRUTH.md
+  schemas:
+  - schemas/r2/campaign-seed-v1.schema.json
+  m2_work_package: M2-WP-01
+  acceptance_id: ACC-R2-E01
+  implementation_status: NOT_IMPLEMENTED
+- decision_id: R2-E02
+  authority_document: docs/authority/r2/02_WORLD_AND_MAIN_TRUTH.md
+  schemas:
+  - schemas/r2/campaign-seed-v1.schema.json
+  m2_work_package: M2-WP-01
+  acceptance_id: ACC-R2-E02
+  implementation_status: NOT_IMPLEMENTED
+- decision_id: R2-E03
+  authority_document: docs/authority/r2/02_WORLD_AND_MAIN_TRUTH.md
+  schemas:
+  - schemas/r2/campaign-seed-v1.schema.json
+  m2_work_package: M2-WP-01
+  acceptance_id: ACC-R2-E03
+  implementation_status: NOT_IMPLEMENTED
+- decision_id: R2-E04
+  authority_document: docs/authority/r2/02_WORLD_AND_MAIN_TRUTH.md
+  schemas:
+  - schemas/r2/campaign-seed-v1.schema.json
+  m2_work_package: M2-WP-01
+  acceptance_id: ACC-R2-E04
+  implementation_status: NOT_IMPLEMENTED
+- decision_id: R2-E05
+  authority_document: docs/authority/r2/02_WORLD_AND_MAIN_TRUTH.md
+  schemas:
+  - schemas/r2/campaign-seed-v1.schema.json
+  m2_work_package: M2-WP-01
+  acceptance_id: ACC-R2-E05
+  implementation_status: NOT_IMPLEMENTED
+- decision_id: R2-E06
+  authority_document: docs/authority/r2/02_WORLD_AND_MAIN_TRUTH.md
+  schemas:
+  - schemas/r2/campaign-seed-v1.schema.json
+  m2_work_package: M2-WP-01
+  acceptance_id: ACC-R2-E06
+  implementation_status: NOT_IMPLEMENTED
+- decision_id: R2-E07
+  authority_document: docs/authority/r2/02_WORLD_AND_MAIN_TRUTH.md
+  schemas:
+  - schemas/r2/campaign-seed-v1.schema.json
+  m2_work_package: M2-WP-01
+  acceptance_id: ACC-R2-E07
+  implementation_status: NOT_IMPLEMENTED
+- decision_id: R2-E08
+  authority_document: docs/authority/r2/02_WORLD_AND_MAIN_TRUTH.md
+  schemas:
+  - schemas/r2/campaign-seed-v1.schema.json
+  m2_work_package: M2-WP-01
+  acceptance_id: ACC-R2-E08
+  implementation_status: NOT_IMPLEMENTED
+- decision_id: R2-E09
+  authority_document: docs/authority/r2/02_WORLD_AND_MAIN_TRUTH.md
+  schemas:
+  - schemas/r2/campaign-seed-v1.schema.json
+  m2_work_package: M2-WP-01
+  acceptance_id: ACC-R2-E09
+  implementation_status: NOT_IMPLEMENTED
+- decision_id: R2-E10
+  authority_document: docs/authority/r2/02_WORLD_AND_MAIN_TRUTH.md
+  schemas:
+  - schemas/r2/campaign-seed-v1.schema.json
+  m2_work_package: M2-WP-01
+  acceptance_id: ACC-R2-E10
+  implementation_status: NOT_IMPLEMENTED
+- decision_id: R2-E11
+  authority_document: docs/authority/r2/02_WORLD_AND_MAIN_TRUTH.md
+  schemas:
+  - schemas/r2/campaign-seed-v1.schema.json
+  m2_work_package: M2-WP-01
+  acceptance_id: ACC-R2-E11
+  implementation_status: NOT_IMPLEMENTED
+- decision_id: R2-E12
+  authority_document: docs/authority/r2/02_WORLD_AND_MAIN_TRUTH.md
+  schemas:
+  - schemas/r2/campaign-seed-v1.schema.json
+  m2_work_package: M2-WP-01
+  acceptance_id: ACC-R2-E12
+  implementation_status: NOT_IMPLEMENTED
+- decision_id: R2-E13
+  authority_document: docs/authority/r2/02_WORLD_AND_MAIN_TRUTH.md
+  schemas:
+  - schemas/r2/campaign-seed-v1.schema.json
+  m2_work_package: M2-WP-01
+  acceptance_id: ACC-R2-E13
+  implementation_status: NOT_IMPLEMENTED
+- decision_id: R2-E14
+  authority_document: docs/authority/r2/02_WORLD_AND_MAIN_TRUTH.md
+  schemas:
+  - schemas/r2/campaign-seed-v1.schema.json
+  m2_work_package: M2-WP-01
+  acceptance_id: ACC-R2-E14
+  implementation_status: NOT_IMPLEMENTED
+- decision_id: R2-E15
+  authority_document: docs/authority/r2/02_WORLD_AND_MAIN_TRUTH.md
+  schemas:
+  - schemas/r2/campaign-seed-v1.schema.json
+  m2_work_package: M2-WP-01
+  acceptance_id: ACC-R2-E15
+  implementation_status: NOT_IMPLEMENTED
+- decision_id: R2-E16
+  authority_document: docs/authority/r2/02_WORLD_AND_MAIN_TRUTH.md
+  schemas:
+  - schemas/r2/campaign-seed-v1.schema.json
+  m2_work_package: M2-WP-01
+  acceptance_id: ACC-R2-E16
+  implementation_status: NOT_IMPLEMENTED
+- decision_id: R2-E17
+  authority_document: docs/authority/r2/02_WORLD_AND_MAIN_TRUTH.md
+  schemas:
+  - schemas/r2/campaign-seed-v1.schema.json
+  m2_work_package: M2-WP-01
+  acceptance_id: ACC-R2-E17
+  implementation_status: NOT_IMPLEMENTED
+- decision_id: R2-E18
+  authority_document: docs/authority/r2/02_WORLD_AND_MAIN_TRUTH.md
+  schemas:
+  - schemas/r2/campaign-seed-v1.schema.json
+  m2_work_package: M2-WP-01
+  acceptance_id: ACC-R2-E18
+  implementation_status: NOT_IMPLEMENTED
+- decision_id: R2-E19
+  authority_document: docs/authority/r2/02_WORLD_AND_MAIN_TRUTH.md
+  schemas:
+  - schemas/r2/campaign-seed-v1.schema.json
+  m2_work_package: M2-WP-01
+  acceptance_id: ACC-R2-E19
+  implementation_status: NOT_IMPLEMENTED
+- decision_id: R2-E20
+  authority_document: docs/authority/r2/02_WORLD_AND_MAIN_TRUTH.md
+  schemas:
+  - schemas/r2/campaign-seed-v1.schema.json
+  m2_work_package: M2-WP-01
+  acceptance_id: ACC-R2-E20
+  implementation_status: NOT_IMPLEMENTED
+- decision_id: R2-F01
+  authority_document: docs/authority/r2/05_CONTINENT_REGIONS_AND_FACTIONS.md
+  schemas:
+  - schemas/r2/region-v1.schema.json
+  - schemas/r2/faction-v1.schema.json
+  - schemas/r2/logical-anomaly-zone-v1.schema.json
+  m2_work_package: M2-WP-05
+  acceptance_id: ACC-R2-F01
+  implementation_status: NOT_IMPLEMENTED
+- decision_id: R2-F02
+  authority_document: docs/authority/r2/05_CONTINENT_REGIONS_AND_FACTIONS.md
+  schemas:
+  - schemas/r2/region-v1.schema.json
+  - schemas/r2/faction-v1.schema.json
+  - schemas/r2/logical-anomaly-zone-v1.schema.json
+  m2_work_package: M2-WP-05
+  acceptance_id: ACC-R2-F02
+  implementation_status: NOT_IMPLEMENTED
+- decision_id: R2-F03
+  authority_document: docs/authority/r2/05_CONTINENT_REGIONS_AND_FACTIONS.md
+  schemas:
+  - schemas/r2/region-v1.schema.json
+  - schemas/r2/faction-v1.schema.json
+  - schemas/r2/logical-anomaly-zone-v1.schema.json
+  m2_work_package: M2-WP-05
+  acceptance_id: ACC-R2-F03
+  implementation_status: NOT_IMPLEMENTED
+- decision_id: R2-F04
+  authority_document: docs/authority/r2/05_CONTINENT_REGIONS_AND_FACTIONS.md
+  schemas:
+  - schemas/r2/region-v1.schema.json
+  - schemas/r2/faction-v1.schema.json
+  - schemas/r2/logical-anomaly-zone-v1.schema.json
+  m2_work_package: M2-WP-05
+  acceptance_id: ACC-R2-F04
+  implementation_status: NOT_IMPLEMENTED
+- decision_id: R2-F05
+  authority_document: docs/authority/r2/05_CONTINENT_REGIONS_AND_FACTIONS.md
+  schemas:
+  - schemas/r2/region-v1.schema.json
+  - schemas/r2/faction-v1.schema.json
+  - schemas/r2/logical-anomaly-zone-v1.schema.json
+  m2_work_package: M2-WP-05
+  acceptance_id: ACC-R2-F05
+  implementation_status: NOT_IMPLEMENTED
+- decision_id: R2-F06
+  authority_document: docs/authority/r2/05_CONTINENT_REGIONS_AND_FACTIONS.md
+  schemas:
+  - schemas/r2/region-v1.schema.json
+  - schemas/r2/faction-v1.schema.json
+  - schemas/r2/logical-anomaly-zone-v1.schema.json
+  m2_work_package: M2-WP-05
+  acceptance_id: ACC-R2-F06
+  implementation_status: NOT_IMPLEMENTED
+- decision_id: R2-F07
+  authority_document: docs/authority/r2/05_CONTINENT_REGIONS_AND_FACTIONS.md
+  schemas:
+  - schemas/r2/region-v1.schema.json
+  - schemas/r2/faction-v1.schema.json
+  - schemas/r2/logical-anomaly-zone-v1.schema.json
+  m2_work_package: M2-WP-05
+  acceptance_id: ACC-R2-F07
+  implementation_status: NOT_IMPLEMENTED
+- decision_id: R2-F08
+  authority_document: docs/authority/r2/05_CONTINENT_REGIONS_AND_FACTIONS.md
+  schemas:
+  - schemas/r2/region-v1.schema.json
+  - schemas/r2/faction-v1.schema.json
+  - schemas/r2/logical-anomaly-zone-v1.schema.json
+  m2_work_package: M2-WP-05
+  acceptance_id: ACC-R2-F08
+  implementation_status: NOT_IMPLEMENTED
+- decision_id: R2-F09
+  authority_document: docs/authority/r2/05_CONTINENT_REGIONS_AND_FACTIONS.md
+  schemas:
+  - schemas/r2/region-v1.schema.json
+  - schemas/r2/faction-v1.schema.json
+  - schemas/r2/logical-anomaly-zone-v1.schema.json
+  m2_work_package: M2-WP-05
+  acceptance_id: ACC-R2-F09
+  implementation_status: NOT_IMPLEMENTED
+- decision_id: R2-F10
+  authority_document: docs/authority/r2/05_CONTINENT_REGIONS_AND_FACTIONS.md
+  schemas:
+  - schemas/r2/region-v1.schema.json
+  - schemas/r2/faction-v1.schema.json
+  - schemas/r2/logical-anomaly-zone-v1.schema.json
+  m2_work_package: M2-WP-05
+  acceptance_id: ACC-R2-F10
+  implementation_status: NOT_IMPLEMENTED
+- decision_id: R2-F11
+  authority_document: docs/authority/r2/05_CONTINENT_REGIONS_AND_FACTIONS.md
+  schemas:
+  - schemas/r2/region-v1.schema.json
+  - schemas/r2/faction-v1.schema.json
+  - schemas/r2/logical-anomaly-zone-v1.schema.json
+  m2_work_package: M2-WP-05
+  acceptance_id: ACC-R2-F11
+  implementation_status: NOT_IMPLEMENTED
+- decision_id: R2-F12
+  authority_document: docs/authority/r2/05_CONTINENT_REGIONS_AND_FACTIONS.md
+  schemas:
+  - schemas/r2/region-v1.schema.json
+  - schemas/r2/faction-v1.schema.json
+  - schemas/r2/logical-anomaly-zone-v1.schema.json
+  m2_work_package: M2-WP-05
+  acceptance_id: ACC-R2-F12
+  implementation_status: NOT_IMPLEMENTED
+- decision_id: R2-F13
+  authority_document: docs/authority/r2/05_CONTINENT_REGIONS_AND_FACTIONS.md
+  schemas:
+  - schemas/r2/region-v1.schema.json
+  - schemas/r2/faction-v1.schema.json
+  - schemas/r2/logical-anomaly-zone-v1.schema.json
+  m2_work_package: M2-WP-05
+  acceptance_id: ACC-R2-F13
+  implementation_status: NOT_IMPLEMENTED
+- decision_id: R2-F14
+  authority_document: docs/authority/r2/05_CONTINENT_REGIONS_AND_FACTIONS.md
+  schemas:
+  - schemas/r2/region-v1.schema.json
+  - schemas/r2/faction-v1.schema.json
+  - schemas/r2/logical-anomaly-zone-v1.schema.json
+  m2_work_package: M2-WP-05
+  acceptance_id: ACC-R2-F14
+  implementation_status: NOT_IMPLEMENTED
+- decision_id: R2-F15
+  authority_document: docs/authority/r2/05_CONTINENT_REGIONS_AND_FACTIONS.md
+  schemas:
+  - schemas/r2/region-v1.schema.json
+  - schemas/r2/faction-v1.schema.json
+  - schemas/r2/logical-anomaly-zone-v1.schema.json
+  m2_work_package: M2-WP-05
+  acceptance_id: ACC-R2-F15
+  implementation_status: NOT_IMPLEMENTED
+- decision_id: R2-F16
+  authority_document: docs/authority/r2/05_CONTINENT_REGIONS_AND_FACTIONS.md
+  schemas:
+  - schemas/r2/region-v1.schema.json
+  - schemas/r2/faction-v1.schema.json
+  - schemas/r2/logical-anomaly-zone-v1.schema.json
+  m2_work_package: M2-WP-05
+  acceptance_id: ACC-R2-F16
+  implementation_status: NOT_IMPLEMENTED
+- decision_id: R2-F17
+  authority_document: docs/authority/r2/05_CONTINENT_REGIONS_AND_FACTIONS.md
+  schemas:
+  - schemas/r2/region-v1.schema.json
+  - schemas/r2/faction-v1.schema.json
+  - schemas/r2/logical-anomaly-zone-v1.schema.json
+  m2_work_package: M2-WP-05
+  acceptance_id: ACC-R2-F17
+  implementation_status: NOT_IMPLEMENTED
+- decision_id: R2-F18
+  authority_document: docs/authority/r2/05_CONTINENT_REGIONS_AND_FACTIONS.md
+  schemas:
+  - schemas/r2/region-v1.schema.json
+  - schemas/r2/faction-v1.schema.json
+  - schemas/r2/logical-anomaly-zone-v1.schema.json
+  m2_work_package: M2-WP-05
+  acceptance_id: ACC-R2-F18
+  implementation_status: NOT_IMPLEMENTED
+- decision_id: R2-F19
+  authority_document: docs/authority/r2/05_CONTINENT_REGIONS_AND_FACTIONS.md
+  schemas:
+  - schemas/r2/region-v1.schema.json
+  - schemas/r2/faction-v1.schema.json
+  - schemas/r2/logical-anomaly-zone-v1.schema.json
+  m2_work_package: M2-WP-05
+  acceptance_id: ACC-R2-F19
+  implementation_status: NOT_IMPLEMENTED
+- decision_id: R2-F20
+  authority_document: docs/authority/r2/05_CONTINENT_REGIONS_AND_FACTIONS.md
+  schemas:
+  - schemas/r2/region-v1.schema.json
+  - schemas/r2/faction-v1.schema.json
+  - schemas/r2/logical-anomaly-zone-v1.schema.json
+  m2_work_package: M2-WP-05
+  acceptance_id: ACC-R2-F20
+  implementation_status: NOT_IMPLEMENTED
+- decision_id: R2-F21
+  authority_document: docs/authority/r2/05_CONTINENT_REGIONS_AND_FACTIONS.md
+  schemas:
+  - schemas/r2/region-v1.schema.json
+  - schemas/r2/faction-v1.schema.json
+  - schemas/r2/logical-anomaly-zone-v1.schema.json
+  m2_work_package: M2-WP-05
+  acceptance_id: ACC-R2-F21
+  implementation_status: NOT_IMPLEMENTED
+- decision_id: R2-G01
+  authority_document: docs/authority/r2/06_FINAL_BOSS_ENDINGS_AND_RETURN.md
+  schemas:
+  - schemas/r2/campaign-seed-v1.schema.json
+  - schemas/r2/acceptance-result-v1.schema.json
+  m2_work_package: M2-WP-08
+  acceptance_id: ACC-R2-G01
+  implementation_status: NOT_IMPLEMENTED
+- decision_id: R2-G02
+  authority_document: docs/authority/r2/06_FINAL_BOSS_ENDINGS_AND_RETURN.md
+  schemas:
+  - schemas/r2/campaign-seed-v1.schema.json
+  - schemas/r2/acceptance-result-v1.schema.json
+  m2_work_package: M2-WP-08
+  acceptance_id: ACC-R2-G02
+  implementation_status: NOT_IMPLEMENTED
+- decision_id: R2-G03
+  authority_document: docs/authority/r2/06_FINAL_BOSS_ENDINGS_AND_RETURN.md
+  schemas:
+  - schemas/r2/campaign-seed-v1.schema.json
+  - schemas/r2/acceptance-result-v1.schema.json
+  m2_work_package: M2-WP-08
+  acceptance_id: ACC-R2-G03
+  implementation_status: NOT_IMPLEMENTED
+- decision_id: R2-G04
+  authority_document: docs/authority/r2/06_FINAL_BOSS_ENDINGS_AND_RETURN.md
+  schemas:
+  - schemas/r2/campaign-seed-v1.schema.json
+  - schemas/r2/acceptance-result-v1.schema.json
+  m2_work_package: M2-WP-08
+  acceptance_id: ACC-R2-G04
+  implementation_status: NOT_IMPLEMENTED
+- decision_id: R2-G05
+  authority_document: docs/authority/r2/06_FINAL_BOSS_ENDINGS_AND_RETURN.md
+  schemas:
+  - schemas/r2/campaign-seed-v1.schema.json
+  - schemas/r2/acceptance-result-v1.schema.json
+  m2_work_package: M2-WP-08
+  acceptance_id: ACC-R2-G05
+  implementation_status: NOT_IMPLEMENTED
+- decision_id: R2-G06
+  authority_document: docs/authority/r2/06_FINAL_BOSS_ENDINGS_AND_RETURN.md
+  schemas:
+  - schemas/r2/campaign-seed-v1.schema.json
+  - schemas/r2/acceptance-result-v1.schema.json
+  m2_work_package: M2-WP-08
+  acceptance_id: ACC-R2-G06
+  implementation_status: NOT_IMPLEMENTED
+- decision_id: R2-G07
+  authority_document: docs/authority/r2/06_FINAL_BOSS_ENDINGS_AND_RETURN.md
+  schemas:
+  - schemas/r2/campaign-seed-v1.schema.json
+  - schemas/r2/acceptance-result-v1.schema.json
+  m2_work_package: M2-WP-08
+  acceptance_id: ACC-R2-G07
+  implementation_status: NOT_IMPLEMENTED
+- decision_id: R2-G08
+  authority_document: docs/authority/r2/06_FINAL_BOSS_ENDINGS_AND_RETURN.md
+  schemas:
+  - schemas/r2/campaign-seed-v1.schema.json
+  - schemas/r2/acceptance-result-v1.schema.json
+  m2_work_package: M2-WP-08
+  acceptance_id: ACC-R2-G08
+  implementation_status: NOT_IMPLEMENTED
+- decision_id: R2-G09
+  authority_document: docs/authority/r2/06_FINAL_BOSS_ENDINGS_AND_RETURN.md
+  schemas:
+  - schemas/r2/campaign-seed-v1.schema.json
+  - schemas/r2/acceptance-result-v1.schema.json
+  m2_work_package: M2-WP-08
+  acceptance_id: ACC-R2-G09
+  implementation_status: NOT_IMPLEMENTED
+- decision_id: R2-G10
+  authority_document: docs/authority/r2/06_FINAL_BOSS_ENDINGS_AND_RETURN.md
+  schemas:
+  - schemas/r2/campaign-seed-v1.schema.json
+  - schemas/r2/acceptance-result-v1.schema.json
+  m2_work_package: M2-WP-08
+  acceptance_id: ACC-R2-G10
+  implementation_status: NOT_IMPLEMENTED
+- decision_id: R2-G11
+  authority_document: docs/authority/r2/06_FINAL_BOSS_ENDINGS_AND_RETURN.md
+  schemas:
+  - schemas/r2/campaign-seed-v1.schema.json
+  - schemas/r2/acceptance-result-v1.schema.json
+  m2_work_package: M2-WP-08
+  acceptance_id: ACC-R2-G11
+  implementation_status: NOT_IMPLEMENTED
+- decision_id: R2-G12
+  authority_document: docs/authority/r2/06_FINAL_BOSS_ENDINGS_AND_RETURN.md
+  schemas:
+  - schemas/r2/campaign-seed-v1.schema.json
+  - schemas/r2/acceptance-result-v1.schema.json
+  m2_work_package: M2-WP-08
+  acceptance_id: ACC-R2-G12
+  implementation_status: NOT_IMPLEMENTED
+- decision_id: R2-G13
+  authority_document: docs/authority/r2/06_FINAL_BOSS_ENDINGS_AND_RETURN.md
+  schemas:
+  - schemas/r2/campaign-seed-v1.schema.json
+  - schemas/r2/acceptance-result-v1.schema.json
+  m2_work_package: M2-WP-08
+  acceptance_id: ACC-R2-G13
+  implementation_status: NOT_IMPLEMENTED
+- decision_id: R2-G14
+  authority_document: docs/authority/r2/06_FINAL_BOSS_ENDINGS_AND_RETURN.md
+  schemas:
+  - schemas/r2/campaign-seed-v1.schema.json
+  - schemas/r2/acceptance-result-v1.schema.json
+  m2_work_package: M2-WP-08
+  acceptance_id: ACC-R2-G14
+  implementation_status: NOT_IMPLEMENTED
+- decision_id: R2-G15
+  authority_document: docs/authority/r2/06_FINAL_BOSS_ENDINGS_AND_RETURN.md
+  schemas:
+  - schemas/r2/campaign-seed-v1.schema.json
+  - schemas/r2/acceptance-result-v1.schema.json
+  m2_work_package: M2-WP-08
+  acceptance_id: ACC-R2-G15
+  implementation_status: NOT_IMPLEMENTED
+- decision_id: R2-G16
+  authority_document: docs/authority/r2/06_FINAL_BOSS_ENDINGS_AND_RETURN.md
+  schemas:
+  - schemas/r2/campaign-seed-v1.schema.json
+  - schemas/r2/acceptance-result-v1.schema.json
+  m2_work_package: M2-WP-08
+  acceptance_id: ACC-R2-G16
+  implementation_status: NOT_IMPLEMENTED
+- decision_id: R2-G17
+  authority_document: docs/authority/r2/06_FINAL_BOSS_ENDINGS_AND_RETURN.md
+  schemas:
+  - schemas/r2/campaign-seed-v1.schema.json
+  - schemas/r2/acceptance-result-v1.schema.json
+  m2_work_package: M2-WP-08
+  acceptance_id: ACC-R2-G17
+  implementation_status: NOT_IMPLEMENTED
+- decision_id: R2-G18
+  authority_document: docs/authority/r2/06_FINAL_BOSS_ENDINGS_AND_RETURN.md
+  schemas:
+  - schemas/r2/campaign-seed-v1.schema.json
+  - schemas/r2/acceptance-result-v1.schema.json
+  m2_work_package: M2-WP-08
+  acceptance_id: ACC-R2-G18
+  implementation_status: NOT_IMPLEMENTED
+- decision_id: R2-G19
+  authority_document: docs/authority/r2/06_FINAL_BOSS_ENDINGS_AND_RETURN.md
+  schemas:
+  - schemas/r2/campaign-seed-v1.schema.json
+  - schemas/r2/acceptance-result-v1.schema.json
+  m2_work_package: M2-WP-08
+  acceptance_id: ACC-R2-G19
+  implementation_status: NOT_IMPLEMENTED
+- decision_id: R2-G20
+  authority_document: docs/authority/r2/06_FINAL_BOSS_ENDINGS_AND_RETURN.md
+  schemas:
+  - schemas/r2/campaign-seed-v1.schema.json
+  - schemas/r2/acceptance-result-v1.schema.json
+  m2_work_package: M2-WP-08
+  acceptance_id: ACC-R2-G20
+  implementation_status: NOT_IMPLEMENTED
+- decision_id: R2-G21
+  authority_document: docs/authority/r2/06_FINAL_BOSS_ENDINGS_AND_RETURN.md
+  schemas:
+  - schemas/r2/campaign-seed-v1.schema.json
+  - schemas/r2/acceptance-result-v1.schema.json
+  m2_work_package: M2-WP-08
+  acceptance_id: ACC-R2-G21
+  implementation_status: NOT_IMPLEMENTED
+- decision_id: R2-G22
+  authority_document: docs/authority/r2/06_FINAL_BOSS_ENDINGS_AND_RETURN.md
+  schemas:
+  - schemas/r2/campaign-seed-v1.schema.json
+  - schemas/r2/acceptance-result-v1.schema.json
+  m2_work_package: M2-WP-08
+  acceptance_id: ACC-R2-G22
+  implementation_status: NOT_IMPLEMENTED
+- decision_id: R2-H01
+  authority_document: docs/authority/r2/07_CAMPAIGN_HOSTING_AND_RUNTIME.md
+  schemas:
+  - schemas/r2/campaign-seed-v1.schema.json
+  m2_work_package: M2-WP-07
+  acceptance_id: ACC-R2-H01
+  implementation_status: NOT_IMPLEMENTED
+- decision_id: R2-H02
+  authority_document: docs/authority/r2/07_CAMPAIGN_HOSTING_AND_RUNTIME.md
+  schemas:
+  - schemas/r2/campaign-seed-v1.schema.json
+  m2_work_package: M2-WP-07
+  acceptance_id: ACC-R2-H02
+  implementation_status: NOT_IMPLEMENTED
+- decision_id: R2-H03
+  authority_document: docs/authority/r2/07_CAMPAIGN_HOSTING_AND_RUNTIME.md
+  schemas:
+  - schemas/r2/campaign-seed-v1.schema.json
+  m2_work_package: M2-WP-07
+  acceptance_id: ACC-R2-H03
+  implementation_status: NOT_IMPLEMENTED
+- decision_id: R2-H04
+  authority_document: docs/authority/r2/07_CAMPAIGN_HOSTING_AND_RUNTIME.md
+  schemas:
+  - schemas/r2/campaign-seed-v1.schema.json
+  m2_work_package: M2-WP-07
+  acceptance_id: ACC-R2-H04
+  implementation_status: NOT_IMPLEMENTED
+- decision_id: R2-H05
+  authority_document: docs/authority/r2/07_CAMPAIGN_HOSTING_AND_RUNTIME.md
+  schemas:
+  - schemas/r2/campaign-seed-v1.schema.json
+  m2_work_package: M2-WP-07
+  acceptance_id: ACC-R2-H05
+  implementation_status: NOT_IMPLEMENTED
+- decision_id: R2-H06
+  authority_document: docs/authority/r2/07_CAMPAIGN_HOSTING_AND_RUNTIME.md
+  schemas:
+  - schemas/r2/campaign-seed-v1.schema.json
+  m2_work_package: M2-WP-07
+  acceptance_id: ACC-R2-H06
+  implementation_status: NOT_IMPLEMENTED
+- decision_id: R2-H07
+  authority_document: docs/authority/r2/07_CAMPAIGN_HOSTING_AND_RUNTIME.md
+  schemas:
+  - schemas/r2/campaign-seed-v1.schema.json
+  m2_work_package: M2-WP-07
+  acceptance_id: ACC-R2-H07
+  implementation_status: NOT_IMPLEMENTED
+- decision_id: R2-H08
+  authority_document: docs/authority/r2/07_CAMPAIGN_HOSTING_AND_RUNTIME.md
+  schemas:
+  - schemas/r2/campaign-seed-v1.schema.json
+  m2_work_package: M2-WP-07
+  acceptance_id: ACC-R2-H08
+  implementation_status: NOT_IMPLEMENTED
+- decision_id: R2-H09
+  authority_document: docs/authority/r2/07_CAMPAIGN_HOSTING_AND_RUNTIME.md
+  schemas:
+  - schemas/r2/campaign-seed-v1.schema.json
+  m2_work_package: M2-WP-07
+  acceptance_id: ACC-R2-H09
+  implementation_status: NOT_IMPLEMENTED
+- decision_id: R2-H10
+  authority_document: docs/authority/r2/07_CAMPAIGN_HOSTING_AND_RUNTIME.md
+  schemas:
+  - schemas/r2/campaign-seed-v1.schema.json
+  m2_work_package: M2-WP-07
+  acceptance_id: ACC-R2-H10
+  implementation_status: NOT_IMPLEMENTED
+- decision_id: R2-H11
+  authority_document: docs/authority/r2/07_CAMPAIGN_HOSTING_AND_RUNTIME.md
+  schemas:
+  - schemas/r2/campaign-seed-v1.schema.json
+  m2_work_package: M2-WP-07
+  acceptance_id: ACC-R2-H11
+  implementation_status: NOT_IMPLEMENTED
+- decision_id: R2-H12
+  authority_document: docs/authority/r2/07_CAMPAIGN_HOSTING_AND_RUNTIME.md
+  schemas:
+  - schemas/r2/campaign-seed-v1.schema.json
+  m2_work_package: M2-WP-07
+  acceptance_id: ACC-R2-H12
+  implementation_status: NOT_IMPLEMENTED
+- decision_id: R2-H13
+  authority_document: docs/authority/r2/07_CAMPAIGN_HOSTING_AND_RUNTIME.md
+  schemas:
+  - schemas/r2/campaign-seed-v1.schema.json
+  m2_work_package: M2-WP-07
+  acceptance_id: ACC-R2-H13
+  implementation_status: NOT_IMPLEMENTED
+- decision_id: R2-H14
+  authority_document: docs/authority/r2/07_CAMPAIGN_HOSTING_AND_RUNTIME.md
+  schemas:
+  - schemas/r2/campaign-seed-v1.schema.json
+  m2_work_package: M2-WP-07
+  acceptance_id: ACC-R2-H14
+  implementation_status: NOT_IMPLEMENTED
+- decision_id: R2-H15
+  authority_document: docs/authority/r2/07_CAMPAIGN_HOSTING_AND_RUNTIME.md
+  schemas:
+  - schemas/r2/campaign-seed-v1.schema.json
+  m2_work_package: M2-WP-07
+  acceptance_id: ACC-R2-H15
+  implementation_status: NOT_IMPLEMENTED
+- decision_id: R2-H16
+  authority_document: docs/authority/r2/07_CAMPAIGN_HOSTING_AND_RUNTIME.md
+  schemas:
+  - schemas/r2/campaign-seed-v1.schema.json
+  m2_work_package: M2-WP-07
+  acceptance_id: ACC-R2-H16
+  implementation_status: NOT_IMPLEMENTED
+- decision_id: R2-H17
+  authority_document: docs/authority/r2/07_CAMPAIGN_HOSTING_AND_RUNTIME.md
+  schemas:
+  - schemas/r2/campaign-seed-v1.schema.json
+  m2_work_package: M2-WP-07
+  acceptance_id: ACC-R2-H17
+  implementation_status: NOT_IMPLEMENTED
+- decision_id: R2-H18
+  authority_document: docs/authority/r2/07_CAMPAIGN_HOSTING_AND_RUNTIME.md
+  schemas:
+  - schemas/r2/campaign-seed-v1.schema.json
+  m2_work_package: M2-WP-07
+  acceptance_id: ACC-R2-H18
+  implementation_status: NOT_IMPLEMENTED
+- decision_id: R2-H19
+  authority_document: docs/authority/r2/07_CAMPAIGN_HOSTING_AND_RUNTIME.md
+  schemas:
+  - schemas/r2/campaign-seed-v1.schema.json
+  m2_work_package: M2-WP-07
+  acceptance_id: ACC-R2-H19
+  implementation_status: NOT_IMPLEMENTED
+- decision_id: R2-H20
+  authority_document: docs/authority/r2/07_CAMPAIGN_HOSTING_AND_RUNTIME.md
+  schemas:
+  - schemas/r2/campaign-seed-v1.schema.json
+  m2_work_package: M2-WP-07
+  acceptance_id: ACC-R2-H20
+  implementation_status: NOT_IMPLEMENTED
+- decision_id: R2-H21
+  authority_document: docs/authority/r2/07_CAMPAIGN_HOSTING_AND_RUNTIME.md
+  schemas:
+  - schemas/r2/campaign-seed-v1.schema.json
+  m2_work_package: M2-WP-07
+  acceptance_id: ACC-R2-H21
+  implementation_status: NOT_IMPLEMENTED
+- decision_id: R2-H22
+  authority_document: docs/authority/r2/07_CAMPAIGN_HOSTING_AND_RUNTIME.md
+  schemas:
+  - schemas/r2/campaign-seed-v1.schema.json
+  m2_work_package: M2-WP-07
+  acceptance_id: ACC-R2-H22
+  implementation_status: NOT_IMPLEMENTED
+- decision_id: R2-I01
+  authority_document: docs/authority/r2/08_VISUAL_AUDIO_AND_TEXT_STYLE.md
+  schemas:
+  - schemas/r2/content-provenance-v1.schema.json
+  m2_work_package: M2-WP-09
+  acceptance_id: ACC-R2-I01
+  implementation_status: NOT_IMPLEMENTED
+- decision_id: R2-I02
+  authority_document: docs/authority/r2/08_VISUAL_AUDIO_AND_TEXT_STYLE.md
+  schemas:
+  - schemas/r2/content-provenance-v1.schema.json
+  m2_work_package: M2-WP-09
+  acceptance_id: ACC-R2-I02
+  implementation_status: NOT_IMPLEMENTED
+- decision_id: R2-I03
+  authority_document: docs/authority/r2/08_VISUAL_AUDIO_AND_TEXT_STYLE.md
+  schemas:
+  - schemas/r2/content-provenance-v1.schema.json
+  m2_work_package: M2-WP-09
+  acceptance_id: ACC-R2-I03
+  implementation_status: NOT_IMPLEMENTED
+- decision_id: R2-I04
+  authority_document: docs/authority/r2/08_VISUAL_AUDIO_AND_TEXT_STYLE.md
+  schemas:
+  - schemas/r2/content-provenance-v1.schema.json
+  m2_work_package: M2-WP-09
+  acceptance_id: ACC-R2-I04
+  implementation_status: NOT_IMPLEMENTED
+- decision_id: R2-I05
+  authority_document: docs/authority/r2/08_VISUAL_AUDIO_AND_TEXT_STYLE.md
+  schemas:
+  - schemas/r2/content-provenance-v1.schema.json
+  m2_work_package: M2-WP-09
+  acceptance_id: ACC-R2-I05
+  implementation_status: NOT_IMPLEMENTED
+- decision_id: R2-I06
+  authority_document: docs/authority/r2/08_VISUAL_AUDIO_AND_TEXT_STYLE.md
+  schemas:
+  - schemas/r2/content-provenance-v1.schema.json
+  m2_work_package: M2-WP-09
+  acceptance_id: ACC-R2-I06
+  implementation_status: NOT_IMPLEMENTED
+- decision_id: R2-I07
+  authority_document: docs/authority/r2/08_VISUAL_AUDIO_AND_TEXT_STYLE.md
+  schemas:
+  - schemas/r2/content-provenance-v1.schema.json
+  m2_work_package: M2-WP-09
+  acceptance_id: ACC-R2-I07
+  implementation_status: NOT_IMPLEMENTED
+- decision_id: R2-I08
+  authority_document: docs/authority/r2/08_VISUAL_AUDIO_AND_TEXT_STYLE.md
+  schemas:
+  - schemas/r2/content-provenance-v1.schema.json
+  m2_work_package: M2-WP-09
+  acceptance_id: ACC-R2-I08
+  implementation_status: NOT_IMPLEMENTED
+- decision_id: R2-I09
+  authority_document: docs/authority/r2/08_VISUAL_AUDIO_AND_TEXT_STYLE.md
+  schemas:
+  - schemas/r2/content-provenance-v1.schema.json
+  m2_work_package: M2-WP-09
+  acceptance_id: ACC-R2-I09
+  implementation_status: NOT_IMPLEMENTED
+- decision_id: R2-I10
+  authority_document: docs/authority/r2/08_VISUAL_AUDIO_AND_TEXT_STYLE.md
+  schemas:
+  - schemas/r2/content-provenance-v1.schema.json
+  m2_work_package: M2-WP-09
+  acceptance_id: ACC-R2-I10
+  implementation_status: NOT_IMPLEMENTED
+- decision_id: R2-I11
+  authority_document: docs/authority/r2/08_VISUAL_AUDIO_AND_TEXT_STYLE.md
+  schemas:
+  - schemas/r2/content-provenance-v1.schema.json
+  m2_work_package: M2-WP-09
+  acceptance_id: ACC-R2-I11
+  implementation_status: NOT_IMPLEMENTED
+- decision_id: R2-I12
+  authority_document: docs/authority/r2/08_VISUAL_AUDIO_AND_TEXT_STYLE.md
+  schemas:
+  - schemas/r2/content-provenance-v1.schema.json
+  m2_work_package: M2-WP-09
+  acceptance_id: ACC-R2-I12
+  implementation_status: NOT_IMPLEMENTED
+- decision_id: R2-I13
+  authority_document: docs/authority/r2/08_VISUAL_AUDIO_AND_TEXT_STYLE.md
+  schemas:
+  - schemas/r2/content-provenance-v1.schema.json
+  m2_work_package: M2-WP-09
+  acceptance_id: ACC-R2-I13
+  implementation_status: NOT_IMPLEMENTED
+- decision_id: R2-I14
+  authority_document: docs/authority/r2/08_VISUAL_AUDIO_AND_TEXT_STYLE.md
+  schemas:
+  - schemas/r2/content-provenance-v1.schema.json
+  m2_work_package: M2-WP-09
+  acceptance_id: ACC-R2-I14
+  implementation_status: NOT_IMPLEMENTED
+- decision_id: R2-I15
+  authority_document: docs/authority/r2/08_VISUAL_AUDIO_AND_TEXT_STYLE.md
+  schemas:
+  - schemas/r2/content-provenance-v1.schema.json
+  m2_work_package: M2-WP-09
+  acceptance_id: ACC-R2-I15
+  implementation_status: NOT_IMPLEMENTED
+- decision_id: R2-I16
+  authority_document: docs/authority/r2/08_VISUAL_AUDIO_AND_TEXT_STYLE.md
+  schemas:
+  - schemas/r2/content-provenance-v1.schema.json
+  m2_work_package: M2-WP-09
+  acceptance_id: ACC-R2-I16
+  implementation_status: NOT_IMPLEMENTED
+- decision_id: R2-I17
+  authority_document: docs/authority/r2/08_VISUAL_AUDIO_AND_TEXT_STYLE.md
+  schemas:
+  - schemas/r2/content-provenance-v1.schema.json
+  m2_work_package: M2-WP-09
+  acceptance_id: ACC-R2-I17
+  implementation_status: NOT_IMPLEMENTED
+- decision_id: R2-I18
+  authority_document: docs/authority/r2/08_VISUAL_AUDIO_AND_TEXT_STYLE.md
+  schemas:
+  - schemas/r2/content-provenance-v1.schema.json
+  m2_work_package: M2-WP-09
+  acceptance_id: ACC-R2-I18
+  implementation_status: NOT_IMPLEMENTED
+- decision_id: R2-I19
+  authority_document: docs/authority/r2/08_VISUAL_AUDIO_AND_TEXT_STYLE.md
+  schemas:
+  - schemas/r2/content-provenance-v1.schema.json
+  m2_work_package: M2-WP-09
+  acceptance_id: ACC-R2-I19
+  implementation_status: NOT_IMPLEMENTED
+- decision_id: R2-I20
+  authority_document: docs/authority/r2/08_VISUAL_AUDIO_AND_TEXT_STYLE.md
+  schemas:
+  - schemas/r2/content-provenance-v1.schema.json
+  m2_work_package: M2-WP-09
+  acceptance_id: ACC-R2-I20
+  implementation_status: NOT_IMPLEMENTED
+- decision_id: R2-I21
+  authority_document: docs/authority/r2/08_VISUAL_AUDIO_AND_TEXT_STYLE.md
+  schemas:
+  - schemas/r2/content-provenance-v1.schema.json
+  m2_work_package: M2-WP-09
+  acceptance_id: ACC-R2-I21
+  implementation_status: NOT_IMPLEMENTED
+- decision_id: R2-I22
+  authority_document: docs/authority/r2/08_VISUAL_AUDIO_AND_TEXT_STYLE.md
+  schemas:
+  - schemas/r2/content-provenance-v1.schema.json
+  m2_work_package: M2-WP-09
+  acceptance_id: ACC-R2-I22
+  implementation_status: NOT_IMPLEMENTED
+- decision_id: R2-I23
+  authority_document: docs/authority/r2/08_VISUAL_AUDIO_AND_TEXT_STYLE.md
+  schemas:
+  - schemas/r2/content-provenance-v1.schema.json
+  m2_work_package: M2-WP-09
+  acceptance_id: ACC-R2-I23
+  implementation_status: NOT_IMPLEMENTED
+- decision_id: R2-I24
+  authority_document: docs/authority/r2/08_VISUAL_AUDIO_AND_TEXT_STYLE.md
+  schemas:
+  - schemas/r2/content-provenance-v1.schema.json
+  m2_work_package: M2-WP-09
+  acceptance_id: ACC-R2-I24
+  implementation_status: NOT_IMPLEMENTED
+- decision_id: R2-J01
+  authority_document: docs/authority/r2/10_CONTENT_VALIDATION_AND_RELEASE_GATES.md
+  schemas:
+  - schemas/r2/reading-map-v1.schema.json
+  - schemas/r2/content-provenance-v1.schema.json
+  - schemas/r2/acceptance-result-v1.schema.json
+  m2_work_package: M2-WP-10
+  acceptance_id: ACC-R2-J01
+  implementation_status: NOT_IMPLEMENTED
+- decision_id: R2-J02
+  authority_document: docs/authority/r2/10_CONTENT_VALIDATION_AND_RELEASE_GATES.md
+  schemas:
+  - schemas/r2/reading-map-v1.schema.json
+  - schemas/r2/content-provenance-v1.schema.json
+  - schemas/r2/acceptance-result-v1.schema.json
+  m2_work_package: M2-WP-10
+  acceptance_id: ACC-R2-J02
+  implementation_status: NOT_IMPLEMENTED
+- decision_id: R2-J03
+  authority_document: docs/authority/r2/10_CONTENT_VALIDATION_AND_RELEASE_GATES.md
+  schemas:
+  - schemas/r2/reading-map-v1.schema.json
+  - schemas/r2/content-provenance-v1.schema.json
+  - schemas/r2/acceptance-result-v1.schema.json
+  m2_work_package: M2-WP-10
+  acceptance_id: ACC-R2-J03
+  implementation_status: NOT_IMPLEMENTED
+- decision_id: R2-J04
+  authority_document: docs/authority/r2/10_CONTENT_VALIDATION_AND_RELEASE_GATES.md
+  schemas:
+  - schemas/r2/reading-map-v1.schema.json
+  - schemas/r2/content-provenance-v1.schema.json
+  - schemas/r2/acceptance-result-v1.schema.json
+  m2_work_package: M2-WP-10
+  acceptance_id: ACC-R2-J04
+  implementation_status: NOT_IMPLEMENTED
+- decision_id: R2-J05
+  authority_document: docs/authority/r2/10_CONTENT_VALIDATION_AND_RELEASE_GATES.md
+  schemas:
+  - schemas/r2/reading-map-v1.schema.json
+  - schemas/r2/content-provenance-v1.schema.json
+  - schemas/r2/acceptance-result-v1.schema.json
+  m2_work_package: M2-WP-10
+  acceptance_id: ACC-R2-J05
+  implementation_status: NOT_IMPLEMENTED
+- decision_id: R2-J06
+  authority_document: docs/authority/r2/10_CONTENT_VALIDATION_AND_RELEASE_GATES.md
+  schemas:
+  - schemas/r2/reading-map-v1.schema.json
+  - schemas/r2/content-provenance-v1.schema.json
+  - schemas/r2/acceptance-result-v1.schema.json
+  m2_work_package: M2-WP-10
+  acceptance_id: ACC-R2-J06
+  implementation_status: NOT_IMPLEMENTED
+- decision_id: R2-J07
+  authority_document: docs/authority/r2/10_CONTENT_VALIDATION_AND_RELEASE_GATES.md
+  schemas:
+  - schemas/r2/reading-map-v1.schema.json
+  - schemas/r2/content-provenance-v1.schema.json
+  - schemas/r2/acceptance-result-v1.schema.json
+  m2_work_package: M2-WP-10
+  acceptance_id: ACC-R2-J07
+  implementation_status: NOT_IMPLEMENTED
+- decision_id: R2-J08
+  authority_document: docs/authority/r2/10_CONTENT_VALIDATION_AND_RELEASE_GATES.md
+  schemas:
+  - schemas/r2/reading-map-v1.schema.json
+  - schemas/r2/content-provenance-v1.schema.json
+  - schemas/r2/acceptance-result-v1.schema.json
+  m2_work_package: M2-WP-10
+  acceptance_id: ACC-R2-J08
+  implementation_status: NOT_IMPLEMENTED
+- decision_id: R2-J09
+  authority_document: docs/authority/r2/10_CONTENT_VALIDATION_AND_RELEASE_GATES.md
+  schemas:
+  - schemas/r2/reading-map-v1.schema.json
+  - schemas/r2/content-provenance-v1.schema.json
+  - schemas/r2/acceptance-result-v1.schema.json
+  m2_work_package: M2-WP-10
+  acceptance_id: ACC-R2-J09
+  implementation_status: NOT_IMPLEMENTED
+- decision_id: R2-J10
+  authority_document: docs/authority/r2/10_CONTENT_VALIDATION_AND_RELEASE_GATES.md
+  schemas:
+  - schemas/r2/reading-map-v1.schema.json
+  - schemas/r2/content-provenance-v1.schema.json
+  - schemas/r2/acceptance-result-v1.schema.json
+  m2_work_package: M2-WP-10
+  acceptance_id: ACC-R2-J10
+  implementation_status: NOT_IMPLEMENTED
+- decision_id: R2-J11
+  authority_document: docs/authority/r2/10_CONTENT_VALIDATION_AND_RELEASE_GATES.md
+  schemas:
+  - schemas/r2/reading-map-v1.schema.json
+  - schemas/r2/content-provenance-v1.schema.json
+  - schemas/r2/acceptance-result-v1.schema.json
+  m2_work_package: M2-WP-10
+  acceptance_id: ACC-R2-J11
+  implementation_status: NOT_IMPLEMENTED
+- decision_id: R2-J12
+  authority_document: docs/authority/r2/10_CONTENT_VALIDATION_AND_RELEASE_GATES.md
+  schemas:
+  - schemas/r2/reading-map-v1.schema.json
+  - schemas/r2/content-provenance-v1.schema.json
+  - schemas/r2/acceptance-result-v1.schema.json
+  m2_work_package: M2-WP-10
+  acceptance_id: ACC-R2-J12
+  implementation_status: NOT_IMPLEMENTED
+- decision_id: R2-J13
+  authority_document: docs/authority/r2/10_CONTENT_VALIDATION_AND_RELEASE_GATES.md
+  schemas:
+  - schemas/r2/reading-map-v1.schema.json
+  - schemas/r2/content-provenance-v1.schema.json
+  - schemas/r2/acceptance-result-v1.schema.json
+  m2_work_package: M2-WP-10
+  acceptance_id: ACC-R2-J13
+  implementation_status: NOT_IMPLEMENTED
+- decision_id: R2-J14
+  authority_document: docs/authority/r2/10_CONTENT_VALIDATION_AND_RELEASE_GATES.md
+  schemas:
+  - schemas/r2/reading-map-v1.schema.json
+  - schemas/r2/content-provenance-v1.schema.json
+  - schemas/r2/acceptance-result-v1.schema.json
+  m2_work_package: M2-WP-10
+  acceptance_id: ACC-R2-J14
+  implementation_status: NOT_IMPLEMENTED
+- decision_id: R2-J15
+  authority_document: docs/authority/r2/10_CONTENT_VALIDATION_AND_RELEASE_GATES.md
+  schemas:
+  - schemas/r2/reading-map-v1.schema.json
+  - schemas/r2/content-provenance-v1.schema.json
+  - schemas/r2/acceptance-result-v1.schema.json
+  m2_work_package: M2-WP-10
+  acceptance_id: ACC-R2-J15
+  implementation_status: NOT_IMPLEMENTED
+- decision_id: R2-J16
+  authority_document: docs/authority/r2/10_CONTENT_VALIDATION_AND_RELEASE_GATES.md
+  schemas:
+  - schemas/r2/reading-map-v1.schema.json
+  - schemas/r2/content-provenance-v1.schema.json
+  - schemas/r2/acceptance-result-v1.schema.json
+  m2_work_package: M2-WP-10
+  acceptance_id: ACC-R2-J16
+  implementation_status: NOT_IMPLEMENTED
+- decision_id: R2-J17
+  authority_document: docs/authority/r2/10_CONTENT_VALIDATION_AND_RELEASE_GATES.md
+  schemas:
+  - schemas/r2/reading-map-v1.schema.json
+  - schemas/r2/content-provenance-v1.schema.json
+  - schemas/r2/acceptance-result-v1.schema.json
+  m2_work_package: M2-WP-10
+  acceptance_id: ACC-R2-J17
+  implementation_status: NOT_IMPLEMENTED
+- decision_id: R2-J18
+  authority_document: docs/authority/r2/10_CONTENT_VALIDATION_AND_RELEASE_GATES.md
+  schemas:
+  - schemas/r2/reading-map-v1.schema.json
+  - schemas/r2/content-provenance-v1.schema.json
+  - schemas/r2/acceptance-result-v1.schema.json
+  m2_work_package: M2-WP-10
+  acceptance_id: ACC-R2-J18
+  implementation_status: NOT_IMPLEMENTED
+- decision_id: R2-J19
+  authority_document: docs/authority/r2/10_CONTENT_VALIDATION_AND_RELEASE_GATES.md
+  schemas:
+  - schemas/r2/reading-map-v1.schema.json
+  - schemas/r2/content-provenance-v1.schema.json
+  - schemas/r2/acceptance-result-v1.schema.json
+  m2_work_package: M2-WP-10
+  acceptance_id: ACC-R2-J19
+  implementation_status: NOT_IMPLEMENTED
+- decision_id: R2-J20
+  authority_document: docs/authority/r2/10_CONTENT_VALIDATION_AND_RELEASE_GATES.md
+  schemas:
+  - schemas/r2/reading-map-v1.schema.json
+  - schemas/r2/content-provenance-v1.schema.json
+  - schemas/r2/acceptance-result-v1.schema.json
+  m2_work_package: M2-WP-10
+  acceptance_id: ACC-R2-J20
+  implementation_status: NOT_IMPLEMENTED
+- decision_id: R2-J21
+  authority_document: docs/authority/r2/10_CONTENT_VALIDATION_AND_RELEASE_GATES.md
+  schemas:
+  - schemas/r2/reading-map-v1.schema.json
+  - schemas/r2/content-provenance-v1.schema.json
+  - schemas/r2/acceptance-result-v1.schema.json
+  m2_work_package: M2-WP-10
+  acceptance_id: ACC-R2-J21
+  implementation_status: NOT_IMPLEMENTED
+- decision_id: R2-J22
+  authority_document: docs/authority/r2/10_CONTENT_VALIDATION_AND_RELEASE_GATES.md
+  schemas:
+  - schemas/r2/reading-map-v1.schema.json
+  - schemas/r2/content-provenance-v1.schema.json
+  - schemas/r2/acceptance-result-v1.schema.json
+  m2_work_package: M2-WP-10
+  acceptance_id: ACC-R2-J22
+  implementation_status: NOT_IMPLEMENTED
+- decision_id: R2-J23
+  authority_document: docs/authority/r2/10_CONTENT_VALIDATION_AND_RELEASE_GATES.md
+  schemas:
+  - schemas/r2/reading-map-v1.schema.json
+  - schemas/r2/content-provenance-v1.schema.json
+  - schemas/r2/acceptance-result-v1.schema.json
+  m2_work_package: M2-WP-10
+  acceptance_id: ACC-R2-J23
+  implementation_status: NOT_IMPLEMENTED
+- decision_id: R2-J24
+  authority_document: docs/authority/r2/10_CONTENT_VALIDATION_AND_RELEASE_GATES.md
+  schemas:
+  - schemas/r2/reading-map-v1.schema.json
+  - schemas/r2/content-provenance-v1.schema.json
+  - schemas/r2/acceptance-result-v1.schema.json
+  m2_work_package: M2-WP-10
+  acceptance_id: ACC-R2-J24
+  implementation_status: NOT_IMPLEMENTED

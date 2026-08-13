@@ -19,7 +19,7 @@
 10. Agent 记忆与摘要不是权威事实来源。
 11. 所有关键路径失败必须继续推进；可选奖励与秘密允许永久错过。
 12. 官方游戏不得使用特权内部格式，必须能通过标准 Creator Tool 往返。
-13. 最终世界真相与回家条件仍为 OPEN，不得由实现者擅自补全。
+13. 最终世界真相与回家条件以 R2 冻结权威为准；只有 `governance/r2/deferred-items.r2.yaml` 登记的项仍可保持 OPEN/deferred，不得由实现者擅自补全。
 14. 混合开发必须遵守 `docs/authority/12_HYBRID_DEVELOPMENT_WORKFLOW.md`；OpenCode/Grok 返回结果不能自行视为 PASS。
 
 ## 3. 修改纪律

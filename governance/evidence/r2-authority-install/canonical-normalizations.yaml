@@ -1,0 +1,70 @@
+record_id: R2-AUTHORITY-INSTALL-CANONICAL-NORMALIZATIONS
+status: FROZEN_INSTALL_COMPATIBILITY_ADAPTER
+reason: repository git diff --check forbids package-provided trailing whitespace and final blank lines
+semantic_change: false
+install_canonical_total: 108
+byte_exact_install_canonical: 98
+normalized_install_canonical: 10
+normalizations:
+  - source: 03_CODEX_PROGRESSIVE_DISCLOSURE/M2-VERTICAL-SLICE/ACCEPT.md
+    target: .codex/prompts/r2/M2-VERTICAL-SLICE/ACCEPT.md
+    diff_type: drop_one_final_blank_line
+    source_sha256: af44e25a13e2e549a87d4f875853342f1796cd3ed635961f9ec1f5ec117852a4
+    target_sha256: f0431da7bbfe57cdd513df15f8362c9fb36a6b36d435e5b4e36baa3568e195d9
+    removed_ascii_bytes: 1
+  - source: 03_CODEX_PROGRESSIVE_DISCLOSURE/M2-VERTICAL-SLICE/IMPLEMENT.md
+    target: .codex/prompts/r2/M2-VERTICAL-SLICE/IMPLEMENT.md
+    diff_type: drop_one_final_blank_line
+    source_sha256: b4ec0633ff6408e675175d0bb7109b5cf831c277d16de50d8ec7debcb6e58167
+    target_sha256: a21deb9b0b8a08f85f53ad0d783cc2014416a37b26a228137ece17d70d751a98
+    removed_ascii_bytes: 1
+  - source: 03_CODEX_PROGRESSIVE_DISCLOSURE/M2-VERTICAL-SLICE/PLAN.md
+    target: .codex/prompts/r2/M2-VERTICAL-SLICE/PLAN.md
+    diff_type: drop_one_final_blank_line
+    source_sha256: 0e7c9291a39a046a3647dc468f8071aded1886069ea56bae91e133932c3b1c59
+    target_sha256: fef9dafcdfb755f36aadc2619ab7684b74155a63e0a0191ce6cb5010c183a8a5
+    removed_ascii_bytes: 1
+  - source: 03_CODEX_PROGRESSIVE_DISCLOSURE/M2-VERTICAL-SLICE/REPAIR.md
+    target: .codex/prompts/r2/M2-VERTICAL-SLICE/REPAIR.md
+    diff_type: drop_one_final_blank_line
+    source_sha256: 96d4ecfc5f5de9b1aee6254d1fb02b03970410f948af46a83aca99d42d4a4485
+    target_sha256: 713f515e54a874e231956c8a5260e1c942c1e2a9fa19a4d9419037bcfb388db3
+    removed_ascii_bytes: 1
+  - source: 03_CODEX_PROGRESSIVE_DISCLOSURE/R2-AUTHORITY-INSTALL/ACCEPT.md
+    target: .codex/prompts/r2/R2-AUTHORITY-INSTALL/ACCEPT.md
+    diff_type: drop_one_final_blank_line
+    source_sha256: 4255c6dab164d3455a0c96240fb4f1bd51b9a8c4289616cd09d62dcc5dd9fa6d
+    target_sha256: a9d5ddfbdefcc2df928c2fe1e8d78e0fd511ce040ecbf73283da341323ddc227
+    removed_ascii_bytes: 1
+  - source: 03_CODEX_PROGRESSIVE_DISCLOSURE/R2-AUTHORITY-INSTALL/IMPLEMENT.md
+    target: .codex/prompts/r2/R2-AUTHORITY-INSTALL/IMPLEMENT.md
+    diff_type: drop_one_final_blank_line
+    source_sha256: b637b4c6dc86e50f91d2f3368faaf2f2997fb3ef5eb6c63d8712a8987b16a78f
+    target_sha256: 69f0a0554d05906a8d37477846895605d3085a7b9ea646278805b68aa3a802e0
+    removed_ascii_bytes: 1
+  - source: 03_CODEX_PROGRESSIVE_DISCLOSURE/R2-AUTHORITY-INSTALL/PLAN.md
+    target: .codex/prompts/r2/R2-AUTHORITY-INSTALL/PLAN.md
+    diff_type: drop_one_final_blank_line
+    source_sha256: 4a422f911705f3847c393278d14bf0a7862ad911b118114e5bb58fb409406ddd
+    target_sha256: f8f88bc610894b7535cd090b6464f9b2dda71e6f472f504816b35a1fb11f8b93
+    removed_ascii_bytes: 1
+  - source: 03_CODEX_PROGRESSIVE_DISCLOSURE/R2-AUTHORITY-INSTALL/REPAIR.md
+    target: .codex/prompts/r2/R2-AUTHORITY-INSTALL/REPAIR.md
+    diff_type: drop_one_final_blank_line
+    source_sha256: 652a5e325c12d5c3f9f826705bcc854bcddfa7cc564cf2705f57656a3a3fbb9e
+    target_sha256: 472c418daddedcdeda8d338e0e30d99057a91fae7bf9797e370b3db50a64c6af
+    removed_ascii_bytes: 1
+  - source: 01_REPO_OVERLAY/docs/authority/r2/00_R2_AUTHORITY_ENTRY.md
+    target: docs/authority/r2/00_R2_AUTHORITY_ENTRY.md
+    diff_type: strip_eol_ascii_spaces
+    source_sha256: 761f766a891ff62fafe4808d7592ff565089876a27a00c6f7e455c7e68d254df
+    target_sha256: f5e2a033d09724e616c03019e22b02e62b64aa152f2f276c25a3cd334db32db2
+    removed_ascii_bytes: 6
+    affected_source_lines: [4, 5, 6]
+  - source: 01_REPO_OVERLAY/docs/operations/R2_PROGRESSIVE_DISCLOSURE_PROTOCOL.md
+    target: docs/operations/r2/R2_PROGRESSIVE_DISCLOSURE_PROTOCOL.md
+    diff_type: strip_eol_ascii_spaces
+    source_sha256: d9cd2c568fb766c2894c7a6ce97710cae7bea291908f576ad6b5ca89c89bdda3
+    target_sha256: 5c15dfde8ee11feb0f70e9f51b86f44bd9f359f6b04065e6bba0b35b8e92c258
+    removed_ascii_bytes: 2
+    affected_source_lines: [41]

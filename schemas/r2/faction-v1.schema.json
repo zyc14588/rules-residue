@@ -1,0 +1,109 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://rule-residual.invalid/schemas/r2/faction-v1.schema.json",
+  "title": "R2 Faction",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "faction_id",
+    "region_refs",
+    "response_model",
+    "public_beliefs",
+    "hidden_truths",
+    "wrong_beliefs",
+    "known_rules",
+    "endgame_functions",
+    "relationship_persistence",
+    "provenance"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "1.0"
+    },
+    "faction_id": {
+      "type": "string",
+      "pattern": "^[A-Z][A-Z0-9]*(?:-[A-Z0-9]+)+$",
+      "minLength": 3,
+      "maxLength": 128
+    },
+    "title": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": ".*\\S.*"
+    },
+    "region_refs": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "pattern": "^[A-Z][A-Z0-9]*(?:-[A-Z0-9]+)+$",
+        "minLength": 3,
+        "maxLength": 128
+      }
+    },
+    "response_model": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": ".*\\S.*"
+    },
+    "public_beliefs": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "pattern": ".*\\S.*"
+      }
+    },
+    "hidden_truths": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^[A-Z][A-Z0-9]*(?:-[A-Z0-9]+)+$",
+        "minLength": 3,
+        "maxLength": 128
+      }
+    },
+    "wrong_beliefs": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "pattern": ".*\\S.*"
+      }
+    },
+    "known_rules": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^[A-Z][A-Z0-9]*(?:-[A-Z0-9]+)+$",
+        "minLength": 3,
+        "maxLength": 128
+      }
+    },
+    "endgame_functions": {
+      "type": "array",
+      "items": {
+        "enum": [
+          "BOUNDARY_STABILITY",
+          "PERSONA_SEPARATION",
+          "RULE_PERMISSION",
+          "COST_BEARING",
+          "MAINTENANCE_TAKEOVER",
+          "CAUSAL_MAPPING"
+        ]
+      }
+    },
+    "relationship_persistence": {
+      "enum": [
+        "RESET",
+        "PERMANENT_AFTER_REGION_STABILIZED",
+        "PERMANENT_RULE_DEFINED"
+      ]
+    },
+    "provenance": {
+      "$ref": "https://rule-residual.invalid/schemas/r2/rule-semantic-v1.schema.json#/$defs/provenance"
+    }
+  }
+}

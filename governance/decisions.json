@@ -7,6 +7,7 @@
     "ACCEPTED",
     "PROVISIONAL",
     "OPEN",
+    "SUPERSEDED_BY_R2",
     "REJECTED"
   ],
   "decisions": [
@@ -358,12 +359,18 @@
     },
     {
       "id": "RR-O003",
-      "status": "OPEN",
+      "status": "SUPERSEDED_BY_R2",
       "title": "完整异世界与最终真相",
-      "statement": "决定世界地理、规则来源、无限流结构来源、组织、跨域历史、长期战役结构及真正归乡条件。",
-      "authority": "unresolved",
-      "target_milestone": "M2",
-      "change_control": "owner-decision-required",
+      "statement": "M1 中将世界地理、规则/无限流来源、跨域历史与归乡条件合并为 OPEN 的容器已被 R2 冻结真相取代；未决细节仅存于 R2 deferred register。",
+      "authority": "governance/r2/decisions.r2.yaml",
+      "superseded_by": [
+        "R2-C01..C16",
+        "R2-E01..E20",
+        "R2-G01..G22",
+        "governance/r2/deferred-items.r2.yaml"
+      ],
+      "target_milestone": "R2-AUTHORITY-INSTALL",
+      "change_control": "r2-change-control-required",
       "verification": [
         "GATE-GOV-002"
       ]

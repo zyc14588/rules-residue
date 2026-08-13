@@ -1,0 +1,56 @@
+schema_version: '1.0'
+policy_id: R2-CONTENT-SAFETY-001
+status: FROZEN
+absolute_red_lines:
+- id: R2-REDLINE-MINOR-SEXUAL-HARM
+  scope:
+  - direct
+  - implied
+  - historical
+  - background
+  - rule_cost
+  - puzzle
+  - twist
+  - generated
+  - hidden
+  - draft
+  - asset
+  prohibited:
+  - sexual assault of minors
+  - sexual exploitation of minors
+  - sexual coercion of minors
+  - sexual grooming of minors
+  - sexual trafficking of minors
+  - sexual slavery of minors
+  - sexualization of minors
+  action: BLOCK_AND_REDESIGN; LABEL_ONLY_NOT_ALLOWED
+repeat_filter_stages:
+- knowledge_import
+- design_input
+- template
+- prompt
+- model_output
+- human_edit
+- semantic_conversion
+- lua_runtime_data
+- art_audio
+- region_acceptance
+- cross_region_validation
+- build
+- release_candidate
+- runtime_generation
+- hot_update
+- migration
+- old_save_load
+- independent_acceptance
+player_safety_tools:
+  allowed:
+  - pause
+  - fade_to_black
+  - replace_presentation
+  - reduce_intensity
+  - leave_session
+  must_not:
+  - reveal_rule_answer
+  - erase_mechanical_cost_without_rule
+  - silently_change_truth

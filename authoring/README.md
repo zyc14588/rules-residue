@@ -1,3 +1,4 @@
+<!-- SECTION-ID: M1-AUTHORING-README -->
 # Authoring 创作源层
 
 `authoring/` 保存人类与模型共同维护的创作源、真相图、内容设计和美术 brief。它不是权威运行状态，也不是 Game Package 输入。
@@ -42,3 +43,40 @@
 - Agent 记忆与摘要只能从已提交 Event 派生，不能从本目录直接成为 `confirmed` 事实。
 
 转换和验收流程见 `docs/operations/CONTENT_AUTHORING_PIPELINE.md`。
+
+<!-- SECTION-ID: R2-AUTHORING-README -->
+# M1 authoring层的R2扩展说明
+
+本目录候选用于合并到M1既有 `authoring/`，不创建平行创作源。
+
+## 核心边界
+
+```text
+authoring source
+→ Codex一致性/规格化
+→ structured runtime data / Schema / fixture
+→ OpenCode脚本 + Grok美术
+→ Codex集成
+→ game-package
+→ acceptance
+→ .trpgpkg
+```
+
+`authoring/` 自身不得进入运行包、锁文件或普通玩家/AI上下文。
+
+## R2新增对象
+
+- 大区三阶段状态；
+- 逻辑完全异常区；
+- 规则三层表达；
+- 纠缠因果；
+- 规则装备；
+- 大区独特规则；
+- 因果校准图；
+- 关键道具两相；
+- 循环、锚点、永久异常与通用代价；
+- 最终Boss人格/维护层；
+- 三分支终局；
+- 纯2D艺术方向与多声部文本。
+
+M1既有模板若已覆盖这些对象，应扩展原模板，不应保留两套冲突模板。

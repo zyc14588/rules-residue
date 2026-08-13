@@ -25,6 +25,7 @@ from tools.lib.common import (
 from tools.lib.reference_rules import expected_effect_types, plan_kind
 from tools.lib.schema_subset import validate
 from tools.codex_route import HARD_LIMIT, SOFT_LIMIT, RouteError, validate_request
+from tools.validate_r2_install import validate_r2_install
 
 REQUIRED_ROOT_FILES = [
     "README.md",
@@ -193,7 +194,7 @@ def _check_governance(errors: list[str], manifest: dict[str, Any]) -> None:
     ids = [entry.get("id", "") for entry in entries]
     for duplicate in find_duplicates(ids):
         errors.append(f"duplicate decision id: {duplicate}")
-    allowed_status = {"ACCEPTED", "PROVISIONAL", "OPEN", "REJECTED"}
+    allowed_status = {"ACCEPTED", "PROVISIONAL", "OPEN", "SUPERSEDED_BY_R2", "REJECTED"}
     for entry in entries:
         decision_id = entry.get("id", "")
         if re.fullmatch(r"RR-[DPO][0-9]{3}", decision_id) is None:
@@ -942,6 +943,7 @@ def collect_errors() -> list[str]:
     _check_lua(errors)
     _check_hybrid_workflow(errors)
     _check_codex_route_infrastructure(errors)
+    errors.extend(f"R2 installation: {error}" for error in validate_r2_install())
     _check_originality(errors)
     _check_lock(errors)
     return errors
@@ -963,6 +965,7 @@ def main() -> int:
     print("- Lua static policy and available syntax check: PASS")
     print("- hybrid Codex/OpenCode/Grok workflow: PASS")
     print("- Codex progressive-disclosure route infrastructure: PASS")
+    print("- R2 authority installation and progressive-delivery registry: PASS")
     print("- originality and release block: PASS")
     print("- package lock: PASS")
     return 0

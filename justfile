@@ -19,6 +19,9 @@ codex-check:
     python3 tools/codex_route.py self-check --request .codex/routes/baseline-request.json --route-id M1-CODEX-ROUTE-BASELINE --mode ACCEPT --milestone M1 --batch-id M1-B001
     python3 -m unittest tests.test_codex_route.CodexRouteNegativeProbeTests -v
 
+r2-validate:
+    python3 tools/validate_r2_install.py
+
 lock:
     python3 tools/update_lock.py
 

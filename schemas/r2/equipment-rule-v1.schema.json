@@ -1,0 +1,162 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://rule-residual.invalid/schemas/r2/equipment-rule-v1.schema.json",
+  "title": "R2 Equipment Rule",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "equipment_id",
+    "rule_ref",
+    "semantic_length",
+    "binding",
+    "ordinary_item",
+    "provenance"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "1.0"
+    },
+    "equipment_id": {
+      "type": "string",
+      "pattern": "^[A-Z][A-Z0-9]*(?:-[A-Z0-9]+)+$",
+      "minLength": 3,
+      "maxLength": 128
+    },
+    "rule_ref": {
+      "type": "string",
+      "pattern": "^[A-Z][A-Z0-9]*(?:-[A-Z0-9]+)+$",
+      "minLength": 3,
+      "maxLength": 128
+    },
+    "semantic_length": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "classification",
+        "condition_nodes",
+        "branches",
+        "effect_stages",
+        "subject_classes",
+        "authority_density"
+      ],
+      "properties": {
+        "classification": {
+          "enum": [
+            "SHORT",
+            "LONG"
+          ]
+        },
+        "condition_nodes": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "branches": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "effect_stages": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "subject_classes": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "authority_density": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        }
+      }
+    },
+    "binding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "owner_kind",
+        "permanent",
+        "permanentization_requirements"
+      ],
+      "properties": {
+        "owner_kind": {
+          "enum": [
+            "CHARACTER",
+            "PARTY",
+            "KEY_ITEM",
+            "ENTANGLED_CAUSALITY"
+          ]
+        },
+        "permanent": {
+          "type": "boolean"
+        },
+        "permanentization_requirements": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": ".*\\S.*"
+          }
+        }
+      }
+    },
+    "ordinary_item": {
+      "const": false
+    },
+    "provenance": {
+      "$ref": "https://rule-residual.invalid/schemas/r2/rule-semantic-v1.schema.json#/$defs/provenance"
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "semantic_length": {
+            "properties": {
+              "classification": {
+                "const": "SHORT"
+              }
+            }
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "semantic_length": {
+            "properties": {
+              "branches": {
+                "maximum": 1
+              },
+              "condition_nodes": {
+                "maximum": 2
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "semantic_length": {
+            "properties": {
+              "classification": {
+                "const": "LONG"
+              }
+            }
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "semantic_length": {
+            "properties": {
+              "effect_stages": {
+                "minimum": 2
+              }
+            }
+          }
+        }
+      }
+    }
+  ]
+}

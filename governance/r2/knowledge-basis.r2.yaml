@@ -1,0 +1,10 @@
+schema_version: '1.0'
+archive_sha256: 4aa6507522123f68370f07e943227dea6c57aefddf580a9e0c0841c34cb9a7da
+source_file_count: 9
+usage: REFERENCE_ONLY
+derived_frozen_decisions:
+- R2-A01..R2-J24
+prohibitions:
+- Do not copy case texts into production content.
+- Do not treat style libraries as mechanics or region taxonomy.
+- Do not package the knowledge archive into runtime artifacts.

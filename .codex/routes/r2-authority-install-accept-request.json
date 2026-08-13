@@ -1,0 +1,25 @@
+{
+  "schema_version": "1.0",
+  "route_id": "R2-AUTHORITY-INSTALL-ACCEPT",
+  "mode": "ACCEPT",
+  "milestone": "M1",
+  "batch_id": "M1-B002",
+  "capacity_bytes": 196608,
+  "documents": [
+    {"path":"AGENTS.md","required_sections":["M1-AGENTS-CONTRACT"],"optional_sections":[],"reason":"Bind the repository contract for independent acceptance."},
+    {"path":"README.md","required_sections":["M1-README-ENTRY"],"optional_sections":[],"reason":"Bind the installed authority and command entry."},
+    {"path":".codex/SESSION_START.md","required_sections":["M1-CODEX-SESSION-START","R2-CODEX-SESSION-START"],"optional_sections":[],"reason":"Bind role isolation and route freshness."},
+    {"path":".codex/plans/r2-authority-install/INSTALL_PLAN.md","required_sections":["R2-INSTALL-FROZEN-PLAN"],"optional_sections":[],"reason":"Bind the immutable accepted scope and fixed verification contract."},
+    {"path":".codex/prompts/r2/R2-AUTHORITY-INSTALL/ACCEPT.md","required_sections":["R2-CODEX-R2-INSTALL-ACCEPT"],"optional_sections":[],"reason":"Bind the installed independent ACCEPT role contract."},
+    {"path":"docs/acceptance/r2/R2_AUTHORITY_INSTALL_ACCEPTANCE.md","required_sections":["R2-ACC-AUTHORITY-INSTALL"],"optional_sections":[],"reason":"Bind strict R2 installation acceptance."},
+    {"path":"docs/acceptance/r2/PROGRESSIVE_DISCLOSURE_ACCEPTANCE.md","required_sections":["R2-ACC-PROGRESSIVE-DISCLOSURE"],"optional_sections":[],"reason":"Bind route and context-budget negative probes."},
+    {"path":"docs/acceptance/r2/CONTENT_SAFETY_FILTER_ACCEPTANCE.md","required_sections":["R2-ACC-CONTENT-SAFETY"],"optional_sections":[],"reason":"Bind repeated safety-filter acceptance."},
+    {"path":"docs/acceptance/r2/TRACEABILITY_ACCEPTANCE.md","required_sections":["R2-ACC-TRACEABILITY"],"optional_sections":[],"reason":"Bind independent 191-of-191 verification."},
+    {"path":"docs/authority/r2/00_R2_AUTHORITY_ENTRY.md","required_sections":["R2-AUTH-ENTRY"],"optional_sections":[],"reason":"Bind the authority hierarchy."},
+    {"path":"docs/authority/r2/09_CONTENT_SAFETY_AND_ABSOLUTE_RED_LINES.md","required_sections":["R2-AUTH-SAFETY"],"optional_sections":[],"reason":"Bind normative safety policy."},
+    {"path":"docs/authority/r2/10_CONTENT_VALIDATION_AND_RELEASE_GATES.md","required_sections":["R2-AUTH-VALIDATION"],"optional_sections":[],"reason":"Bind static and release gates."},
+    {"path":"docs/authority/r2/14_M1_INTEGRATION_CONTRACT.md","required_sections":["R2-AUTH-M1-INTEGRATION"],"optional_sections":[],"reason":"Bind supersession and runtime-boundary acceptance."},
+    {"path":"docs/authority/r2/R2_TRACEABILITY.md","required_sections":["R2-AUTH-TRACEABILITY"],"optional_sections":[],"reason":"Bind human-readable traceability requirements."}
+  ],
+  "forbidden_bulk_reads":["docs/**","authoring/**","governance/**","schemas/**","workflow/**","*","git_history_all","prior_chat_transcripts","builder_pass_summary"]
+}

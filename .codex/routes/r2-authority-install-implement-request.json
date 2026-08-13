@@ -1,0 +1,18 @@
+{
+  "schema_version": "1.0",
+  "route_id": "R2-AUTHORITY-INSTALL-IMPLEMENT",
+  "mode": "IMPLEMENT",
+  "milestone": "M1",
+  "batch_id": "M1-B002",
+  "capacity_bytes": 196608,
+  "documents": [
+    {"path":"AGENTS.md","required_sections":["M1-AGENTS-CONTRACT"],"optional_sections":[],"reason":"Bind the repository construction contract."},
+    {"path":"README.md","required_sections":["M1-README-ENTRY"],"optional_sections":[],"reason":"Bind the single authority and tooling entry."},
+    {"path":".codex/SESSION_START.md","required_sections":["M1-CODEX-SESSION-START","R2-CODEX-SESSION-START"],"optional_sections":[],"reason":"Bind the merged repository-native R2 session contract."},
+    {"path":".codex/plans/r2-authority-install/INSTALL_PLAN.md","required_sections":["R2-INSTALL-FROZEN-PLAN"],"optional_sections":[],"reason":"Bind the frozen installation scope and acceptance commands."},
+    {"path":".codex/prompts/r2/R2-AUTHORITY-INSTALL/IMPLEMENT.md","required_sections":["R2-CODEX-R2-INSTALL-IMPLEMENT"],"optional_sections":[],"reason":"Bind the installed IMPLEMENT role contract."},
+    {"path":"docs/authority/r2/00_R2_AUTHORITY_ENTRY.md","required_sections":["R2-AUTH-ENTRY"],"optional_sections":[],"reason":"Bind the installed R2 authority hierarchy."},
+    {"path":"docs/authority/r2/14_M1_INTEGRATION_CONTRACT.md","required_sections":["R2-AUTH-M1-INTEGRATION"],"optional_sections":[],"reason":"Bind the no-runtime-change M1 integration contract."}
+  ],
+  "forbidden_bulk_reads":["docs/**","authoring/**","governance/**","schemas/**","workflow/**","*","git_history_all","prior_chat_transcripts"]
+}

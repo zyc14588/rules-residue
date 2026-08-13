@@ -25,7 +25,8 @@
     {
       "path": ".codex/SESSION_START.md",
       "required_sections": [
-        "M1-CODEX-SESSION-START"
+        "M1-CODEX-SESSION-START",
+        "R2-CODEX-SESSION-START"
       ],
       "optional_sections": [],
       "reason": "Bind the repository-native progressive-disclosure session contract."
@@ -69,14 +70,6 @@
       ],
       "optional_sections": [],
       "reason": "Bind the R2 progressive-disclosure prompt-set overview."
-    },
-    {
-      "path": "/home/zyc14588/RULE_RESIDUAL_R2_AUTHORITY_AND_PROGRESSIVE_DELIVERY_v1.0.0/03_CODEX_PROGRESSIVE_DISCLOSURE/SESSION_START.md",
-      "required_sections": [
-        "R2-CODEX-SESSION-START"
-      ],
-      "optional_sections": [],
-      "reason": "Bind the package session-start role and freshness contract."
     },
     {
       "path": "/home/zyc14588/RULE_RESIDUAL_R2_AUTHORITY_AND_PROGRESSIVE_DELIVERY_v1.0.0/03_CODEX_PROGRESSIVE_DISCLOSURE/R2-AUTHORITY-INSTALL/PLAN.md",

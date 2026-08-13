@@ -1,0 +1,15 @@
+<!-- SECTION-ID: R2-ACC-README -->
+# R2独立验收包
+
+所有验收均以固定候选Commit/Tree和新鲜Reading Map为输入。验收者不得修改候选。
+
+## 入口
+
+- `R2_AUTHORITY_INSTALL_ACCEPTANCE.md`
+- `M2_VERTICAL_SLICE_STRICT_ACCEPTANCE.md`
+- `PROGRESSIVE_DISCLOSURE_ACCEPTANCE.md`
+- `CONTENT_SAFETY_FILTER_ACCEPTANCE.md`
+- `TRACEABILITY_ACCEPTANCE.md`
+- `FAILED_ACCEPTANCE_REPAIR_PROMPT.md`
+
+机器结果必须满足 `schemas/acceptance-result-v1.schema.json`。

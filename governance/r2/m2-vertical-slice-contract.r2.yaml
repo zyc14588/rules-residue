@@ -1,0 +1,53 @@
+schema_version: '1.0'
+milestone_id: M2
+status: PROPOSED_INPUT_REQUIRES_NATIVE_PLAN
+depends_on:
+- M1_INDEPENDENT_ACCEPTED_AND_MERGED
+- R2_AUTHORITY_INSTALL_ACCEPTED
+requirements:
+- id: M2-REQ-001
+  statement: R2 authority integration on accepted M1 baseline
+- id: M2-REQ-002
+  statement: one complete Region with observation/resolution/permanent stabilization
+- id: M2-REQ-003
+  statement: one logically abnormal zone with explicit warning and no-death solution
+- id: M2-REQ-004
+  statement: one long-rule equipment and one short-rule equipment
+- id: M2-REQ-005
+  statement: Type1/Type2 causal bomb state and TPK inversion
+- id: M2-REQ-006
+  statement: single death, deceased view, causal tether and paid physical intervention
+- id: M2-REQ-007
+  statement: TPK restart, weighted information, permanent anomaly and personal universal cost
+- id: M2-REQ-008
+  statement: fixed, self-built and original anchor behavior
+- id: M2-REQ-009
+  statement: immutable campaign seed manifest
+- id: M2-REQ-010
+  statement: player/host/mechanical/audit visibility separation
+- id: M2-REQ-011
+  statement: proxy multi-stage Boss and all three ending simulations
+- id: M2-REQ-012
+  statement: 2-6 player scaling probes and Boss-entry return roster
+- id: M2-REQ-013
+  statement: repeat content safety filtering
+- id: M2-REQ-014
+  statement: deterministic package build and independent acceptance
+non_goals:
+- six production regions
+- production final boss full content
+- production release
+- multi-language content
+- unauthorized TRPG_PLATFORM changes
+mandatory_acceptance:
+- rule_semantics
+- loop_anchor
+- deceased_view
+- personal_cost_authorization
+- seed_immutability
+- visibility_isolation
+- repeat_safety_filter
+- 2_to_6_players
+- three_branch_simulation
+- deterministic_package
+- independent_acceptance

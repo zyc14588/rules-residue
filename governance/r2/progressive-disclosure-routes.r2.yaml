@@ -1,0 +1,72 @@
+schema_version: '1.0'
+context_policy:
+  soft_ratio: 0.55
+  hard_ratio: 0.7
+  hard_action: BLOCK_AND_REPLAN
+freshness:
+  bind:
+  - commit
+  - tree
+  - document_sha256
+  - section_id
+  stale_action: REJECT_AND_REGENERATE
+routes:
+- route_id: R2-AUTHORITY-INSTALL
+  modes:
+  - PLAN
+  - IMPLEMENT
+  - ACCEPT
+  - REPAIR
+  objective: Install R2 authority docs, machine registry, authoring truth propagation and schemas without runtime implementation.
+  always_read_sections:
+  - R2-INTEGRATION-M1-BASELINE
+  - R2-INTEGRATION-CONFLICTS
+  - R2-AUTH-ENTRY
+  - R2-AUTH-M1-INTEGRATION
+  conditional_sections:
+    machine_registry:
+    - R2-AUTH-DECISION-INDEX
+    - R2-AUTH-TRACEABILITY
+    content_safety:
+    - R2-AUTH-SAFETY
+    open_truth_propagation:
+    - R2-AUTH-WORLD-TRUTH
+    acceptance:
+    - R2-AUTH-VALIDATION
+  forbidden_bulk_reads:
+  - docs/**
+  - git_history_all
+  - prior_chat_transcripts
+  - knowledge.zip_full_for_implementation
+  write_boundary: docs/authority/r2/**, governance/r2/**, schemas/r2/**, directly affected authoring/**, one current authority
+    entry source
+- route_id: M2-VERTICAL-SLICE
+  modes:
+  - PLAN
+  - IMPLEMENT
+  - ACCEPT
+  - REPAIR
+  objective: Implement one end-to-end vertical slice on top of M1 and accepted R2 authority.
+  always_read_sections:
+  - R2-AUTH-M2-CONTRACT
+  - R2-AUTH-RULE-LOOP
+  - R2-AUTH-CHARACTER-EQUIPMENT
+  - R2-AUTH-CONTINENT-REGIONS
+  - R2-AUTH-CAMPAIGN-HOSTING
+  conditional_sections:
+    boss_endings:
+    - R2-AUTH-ENDINGS
+    art_text_audio:
+    - R2-AUTH-PRESENTATION
+    safety:
+    - R2-AUTH-SAFETY
+    platform_conflict:
+    - R2-INTEGRATION-CONFLICTS
+    release_gate:
+    - R2-AUTH-VALIDATION
+  forbidden_bulk_reads:
+  - all_authoring_regions
+  - all_future_modules
+  - full_GM_truth_for_non_GM_worker
+  - unrelated_platform_repository
+  write_boundary: native M2 batch frozen scope only

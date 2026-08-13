@@ -1,0 +1,29 @@
+schema_version: '1.0'
+role_mappings:
+  PLANNER:
+    write_plan: true
+    write_source: false
+  BUILDER:
+    write_plan: false
+    write_source: true
+  VERIFIER:
+    write_plan: false
+    write_source: false
+  REPAIR:
+    write_plan: false
+    write_source: true
+  SCRIPT_WORKER:
+    write_plan: false
+    write_source: TASK_PACKET_ONLY
+  ART_WORKER:
+    write_plan: false
+    write_source: TASK_PACKET_ONLY
+binding_required:
+- commit
+- tree
+- document_sha256
+- section_id
+- context_budget
+soft_context_ratio: 0.55
+hard_context_ratio: 0.7
+stale_action: REJECT

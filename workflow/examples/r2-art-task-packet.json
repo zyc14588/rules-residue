@@ -1,0 +1,43 @@
+{
+  "schema_version": "rules-residue.task-packet/1.0",
+  "task_id": "RR-TASK-9002",
+  "status": "PLANNED",
+  "owner": "grok",
+  "task_type": "art",
+  "objective": "Example-only R2 art packet for producing pure-2D key-item form studies after a future M2 PLAN; it does not authorize work now.",
+  "authority": [
+    "docs/authority/r2/08_VISUAL_AUDIO_AND_TEXT_STYLE.md#R2-AUTH-PRESENTATION",
+    "authoring/art/briefs/R2_ART_BRIEF_TEMPLATE.md#R2-AUTHORING-ART-BRIEF-TEMPLATE"
+  ],
+  "inputs": [
+    "authoring/art/briefs/M2_KEY_ITEM_1_2.md#sha256=<PIN_AT_PLAN>"
+  ],
+  "allowed_paths": [
+    "authoring/art/returns/M2_KEY_ITEM/**"
+  ],
+  "forbidden_paths": [
+    "docs/**",
+    "governance/**",
+    "schemas/**",
+    "game-package/**",
+    "authoring/story/01_TRUTH_BIBLE.md",
+    "campaign-seed-manifest/**"
+  ],
+  "open_decisions": [],
+  "acceptance": [
+    "The asset is pure 2D.",
+    "Both forms preserve the same causal-core silhouette.",
+    "Type 1 converges inward and Type 2 inverts outward.",
+    "No internal mechanical labels appear in player-facing art.",
+    "Source and rights declarations are present.",
+    "The repeated content-safety filter passes."
+  ],
+  "expected_outputs": [
+    "Source image candidate",
+    "Export image candidate",
+    "Metadata and SHA-256",
+    "Rights declaration",
+    "Self-review with candidate artifact, evidence, and limitations"
+  ],
+  "notes": "Converted without semantic loss from the immutable R2 YAML concept candidate. Example only: M2_IMPLEMENTATION_STARTED=NO; a future PLAN must pin the real brief hash and sign a new packet."
+}

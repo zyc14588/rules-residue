@@ -1,0 +1,525 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://rule-residual.invalid/schemas/r2/rule-semantic-v1.schema.json",
+  "title": "R2 Normative Rule Semantic",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "rule_id",
+    "authority_layer",
+    "scope",
+    "applies_to",
+    "trigger",
+    "effects",
+    "save_protocol",
+    "visibility",
+    "persistence",
+    "verification",
+    "provenance"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "1.0"
+    },
+    "rule_id": {
+      "type": "string",
+      "pattern": "^[A-Z][A-Z0-9]*(?:-[A-Z0-9]+)+$",
+      "minLength": 3,
+      "maxLength": 128
+    },
+    "title": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": ".*\\S.*"
+    },
+    "authority_layer": {
+      "enum": [
+        "WORLD",
+        "CONTINENT",
+        "REGION",
+        "DOMAIN",
+        "LOCATION",
+        "ENTITY",
+        "TEMPORARY"
+      ]
+    },
+    "scope": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "regions",
+        "domains",
+        "locations",
+        "time_conditions"
+      ],
+      "properties": {
+        "regions": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^[A-Z][A-Z0-9]*(?:-[A-Z0-9]+)+$",
+            "minLength": 3,
+            "maxLength": 128
+          }
+        },
+        "domains": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^[A-Z][A-Z0-9]*(?:-[A-Z0-9]+)+$",
+            "minLength": 3,
+            "maxLength": 128
+          }
+        },
+        "locations": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^[A-Z][A-Z0-9]*(?:-[A-Z0-9]+)+$",
+            "minLength": 3,
+            "maxLength": 128
+          }
+        },
+        "time_conditions": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": ".*\\S.*"
+          }
+        }
+      }
+    },
+    "applies_to": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "subjects",
+        "identity_conditions",
+        "state_conditions"
+      ],
+      "properties": {
+        "subjects": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "enum": [
+              "PLAYER_CHARACTER",
+              "NPC",
+              "ENTITY",
+              "OBJECT",
+              "AREA",
+              "FACTION",
+              "KEY_ITEM",
+              "DECEASED_VIEW",
+              "ANY"
+            ]
+          }
+        },
+        "identity_conditions": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": ".*\\S.*"
+          }
+        },
+        "state_conditions": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": ".*\\S.*"
+          }
+        }
+      }
+    },
+    "trigger": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "event",
+        "conditions"
+      ],
+      "properties": {
+        "event": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": ".*\\S.*"
+        },
+        "conditions": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": ".*\\S.*"
+          }
+        }
+      }
+    },
+    "effects": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "immediate",
+        "long_term",
+        "residue"
+      ],
+      "properties": {
+        "immediate": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/effect"
+          }
+        },
+        "long_term": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/effect"
+          }
+        },
+        "residue": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/effect"
+          }
+        }
+      }
+    },
+    "save_protocol": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "kind",
+        "success",
+        "failure"
+      ],
+      "properties": {
+        "kind": {
+          "enum": [
+            "NONE_ABSOLUTE",
+            "STANDARD",
+            "CUSTOM",
+            "PAID_SAFE_VERIFICATION"
+          ]
+        },
+        "ability": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "cost_refs": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^[A-Z][A-Z0-9]*(?:-[A-Z0-9]+)+$",
+            "minLength": 3,
+            "maxLength": 128
+          }
+        },
+        "success": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/effect"
+          }
+        },
+        "failure": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/effect"
+          }
+        }
+      }
+    },
+    "exceptions": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/exception"
+      }
+    },
+    "collision": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "priority": {
+          "type": "integer",
+          "minimum": -1000,
+          "maximum": 1000
+        },
+        "specificity_keys": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "enum": [
+              "SCOPE",
+              "IDENTITY",
+              "TIME",
+              "STATE",
+              "PERMISSION",
+              "PAID_COST"
+            ]
+          }
+        },
+        "conflicts_with": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^[A-Z][A-Z0-9]*(?:-[A-Z0-9]+)+$",
+            "minLength": 3,
+            "maxLength": 128
+          }
+        },
+        "resolution": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": ".*\\S.*"
+        },
+        "can_be_logically_abnormal": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "priority",
+        "specificity_keys",
+        "conflicts_with",
+        "resolution",
+        "can_be_logically_abnormal"
+      ]
+    },
+    "visibility": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "player_text_refs",
+        "host_explanation_ref",
+        "mechanical_only_fields"
+      ],
+      "properties": {
+        "player_text_refs": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^[A-Z][A-Z0-9]*(?:-[A-Z0-9]+)+$",
+            "minLength": 3,
+            "maxLength": 128
+          }
+        },
+        "host_explanation_ref": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "mechanical_only_fields": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": ".*\\S.*"
+          }
+        }
+      }
+    },
+    "persistence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "across_loop",
+        "permanent_prefix_required",
+        "reset_behavior"
+      ],
+      "properties": {
+        "across_loop": {
+          "type": "boolean"
+        },
+        "permanent_prefix_required": {
+          "type": "boolean"
+        },
+        "reset_behavior": {
+          "enum": [
+            "RESET",
+            "PERSIST",
+            "RECOMPUTE_FROM_CAUSAL_SOURCE",
+            "SEED_FIXED"
+          ]
+        }
+      }
+    },
+    "verification": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "risk_required",
+        "ordinary_paths",
+        "safe_talent_path",
+        "cross_validation_paths"
+      ],
+      "properties": {
+        "risk_required": {
+          "const": true
+        },
+        "ordinary_paths": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": ".*\\S.*"
+          }
+        },
+        "safe_talent_path": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "cross_validation_paths": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": ".*\\S.*"
+          }
+        }
+      }
+    },
+    "provenance": {
+      "$ref": "#/$defs/provenance"
+    },
+    "safety_labels": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "pattern": ".*\\S.*"
+      }
+    }
+  },
+  "$defs": {
+    "effect": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "effect_id",
+        "operation",
+        "target",
+        "parameters"
+      ],
+      "properties": {
+        "effect_id": {
+          "type": "string",
+          "pattern": "^[A-Z][A-Z0-9]*(?:-[A-Z0-9]+)+$",
+          "minLength": 3,
+          "maxLength": 128
+        },
+        "operation": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": ".*\\S.*"
+        },
+        "target": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": ".*\\S.*"
+        },
+        "parameters": {
+          "type": "object"
+        }
+      }
+    },
+    "exception": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "exception_id",
+        "condition",
+        "result"
+      ],
+      "properties": {
+        "exception_id": {
+          "type": "string",
+          "pattern": "^[A-Z][A-Z0-9]*(?:-[A-Z0-9]+)+$",
+          "minLength": 3,
+          "maxLength": 128
+        },
+        "condition": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": ".*\\S.*"
+        },
+        "result": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": ".*\\S.*"
+        },
+        "cost_ref": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "provenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "author",
+        "modifiers",
+        "reviewers",
+        "mechanical_consistency_status",
+        "content_version"
+      ],
+      "properties": {
+        "author": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": ".*\\S.*"
+        },
+        "modifiers": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": ".*\\S.*"
+          }
+        },
+        "reviewers": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": ".*\\S.*"
+          }
+        },
+        "mechanical_consistency_status": {
+          "enum": [
+            "NOT_CHECKED",
+            "CHECKING",
+            "FAIL",
+            "CONDITIONAL_PASS",
+            "PASS",
+            "SUPERSEDED"
+          ]
+        },
+        "content_version": {
+          "type": "string",
+          "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"
+        }
+      }
+    }
+  }
+}

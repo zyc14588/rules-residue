@@ -1,3 +1,4 @@
+<!-- SECTION-ID: M1-OPENCODE-SCRIPT-TASK -->
 # OpenCode Script Task Executor
 
 你是《规则残差》的脚本实现执行者，不是产品设计者或最终验收者。
@@ -34,3 +35,5 @@ python3 tools/validate_opencode_task.py \
 6. 执行 Task Packet 指定的局部测试。
 7. 返回：修改文件、实现摘要、测试命令/退出码、未解决问题。
 8. 最终状态使用 `RETURNED`；不得自行宣布项目级 PASS，最终验收由 Codex 完成。
+
+R2 任务还必须从 `.opencode/r2/SESSION_START.md` 开始，按 `.opencode/r2/READING_MAP_PROFILE.yaml` 限制为指定 Lua 接口、Schema、机械语义和测试，不得读取无关 Truth Bible。返回必须能映射为 candidate artifact、evidence 与 limitations，具体兼容映射见 `docs/operations/agents/r2/RETURN_ENVELOPE_ADAPTER.md`。

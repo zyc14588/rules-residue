@@ -1,0 +1,169 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://rule-residual.invalid/schemas/r2/logical-anomaly-zone-v1.schema.json",
+  "title": "R2 Logically Abnormal Zone",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "zone_id",
+    "region_id",
+    "warning",
+    "mainline_blocking",
+    "no_death_solution",
+    "logic_conflicts",
+    "entry_contract",
+    "exit_methods",
+    "rewards",
+    "campaign_end_authority",
+    "provenance"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "1.0"
+    },
+    "zone_id": {
+      "type": "string",
+      "pattern": "^[A-Z][A-Z0-9]*(?:-[A-Z0-9]+)+$",
+      "minLength": 3,
+      "maxLength": 128
+    },
+    "region_id": {
+      "type": "string",
+      "pattern": "^[A-Z][A-Z0-9]*(?:-[A-Z0-9]+)+$",
+      "minLength": 3,
+      "maxLength": 128
+    },
+    "warning": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "explicit",
+        "player_visible_refs"
+      ],
+      "properties": {
+        "explicit": {
+          "const": true
+        },
+        "player_visible_refs": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "pattern": "^[A-Z][A-Z0-9]*(?:-[A-Z0-9]+)+$",
+            "minLength": 3,
+            "maxLength": 128
+          }
+        }
+      }
+    },
+    "mainline_blocking": {
+      "const": false
+    },
+    "no_death_solution": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "exists",
+        "solution_ref",
+        "requires_random_death"
+      ],
+      "properties": {
+        "exists": {
+          "const": true
+        },
+        "solution_ref": {
+          "type": "string",
+          "pattern": "^[A-Z][A-Z0-9]*(?:-[A-Z0-9]+)+$",
+          "minLength": 3,
+          "maxLength": 128
+        },
+        "requires_random_death": {
+          "const": false
+        }
+      }
+    },
+    "logic_conflicts": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": [
+          "claim_a",
+          "claim_b",
+          "execution_model"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "claim_a": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": ".*\\S.*"
+          },
+          "claim_b": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": ".*\\S.*"
+          },
+          "execution_model": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": ".*\\S.*"
+          }
+        }
+      }
+    },
+    "entry_contract": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "pattern": ".*\\S.*"
+      }
+    },
+    "exit_methods": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string",
+        "pattern": "^[A-Z][A-Z0-9]*(?:-[A-Z0-9]+)+$",
+        "minLength": 3,
+        "maxLength": 128
+      }
+    },
+    "rewards": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string",
+        "pattern": "^[A-Z][A-Z0-9]*(?:-[A-Z0-9]+)+$",
+        "minLength": 3,
+        "maxLength": 128
+      }
+    },
+    "campaign_end_authority": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "can_end_campaign",
+        "explicit_warning_required",
+        "random_trigger_forbidden"
+      ],
+      "properties": {
+        "can_end_campaign": {
+          "type": "boolean"
+        },
+        "explicit_warning_required": {
+          "const": true
+        },
+        "random_trigger_forbidden": {
+          "const": true
+        }
+      }
+    },
+    "provenance": {
+      "$ref": "https://rule-residual.invalid/schemas/r2/rule-semantic-v1.schema.json#/$defs/provenance"
+    }
+  }
+}

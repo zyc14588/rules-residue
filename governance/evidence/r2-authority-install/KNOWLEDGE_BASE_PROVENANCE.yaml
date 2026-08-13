@@ -1,0 +1,38 @@
+schema_version: '1.0'
+package_id: rule-residual-r2-knowledge-provenance
+source_archive: knowledge.zip
+source_archive_sha256: 4aa6507522123f68370f07e943227dea6c57aefddf580a9e0c0841c34cb9a7da
+parsed_file_count: 9
+authority_effect: REFERENCE_ONLY_UNLESS_EXPRESSLY_FROZEN_IN_R2_DECISIONS
+files:
+- path: 知识库/无限流知识库.md
+  sha256: c98291a298155644853b2a971abbb3be426a9602ec7d3f3f78fabab7d19608fe
+  role: 题材结构参考
+- path: 知识库/规则怪谈知识库.md
+  sha256: 09f14386ea65fb0e4a0116d49f73b5174bbeb6c2989618d7040bbcfece95c2c0
+  role: 规则怪谈机制参考
+- path: 知识库/规则怪谈案例库.md
+  sha256: 3d99a502caef0eba3659cd77f4f755559a482828ba37403f8e0dd9c7de5a01c7
+  role: 案例矩阵与创作参考
+- path: 知识库/styles/01_守则_手册_告示体_风格库.md
+  sha256: 73c62fcbee204371f7014580795496080b925ae01fa2f5b66b96adb6ea2ce2e0
+  role: 表现声部参考
+- path: 知识库/styles/02_公文_档案_媒体体_风格库.md
+  sha256: 8aec8b498fbc86ae4f56162f723cb6fe9c02324d0547a43557d7296b08ff69dd
+  role: 表现声部参考
+- path: 知识库/styles/03_叙事与私人文本体_风格库.md
+  sha256: 958fd7564be07e695c3f7b531ab36570aefa603eab9cab4723cac0beb81c7e9c
+  role: 表现声部参考
+- path: 知识库/styles/04_海外英译系_风格库.md
+  sha256: 2e75826d7fae817364e5beca0990958e76f4b0bd1c42ed9157ad053b803ea205
+  role: 表现声部参考
+- path: 知识库/styles/05_互文_教义_经典改写系_风格库.md
+  sha256: 5abc5abc9d724fd1af01c667111dcfc0e7c7303eceee5cae466ec79418f25e12
+  role: 表现声部参考
+- path: 知识库/styles/06_元层_戏仿_双声道系_风格库.md
+  sha256: ecbcc67030f0ee3a8a64aa3ca74b2d8fe8df358e6064dda90369ebcc80641859
+  role: 表现声部参考
+rules:
+- 知识库和案例库是创作参考，不直接成为运行时规则真相。
+- 风格库是表现层预设，不是大区、阵营或机械分类。
+- 任何衍生内容仍须通过R2因果、红线、原创性和全内容交叉验证。

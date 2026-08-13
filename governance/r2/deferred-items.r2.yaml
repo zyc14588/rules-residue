@@ -1,0 +1,62 @@
+schema_version: '1.0'
+items:
+- deferred_id: DEFER-R2-D12-001
+  status: DEFERRED_WITH_FROZEN_BOUNDARY
+  title: 记忆主张机制
+  frozen_boundary: 必须能登记、比较、关联与验证；不能自动升级为世界真相
+  latest_resolution_stage: 证据图/AI主持协议冻结前
+  temporary_assumption_policy: TEST_ONLY_PLACEHOLDER_ALLOWED; NO_PRODUCTION_SEMANTIC
+- deferred_id: DEFER-R2-E18-001
+  status: DEFERRED_WITH_FROZEN_BOUNDARY
+  title: 共同梦境演出细节
+  frozen_boundary: 回归只为结局演出，无后日谈玩法与机械异常
+  latest_resolution_stage: 终局内容制作前
+  temporary_assumption_policy: TEST_ONLY_PLACEHOLDER_ALLOWED; NO_PRODUCTION_SEMANTIC
+- deferred_id: DEFER-R2-H20-001
+  status: DEFERRED_WITH_FROZEN_BOUNDARY
+  title: 真结局高资源开局
+  frozen_boundary: 仅真结局解锁有限元资源，不继承答案、永久规则或代价
+  latest_resolution_stage: NG+/经济平衡前
+  temporary_assumption_policy: TEST_ONLY_PLACEHOLDER_ALLOWED; NO_PRODUCTION_SEMANTIC
+- deferred_id: DEFER-R2-C13-001
+  status: DEFERRED_WITH_FROZEN_BOUNDARY
+  title: 通用代价数值
+  frozen_boundary: 个人持有、极稀有、超高难奖励、少量固定来源
+  latest_resolution_stage: 数值平衡前
+  temporary_assumption_policy: TEST_ONLY_PLACEHOLDER_ALLOWED; NO_PRODUCTION_SEMANTIC
+- deferred_id: DEFER-R2-C14-001
+  status: DEFERRED_WITH_FROZEN_BOUNDARY
+  title: 豁免协议模板
+  frozen_boundary: 每条规则独立协议，绝对规则可无普通豁免
+  latest_resolution_stage: 规则引擎Schema冻结前
+  temporary_assumption_policy: TEST_ONLY_PLACEHOLDER_ALLOWED; NO_PRODUCTION_SEMANTIC
+- deferred_id: DEFER-R2-F12-001
+  status: DEFERRED_WITH_FROZEN_BOUNDARY
+  title: 自建锚点算法
+  frozen_boundary: 高阶条件后支付个人代价，在任意合法位置建立
+  latest_resolution_stage: 锚点技术设计前
+  temporary_assumption_policy: TEST_ONLY_PLACEHOLDER_ALLOWED; NO_PRODUCTION_SEMANTIC
+- deferred_id: DEFER-R2-H16-001
+  status: DEFERRED_WITH_FROZEN_BOUNDARY
+  title: 2—6人缩放公式
+  frozen_boundary: 缩放并发目标、信息压力、行动经济和攻击面
+  latest_resolution_stage: 战斗数值验证前
+  temporary_assumption_policy: TEST_ONLY_PLACEHOLDER_ALLOWED; NO_PRODUCTION_SEMANTIC
+- deferred_id: DEFER-R2-I18-001
+  status: DEFERRED_WITH_FROZEN_BOUNDARY
+  title: 地图技能等级/误差
+  frozen_boundary: 主持全图；玩家技能决定侦察记录精度与版本比较
+  latest_resolution_stage: 地图UI/技能设计前
+  temporary_assumption_policy: TEST_ONLY_PLACEHOLDER_ALLOWED; NO_PRODUCTION_SEMANTIC
+- deferred_id: DEFER-R2-REGIONS-001
+  status: DEFERRED_WITH_FROZEN_BOUNDARY
+  title: 六大区正式主题
+  frozen_boundary: 每区遵守纠缠+应对+异常区+多声部+永久规则模板
+  latest_resolution_stage: M3内容生产前
+  temporary_assumption_policy: TEST_ONLY_PLACEHOLDER_ALLOWED; NO_PRODUCTION_SEMANTIC
+- deferred_id: DEFER-R2-BOSS-001
+  status: DEFERRED_WITH_FROZEN_BOUNDARY
+  title: 正式Boss人格清单
+  frozen_boundary: 必须包含失败主角团、牺牲者、维护者和扭曲层
+  latest_resolution_stage: 终局内容生产前
+  temporary_assumption_policy: TEST_ONLY_PLACEHOLDER_ALLOWED; NO_PRODUCTION_SEMANTIC

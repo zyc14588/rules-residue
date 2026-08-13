@@ -1,0 +1,18 @@
+schema_version: '1.0'
+platform_role: OPENCODE_SCRIPT_WORKER
+default_layers:
+- L0_IDENTITY
+- L1_MIN_AUTHORITY
+- L2_SCRIPT_SPEC
+conditional_layers:
+- L3_HOST_API
+- L3_FAILURE_FIXTURE
+forbidden:
+- FULL_TRUTH_BIBLE
+- FULL_CAMPAIGN_SEED
+- UNRELATED_REGIONS
+- AUTHORITY_EDIT
+- SCHEMA_EDIT
+soft_context_ratio: 0.55
+hard_context_ratio: 0.7
+stale_action: REJECT

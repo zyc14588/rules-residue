@@ -1,0 +1,53 @@
+schema_version: '1.0'
+record_id: R2-AUTHORITY-INSTALL-PROVENANCE
+package_id: rule-residual-r2-authority-progressive-delivery
+package_version: 1.0.0
+package_status: INTEGRATION_CANDIDATE
+package_source: /home/zyc14588/RULE_RESIDUAL_R2_AUTHORITY_AND_PROGRESSIVE_DELIVERY_v1.0.0
+source_policy: READ_ONLY
+source_commit: e8e536fe5c96c389736ffcf8d4855fa146a2b9c2
+plan_commit: e27b92143f6e657b31d791c8d305e79ec6b72d7e
+package_manifest_sha256: a5adb9fad5439926e0c8d46f23f3e3e107812bdd9ce13097acea04b8cc0a7ba1
+sha256sums_sha256: 2d65a2ea9fefffc4f8e785fe2e55a0bdc83b7a54559afbb51162daedc0ab8e72
+install_source_digest: 2d65a2ea9fefffc4f8e785fe2e55a0bdc83b7a54559afbb51162daedc0ab8e72
+sha256sums_entries: 123
+package_file_count: 124
+sha256_verification:
+  command: sha256sum -c SHA256SUMS
+  result: PASS
+wrapper_evidence:
+- path: README.md
+  disposition: PACKAGE_PROVENANCE_ONLY
+  sha256: 862de638739f9828ab9ac5cfd3dc5e95ff3033ca48dc1e4927c21df28a2057fd
+- path: FILE_INDEX.md
+  disposition: PACKAGE_PROVENANCE_ONLY
+  sha256: 0e238fe38d03c835ad6ec53357ad734ad448c5993f7f826ae4d11d343acea2fd
+- path: PACKAGE_MANIFEST.yaml
+  disposition: PACKAGE_PROVENANCE_ONLY
+  sha256: a5adb9fad5439926e0c8d46f23f3e3e107812bdd9ce13097acea04b8cc0a7ba1
+- path: INTEGRITY_REPORT.json
+  disposition: PACKAGE_PROVENANCE_ONLY
+  sha256: 8089bf339245804c56b019c618e7335a1e11b5e11682d1c48ca3140db820262a
+- path: SHA256SUMS
+  disposition: PACKAGE_PROVENANCE_ONLY
+  sha256: 2d65a2ea9fefffc4f8e785fe2e55a0bdc83b7a54559afbb51162daedc0ab8e72
+disposition_matrix: .codex/plans/r2-authority-install/package-disposition.yaml
+disposition_counts:
+  INSTALL_CANONICAL: 108
+  MERGE_INTO_EXISTING: 9
+  REFERENCE_ONLY: 0
+  PACKAGE_PROVENANCE_ONLY: 5
+  DUPLICATE_OF_CANONICAL: 2
+  NOT_APPLICABLE_FIRST_RELEASE: 0
+  UNCLASSIFIED: 0
+canonical_install_fidelity:
+  byte_exact: 98
+  repository_whitespace_normalized: 10
+  semantic_change: false
+  record: governance/evidence/r2-authority-install/canonical-normalizations.yaml
+installation_state:
+  R2_AUTHORITY_INSTALLED: true
+  M2_INPUT_INSTALLED: true
+  M2_IMPLEMENTATION_STARTED: false
+  GAME_PACKAGE_RUNTIME_CHANGED: false
+  PLATFORM_REPOSITORY_CHANGED: false

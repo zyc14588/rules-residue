@@ -1,0 +1,17 @@
+schema_version: '1.0'
+platform_role: GROK_ART_WORKER
+default_layers:
+- L0_IDENTITY
+- L1_ART_AUTHORITY
+- L2_ART_BRIEF
+conditional_layers:
+- L3_GM_MASKING_ONLY
+forbidden:
+- FULL_TRUTH_BIBLE
+- FULL_CAMPAIGN_SEED
+- RULE_MECHANICS_EDIT
+- LUA
+- UNRELATED_REGIONS
+soft_context_ratio: 0.55
+hard_context_ratio: 0.7
+stale_action: REJECT

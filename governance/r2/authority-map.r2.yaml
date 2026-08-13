@@ -1,0 +1,37 @@
+schema_version: '1.0'
+authority_order:
+- rank: 1
+  source: governance/r2/decisions.r2.yaml
+  kind: FROZEN_MACHINE_DECISIONS
+- rank: 2
+  source: docs/authority/r2/R2_TERMINOLOGY.md
+  kind: NORMATIVE_TERMINOLOGY
+- rank: 3
+  source: docs/authority/r2/*.md
+  kind: SYSTEM_AUTHORITY
+- rank: 4
+  source: authoring/**
+  kind: AUTHORING_SOURCE
+- rank: 5
+  source: schemas/r2/** + game-package/** + lua/**
+  kind: RUNTIME_IMPLEMENTATION
+- rank: 6
+  source: assets/** + player-visible text
+  kind: PRESENTATION
+- rank: 7
+  source: examples/references/knowledge
+  kind: NON_AUTHORITY_REFERENCE
+visibility_layers:
+- id: PLAYER
+  allowed: discovered world facts and accessible presentation
+  forbidden: seed truth, GM explanations, hidden mechanical tags
+- id: HOST
+  allowed: full current campaign truth, maps and explanations
+  forbidden: changing immutable seed answers
+- id: MECHANICAL
+  allowed: normative semantics, state, events and validators
+  forbidden: unreviewed generative invention
+- id: AUDIT
+  allowed: provenance, safety, candidate and acceptance evidence
+  forbidden: player delivery unless explicitly exported
+conflict_policy: LOWER_RANK_MUST_CHANGE

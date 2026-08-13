@@ -1,0 +1,54 @@
+schema_version: '1.0'
+record_id: R2-INTEGRATION-CONFLICT-CLASSIFICATION
+installation_scope: AUTHORITY_ONLY
+default_status: DEFERRED_WITH_NON_BLOCKING_PROOF
+blocked_design_conflicts: []
+items:
+- conflict_id: R2-INT-001
+  classification: PLATFORM_CAPABILITY_PROBE
+  status: DEFERRED_WITH_NON_BLOCKING_PROOF
+  proof: Install 2-to-6-seat authority now; probe host schema and server limits during M2.
+- conflict_id: R2-INT-002
+  classification: PLATFORM_CAPABILITY_PROBE
+  status: DEFERRED_WITH_NON_BLOCKING_PROOF
+  proof: Install deceased-view whitelist and tether contracts now; probe host support during M2.
+- conflict_id: R2-INT-003
+  classification: R2_COMPATIBILITY_ADAPTER
+  status: DEFERRED_WITH_NON_BLOCKING_PROOF
+  proof: Preserve explicit in-world multi-step intent; a package-side M2 adapter must not add a terminal UI confirmation.
+- conflict_id: R2-INT-004
+  classification: R2_COMPATIBILITY_ADAPTER
+  status: DEFERRED_WITH_NON_BLOCKING_PROOF
+  proof: Distinguish platform safety warnings from puzzle signals while retaining conspicuous anomaly and campaign-termination warnings.
+- conflict_id: R2-INT-005
+  classification: PLATFORM_CAPABILITY_PROBE
+  status: DEFERRED_WITH_NON_BLOCKING_PROOF
+  proof: Install 35-to-60 session and approximately 100-hour authority; probe campaign save and version locking during M2.
+- conflict_id: R2-INT-006
+  classification: PLATFORM_CAPABILITY_PROBE
+  status: DEFERRED_WITH_NON_BLOCKING_PROOF
+  proof: Install lineage-level unlock boundaries; probe account and cross-campaign declarations without inheriting answer state.
+- conflict_id: R2-INT-007
+  classification: PACKAGE_DECLARABLE
+  status: DEFERRED_WITH_NON_BLOCKING_PROOF
+  proof: Install six-region eligibility and the one-test-region M2 limit without claiming complete launch content.
+- conflict_id: R2-INT-008
+  classification: PLATFORM_CAPABILITY_PROBE
+  status: DEFERRED_WITH_NON_BLOCKING_PROOF
+  proof: Install world-destruction termination semantics; M2 may simulate only in a candidate package and must not rewrite platform history.
+- conflict_id: R2-INT-009
+  classification: PACKAGE_DECLARABLE
+  status: DEFERRED_WITH_NON_BLOCKING_PROOF
+  proof: Install separation among player claims, evidence, Agent memory, and authoritative state.
+- conflict_id: R2-INT-010
+  classification: R2_COMPATIBILITY_ADAPTER
+  status: DEFERRED_WITH_NON_BLOCKING_PROOF
+  proof: Use schemas/r2 and package-namespaced extensions without changing the platform generic item model.
+- conflict_id: R2-INT-011
+  classification: PLATFORM_CAPABILITY_PROBE
+  status: DEFERRED_WITH_NON_BLOCKING_PROOF
+  proof: Install all 18 repeat-filter stages; probe runtime generation, restore, and hot-update support during M2.
+- conflict_id: R2-INT-012
+  classification: R2_COMPATIBILITY_ADAPTER
+  status: DEFERRED_WITH_NON_BLOCKING_PROOF
+  proof: Keep logical-anomaly mechanical execution deterministic and never randomize the correct answer.
