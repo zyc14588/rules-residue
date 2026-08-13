@@ -1,0 +1,518 @@
+{
+  "schema_version": "rules-residue.m2.external-evidence-supplement/1.0",
+  "supplement_id": "M2-B001-EXT-001",
+  "nature": "EXTERNAL_EVIDENCE_SUPPLEMENT",
+  "batch_id": "M2-B001",
+  "created_at": "2026-08-13T08:54:30Z",
+  "accepted_b001_binding": {
+    "accepted_commit": "fdc1f4c9d8bc565888f33b44684cd6ccbe80c127",
+    "accepted_tree": "f37e15cdd65e0a39eebcddb21f56a2c58ae6939e",
+    "historical_result_path": "reports/m2/probes/probe-results.json",
+    "historical_result_sha256": "154e7c0ddf8ce7b2243ad6c78d10ceb6cddf02c3aeb6592716dcc5ad8fc64218",
+    "historical_manifest_path": "reports/m2/probes/evidence-manifest.json",
+    "historical_manifest_sha256": "3a48da621e45980d9b2258513954e1f29480fd9e12a35dcd29c12b77015c8ca7"
+  },
+  "route_binding": {
+    "request_path": ".codex/routes/m2-b001-external-probe-update-request.json",
+    "route_id": "M2-B001-EXTERNAL-PROBE-UPDATE-001",
+    "mode": "IMPLEMENT",
+    "milestone": "M2",
+    "batch_id": "M2-B001",
+    "source_commit": "fdc1f4c9d8bc565888f33b44684cd6ccbe80c127",
+    "source_tree": "f37e15cdd65e0a39eebcddb21f56a2c58ae6939e",
+    "binding_digest": "12fc07fa8a582c335c87a909795146f41625e182da81ff3383b5a31311a9cb05",
+    "context_status": "OK",
+    "context_ratio": 0.4256642659505208,
+    "freshness_status": "PASS",
+    "checked_at": "2026-08-13T08:39:23Z",
+    "command_id": "ROUTE_FRESHNESS"
+  },
+  "external_binding": {
+    "name": "TRPG_PLATFORM",
+    "repository": "/home/zyc14588/TRPG_PLATFORM",
+    "branch": "m1/b002-lua-runtime",
+    "commit": "02dd02447ed07fe6248108365847dccf4023ca00",
+    "tree": "dc15acda453948fc78afdc259fea3e543f9e001c",
+    "tracked_worktree_clean_before": true,
+    "tracked_worktree_clean_after": true,
+    "identity_command_ids": {
+      "before": ["PLATFORM_PRE_STATUS", "PLATFORM_PRE_BRANCH", "PLATFORM_PRE_COMMIT", "PLATFORM_PRE_TREE"],
+      "after": ["PLATFORM_POST_STATUS", "PLATFORM_POST_BRANCH", "PLATFORM_POST_COMMIT", "PLATFORM_POST_TREE"]
+    }
+  },
+  "command_evidence": "reports/m2/probes/external/m2-b001-ext-001/platform-command-evidence.json",
+  "probe_result_transitions": [
+    {
+      "probe_id": "R2-INT-001",
+      "probe_execution": "RETAINED_NO_RETEST",
+      "previous": {
+        "execution_status": "FAIL",
+        "evidence_paths": ["tests/m2/probes/fixtures/local-capability-vectors.json", "tests/m2/probes/fixtures/platform-manifest-seat.toml", "reports/m2/probes/platform-inventory.json", "workflow/queue/m2-b001-trpg-platform-probes.json", "workflow/queue/m2-b001-creator-tool-probes.json"],
+        "target_results": [
+          {"target": "A:rules-residue", "execution_status": "PASS", "evidence_paths": ["tests/m2/probes/fixtures/local-capability-vectors.json"]},
+          {"target": "B:TRPG_PLATFORM", "execution_status": "FAIL", "evidence_paths": ["reports/m2/probes/platform-inventory.json"]},
+          {"target": "C:Creator Tool", "execution_status": "BLOCKED_EXTERNAL", "evidence_paths": ["reports/m2/probes/platform-inventory.json"]}
+        ],
+        "downstream_blocked_batches": ["M2-B006", "M2-B015", "M2-B016"]
+      },
+      "new": {
+        "execution_status": "FAIL",
+        "evidence_paths": ["tests/m2/probes/fixtures/local-capability-vectors.json", "tests/m2/probes/fixtures/platform-manifest-seat.toml", "reports/m2/probes/platform-inventory.json", "workflow/queue/m2-b001-trpg-platform-probes.json", "workflow/queue/m2-b001-creator-tool-probes.json"],
+        "target_results": [
+          {"target": "A:rules-residue", "execution_status": "PASS", "evidence_paths": ["tests/m2/probes/fixtures/local-capability-vectors.json"]},
+          {"target": "B:TRPG_PLATFORM", "execution_status": "FAIL", "evidence_paths": ["reports/m2/probes/platform-inventory.json"]},
+          {"target": "C:Creator Tool", "execution_status": "BLOCKED_EXTERNAL", "evidence_paths": ["reports/m2/probes/platform-inventory.json"]}
+        ],
+        "downstream_blocked_batches": ["M2-B006", "M2-B015", "M2-B016"]
+      },
+      "transition_reason": "Historical FAIL is retained without automatic retest or reclassification; no new directly relevant complete seat-lifecycle evidence was admitted. It is not a B002 blocker.",
+      "command_ids": []
+    },
+    {
+      "probe_id": "R2-INT-002",
+      "probe_execution": "EXECUTED",
+      "previous": {
+        "execution_status": "BLOCKED_EXTERNAL",
+        "evidence_paths": ["tests/m2/probes/fixtures/local-capability-vectors.json", "reports/m2/probes/platform-inventory.json", "workflow/queue/m2-b001-trpg-platform-probes.json"],
+        "target_results": [
+          {"target": "A:rules-residue", "execution_status": "PASS", "evidence_paths": ["tests/m2/probes/fixtures/local-capability-vectors.json"]},
+          {"target": "B:TRPG_PLATFORM", "execution_status": "BLOCKED_EXTERNAL", "evidence_paths": ["reports/m2/probes/platform-inventory.json"]}
+        ],
+        "downstream_blocked_batches": ["M2-B006", "M2-B015", "M2-B016"]
+      },
+      "new": {
+        "execution_status": "BLOCKED_EXTERNAL",
+        "evidence_paths": ["tests/m2/probes/fixtures/local-capability-vectors.json", "reports/m2/probes/platform-inventory.json", "workflow/queue/m2-b001-trpg-platform-probes.json", "reports/m2/probes/external/m2-b001-ext-001/platform-command-evidence.json"],
+        "target_results": [
+          {"target": "A:rules-residue", "execution_status": "PASS", "evidence_paths": ["tests/m2/probes/fixtures/local-capability-vectors.json"]},
+          {"target": "B:TRPG_PLATFORM", "execution_status": "BLOCKED_EXTERNAL", "evidence_paths": ["reports/m2/probes/external/m2-b001-ext-001/platform-command-evidence.json"]}
+        ],
+        "downstream_blocked_batches": ["M2-B006", "M2-B015", "M2-B016"]
+      },
+      "transition_reason": "The fixed platform executes only a non-playable M0 host shell and exposes no participant/deceased projection or action-policy surface; private tether and whitelist lifecycle remain unavailable.",
+      "command_ids": ["PLATFORMD_HEALTH", "PLATFORMD_HELP", "CAPABILITY_SCAN_GENERAL", "CAPABILITY_SCAN_HOST_SURFACES"]
+    },
+    {
+      "probe_id": "R2-INT-003",
+      "probe_execution": "EXECUTED",
+      "previous": {
+        "execution_status": "BLOCKED_EXTERNAL",
+        "evidence_paths": ["tests/m2/probes/fixtures/local-capability-vectors.json", "reports/m2/probes/platform-inventory.json", "workflow/queue/m2-b001-trpg-platform-probes.json"],
+        "target_results": [
+          {"target": "A:rules-residue", "execution_status": "PASS", "evidence_paths": ["tests/m2/probes/fixtures/local-capability-vectors.json"]},
+          {"target": "B:TRPG_PLATFORM", "execution_status": "BLOCKED_EXTERNAL", "evidence_paths": ["reports/m2/probes/platform-inventory.json"]}
+        ],
+        "downstream_blocked_batches": ["M2-B010", "M2-B012", "M2-B015"]
+      },
+      "new": {
+        "execution_status": "BLOCKED_EXTERNAL",
+        "evidence_paths": ["tests/m2/probes/fixtures/local-capability-vectors.json", "reports/m2/probes/platform-inventory.json", "workflow/queue/m2-b001-trpg-platform-probes.json", "reports/m2/probes/external/m2-b001-ext-001/platform-command-evidence.json"],
+        "target_results": [
+          {"target": "A:rules-residue", "execution_status": "PASS", "evidence_paths": ["tests/m2/probes/fixtures/local-capability-vectors.json"]},
+          {"target": "B:TRPG_PLATFORM", "execution_status": "BLOCKED_EXTERNAL", "evidence_paths": ["reports/m2/probes/external/m2-b001-ext-001/platform-command-evidence.json"]}
+        ],
+        "downstream_blocked_batches": ["M2-B010", "M2-B012", "M2-B015"]
+      },
+      "transition_reason": "No Host action lifecycle or UI integration exists on the executable platform surface, so exact-intent commit/no-popup behavior cannot be integrated or audited.",
+      "command_ids": ["PLATFORMD_HEALTH", "PLATFORMD_HELP", "CAPABILITY_SCAN_HOST_SURFACES"]
+    },
+    {
+      "probe_id": "R2-INT-004",
+      "probe_execution": "EXECUTED",
+      "previous": {
+        "execution_status": "BLOCKED_EXTERNAL",
+        "evidence_paths": ["tests/m2/probes/fixtures/local-capability-vectors.json", "reports/m2/probes/platform-inventory.json", "workflow/queue/m2-b001-trpg-platform-probes.json"],
+        "target_results": [
+          {"target": "A:rules-residue", "execution_status": "PASS", "evidence_paths": ["tests/m2/probes/fixtures/local-capability-vectors.json"]},
+          {"target": "B:TRPG_PLATFORM", "execution_status": "BLOCKED_EXTERNAL", "evidence_paths": ["reports/m2/probes/platform-inventory.json"]}
+        ],
+        "downstream_blocked_batches": ["M2-B008", "M2-B010", "M2-B015"]
+      },
+      "new": {
+        "execution_status": "BLOCKED_EXTERNAL",
+        "evidence_paths": ["tests/m2/probes/fixtures/local-capability-vectors.json", "reports/m2/probes/platform-inventory.json", "workflow/queue/m2-b001-trpg-platform-probes.json", "reports/m2/probes/external/m2-b001-ext-001/platform-command-evidence.json"],
+        "target_results": [
+          {"target": "A:rules-residue", "execution_status": "PASS", "evidence_paths": ["tests/m2/probes/fixtures/local-capability-vectors.json"]},
+          {"target": "B:TRPG_PLATFORM", "execution_status": "BLOCKED_EXTERNAL", "evidence_paths": ["reports/m2/probes/external/m2-b001-ext-001/platform-command-evidence.json"]}
+        ],
+        "downstream_blocked_batches": ["M2-B008", "M2-B010", "M2-B015"]
+      },
+      "transition_reason": "The Host has no warning-category/rendering contract and Creator Studio has no controls; platform safety warnings cannot be executed separately from puzzle signals.",
+      "command_ids": ["PLATFORMD_HEALTH", "PLATFORMD_HELP", "CREATOR_SHELL_TEST", "CAPABILITY_SCAN_HOST_SURFACES"]
+    },
+    {
+      "probe_id": "R2-INT-005",
+      "probe_execution": "EXECUTED",
+      "previous": {
+        "execution_status": "BLOCKED_EXTERNAL",
+        "evidence_paths": ["tests/m2/probes/fixtures/local-capability-vectors.json", "reports/m2/probes/platform-inventory.json", "workflow/queue/m2-b001-trpg-platform-probes.json"],
+        "target_results": [
+          {"target": "A:rules-residue", "execution_status": "PASS", "evidence_paths": ["tests/m2/probes/fixtures/local-capability-vectors.json"]},
+          {"target": "B:TRPG_PLATFORM", "execution_status": "BLOCKED_EXTERNAL", "evidence_paths": ["reports/m2/probes/platform-inventory.json"]},
+          {"target": "D:long-duration persistence environment", "execution_status": "BLOCKED_EXTERNAL", "evidence_paths": ["workflow/queue/m2-b001-trpg-platform-probes.json"]}
+        ],
+        "downstream_blocked_batches": ["M2-B005", "M2-B015", "M2-B016"]
+      },
+      "new": {
+        "execution_status": "BLOCKED_EXTERNAL",
+        "evidence_paths": ["tests/m2/probes/fixtures/local-capability-vectors.json", "reports/m2/probes/platform-inventory.json", "workflow/queue/m2-b001-trpg-platform-probes.json", "reports/m2/probes/external/m2-b001-ext-001/platform-command-evidence.json"],
+        "target_results": [
+          {"target": "A:rules-residue", "execution_status": "PASS", "evidence_paths": ["tests/m2/probes/fixtures/local-capability-vectors.json"]},
+          {"target": "B:TRPG_PLATFORM", "execution_status": "BLOCKED_EXTERNAL", "evidence_paths": ["reports/m2/probes/external/m2-b001-ext-001/platform-command-evidence.json"]},
+          {"target": "D:long-duration persistence environment", "execution_status": "BLOCKED_EXTERNAL", "evidence_paths": ["workflow/queue/m2-b001-trpg-platform-probes.json"]}
+        ],
+        "downstream_blocked_batches": ["M2-B005", "M2-B015", "M2-B016"]
+      },
+      "transition_reason": "Candidate-bound VM checkpoint/reconstruction and binding tests pass, but no Campaign store, stable-save lifecycle, reconnect, version-upgrade policy, or long-duration environment is executable.",
+      "command_ids": ["LUA_CANDIDATE_EVIDENCE", "RECONSTRUCTION_FOCUSED", "PLATFORMD_HEALTH", "CAPABILITY_SCAN_GENERAL"]
+    },
+    {
+      "probe_id": "R2-INT-006",
+      "probe_execution": "EXECUTED",
+      "previous": {
+        "execution_status": "BLOCKED_EXTERNAL",
+        "evidence_paths": ["tests/m2/probes/fixtures/local-capability-vectors.json", "reports/m2/probes/platform-inventory.json", "workflow/queue/m2-b001-trpg-platform-probes.json", "workflow/queue/m2-b001-creator-tool-probes.json"],
+        "target_results": [
+          {"target": "A:rules-residue", "execution_status": "PASS", "evidence_paths": ["tests/m2/probes/fixtures/local-capability-vectors.json"]},
+          {"target": "B:TRPG_PLATFORM", "execution_status": "BLOCKED_EXTERNAL", "evidence_paths": ["reports/m2/probes/platform-inventory.json"]},
+          {"target": "C:Creator Tool", "execution_status": "BLOCKED_EXTERNAL", "evidence_paths": ["reports/m2/probes/platform-inventory.json"]}
+        ],
+        "downstream_blocked_batches": []
+      },
+      "new": {
+        "execution_status": "BLOCKED_EXTERNAL",
+        "evidence_paths": ["tests/m2/probes/fixtures/local-capability-vectors.json", "reports/m2/probes/platform-inventory.json", "workflow/queue/m2-b001-trpg-platform-probes.json", "workflow/queue/m2-b001-creator-tool-probes.json", "reports/m2/probes/external/m2-b001-ext-001/platform-command-evidence.json"],
+        "target_results": [
+          {"target": "A:rules-residue", "execution_status": "PASS", "evidence_paths": ["tests/m2/probes/fixtures/local-capability-vectors.json"]},
+          {"target": "B:TRPG_PLATFORM", "execution_status": "BLOCKED_EXTERNAL", "evidence_paths": ["reports/m2/probes/external/m2-b001-ext-001/platform-command-evidence.json"]},
+          {"target": "C:Creator Tool", "execution_status": "BLOCKED_EXTERNAL", "evidence_paths": ["reports/m2/probes/external/m2-b001-ext-001/platform-command-evidence.json"]}
+        ],
+        "downstream_blocked_batches": []
+      },
+      "transition_reason": "No account/lineage profile store or new-Campaign integration exists, and Creator Studio has no declaration/round-trip controls. This remains non-blocking until release.",
+      "command_ids": ["PLATFORMD_HEALTH", "CREATOR_SHELL_TEST", "CAPABILITY_SCAN_GENERAL"]
+    },
+    {
+      "probe_id": "R2-INT-007",
+      "probe_execution": "RETAINED_NO_RETEST",
+      "previous": {
+        "execution_status": "PASS",
+        "evidence_paths": ["tests/m2/probes/fixtures/local-capability-vectors.json", "tests/m2/probes/validate_m2_b001.py"],
+        "target_results": [
+          {"target": "A:rules-residue", "execution_status": "PASS", "evidence_paths": ["tests/m2/probes/fixtures/local-capability-vectors.json"]}
+        ],
+        "downstream_blocked_batches": []
+      },
+      "new": {
+        "execution_status": "PASS",
+        "evidence_paths": ["tests/m2/probes/fixtures/local-capability-vectors.json", "tests/m2/probes/validate_m2_b001.py"],
+        "target_results": [
+          {"target": "A:rules-residue", "execution_status": "PASS", "evidence_paths": ["tests/m2/probes/fixtures/local-capability-vectors.json"]}
+        ],
+        "downstream_blocked_batches": []
+      },
+      "transition_reason": "Historical package-declarable PASS is retained without automatic retest or reclassification.",
+      "command_ids": []
+    },
+    {
+      "probe_id": "R2-INT-008",
+      "probe_execution": "EXECUTED",
+      "previous": {
+        "execution_status": "BLOCKED_EXTERNAL",
+        "evidence_paths": ["tests/m2/probes/fixtures/local-capability-vectors.json", "reports/m2/probes/platform-inventory.json", "workflow/queue/m2-b001-trpg-platform-probes.json"],
+        "target_results": [
+          {"target": "A:rules-residue", "execution_status": "PASS", "evidence_paths": ["tests/m2/probes/fixtures/local-capability-vectors.json"]},
+          {"target": "B:TRPG_PLATFORM", "execution_status": "BLOCKED_EXTERNAL", "evidence_paths": ["reports/m2/probes/platform-inventory.json"]}
+        ],
+        "downstream_blocked_batches": ["M2-B012", "M2-B015", "M2-B016"]
+      },
+      "new": {
+        "execution_status": "BLOCKED_EXTERNAL",
+        "evidence_paths": ["tests/m2/probes/fixtures/local-capability-vectors.json", "reports/m2/probes/platform-inventory.json", "workflow/queue/m2-b001-trpg-platform-probes.json", "reports/m2/probes/external/m2-b001-ext-001/platform-command-evidence.json"],
+        "target_results": [
+          {"target": "A:rules-residue", "execution_status": "PASS", "evidence_paths": ["tests/m2/probes/fixtures/local-capability-vectors.json"]},
+          {"target": "B:TRPG_PLATFORM", "execution_status": "BLOCKED_EXTERNAL", "evidence_paths": ["reports/m2/probes/external/m2-b001-ext-001/platform-command-evidence.json"]}
+        ],
+        "downstream_blocked_batches": ["M2-B012", "M2-B015", "M2-B016"]
+      },
+      "transition_reason": "The executable Host is a non-playable shell and exposes no immutable campaign-termination event or post-threshold action revocation/audit path.",
+      "command_ids": ["PLATFORMD_HEALTH", "PLATFORMD_HELP", "CAPABILITY_SCAN_GENERAL", "CAPABILITY_SCAN_HOST_SURFACES"]
+    },
+    {
+      "probe_id": "R2-INT-009",
+      "probe_execution": "EXECUTED",
+      "previous": {
+        "execution_status": "BLOCKED_EXTERNAL",
+        "evidence_paths": ["tests/m2/probes/fixtures/local-capability-vectors.json", "reports/m2/probes/platform-inventory.json", "workflow/queue/m2-b001-trpg-platform-probes.json"],
+        "target_results": [
+          {"target": "A:rules-residue", "execution_status": "PASS", "evidence_paths": ["tests/m2/probes/fixtures/local-capability-vectors.json"]},
+          {"target": "B:TRPG_PLATFORM", "execution_status": "BLOCKED_EXTERNAL", "evidence_paths": ["reports/m2/probes/platform-inventory.json"]}
+        ],
+        "downstream_blocked_batches": ["M2-B003", "M2-B010", "M2-B015"]
+      },
+      "new": {
+        "execution_status": "BLOCKED_EXTERNAL",
+        "evidence_paths": ["tests/m2/probes/fixtures/local-capability-vectors.json", "reports/m2/probes/platform-inventory.json", "workflow/queue/m2-b001-trpg-platform-probes.json", "reports/m2/probes/external/m2-b001-ext-001/platform-command-evidence.json"],
+        "target_results": [
+          {"target": "A:rules-residue", "execution_status": "PASS", "evidence_paths": ["tests/m2/probes/fixtures/local-capability-vectors.json"]},
+          {"target": "B:TRPG_PLATFORM", "execution_status": "BLOCKED_EXTERNAL", "evidence_paths": ["reports/m2/probes/external/m2-b001-ext-001/platform-command-evidence.json"]}
+        ],
+        "downstream_blocked_batches": ["M2-B003", "M2-B010", "M2-B015"]
+      },
+      "transition_reason": "No AI context builder, per-participant projection, or executable memory-claim/evidence/Agent-memory/authority-state integration exists.",
+      "command_ids": ["PLATFORMD_HEALTH", "PLATFORMD_HELP", "CAPABILITY_SCAN_HOST_SURFACES"]
+    },
+    {
+      "probe_id": "R2-INT-010",
+      "probe_execution": "ANALYZED_NO_RECLASSIFICATION",
+      "previous": {
+        "execution_status": "FAIL",
+        "evidence_paths": ["tests/m2/probes/fixtures/local-capability-vectors.json", "tests/m2/probes/fixtures/platform-manifest-extension.toml", "reports/m2/probes/platform-inventory.json", "workflow/queue/m2-b001-trpg-platform-probes.json", "workflow/queue/m2-b001-creator-tool-probes.json"],
+        "target_results": [
+          {"target": "A:rules-residue", "execution_status": "PASS", "evidence_paths": ["tests/m2/probes/fixtures/local-capability-vectors.json"]},
+          {"target": "B:TRPG_PLATFORM", "execution_status": "FAIL", "evidence_paths": ["reports/m2/probes/platform-inventory.json"]},
+          {"target": "C:Creator Tool", "execution_status": "BLOCKED_EXTERNAL", "evidence_paths": ["reports/m2/probes/platform-inventory.json"]}
+        ],
+        "downstream_blocked_batches": ["M2-B002", "M2-B009", "M2-B015"]
+      },
+      "new": {
+        "execution_status": "FAIL",
+        "evidence_paths": ["tests/m2/probes/fixtures/local-capability-vectors.json", "tests/m2/probes/fixtures/platform-manifest-extension.toml", "reports/m2/probes/platform-inventory.json", "workflow/queue/m2-b001-trpg-platform-probes.json", "workflow/queue/m2-b001-creator-tool-probes.json", "reports/m2/probes/external/m2-b001-ext-001/platform-command-evidence.json"],
+        "target_results": [
+          {"target": "A:rules-residue", "execution_status": "PASS", "evidence_paths": ["tests/m2/probes/fixtures/local-capability-vectors.json"]},
+          {"target": "B:TRPG_PLATFORM", "execution_status": "FAIL", "evidence_paths": ["reports/m2/probes/external/m2-b001-ext-001/platform-command-evidence.json"]},
+          {"target": "C:Creator Tool", "execution_status": "BLOCKED_EXTERNAL", "evidence_paths": ["reports/m2/probes/external/m2-b001-ext-001/platform-command-evidence.json"]}
+        ],
+        "downstream_blocked_batches": ["M2-B002", "M2-B009", "M2-B015"]
+      },
+      "transition_reason": "Accepted FAIL is retained. The fixed standard manifest again rejects all namespaced equipment-rule fields before Host load, and Creator Studio has no import/edit/export controls; root-cause analysis selects one remediation class.",
+      "command_ids": ["EQUIPMENT_EXTENSION_REJECTION", "CREATOR_SHELL_TEST", "PLATFORM_SOURCE_HASHES"]
+    },
+    {
+      "probe_id": "R2-INT-011",
+      "probe_execution": "EXECUTED",
+      "previous": {
+        "execution_status": "BLOCKED_EXTERNAL",
+        "evidence_paths": ["reports/m2/probes/safety-stage-evidence.json", "tests/m2/probes/fixtures/local-capability-vectors.json", "reports/m2/probes/platform-inventory.json", "workflow/queue/m2-b001-trpg-platform-probes.json", "workflow/queue/m2-b001-creator-tool-probes.json"],
+        "target_results": [
+          {"target": "A:rules-residue", "execution_status": "PASS", "evidence_paths": ["reports/m2/probes/safety-stage-evidence.json"]},
+          {"target": "B:TRPG_PLATFORM", "execution_status": "BLOCKED_EXTERNAL", "evidence_paths": ["reports/m2/probes/platform-inventory.json"]},
+          {"target": "C:Creator Tool", "execution_status": "BLOCKED_EXTERNAL", "evidence_paths": ["reports/m2/probes/platform-inventory.json"]}
+        ],
+        "downstream_blocked_batches": ["M2-B001", "M2-B002", "M2-B003", "M2-B004", "M2-B005", "M2-B006", "M2-B007", "M2-B008", "M2-B009", "M2-B010", "M2-B011", "M2-B012", "M2-B013", "M2-B014", "M2-B015", "M2-B016"]
+      },
+      "new": {
+        "execution_status": "BLOCKED_EXTERNAL",
+        "evidence_paths": ["reports/m2/probes/safety-stage-evidence.json", "tests/m2/probes/fixtures/local-capability-vectors.json", "reports/m2/probes/platform-inventory.json", "workflow/queue/m2-b001-trpg-platform-probes.json", "workflow/queue/m2-b001-creator-tool-probes.json", "reports/m2/probes/external/m2-b001-ext-001/platform-command-evidence.json"],
+        "target_results": [
+          {"target": "A:rules-residue", "execution_status": "PASS", "evidence_paths": ["reports/m2/probes/safety-stage-evidence.json"]},
+          {"target": "B:TRPG_PLATFORM", "execution_status": "BLOCKED_EXTERNAL", "evidence_paths": ["reports/m2/probes/external/m2-b001-ext-001/platform-command-evidence.json"]},
+          {"target": "C:Creator Tool", "execution_status": "BLOCKED_EXTERNAL", "evidence_paths": ["reports/m2/probes/external/m2-b001-ext-001/platform-command-evidence.json"]}
+        ],
+        "downstream_blocked_batches": ["M2-B001", "M2-B002", "M2-B003", "M2-B004", "M2-B005", "M2-B006", "M2-B007", "M2-B008", "M2-B009", "M2-B010", "M2-B011", "M2-B012", "M2-B013", "M2-B014", "M2-B015", "M2-B016"]
+      },
+      "transition_reason": "The fixed Host has no runtime-generation or restore/hot-update safety stages and Creator is a control-free shell. Unexecuted external stages remain BLOCKED_EXTERNAL; no fixture or source inspection is promoted to PASS.",
+      "command_ids": ["PLATFORMD_HEALTH", "WORKERD_HEALTH", "CREATOR_SHELL_TEST", "CAPABILITY_SCAN_GENERAL", "CAPABILITY_SCAN_HOST_SURFACES"]
+    },
+    {
+      "probe_id": "R2-INT-012",
+      "probe_execution": "EXECUTED",
+      "previous": {
+        "execution_status": "BLOCKED_EXTERNAL",
+        "evidence_paths": ["tests/m2/probes/fixtures/local-capability-vectors.json", "tests/m2/probes/validate_m2_b001.py", "reports/m2/probes/platform-inventory.json"],
+        "target_results": [
+          {"target": "A:rules-residue", "execution_status": "PASS", "evidence_paths": ["tests/m2/probes/fixtures/local-capability-vectors.json"]},
+          {"target": "B:TRPG_PLATFORM", "execution_status": "BLOCKED_EXTERNAL", "evidence_paths": ["reports/m2/probes/platform-inventory.json"]}
+        ],
+        "downstream_blocked_batches": ["M2-B002", "M2-B004", "M2-B008"]
+      },
+      "new": {
+        "execution_status": "BLOCKED_EXTERNAL",
+        "evidence_paths": ["tests/m2/probes/fixtures/local-capability-vectors.json", "tests/m2/probes/validate_m2_b001.py", "reports/m2/probes/platform-inventory.json", "reports/m2/probes/external/m2-b001-ext-001/platform-command-evidence.json"],
+        "target_results": [
+          {"target": "A:rules-residue", "execution_status": "PASS", "evidence_paths": ["tests/m2/probes/fixtures/local-capability-vectors.json"]},
+          {"target": "B:TRPG_PLATFORM", "execution_status": "BLOCKED_EXTERNAL", "evidence_paths": ["reports/m2/probes/external/m2-b001-ext-001/platform-command-evidence.json"]}
+        ],
+        "downstream_blocked_batches": ["M2-B002", "M2-B004", "M2-B008"]
+      },
+      "transition_reason": "Candidate-bound Lua VM and explicit checkpoint reconstruction are deterministic sub-capabilities, but the platform has no executable Host rule/seed/event-log/typed-effect/package path. Therefore the complete logical-anomaly proof, including reload without answer redraw, cannot run and remains BLOCKED_EXTERNAL.",
+      "command_ids": ["LUA_CANDIDATE_EVIDENCE", "RECONSTRUCTION_FOCUSED", "PLATFORM_COMPONENT_SUITES", "PLATFORMD_HEALTH", "PLATFORMD_HELP", "PLATFORM_SOURCE_HASHES"]
+    }
+  ],
+  "external_gate_transitions": [
+    {
+      "gate_id": "EXT-TRPG-SEATS",
+      "target": "B:TRPG_PLATFORM",
+      "probe_ids": ["R2-INT-001"],
+      "previous": {"execution_status": "BLOCKED_EXTERNAL", "evidence_paths": ["reports/m2/probes/external-gates.json", "workflow/queue/m2-b001-trpg-platform-probes.json"], "blocks": ["M2-B006", "M2-B015", "M2-B016"]},
+      "new": {"execution_status": "BLOCKED_EXTERNAL", "evidence_paths": ["reports/m2/probes/external-gates.json", "workflow/queue/m2-b001-trpg-platform-probes.json"], "blocks": ["M2-B006", "M2-B015", "M2-B016"]},
+      "transition_reason": "No direct R2-INT-001 retest was admitted; the historical FAIL and external gate remain unchanged."
+    },
+    {
+      "gate_id": "EXT-TRPG-DECEASED-VIEW",
+      "target": "B:TRPG_PLATFORM",
+      "probe_ids": ["R2-INT-002"],
+      "previous": {"execution_status": "BLOCKED_EXTERNAL", "evidence_paths": ["reports/m2/probes/external-gates.json", "workflow/queue/m2-b001-trpg-platform-probes.json"], "blocks": ["M2-B006", "M2-B015", "M2-B016"]},
+      "new": {"execution_status": "BLOCKED_EXTERNAL", "evidence_paths": ["reports/m2/probes/external/m2-b001-ext-001/platform-command-evidence.json"], "blocks": ["M2-B006", "M2-B015", "M2-B016"]},
+      "transition_reason": "Fixed-platform execution confirms no deceased projection/action-policy Host surface."
+    },
+    {
+      "gate_id": "EXT-TRPG-INTENT-WARNINGS",
+      "target": "B:TRPG_PLATFORM",
+      "probe_ids": ["R2-INT-003", "R2-INT-004"],
+      "previous": {"execution_status": "BLOCKED_EXTERNAL", "evidence_paths": ["reports/m2/probes/external-gates.json", "workflow/queue/m2-b001-trpg-platform-probes.json"], "blocks": ["M2-B008", "M2-B010", "M2-B012", "M2-B015"]},
+      "new": {"execution_status": "BLOCKED_EXTERNAL", "evidence_paths": ["reports/m2/probes/external/m2-b001-ext-001/platform-command-evidence.json"], "blocks": ["M2-B008", "M2-B010", "M2-B012", "M2-B015"]},
+      "transition_reason": "No action lifecycle, UI commit hook, or warning-channel rendering contract is executable."
+    },
+    {
+      "gate_id": "EXT-TRPG-PERSISTENCE",
+      "target": "B:TRPG_PLATFORM",
+      "probe_ids": ["R2-INT-005"],
+      "previous": {"execution_status": "BLOCKED_EXTERNAL", "evidence_paths": ["reports/m2/probes/external-gates.json", "workflow/queue/m2-b001-trpg-platform-probes.json"], "blocks": ["M2-B005", "M2-B015", "M2-B016"]},
+      "new": {"execution_status": "BLOCKED_EXTERNAL", "evidence_paths": ["reports/m2/probes/external/m2-b001-ext-001/platform-command-evidence.json", "workflow/queue/m2-b001-trpg-platform-probes.json"], "blocks": ["M2-B005", "M2-B015", "M2-B016"]},
+      "transition_reason": "VM reconstruction passes, but Campaign lifecycle and endurance evidence remain unavailable."
+    },
+    {
+      "gate_id": "EXT-TRPG-LINEAGE-UNLOCK",
+      "target": "B:TRPG_PLATFORM",
+      "probe_ids": ["R2-INT-006"],
+      "previous": {"execution_status": "BLOCKED_EXTERNAL", "evidence_paths": ["reports/m2/probes/external-gates.json", "workflow/queue/m2-b001-trpg-platform-probes.json"], "blocks": []},
+      "new": {"execution_status": "BLOCKED_EXTERNAL", "evidence_paths": ["reports/m2/probes/external/m2-b001-ext-001/platform-command-evidence.json"], "blocks": []},
+      "transition_reason": "No account/lineage capability exists; the gate remains non-blocking until release."
+    },
+    {
+      "gate_id": "EXT-TRPG-TERMINATION",
+      "target": "B:TRPG_PLATFORM",
+      "probe_ids": ["R2-INT-008"],
+      "previous": {"execution_status": "BLOCKED_EXTERNAL", "evidence_paths": ["reports/m2/probes/external-gates.json", "workflow/queue/m2-b001-trpg-platform-probes.json"], "blocks": ["M2-B012", "M2-B015", "M2-B016"]},
+      "new": {"execution_status": "BLOCKED_EXTERNAL", "evidence_paths": ["reports/m2/probes/external/m2-b001-ext-001/platform-command-evidence.json"], "blocks": ["M2-B012", "M2-B015", "M2-B016"]},
+      "transition_reason": "No immutable campaign terminal-state or action-revocation Host path exists."
+    },
+    {
+      "gate_id": "EXT-TRPG-CONTEXT-ISOLATION",
+      "target": "B:TRPG_PLATFORM",
+      "probe_ids": ["R2-INT-009"],
+      "previous": {"execution_status": "BLOCKED_EXTERNAL", "evidence_paths": ["reports/m2/probes/external-gates.json", "workflow/queue/m2-b001-trpg-platform-probes.json"], "blocks": ["M2-B003", "M2-B010", "M2-B015"]},
+      "new": {"execution_status": "BLOCKED_EXTERNAL", "evidence_paths": ["reports/m2/probes/external/m2-b001-ext-001/platform-command-evidence.json"], "blocks": ["M2-B003", "M2-B010", "M2-B015"]},
+      "transition_reason": "No executable AI context/per-seat projection or memory-authority integration exists."
+    },
+    {
+      "gate_id": "EXT-CREATOR-EXTENSIONS",
+      "target": "C:Creator Tool",
+      "probe_ids": ["R2-INT-006", "R2-INT-010"],
+      "previous": {"execution_status": "BLOCKED_EXTERNAL", "evidence_paths": ["reports/m2/probes/external-gates.json", "workflow/queue/m2-b001-creator-tool-probes.json"], "blocks": ["M2-B002", "M2-B009", "M2-B015"]},
+      "new": {"execution_status": "BLOCKED_EXTERNAL", "evidence_paths": ["reports/m2/probes/external/m2-b001-ext-001/platform-command-evidence.json"], "blocks": ["M2-B002", "M2-B009", "M2-B015"]},
+      "transition_reason": "Creator Studio remains a shell with no standard import/edit/export/re-import controls."
+    },
+    {
+      "gate_id": "EXT-RUNTIME-SAFETY",
+      "target": "B:TRPG_PLATFORM",
+      "probe_ids": ["R2-INT-010", "R2-INT-011", "R2-INT-012"],
+      "previous": {"execution_status": "BLOCKED_EXTERNAL", "evidence_paths": ["reports/m2/probes/external-gates.json", "workflow/queue/m2-b001-trpg-platform-probes.json"], "blocks": ["M2-B001", "M2-B002", "M2-B003", "M2-B004", "M2-B005", "M2-B006", "M2-B007", "M2-B008", "M2-B009", "M2-B010", "M2-B011", "M2-B012", "M2-B013", "M2-B014", "M2-B015", "M2-B016"]},
+      "new": {"execution_status": "FAIL", "evidence_paths": ["reports/m2/probes/external/m2-b001-ext-001/platform-command-evidence.json"], "blocks": ["M2-B001", "M2-B002", "M2-B003", "M2-B004", "M2-B005", "M2-B006", "M2-B007", "M2-B008", "M2-B009", "M2-B010", "M2-B011", "M2-B012", "M2-B013", "M2-B014", "M2-B015", "M2-B016"]},
+      "transition_reason": "R2-INT-010 has live fixed-platform rejection evidence; R2-INT-011 and R2-INT-012 remain BLOCKED_EXTERNAL. A known failed member makes the current aggregate gate FAIL."
+    },
+    {
+      "gate_id": "EXT-CREATOR-PACKAGE-ROUNDTRIP",
+      "target": "C:Creator Tool",
+      "probe_ids": ["R2-INT-001", "R2-INT-011"],
+      "previous": {"execution_status": "BLOCKED_EXTERNAL", "evidence_paths": ["reports/m2/probes/external-gates.json", "workflow/queue/m2-b001-creator-tool-probes.json"], "blocks": ["M2-B001", "M2-B002", "M2-B003", "M2-B004", "M2-B005", "M2-B006", "M2-B007", "M2-B008", "M2-B009", "M2-B010", "M2-B011", "M2-B012", "M2-B013", "M2-B014", "M2-B015", "M2-B016"]},
+      "new": {"execution_status": "BLOCKED_EXTERNAL", "evidence_paths": ["reports/m2/probes/external/m2-b001-ext-001/platform-command-evidence.json", "workflow/queue/m2-b001-creator-tool-probes.json"], "blocks": ["M2-B001", "M2-B002", "M2-B003", "M2-B004", "M2-B005", "M2-B006", "M2-B007", "M2-B008", "M2-B009", "M2-B010", "M2-B011", "M2-B012", "M2-B013", "M2-B014", "M2-B015", "M2-B016"]},
+      "transition_reason": "Creator round-trip remains unavailable; no source inspection or shell test is promoted to capability PASS."
+    }
+  ],
+  "current_external_gates": [
+    {"gate_id": "EXT-TRPG-SEATS", "target": "B:TRPG_PLATFORM", "probe_ids": ["R2-INT-001"], "gate_class": "BLOCKING_FOR_BATCH", "execution_status": "BLOCKED_EXTERNAL", "evidence_paths": ["reports/m2/probes/external-gates.json", "workflow/queue/m2-b001-trpg-platform-probes.json"], "blocks": ["M2-B006", "M2-B015", "M2-B016"], "downstream_readiness": "BLOCKED_EXTERNAL"},
+    {"gate_id": "EXT-TRPG-DECEASED-VIEW", "target": "B:TRPG_PLATFORM", "probe_ids": ["R2-INT-002"], "gate_class": "BLOCKING_FOR_BATCH", "execution_status": "BLOCKED_EXTERNAL", "evidence_paths": ["reports/m2/probes/external/m2-b001-ext-001/platform-command-evidence.json"], "blocks": ["M2-B006", "M2-B015", "M2-B016"], "downstream_readiness": "BLOCKED_EXTERNAL"},
+    {"gate_id": "EXT-TRPG-INTENT-WARNINGS", "target": "B:TRPG_PLATFORM", "probe_ids": ["R2-INT-003", "R2-INT-004"], "gate_class": "BLOCKING_FOR_BATCH", "execution_status": "BLOCKED_EXTERNAL", "evidence_paths": ["reports/m2/probes/external/m2-b001-ext-001/platform-command-evidence.json"], "blocks": ["M2-B008", "M2-B010", "M2-B012", "M2-B015"], "downstream_readiness": "BLOCKED_EXTERNAL"},
+    {"gate_id": "EXT-TRPG-PERSISTENCE", "target": "B:TRPG_PLATFORM", "probe_ids": ["R2-INT-005"], "gate_class": "BLOCKING_FOR_BATCH", "execution_status": "BLOCKED_EXTERNAL", "evidence_paths": ["reports/m2/probes/external/m2-b001-ext-001/platform-command-evidence.json", "workflow/queue/m2-b001-trpg-platform-probes.json"], "blocks": ["M2-B005", "M2-B015", "M2-B016"], "downstream_readiness": "BLOCKED_EXTERNAL"},
+    {"gate_id": "EXT-TRPG-LINEAGE-UNLOCK", "target": "B:TRPG_PLATFORM", "probe_ids": ["R2-INT-006"], "gate_class": "NON_BLOCKING_UNTIL_RELEASE", "execution_status": "BLOCKED_EXTERNAL", "evidence_paths": ["reports/m2/probes/external/m2-b001-ext-001/platform-command-evidence.json"], "blocks": [], "downstream_readiness": "BLOCKED_EXTERNAL"},
+    {"gate_id": "EXT-TRPG-TERMINATION", "target": "B:TRPG_PLATFORM", "probe_ids": ["R2-INT-008"], "gate_class": "BLOCKING_FOR_BATCH", "execution_status": "BLOCKED_EXTERNAL", "evidence_paths": ["reports/m2/probes/external/m2-b001-ext-001/platform-command-evidence.json"], "blocks": ["M2-B012", "M2-B015", "M2-B016"], "downstream_readiness": "BLOCKED_EXTERNAL"},
+    {"gate_id": "EXT-TRPG-CONTEXT-ISOLATION", "target": "B:TRPG_PLATFORM", "probe_ids": ["R2-INT-009"], "gate_class": "BLOCKING_FOR_BATCH", "execution_status": "BLOCKED_EXTERNAL", "evidence_paths": ["reports/m2/probes/external/m2-b001-ext-001/platform-command-evidence.json"], "blocks": ["M2-B003", "M2-B010", "M2-B015"], "downstream_readiness": "BLOCKED_EXTERNAL"},
+    {"gate_id": "EXT-CREATOR-EXTENSIONS", "target": "C:Creator Tool", "probe_ids": ["R2-INT-006", "R2-INT-010"], "gate_class": "BLOCKING_FOR_BATCH", "execution_status": "BLOCKED_EXTERNAL", "evidence_paths": ["reports/m2/probes/external/m2-b001-ext-001/platform-command-evidence.json"], "blocks": ["M2-B002", "M2-B009", "M2-B015"], "downstream_readiness": "BLOCKED_EXTERNAL"},
+    {"gate_id": "EXT-RUNTIME-SAFETY", "target": "B:TRPG_PLATFORM", "probe_ids": ["R2-INT-010", "R2-INT-011", "R2-INT-012"], "gate_class": "BLOCKING_FOR_M2_ACCEPTANCE", "execution_status": "FAIL", "evidence_paths": ["reports/m2/probes/external/m2-b001-ext-001/platform-command-evidence.json"], "blocks": ["M2-B001", "M2-B002", "M2-B003", "M2-B004", "M2-B005", "M2-B006", "M2-B007", "M2-B008", "M2-B009", "M2-B010", "M2-B011", "M2-B012", "M2-B013", "M2-B014", "M2-B015", "M2-B016"], "downstream_readiness": "BLOCKED_BY_FAIL"},
+    {"gate_id": "EXT-CREATOR-PACKAGE-ROUNDTRIP", "target": "C:Creator Tool", "probe_ids": ["R2-INT-001", "R2-INT-011"], "gate_class": "BLOCKING_FOR_M2_ACCEPTANCE", "execution_status": "BLOCKED_EXTERNAL", "evidence_paths": ["reports/m2/probes/external/m2-b001-ext-001/platform-command-evidence.json", "workflow/queue/m2-b001-creator-tool-probes.json"], "blocks": ["M2-B001", "M2-B002", "M2-B003", "M2-B004", "M2-B005", "M2-B006", "M2-B007", "M2-B008", "M2-B009", "M2-B010", "M2-B011", "M2-B012", "M2-B013", "M2-B014", "M2-B015", "M2-B016"], "downstream_readiness": "BLOCKED_EXTERNAL"}
+  ],
+  "downstream_readiness": [
+    {"batch_id": "M2-B001", "readiness": "ACCEPTED_BASE_UNCHANGED", "blocking_probe_ids": []},
+    {"batch_id": "M2-B002", "readiness": "BLOCKED_BY_FAIL", "blocking_probe_ids": ["R2-INT-010", "R2-INT-011", "R2-INT-012"]},
+    {"batch_id": "M2-B003", "readiness": "BLOCKED_EXTERNAL", "blocking_probe_ids": ["R2-INT-009", "R2-INT-011"]},
+    {"batch_id": "M2-B004", "readiness": "BLOCKED_EXTERNAL", "blocking_probe_ids": ["R2-INT-011", "R2-INT-012"]},
+    {"batch_id": "M2-B005", "readiness": "BLOCKED_EXTERNAL", "blocking_probe_ids": ["R2-INT-005", "R2-INT-011"]},
+    {"batch_id": "M2-B006", "readiness": "BLOCKED_BY_FAIL", "blocking_probe_ids": ["R2-INT-001", "R2-INT-002", "R2-INT-011"]},
+    {"batch_id": "M2-B007", "readiness": "BLOCKED_EXTERNAL", "blocking_probe_ids": ["R2-INT-011"]},
+    {"batch_id": "M2-B008", "readiness": "BLOCKED_EXTERNAL", "blocking_probe_ids": ["R2-INT-004", "R2-INT-011", "R2-INT-012"]},
+    {"batch_id": "M2-B009", "readiness": "BLOCKED_BY_FAIL", "blocking_probe_ids": ["R2-INT-010", "R2-INT-011"]},
+    {"batch_id": "M2-B010", "readiness": "BLOCKED_EXTERNAL", "blocking_probe_ids": ["R2-INT-003", "R2-INT-004", "R2-INT-009", "R2-INT-011"]},
+    {"batch_id": "M2-B011", "readiness": "BLOCKED_EXTERNAL", "blocking_probe_ids": ["R2-INT-011"]},
+    {"batch_id": "M2-B012", "readiness": "BLOCKED_EXTERNAL", "blocking_probe_ids": ["R2-INT-003", "R2-INT-008", "R2-INT-011"]},
+    {"batch_id": "M2-B013", "readiness": "BLOCKED_EXTERNAL", "blocking_probe_ids": ["R2-INT-011"]},
+    {"batch_id": "M2-B014", "readiness": "BLOCKED_EXTERNAL", "blocking_probe_ids": ["R2-INT-011"]},
+    {"batch_id": "M2-B015", "readiness": "BLOCKED_BY_FAIL", "blocking_probe_ids": ["R2-INT-001", "R2-INT-002", "R2-INT-003", "R2-INT-004", "R2-INT-005", "R2-INT-008", "R2-INT-009", "R2-INT-010", "R2-INT-011"]},
+    {"batch_id": "M2-B016", "readiness": "BLOCKED_BY_FAIL", "blocking_probe_ids": ["R2-INT-001", "R2-INT-002", "R2-INT-005", "R2-INT-008", "R2-INT-011"]}
+  ],
+  "int_010_remediation": {
+    "probe_id": "R2-INT-010",
+    "execution_status": "FAIL",
+    "remediation_class": "MULTI_REPO_CHANGE_REQUIRED",
+    "root_cause": "TRPG_PLATFORM manifest v1 is a closed schema/parser and rejects the rules_residue.equipment_rule namespace before package load; the embedded Creator Studio is a non-editing shell, so no standard round-trip exists.",
+    "lost_fields": ["rules_residue.equipment_rule", "rules_residue.equipment_rule.schema_version", "rules_residue.equipment_rule.semantic_kind"],
+    "loss_point": "STRICT_MANIFEST_DECODE_BEFORE_HOST_LOAD",
+    "adapter_feasibility": {
+      "rules_package_adapter_possible": true,
+      "adapter_alone_sufficient": false,
+      "required_precondition": "A generic, third-party-compatible platform extension container/registry that preserves namespaced data through validation, Host load, and Creator round-trip.",
+      "privileged_format_allowed": false
+    },
+    "platform_change_necessity": "REQUIRED",
+    "creator_evidence": {
+      "execution_status": "BLOCKED_EXTERNAL",
+      "command_ids": ["CREATOR_SHELL_TEST", "EQUIPMENT_EXTENSION_REJECTION"],
+      "observed_result": "The UI test proves there are no creator/game controls; the standard validator rejects all equipment-rule fields, so no import/edit/export/re-import proof can execute."
+    },
+    "required_repositories": [
+      {
+        "repository": "/home/zyc14588/TRPG_PLATFORM",
+        "minimum_change": "Add a generic namespaced extension declaration/validation and Host-load preservation contract plus standard Creator import/edit/export/re-import preservation; do not hard-code Rules Residue semantics."
+      },
+      {
+        "repository": "/home/zyc14588/rules-residue",
+        "minimum_change": "After the generic platform contract exists, declare the namespace and implement the package-side equipment-rule adapter/schema/runtime mapping through the standard Creator path."
+      }
+    ],
+    "blocks_b002": true,
+    "downstream_blocked_batches": ["M2-B002", "M2-B009", "M2-B015"]
+  },
+  "int_012_determination": {
+    "probe_id": "R2-INT-012",
+    "execution_status": "BLOCKED_EXTERNAL",
+    "platform_subcapability": {
+      "execution_status": "PASS",
+      "capability": "Candidate-bound deterministic Lua VM and explicit checkpoint reconstruction",
+      "command_ids": ["LUA_CANDIDATE_EVIDENCE", "RECONSTRUCTION_FOCUSED"],
+      "limitation": "The IPC explicitly provides VM lifecycle only and does not define Host API callbacks; it cannot establish rule semantics, authoritative seed/event integration, Typed Effects, or answer immutability."
+    },
+    "required_dimension_results": [
+      {"dimension": "scope", "execution_status": "NOT_RUN", "reason": "No executable Host rule integration path."},
+      {"dimension": "trigger", "execution_status": "NOT_RUN", "reason": "No executable Host rule integration path."},
+      {"dimension": "condition", "execution_status": "NOT_RUN", "reason": "No executable Host rule integration path."},
+      {"dimension": "priority", "execution_status": "NOT_RUN", "reason": "No executable Host conflict resolver."},
+      {"dimension": "conflict", "execution_status": "NOT_RUN", "reason": "No executable Host conflict resolver."},
+      {"dimension": "exception", "execution_status": "NOT_RUN", "reason": "No executable Host exception resolver."},
+      {"dimension": "seed", "execution_status": "BLOCKED_EXTERNAL", "reason": "No authoritative Host seed/random callback or seed manifest is executable."},
+      {"dimension": "same_seed_state_action_same_result", "execution_status": "BLOCKED_EXTERNAL", "reason": "VM determinism alone does not provide the authoritative Host state/action/event/Typed Effect tuple."},
+      {"dimension": "reload_does_not_redraw_answers", "execution_status": "BLOCKED_EXTERNAL", "reason": "Checkpoint reconstruction passes, but no platform-owned seeded answer or reload lifecycle exists to prove non-redraw."}
+    ],
+    "all_required_dimensions_pass": false,
+    "pass_claimed": false,
+    "determination": "The full platform capability is unavailable and unexecuted; local rules fixtures and platform VM primitives are not capability PASS."
+  },
+  "candidate_binding": {
+    "strategy": "EXACT_HEAD_AT_VALIDATION",
+    "required_parent_commit": "fdc1f4c9d8bc565888f33b44684cd6ccbe80c127",
+    "required_parent_tree": "f37e15cdd65e0a39eebcddb21f56a2c58ae6939e",
+    "evidence_manifest": "reports/m2/probes/external/m2-b001-ext-001/evidence-manifest.json",
+    "must_be_clean": true
+  },
+  "overall_status": "BLOCKED_EXTERNAL"
+}

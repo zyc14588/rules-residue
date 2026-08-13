@@ -1,0 +1,61 @@
+{
+  "schema_version": "rules-residue.m2.external-evidence-manifest/1.0",
+  "supplement_id": "M2-B001-EXT-001",
+  "parent_binding": {
+    "commit": "fdc1f4c9d8bc565888f33b44684cd6ccbe80c127",
+    "tree": "f37e15cdd65e0a39eebcddb21f56a2c58ae6939e"
+  },
+  "candidate_binding_strategy": "EXACT_HEAD_AT_VALIDATION",
+  "artifacts": [
+    {"path": ".codex/routes/m2-b001-external-probe-update-request.json", "sha256": "5424875d6abfcc15f58ad0a4c00c8eb8fa5d459c950dbd80f54048eae7bf05de"},
+    {"path": "docs/implementation/m2/probes/external-evidence-supplement-v1.schema.json", "sha256": "7a29d534771b036104dd893ebf62160fb44f94ea5ffdef5c74b58d692b9edd7d"},
+    {"path": "reports/m2/probes/external-evidence-index.json", "sha256": "b4bf268d7f9ee1627edea5c1ff87fa74774e3f5689c97cd11f0af6881178a22c"},
+    {"path": "reports/m2/probes/external/m2-b001-ext-001/platform-command-evidence.json", "sha256": "f709a45ecee13a8ccb5722f52acc96fb3c08c662e500aaa7c26681404b73637e"},
+    {"path": "reports/m2/probes/external/m2-b001-ext-001/supplement.json", "sha256": "d2f21f4853e5b77e2796ba3cbe3c7001b4731cdbb251661d6375ac2d5cff193c"},
+    {"path": "tests/m2/probes/test_m2_b001_external_supplement.py", "sha256": "113105c7968e040ca23062876f5f3abd6ce9f71fe0d1a0cdbd94e51a7365e609"},
+    {"path": "tests/m2/probes/validate_m2_b001_external_supplement.py", "sha256": "7e374086fd3ac4743292bbd8f10709a3172429abf5fc847487aacb4974883a0c"}
+  ],
+  "immutable_historical_artifacts": [
+    {"path": "docs/implementation/m2/probes/README.md", "sha256": "8faa32e6c3871a5fc9446dc40da8ecc895a4f02e5e4a87d9d9e1cbf8666fe11b"},
+    {"path": "docs/implementation/m2/probes/external-result-v1.schema.json", "sha256": "eef21de64c4fa44266a008acf567e101b5d117f8fea0e6a2ffd482a4a917b5b6"},
+    {"path": "docs/implementation/m2/probes/probe-result-v1.schema.json", "sha256": "2dca0b73a39f544e71d4d440b3d153a75e5c438f91853e7bf82bf21442bb8b75"},
+    {"path": "reports/m2/probes/acceptance-evidence.json", "sha256": "4eeee63b1dd9e4b70581a70fc2dc355790dfd4147488540741d1f4062dab25da"},
+    {"path": "reports/m2/probes/evidence-manifest.json", "sha256": "3a48da621e45980d9b2258513954e1f29480fd9e12a35dcd29c12b77015c8ca7"},
+    {"path": "reports/m2/probes/external-gates.json", "sha256": "a8951312cb9f23cf3f999a7258900603716ea6f0b4e7f684b8f6a53ed8f13a2d"},
+    {"path": "reports/m2/probes/platform-inventory.json", "sha256": "cc73c579c18a4db47bf678c57d20906718180e6df51f7643f628c65a7cb7e2bf"},
+    {"path": "reports/m2/probes/probe-results.json", "sha256": "154e7c0ddf8ce7b2243ad6c78d10ceb6cddf02c3aeb6592716dcc5ad8fc64218"},
+    {"path": "reports/m2/probes/safety-stage-evidence.json", "sha256": "a701f619aa9c8515ca9567dd6d74663b9ce7ea651a54f2ff01dc78101e24b5ea"},
+    {"path": "tests/m2/probes/fixtures/local-capability-vectors.json", "sha256": "6a7832c8193825abda5dfac4124d590731aa023be07297ba73aa89eb3504a96d"},
+    {"path": "tests/m2/probes/fixtures/platform-manifest-extension.toml", "sha256": "b2e8d719582830ad7930ece3e9ddc2266500811fb253eb774638ac8c8c4a1054"},
+    {"path": "tests/m2/probes/fixtures/platform-manifest-seat.toml", "sha256": "8ff8807969994b77fa412abcb2aae6be57b7c906dff011776617fd833c10688d"},
+    {"path": "tests/m2/probes/test_m2_b001_probes.py", "sha256": "7d5c452d92e5cb48e4701575fa384d95a8f3d8caca9e49b1b847f72918c22894"},
+    {"path": "tests/m2/probes/validate_m2_b001.py", "sha256": "f60683c845acda5666014c3c5d0df5148d6c28445ec6734aa9a696a43bad44f2"},
+    {"path": "workflow/queue/m2-b001-creator-tool-probes.json", "sha256": "e1beb6ed3413ae9b711f760b0a8cf0d6deb5e13fd92d928e20a9a92fb40f6af9"},
+    {"path": "workflow/queue/m2-b001-trpg-platform-probes.json", "sha256": "7d21cb8f5a68f9911fa8b70c00561c7df46904b615f4151281701f53a070aaf1"}
+  ],
+  "protected_scope_proof": {
+    "comparison_parent": "fdc1f4c9d8bc565888f33b44684cd6ccbe80c127",
+    "allowed_path_families": [
+      "docs/implementation/m2/probes/**",
+      "tests/m2/probes/**",
+      "workflow/queue/m2-b001-*.json",
+      "reports/m2/probes/**",
+      ".codex/routes/m2-b001-*.json"
+    ],
+    "forbidden_path_families": [
+      ".codex/state/MILESTONE_PLAN.yaml",
+      ".codex/plans/**",
+      ".codex/controls/**",
+      "docs/authority/r2/**",
+      "governance/r2/**",
+      "game-package/**",
+      "schemas/r2/**",
+      "authoring/**",
+      "content/**",
+      "art/**",
+      "TRPG_PLATFORM/**"
+    ],
+    "game_package_runtime_changed": false,
+    "lock_updated": false
+  }
+}

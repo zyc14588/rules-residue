@@ -1,0 +1,279 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "rules-residue.m2/external-evidence-supplement/1.0",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version", "supplement_id", "nature", "batch_id", "created_at",
+    "accepted_b001_binding", "route_binding", "external_binding",
+    "command_evidence", "probe_result_transitions", "external_gate_transitions",
+    "current_external_gates", "downstream_readiness", "int_010_remediation",
+    "int_012_determination", "candidate_binding", "overall_status"
+  ],
+  "properties": {
+    "schema_version": {"const": "rules-residue.m2.external-evidence-supplement/1.0"},
+    "supplement_id": {"const": "M2-B001-EXT-001"},
+    "nature": {"const": "EXTERNAL_EVIDENCE_SUPPLEMENT"},
+    "batch_id": {"const": "M2-B001"},
+    "created_at": {"type": "string", "format": "date-time"},
+    "accepted_b001_binding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "accepted_commit", "accepted_tree", "historical_result_path",
+        "historical_result_sha256", "historical_manifest_path",
+        "historical_manifest_sha256"
+      ],
+      "properties": {
+        "accepted_commit": {"$ref": "#/$defs/git_oid"},
+        "accepted_tree": {"$ref": "#/$defs/git_oid"},
+        "historical_result_path": {"$ref": "#/$defs/path"},
+        "historical_result_sha256": {"$ref": "#/$defs/sha256"},
+        "historical_manifest_path": {"$ref": "#/$defs/path"},
+        "historical_manifest_sha256": {"$ref": "#/$defs/sha256"}
+      }
+    },
+    "route_binding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "request_path", "route_id", "mode", "milestone", "batch_id",
+        "source_commit", "source_tree", "binding_digest", "context_status",
+        "context_ratio", "freshness_status", "checked_at", "command_id"
+      ],
+      "properties": {
+        "request_path": {"$ref": "#/$defs/path"},
+        "route_id": {"const": "M2-B001-EXTERNAL-PROBE-UPDATE-001"},
+        "mode": {"const": "IMPLEMENT"},
+        "milestone": {"const": "M2"},
+        "batch_id": {"const": "M2-B001"},
+        "source_commit": {"$ref": "#/$defs/git_oid"},
+        "source_tree": {"$ref": "#/$defs/git_oid"},
+        "binding_digest": {"$ref": "#/$defs/sha256"},
+        "context_status": {"const": "OK"},
+        "context_ratio": {"type": "number", "minimum": 0, "maximum": 0.7},
+        "freshness_status": {"const": "PASS"},
+        "checked_at": {"type": "string", "format": "date-time"},
+        "command_id": {"$ref": "#/$defs/command_id"}
+      }
+    },
+    "external_binding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "name", "repository", "branch", "commit", "tree",
+        "tracked_worktree_clean_before", "tracked_worktree_clean_after",
+        "identity_command_ids"
+      ],
+      "properties": {
+        "name": {"const": "TRPG_PLATFORM"},
+        "repository": {"const": "/home/zyc14588/TRPG_PLATFORM"},
+        "branch": {"const": "m1/b002-lua-runtime"},
+        "commit": {"const": "02dd02447ed07fe6248108365847dccf4023ca00"},
+        "tree": {"const": "dc15acda453948fc78afdc259fea3e543f9e001c"},
+        "tracked_worktree_clean_before": {"const": true},
+        "tracked_worktree_clean_after": {"const": true},
+        "identity_command_ids": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["before", "after"],
+          "properties": {
+            "before": {"$ref": "#/$defs/nonempty_strings"},
+            "after": {"$ref": "#/$defs/nonempty_strings"}
+          }
+        }
+      }
+    },
+    "command_evidence": {"$ref": "#/$defs/path"},
+    "probe_result_transitions": {
+      "type": "array",
+      "minItems": 12,
+      "maxItems": 12,
+      "items": {"$ref": "#/$defs/transition"}
+    },
+    "external_gate_transitions": {
+      "type": "array",
+      "minItems": 10,
+      "maxItems": 10,
+      "items": {"$ref": "#/$defs/gate_transition"}
+    },
+    "current_external_gates": {
+      "type": "array",
+      "minItems": 10,
+      "maxItems": 10,
+      "items": {"$ref": "#/$defs/current_gate"}
+    },
+    "downstream_readiness": {
+      "type": "array",
+      "minItems": 16,
+      "maxItems": 16,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["batch_id", "readiness", "blocking_probe_ids"],
+        "properties": {
+          "batch_id": {"type": "string", "pattern": "^M2-B[0-9]{3}$"},
+          "readiness": {
+            "enum": ["ACCEPTED_BASE_UNCHANGED", "BLOCKED_EXTERNAL", "BLOCKED_BY_FAIL"]
+          },
+          "blocking_probe_ids": {
+            "type": "array",
+            "uniqueItems": true,
+            "items": {"type": "string", "pattern": "^R2-INT-0(0[1-9]|1[0-2])$"}
+          }
+        }
+      }
+    },
+    "int_010_remediation": {"type": "object"},
+    "int_012_determination": {"type": "object"},
+    "candidate_binding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "strategy", "required_parent_commit", "required_parent_tree",
+        "evidence_manifest", "must_be_clean"
+      ],
+      "properties": {
+        "strategy": {"const": "EXACT_HEAD_AT_VALIDATION"},
+        "required_parent_commit": {"$ref": "#/$defs/git_oid"},
+        "required_parent_tree": {"$ref": "#/$defs/git_oid"},
+        "evidence_manifest": {"$ref": "#/$defs/path"},
+        "must_be_clean": {"const": true}
+      }
+    },
+    "overall_status": {"const": "BLOCKED_EXTERNAL"}
+  },
+  "$defs": {
+    "status": {
+      "enum": ["PASS", "FAIL", "NOT_RUN", "BLOCKED_EXTERNAL", "BLOCKED_ENVIRONMENT"]
+    },
+    "git_oid": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+    "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "command_id": {"type": "string", "pattern": "^[A-Z][A-Z0-9_-]{2,63}$"},
+    "path": {
+      "type": "string",
+      "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.(?:/|$))[A-Za-z0-9._/-]+$"
+    },
+    "nonempty_strings": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {"type": "string", "minLength": 1}
+    },
+    "target_result": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["target", "execution_status", "evidence_paths"],
+      "properties": {
+        "target": {"type": "string", "minLength": 1},
+        "execution_status": {"$ref": "#/$defs/status"},
+        "evidence_paths": {"$ref": "#/$defs/nonempty_strings"}
+      }
+    },
+    "snapshot": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "execution_status", "evidence_paths", "target_results",
+        "downstream_blocked_batches"
+      ],
+      "properties": {
+        "execution_status": {"$ref": "#/$defs/status"},
+        "evidence_paths": {"$ref": "#/$defs/nonempty_strings"},
+        "target_results": {
+          "type": "array",
+          "minItems": 1,
+          "items": {"$ref": "#/$defs/target_result"}
+        },
+        "downstream_blocked_batches": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {"type": "string", "pattern": "^M2-B[0-9]{3}$"}
+        }
+      }
+    },
+    "transition": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "probe_id", "probe_execution", "previous", "new",
+        "transition_reason", "command_ids"
+      ],
+      "properties": {
+        "probe_id": {"type": "string", "pattern": "^R2-INT-0(0[1-9]|1[0-2])$"},
+        "probe_execution": {
+          "enum": ["EXECUTED", "RETAINED_NO_RETEST", "ANALYZED_NO_RECLASSIFICATION"]
+        },
+        "previous": {"$ref": "#/$defs/snapshot"},
+        "new": {"$ref": "#/$defs/snapshot"},
+        "transition_reason": {"type": "string", "minLength": 1},
+        "command_ids": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {"$ref": "#/$defs/command_id"}
+        }
+      }
+    },
+    "gate_snapshot": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["execution_status", "evidence_paths", "blocks"],
+      "properties": {
+        "execution_status": {"$ref": "#/$defs/status"},
+        "evidence_paths": {"$ref": "#/$defs/nonempty_strings"},
+        "blocks": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {"type": "string", "pattern": "^M2-B[0-9]{3}$"}
+        }
+      }
+    },
+    "gate_transition": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["gate_id", "target", "probe_ids", "previous", "new", "transition_reason"],
+      "properties": {
+        "gate_id": {"type": "string", "pattern": "^EXT-[A-Z0-9-]+$"},
+        "target": {"type": "string", "minLength": 1},
+        "probe_ids": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {"type": "string", "pattern": "^R2-INT-0(0[1-9]|1[0-2])$"}
+        },
+        "previous": {"$ref": "#/$defs/gate_snapshot"},
+        "new": {"$ref": "#/$defs/gate_snapshot"},
+        "transition_reason": {"type": "string", "minLength": 1}
+      }
+    },
+    "current_gate": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "gate_id", "target", "probe_ids", "gate_class", "execution_status",
+        "evidence_paths", "blocks", "downstream_readiness"
+      ],
+      "properties": {
+        "gate_id": {"type": "string", "pattern": "^EXT-[A-Z0-9-]+$"},
+        "target": {"type": "string", "minLength": 1},
+        "probe_ids": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {"type": "string", "pattern": "^R2-INT-0(0[1-9]|1[0-2])$"}
+        },
+        "gate_class": {
+          "enum": ["BLOCKING_FOR_BATCH", "NON_BLOCKING_UNTIL_RELEASE", "BLOCKING_FOR_M2_ACCEPTANCE"]
+        },
+        "execution_status": {"$ref": "#/$defs/status"},
+        "evidence_paths": {"$ref": "#/$defs/nonempty_strings"},
+        "blocks": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {"type": "string", "pattern": "^M2-B[0-9]{3}$"}
+        },
+        "downstream_readiness": {"enum": ["BLOCKED_EXTERNAL", "BLOCKED_BY_FAIL"]}
+      }
+    }
+  }
+}

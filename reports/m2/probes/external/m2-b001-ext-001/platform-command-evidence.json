@@ -1,0 +1,206 @@
+{
+  "schema_version": "rules-residue.m2.external-command-evidence/1.0",
+  "supplement_id": "M2-B001-EXT-001",
+  "captured_at": "2026-08-13T08:54:30Z",
+  "external_system": {
+    "name": "TRPG_PLATFORM",
+    "repository": "/home/zyc14588/TRPG_PLATFORM",
+    "branch": "m1/b002-lua-runtime",
+    "commit": "02dd02447ed07fe6248108365847dccf4023ca00",
+    "tree": "dc15acda453948fc78afdc259fea3e543f9e001c"
+  },
+  "commands": [
+    {
+      "command_id": "ROUTE_FRESHNESS",
+      "command": "python3 tools/codex_route.py check --map .codex/routes/generated/m2-b001-external-probe-update-001.json --route-id M2-B001-EXTERNAL-PROBE-UPDATE-001 --mode IMPLEMENT --milestone M2 --batch-id M2-B001",
+      "workdir": "/tmp/rules-residue-b001-external-update",
+      "exit_code": 0,
+      "observed_output": "CHECK: PASS\nCODEX_ROUTE_FRESH=PASS\n",
+      "output_sha256": "ec55c6a28a1c81a4233ad89775168f2e110d58011d3ee09c650b7873e4a72252"
+    },
+    {
+      "command_id": "PLATFORM_PRE_STATUS",
+      "command": "git status --porcelain=v1 --untracked-files=no",
+      "workdir": "/home/zyc14588/TRPG_PLATFORM",
+      "exit_code": 0,
+      "observed_output": "",
+      "output_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "command_id": "PLATFORM_PRE_BRANCH",
+      "command": "git branch --show-current",
+      "workdir": "/home/zyc14588/TRPG_PLATFORM",
+      "exit_code": 0,
+      "observed_output": "m1/b002-lua-runtime\n",
+      "output_sha256": "eb1b6b064d7e34e89bf5aeb3e011cdbaa572e344c0ace02bb2c04f5fbd8dbc01"
+    },
+    {
+      "command_id": "PLATFORM_PRE_COMMIT",
+      "command": "git rev-parse HEAD",
+      "workdir": "/home/zyc14588/TRPG_PLATFORM",
+      "exit_code": 0,
+      "observed_output": "02dd02447ed07fe6248108365847dccf4023ca00\n",
+      "output_sha256": "6525eaa0714a34d4228d7d8bb8e2e03ddfdbde568f45b6c272b6c7a754da5c34"
+    },
+    {
+      "command_id": "PLATFORM_PRE_TREE",
+      "command": "git rev-parse HEAD^{tree}",
+      "workdir": "/home/zyc14588/TRPG_PLATFORM",
+      "exit_code": 0,
+      "observed_output": "dc15acda453948fc78afdc259fea3e543f9e001c\n",
+      "output_sha256": "372ebe034f0cd8db52a8193ed8705c4d4027421099d178bd349b03a40a5beba0"
+    },
+    {
+      "command_id": "PLATFORM_CODEX_CHECK",
+      "command": "go run ./cmd/projectctl codex check",
+      "workdir": "/home/zyc14588/TRPG_PLATFORM",
+      "exit_code": 0,
+      "observed_output": "[PASS] Codex REPAIR route for GOV-M1-PLANNING-RUNTIME is current at 02dd02447ed07fe6248108365847dccf4023ca00 (314098 context bytes measured, TELEMETRY_ONLY)\n",
+      "output_sha256": "ea1107ba0e5dc540d4abadfc7462cba32ab77e5ff888a6d8b197397a061589ca"
+    },
+    {
+      "command_id": "LUA_CANDIDATE_EVIDENCE",
+      "command": "go run ./cmd/lua-runner evidence --candidate-sha 02dd02447ed07fe6248108365847dccf4023ca00",
+      "workdir": "/home/zyc14588/TRPG_PLATFORM",
+      "exit_code": 0,
+      "observed_output": "{\"candidate_sha\":\"02dd02447ed07fe6248108365847dccf4023ca00\",\"result\":\"PASS\",\"tests\":[{\"test_id\":\"TEST-LUA-001\",\"command\":\"go test -count=1 ./internal/luaruntime/profile/... ./cmd/lua-runner/...\",\"exit_code\":0,\"result\":\"PASS\"},{\"test_id\":\"TEST-LUA-002\",\"command\":\"go test -count=1 ./internal/luaruntime/vm/... ./internal/luaruntime/checkpoint/...\",\"exit_code\":0,\"result\":\"PASS\"}]}\n",
+      "output_sha256": "01f3b2f3b960ed150ad3fb704da9d80626cd1493be7c8060afa0c16ee0e77411"
+    },
+    {
+      "command_id": "PLATFORMD_HEALTH",
+      "command": "go run ./cmd/platformd health",
+      "workdir": "/home/zyc14588/TRPG_PLATFORM",
+      "exit_code": 0,
+      "observed_output": "{\"component\":\"platformd\",\"status\":\"ok\",\"milestone\":\"M0\",\"playable\":false}\n",
+      "output_sha256": "e8385436e46a402db271a08502c8cae390c178a6167f48a079f7d3be9342b68f"
+    },
+    {
+      "command_id": "PLATFORMD_HELP",
+      "command": "go run ./cmd/platformd help",
+      "workdir": "/home/zyc14588/TRPG_PLATFORM",
+      "exit_code": 0,
+      "observed_output": "Usage: platformd <command>\n\nCommands:\n  version  Print the M0 shell version\n  health   Print deterministic baseline health JSON\n  serve    Keep the empty process shell running\n  help     Print this help\n",
+      "output_sha256": "f2dd7d19b0d5b4ac26643d22bd13a15c60d63694993996a78b111e87cc91587b"
+    },
+    {
+      "command_id": "WORKERD_HEALTH",
+      "command": "go run ./cmd/workerd health",
+      "workdir": "/home/zyc14588/TRPG_PLATFORM",
+      "exit_code": 0,
+      "observed_output": "{\"component\":\"workerd\",\"status\":\"ok\",\"milestone\":\"M0\",\"playable\":false}\n",
+      "output_sha256": "f838d895255653279050916e7fe545a5259dba11514f35697e132fe862852cb0"
+    },
+    {
+      "command_id": "CREATOR_SHELL_TEST",
+      "command": "./node_modules/.bin/vitest run --configLoader runner src/App.test.tsx",
+      "workdir": "/home/zyc14588/TRPG_PLATFORM/apps/creator-studio/frontend",
+      "exit_code": 0,
+      "observed_output": "\n RUN  v4.1.10 /home/zyc14588/TRPG_PLATFORM/apps/creator-studio/frontend\n\n\n Test Files  1 passed (1)\n      Tests  1 passed (1)\n   Start at  19:13:24\n   Duration  100ms (transform 13ms, setup 0ms, import 33ms, tests 5ms, environment 0ms)\n\n",
+      "output_sha256": "8d49a44160a8fc8c5133186df3c8fd895f59f4ffcb753204d54af78ce1933d1d"
+    },
+    {
+      "command_id": "EQUIPMENT_EXTENSION_REJECTION",
+      "command": "go run ./cmd/creator-cli package validate --manifest /tmp/rules-residue-b001-external-update/tests/m2/probes/fixtures/platform-manifest-extension.toml --lock internal/package/testdata/package.lock.json",
+      "workdir": "/home/zyc14588/TRPG_PLATFORM",
+      "exit_code": 1,
+      "observed_output": "package contract error: validate manifest: manifest contains unknown fields: rules_residue.equipment_rule, rules_residue.equipment_rule.schema_version, rules_residue.equipment_rule.semantic_kind\nexit status 1\n",
+      "output_sha256": "e19599e9eb747d14fb11bf7e5ec3a5666a4a8b066352da43e0a965c00871f678"
+    },
+    {
+      "command_id": "PLATFORM_COMPONENT_SUITES",
+      "command": "go test -count=1 ./internal/package/... ./cmd/creator-cli/... ./internal/luaruntime/... ./cmd/lua-runner/...",
+      "workdir": "/home/zyc14588/TRPG_PLATFORM",
+      "exit_code": 0,
+      "observed_output": "ok  \tgithub.com/zyc14588/TRPG_PLATFORM/internal/package/capability\t0.002s\nok  \tgithub.com/zyc14588/TRPG_PLATFORM/internal/package/dependency\t0.002s\nok  \tgithub.com/zyc14588/TRPG_PLATFORM/internal/package/manifest\t0.029s\nok  \tgithub.com/zyc14588/TRPG_PLATFORM/internal/package/model\t0.002s\nok  \tgithub.com/zyc14588/TRPG_PLATFORM/cmd/creator-cli\t0.034s\nok  \tgithub.com/zyc14588/TRPG_PLATFORM/internal/luaruntime/checkpoint\t0.024s\nok  \tgithub.com/zyc14588/TRPG_PLATFORM/internal/luaruntime/ipc\t0.004s\nok  \tgithub.com/zyc14588/TRPG_PLATFORM/internal/luaruntime/profile\t0.003s\n?   \tgithub.com/zyc14588/TRPG_PLATFORM/internal/luaruntime/profile/identity\t[no test files]\nok  \tgithub.com/zyc14588/TRPG_PLATFORM/internal/luaruntime/vm\t0.008s\nok  \tgithub.com/zyc14588/TRPG_PLATFORM/cmd/lua-runner\t0.002s\n",
+      "output_sha256": "afdf9b0225f9d6fb766133cceaab13ca525fe1be61b68e78e474f27520de664a"
+    },
+    {
+      "command_id": "CAPABILITY_SCAN_GENERAL",
+      "command": "rg -n -i '(seat|max[_-]?players|player[_-]?count|reconnect|deceased|spectator|campaign[_-]?termination|lineage|true[_-]?ending|safety[_-]?filter|hot[_-]?update)' apps cmd internal schemas",
+      "workdir": "/home/zyc14588/TRPG_PLATFORM",
+      "exit_code": 1,
+      "observed_output": "",
+      "output_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "command_id": "CAPABILITY_SCAN_HOST_SURFACES",
+      "command": "rg -n -i '(participant|deceased|projection|action[_-]?lifecycle|warning[_-]?channel|campaign|termination|memory[_-]?claim|authoritative[_-]?state|safety[_-]?(filter|stage)|seed[_-]?manifest|event[_-]?log|typed[_-]?effect)' cmd/platformd cmd/workerd internal/baselinecli apps/creator-studio",
+      "workdir": "/home/zyc14588/TRPG_PLATFORM",
+      "exit_code": 1,
+      "observed_output": "",
+      "output_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "command_id": "PLATFORM_SOURCE_HASHES",
+      "command": "sha256sum cmd/platformd/main.go cmd/workerd/main.go internal/baselinecli/baselinecli.go apps/creator-studio/frontend/src/App.tsx apps/creator-studio/frontend/src/App.test.tsx internal/luaruntime/ipc/protocol.go internal/luaruntime/vm/reconstruct.go schemas/package/manifest-v1.schema.json cmd/creator-cli/package.go",
+      "workdir": "/home/zyc14588/TRPG_PLATFORM",
+      "exit_code": 0,
+      "observed_output": "1321cbdd185d1a1b9fd94579d3703602d02f6bff01285fedf5dce588140f0b80  cmd/platformd/main.go\n8c3e7e20441525ac3438c612ce121da6e6b1e48d55f058a1867b6f2783df25df  cmd/workerd/main.go\n9c8f352393326d3f0aa06da05304c78ec401d9534c37708a6b9c47caddc682f1  internal/baselinecli/baselinecli.go\n4f63cecbf537afe3fb1dc0ca7b65d983ced02058debad57846166eee35d0e1e5  apps/creator-studio/frontend/src/App.tsx\nd7d537101a31ab2cdf57a9fd6a064368e67e1da53d20dc0cdf8fd6079c3881c2  apps/creator-studio/frontend/src/App.test.tsx\ne4cef99e88ab8dd83d242724e334b93dffaf634752e6d6cbbcb817a40117e3c5  internal/luaruntime/ipc/protocol.go\n598d85c38b7a45ac6a68060dc3a44d76d3604b2e9902df564c1af54886fe43e3  internal/luaruntime/vm/reconstruct.go\n3137440a9e382893affb11d45987ae09c0e0e0dfa6755bba13f09b0be35710af  schemas/package/manifest-v1.schema.json\nf98333c32d44f604cfa11018d7a484a4fd2ddfbf9c4edeab40c39bbfb521372f  cmd/creator-cli/package.go\n",
+      "output_sha256": "d453e9ebde13d08dde3608c41b67ccafbd63938c1419ee3e268c1ef12efdf499"
+    },
+    {
+      "command_id": "RECONSTRUCTION_FOCUSED",
+      "command": "go test -count=1 -run 'TestCheckpointReconstructionRestoresObservableStateAndIsIndependent|TestAuthoritativeAndCheckpointInputsIndependentlyAffectRecovery|TestReconstructionRejectsEveryCompatibilityMutation' -v ./internal/luaruntime/vm",
+      "workdir": "/home/zyc14588/TRPG_PLATFORM",
+      "exit_code": 0,
+      "observed_output": "=== RUN   TestCheckpointReconstructionRestoresObservableStateAndIsIndependent\n--- PASS: TestCheckpointReconstructionRestoresObservableStateAndIsIndependent (0.00s)\n=== RUN   TestAuthoritativeAndCheckpointInputsIndependentlyAffectRecovery\n--- PASS: TestAuthoritativeAndCheckpointInputsIndependentlyAffectRecovery (0.00s)\n=== RUN   TestReconstructionRejectsEveryCompatibilityMutation\n=== RUN   TestReconstructionRejectsEveryCompatibilityMutation/wrong_SessionID\n=== RUN   TestReconstructionRejectsEveryCompatibilityMutation/wrong_state_version\n=== RUN   TestReconstructionRejectsEveryCompatibilityMutation/wrong_package_hashes\n=== RUN   TestReconstructionRejectsEveryCompatibilityMutation/wrong_exact_lock\n=== RUN   TestReconstructionRejectsEveryCompatibilityMutation/wrong_Lua_profile\n=== RUN   TestReconstructionRejectsEveryCompatibilityMutation/wrong_runtime\n=== RUN   TestReconstructionRejectsEveryCompatibilityMutation/corrupt_checkpoint\n--- PASS: TestReconstructionRejectsEveryCompatibilityMutation (0.00s)\n    --- PASS: TestReconstructionRejectsEveryCompatibilityMutation/wrong_SessionID (0.00s)\n    --- PASS: TestReconstructionRejectsEveryCompatibilityMutation/wrong_state_version (0.00s)\n    --- PASS: TestReconstructionRejectsEveryCompatibilityMutation/wrong_package_hashes (0.00s)\n    --- PASS: TestReconstructionRejectsEveryCompatibilityMutation/wrong_exact_lock (0.00s)\n    --- PASS: TestReconstructionRejectsEveryCompatibilityMutation/wrong_Lua_profile (0.00s)\n    --- PASS: TestReconstructionRejectsEveryCompatibilityMutation/wrong_runtime (0.00s)\n    --- PASS: TestReconstructionRejectsEveryCompatibilityMutation/corrupt_checkpoint (0.00s)\nPASS\nok  \tgithub.com/zyc14588/TRPG_PLATFORM/internal/luaruntime/vm\t0.004s\n",
+      "output_sha256": "8a7b15f76b189a0333c92485d0380fbd87d47e0bae57b3a771bc374f314295dc"
+    },
+    {
+      "command_id": "PLATFORM_POST_STATUS",
+      "command": "git status --porcelain=v1 --untracked-files=no",
+      "workdir": "/home/zyc14588/TRPG_PLATFORM",
+      "exit_code": 0,
+      "observed_output": "",
+      "output_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "command_id": "PLATFORM_POST_BRANCH",
+      "command": "git branch --show-current",
+      "workdir": "/home/zyc14588/TRPG_PLATFORM",
+      "exit_code": 0,
+      "observed_output": "m1/b002-lua-runtime\n",
+      "output_sha256": "eb1b6b064d7e34e89bf5aeb3e011cdbaa572e344c0ace02bb2c04f5fbd8dbc01"
+    },
+    {
+      "command_id": "PLATFORM_POST_COMMIT",
+      "command": "git rev-parse HEAD",
+      "workdir": "/home/zyc14588/TRPG_PLATFORM",
+      "exit_code": 0,
+      "observed_output": "02dd02447ed07fe6248108365847dccf4023ca00\n",
+      "output_sha256": "6525eaa0714a34d4228d7d8bb8e2e03ddfdbde568f45b6c272b6c7a754da5c34"
+    },
+    {
+      "command_id": "PLATFORM_POST_TREE",
+      "command": "git rev-parse HEAD^{tree}",
+      "workdir": "/home/zyc14588/TRPG_PLATFORM",
+      "exit_code": 0,
+      "observed_output": "dc15acda453948fc78afdc259fea3e543f9e001c\n",
+      "output_sha256": "372ebe034f0cd8db52a8193ed8705c4d4027421099d178bd349b03a40a5beba0"
+    }
+  ],
+  "source_artifacts": [
+    {"path": "cmd/platformd/main.go", "sha256": "1321cbdd185d1a1b9fd94579d3703602d02f6bff01285fedf5dce588140f0b80"},
+    {"path": "cmd/workerd/main.go", "sha256": "8c3e7e20441525ac3438c612ce121da6e6b1e48d55f058a1867b6f2783df25df"},
+    {"path": "internal/baselinecli/baselinecli.go", "sha256": "9c8f352393326d3f0aa06da05304c78ec401d9534c37708a6b9c47caddc682f1"},
+    {"path": "apps/creator-studio/frontend/src/App.tsx", "sha256": "4f63cecbf537afe3fb1dc0ca7b65d983ced02058debad57846166eee35d0e1e5"},
+    {"path": "apps/creator-studio/frontend/src/App.test.tsx", "sha256": "d7d537101a31ab2cdf57a9fd6a064368e67e1da53d20dc0cdf8fd6079c3881c2"},
+    {"path": "internal/luaruntime/ipc/protocol.go", "sha256": "e4cef99e88ab8dd83d242724e334b93dffaf634752e6d6cbbcb817a40117e3c5"},
+    {"path": "internal/luaruntime/vm/reconstruct.go", "sha256": "598d85c38b7a45ac6a68060dc3a44d76d3604b2e9902df564c1af54886fe43e3"},
+    {"path": "schemas/package/manifest-v1.schema.json", "sha256": "3137440a9e382893affb11d45987ae09c0e0e0dfa6755bba13f09b0be35710af"},
+    {"path": "cmd/creator-cli/package.go", "sha256": "f98333c32d44f604cfa11018d7a484a4fd2ddfbf9c4edeab40c39bbfb521372f"}
+  ],
+  "capability_observations": {
+    "participant_lifecycle": "UNAVAILABLE_OR_UNEXECUTABLE",
+    "deceased_private_projection": "UNAVAILABLE_OR_UNEXECUTABLE",
+    "action_lifecycle": "UNAVAILABLE_OR_UNEXECUTABLE",
+    "warning_channel_separation": "UNAVAILABLE_OR_UNEXECUTABLE",
+    "campaign_persistence": "VM_CHECKPOINT_SUBCAPABILITY_ONLY",
+    "campaign_termination": "UNAVAILABLE_OR_UNEXECUTABLE",
+    "memory_authority_projection": "UNAVAILABLE_OR_UNEXECUTABLE",
+    "runtime_safety_stages": "UNAVAILABLE_OR_UNEXECUTABLE",
+    "creator_round_trip": "SHELL_ONLY_NO_CONTROLS",
+    "namespaced_manifest_extension": "REJECTED",
+    "logical_anomaly_host_integration": "VM_CHECKPOINT_SUBCAPABILITY_ONLY_NO_HOST_RULE_SEED_EVENT_OR_TYPED_EFFECT_PATH"
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "schema_version": "1.0",
+  "route_id": "M2-B001-EXTERNAL-PROBE-UPDATE-001",
+  "mode": "IMPLEMENT",
+  "milestone": "M2",
+  "batch_id": "M2-B001",
+  "capacity_bytes": 196608,
+  "documents": [
+    {"path":"AGENTS.md","required_sections":["M1-AGENTS-CONTRACT"],"optional_sections":[],"reason":"Bind the repository construction contract."},
+    {"path":"README.md","required_sections":["M1-README-ENTRY"],"optional_sections":[],"reason":"Bind repository identity, authority order, and project boundaries."},
+    {"path":".codex/SESSION_START.md","required_sections":["M1-CODEX-SESSION-START","R2-CODEX-SESSION-START"],"optional_sections":[],"reason":"Bind IMPLEMENT startup and progressive-disclosure requirements."},
+    {"path":".codex/prompts/r2/README.md","required_sections":["R2-CODEX-README"],"optional_sections":[],"reason":"Bind the installed R2 prompt entry."},
+    {"path":".codex/prompts/r2/M2-VERTICAL-SLICE/IMPLEMENT.md","required_sections":["R2-CODEX-M2-IMPLEMENT"],"optional_sections":[],"reason":"Bind the M2 IMPLEMENT role contract."},
+    {"path":".codex/plans/m2-vertical-slice/M2_VERTICAL_SLICE_PLAN.md","required_sections":["M2-PLAN-FROZEN"],"optional_sections":[],"reason":"Bind the frozen M2 plan and B001 scope."},
+    {"path":".codex/plans/m2-vertical-slice/ROUTED_INPUT_PROJECTIONS.md","required_sections":["R2-M2-REFERENCE-WORK-PACKAGES","R2-INSTALL-INTEGRATION-CONFLICT-EVIDENCE"],"optional_sections":[],"reason":"Bind the source-hashed B001 work package and R2-INT proof obligations."},
+    {"path":"docs/implementation/r2/M2_TECHNICAL_VALIDATION_MATRIX.md","required_sections":["R2-M2-VALIDATION-MATRIX"],"optional_sections":[],"reason":"Bind the technical probe matrix."},
+    {"path":"docs/implementation/r2/M2_STOP_CONDITIONS.md","required_sections":["R2-M2-STOP-CONDITIONS"],"optional_sections":[],"reason":"Bind external-gate and truthful-status stop conditions."},
+    {"path":"docs/acceptance/r2/M2_VERTICAL_SLICE_STRICT_ACCEPTANCE.md","required_sections":["R2-ACC-M2-STRICT"],"optional_sections":[],"reason":"Bind independent M2 evidence requirements."},
+    {"path":"docs/authority/r2/R2_TERMINOLOGY.md","required_sections":["R2-AUTH-TERMINOLOGY"],"optional_sections":[],"reason":"Bind normalized R2 terminology."},
+    {"path":"docs/authority/r2/00_R2_AUTHORITY_ENTRY.md","required_sections":["R2-AUTH-ENTRY"],"optional_sections":[],"reason":"Bind R2 authority precedence."},
+    {"path":"docs/authority/r2/03_RULE_CAUSALITY_LOOP_AND_COST.md","required_sections":["R2-AUTH-RULE-LOOP"],"optional_sections":[],"reason":"Bind rule, causality, persistence, and death semantics."},
+    {"path":"docs/authority/r2/04_CHARACTER_EQUIPMENT_AND_GROWTH.md","required_sections":["R2-AUTH-CHARACTER-EQUIPMENT"],"optional_sections":[],"reason":"Bind participant and deceased-state semantics."},
+    {"path":"docs/authority/r2/06_FINAL_BOSS_ENDINGS_AND_RETURN.md","required_sections":["R2-AUTH-ENDINGS"],"optional_sections":[],"reason":"Bind campaign termination and return-state semantics."},
+    {"path":"docs/authority/r2/07_CAMPAIGN_HOSTING_AND_RUNTIME.md","required_sections":["R2-AUTH-CAMPAIGN-HOSTING"],"optional_sections":[],"reason":"Bind platform lifecycle, persistence, visibility, warning, memory, and determinism requirements."},
+    {"path":"docs/authority/r2/09_CONTENT_SAFETY_AND_ABSOLUTE_RED_LINES.md","required_sections":["R2-AUTH-SAFETY"],"optional_sections":[],"reason":"Bind multi-stage safety requirements."},
+    {"path":"docs/authority/r2/10_CONTENT_VALIDATION_AND_RELEASE_GATES.md","required_sections":["R2-AUTH-VALIDATION"],"optional_sections":[],"reason":"Bind capability evidence and external-gate semantics."},
+    {"path":"docs/authority/r2/14_M1_INTEGRATION_CONTRACT.md","required_sections":["R2-AUTH-M1-INTEGRATION"],"optional_sections":[],"reason":"Bind R2-INT-001 through R2-INT-012 classifications and proof obligations."},
+    {"path":"docs/implementation/m2/probes/README.md","required_sections":["M2-B001-PROBE-EVIDENCE"],"optional_sections":[],"reason":"Bind the accepted B001 evidence and fail-closed validator contract."}
+  ],
+  "forbidden_bulk_reads":["docs/**","authoring/**","governance/**","schemas/**","workflow/**","game-package/**","*","git_history_all","prior_chat_transcripts"]
+}
