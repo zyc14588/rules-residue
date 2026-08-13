@@ -1,0 +1,37 @@
+{
+  "schema_version": "rules-residue.m2.evidence-manifest/1.0",
+  "source_binding": {
+    "source_commit": "c595ac5257aff83bd69d96e3acd64cf3485dc8cb",
+    "source_tree": "877927e564ba781ca5f355a3ec3d5f7da7ce879f",
+    "route_id": "M2-B001-CAPABILITY-PROBES-IMPLEMENT",
+    "route_binding_digest": "e2aacf21c69b34841d84aaae4945f7eab740e8410b50aa3bd3f0c5f9c7c71bad"
+  },
+  "candidate_binding_strategy": "EXACT_HEAD_AT_VALIDATION",
+  "artifacts": [
+    {"path": "docs/implementation/m2/probes/README.md", "sha256": "8faa32e6c3871a5fc9446dc40da8ecc895a4f02e5e4a87d9d9e1cbf8666fe11b"},
+    {"path": "docs/implementation/m2/probes/probe-result-v1.schema.json", "sha256": "2dca0b73a39f544e71d4d440b3d153a75e5c438f91853e7bf82bf21442bb8b75"},
+    {"path": "docs/implementation/m2/probes/external-result-v1.schema.json", "sha256": "eef21de64c4fa44266a008acf567e101b5d117f8fea0e6a2ffd482a4a917b5b6"},
+    {"path": "tests/m2/probes/fixtures/local-capability-vectors.json", "sha256": "6a7832c8193825abda5dfac4124d590731aa023be07297ba73aa89eb3504a96d"},
+    {"path": "tests/m2/probes/fixtures/platform-manifest-seat.toml", "sha256": "8ff8807969994b77fa412abcb2aae6be57b7c906dff011776617fd833c10688d"},
+    {"path": "tests/m2/probes/fixtures/platform-manifest-extension.toml", "sha256": "b2e8d719582830ad7930ece3e9ddc2266500811fb253eb774638ac8c8c4a1054"},
+    {"path": "tests/m2/probes/validate_m2_b001.py", "sha256": "f60683c845acda5666014c3c5d0df5148d6c28445ec6734aa9a696a43bad44f2"},
+    {"path": "tests/m2/probes/test_m2_b001_probes.py", "sha256": "7d5c452d92e5cb48e4701575fa384d95a8f3d8caca9e49b1b847f72918c22894"},
+    {"path": "workflow/queue/m2-b001-trpg-platform-probes.json", "sha256": "7d21cb8f5a68f9911fa8b70c00561c7df46904b615f4151281701f53a070aaf1"},
+    {"path": "workflow/queue/m2-b001-creator-tool-probes.json", "sha256": "e1beb6ed3413ae9b711f760b0a8cf0d6deb5e13fd92d928e20a9a92fb40f6af9"},
+    {"path": "reports/m2/probes/acceptance-evidence.json", "sha256": "4eeee63b1dd9e4b70581a70fc2dc355790dfd4147488540741d1f4062dab25da"},
+    {"path": "reports/m2/probes/probe-results.json", "sha256": "154e7c0ddf8ce7b2243ad6c78d10ceb6cddf02c3aeb6592716dcc5ad8fc64218"},
+    {"path": "reports/m2/probes/external-gates.json", "sha256": "a8951312cb9f23cf3f999a7258900603716ea6f0b4e7f684b8f6a53ed8f13a2d"},
+    {"path": "reports/m2/probes/platform-inventory.json", "sha256": "cc73c579c18a4db47bf678c57d20906718180e6df51f7643f628c65a7cb7e2bf"},
+    {"path": "reports/m2/probes/safety-stage-evidence.json", "sha256": "a701f619aa9c8515ca9567dd6d74663b9ce7ea651a54f2ff01dc78101e24b5ea"}
+  ],
+  "protected_scope_proof": {
+    "comparison": "git diff --name-only c595ac5257aff83bd69d96e3acd64cf3485dc8cb --",
+    "must_be_unchanged": ["game-package/**", "production Lua", "docs/authority/r2/**", "governance/r2/**", "authoring/**", "formal art", "TRPG_PLATFORM/**"],
+    "allowed_path_families": ["docs/implementation/m2/probes/**", "tests/m2/probes/**", "workflow/queue/m2-b001-*.json", "reports/m2/probes/**", ".codex/routes/m2-b001-*.json"]
+  },
+  "acceptance_evidence": {
+    "M2-ACC-001": "Source commit/tree and fresh route digest are machine-bound; final exact candidate binding is resolved in the independent clean checkout.",
+    "M2-ACC-002": "Existing validate_r2_install and run_acceptance gates must pass at the candidate; B001 does not alter R2 registration.",
+    "M2-ACC-028": "Current local applicable stages are hash-bound; external runtime/restore/Creator stages remain BLOCKED_EXTERNAL and independent ACCEPT is NOT_RUN. No M2-wide PASS is claimed."
+  }
+}

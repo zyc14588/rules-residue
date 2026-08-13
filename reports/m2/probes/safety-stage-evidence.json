@@ -1,0 +1,28 @@
+{
+  "schema_version": "rules-residue.m2.safety-stage-evidence/1.0",
+  "batch_id": "M2-B001",
+  "source_object": "tests/m2/probes/fixtures/local-capability-vectors.json",
+  "candidate_binding_strategy": "EXACT_HEAD_AT_VALIDATION",
+  "records": [
+    {"stage_id": "S01_KNOWLEDGE_AND_DESIGN_INPUT", "run_id": "M2-B001-SAFETY-01", "source_sha256": "6a7832c8193825abda5dfac4124d590731aa023be07297ba73aa89eb3504a96d", "execution_status": "PASS", "decision": "ALLOW", "evidence": "B001 routed authority and symbolic safety vector validated locally."},
+    {"stage_id": "S02_TEMPLATE_AND_PROMPT", "run_id": "M2-B001-SAFETY-02", "source_sha256": "6a7832c8193825abda5dfac4124d590731aa023be07297ba73aa89eb3504a96d", "execution_status": "NOT_APPLICABLE", "decision": "NOT_EVALUATED", "evidence": "B001 issues no content-generation template or art prompt."},
+    {"stage_id": "S03_AI_GENERATION", "run_id": "M2-B001-SAFETY-03", "source_sha256": "6a7832c8193825abda5dfac4124d590731aa023be07297ba73aa89eb3504a96d", "execution_status": "PASS", "decision": "ALLOW", "evidence": "Generated B001 contract and abstract fixtures contain no formal game content; symbolic reject control is non-narrative."},
+    {"stage_id": "S04_HUMAN_EDIT", "run_id": "M2-B001-SAFETY-04", "source_sha256": "6a7832c8193825abda5dfac4124d590731aa023be07297ba73aa89eb3504a96d", "execution_status": "NOT_RUN", "decision": "NOT_EVALUATED", "evidence": "No human-edited return exists in IMPLEMENT."},
+    {"stage_id": "S05_SEMANTIC_CONVERSION", "run_id": "M2-B001-SAFETY-05", "source_sha256": "6a7832c8193825abda5dfac4124d590731aa023be07297ba73aa89eb3504a96d", "execution_status": "PASS", "decision": "ALLOW", "evidence": "Executable fixtures preserve the absolute-reject decision and fail if weakened."},
+    {"stage_id": "S06_LUA_AND_RUNTIME_DATA", "run_id": "M2-B001-SAFETY-06", "source_sha256": "6a7832c8193825abda5dfac4124d590731aa023be07297ba73aa89eb3504a96d", "execution_status": "NOT_APPLICABLE", "decision": "NOT_EVALUATED", "evidence": "B001 creates no Lua or runtime data."},
+    {"stage_id": "S07_ART_AND_AUDIO_IMPORT", "run_id": "M2-B001-SAFETY-07", "source_sha256": "6a7832c8193825abda5dfac4124d590731aa023be07297ba73aa89eb3504a96d", "execution_status": "NOT_APPLICABLE", "decision": "NOT_EVALUATED", "evidence": "B001 creates no art or audio."},
+    {"stage_id": "S08_REGION_ACCEPTANCE", "run_id": "M2-B001-SAFETY-08", "source_sha256": "6a7832c8193825abda5dfac4124d590731aa023be07297ba73aa89eb3504a96d", "execution_status": "NOT_APPLICABLE", "decision": "NOT_EVALUATED", "evidence": "The observation objects are interface-only fixtures, not a Region."},
+    {"stage_id": "S09_GLOBAL_CROSS_VALIDATION", "run_id": "M2-B001-SAFETY-09", "source_sha256": "6a7832c8193825abda5dfac4124d590731aa023be07297ba73aa89eb3504a96d", "execution_status": "PASS", "decision": "ALLOW", "evidence": "The B001 validator checks the current source hash and reject vector independently."},
+    {"stage_id": "S10_BUILD", "run_id": "M2-B001-SAFETY-10", "source_sha256": "6a7832c8193825abda5dfac4124d590731aa023be07297ba73aa89eb3504a96d", "execution_status": "NOT_APPLICABLE", "decision": "NOT_EVALUATED", "evidence": "B001 changes no package build input."},
+    {"stage_id": "S11_RELEASE_CANDIDATE", "run_id": "M2-B001-SAFETY-11", "source_sha256": "6a7832c8193825abda5dfac4124d590731aa023be07297ba73aa89eb3504a96d", "execution_status": "NOT_APPLICABLE", "decision": "NOT_EVALUATED", "evidence": "B001 is a probe-contract candidate, not a production release candidate."},
+    {"stage_id": "S12_RUNTIME_GENERATION", "run_id": "M2-B001-SAFETY-12", "source_sha256": "6a7832c8193825abda5dfac4124d590731aa023be07297ba73aa89eb3504a96d", "execution_status": "BLOCKED_EXTERNAL", "decision": "BLOCKED", "evidence": "No runnable Host safety-generation stage exists at the pinned platform candidate."},
+    {"stage_id": "S13_HOT_UPDATE_MIGRATION_RESTORE", "run_id": "M2-B001-SAFETY-13", "source_sha256": "6a7832c8193825abda5dfac4124d590731aa023be07297ba73aa89eb3504a96d", "execution_status": "BLOCKED_EXTERNAL", "decision": "BLOCKED", "evidence": "No Host hot-update/migration/old-save safety stage exists at the pinned platform candidate."},
+    {"stage_id": "S14_INDEPENDENT_ACCEPTANCE", "run_id": "M2-B001-SAFETY-14", "source_sha256": "6a7832c8193825abda5dfac4124d590731aa023be07297ba73aa89eb3504a96d", "execution_status": "NOT_RUN", "decision": "NOT_EVALUATED", "evidence": "Reserved for the separate ACCEPT role and worktree."}
+  ],
+  "symbolic_negative_control": {
+    "object_id": "B001-SYMBOLIC-NEGATIVE",
+    "labels": ["R2_ABSOLUTE_RED_LINE"],
+    "decision": "REJECT_AND_REDESIGN"
+  },
+  "m2_acc_028_conclusion": "B001 local applicable stages have current evidence; external runtime/restore stages remain BLOCKED_EXTERNAL and independent acceptance remains NOT_RUN. This is not an M2-wide PASS."
+}

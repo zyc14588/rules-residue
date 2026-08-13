@@ -1,0 +1,45 @@
+{
+  "schema_version": "rules-residue.m2.b001-acceptance-evidence/1.0",
+  "batch_id": "M2-B001",
+  "source_binding": {
+    "source_commit": "c595ac5257aff83bd69d96e3acd64cf3485dc8cb",
+    "source_tree": "877927e564ba781ca5f355a3ec3d5f7da7ce879f",
+    "route_id": "M2-B001-CAPABILITY-PROBES-IMPLEMENT",
+    "route_binding_digest": "e2aacf21c69b34841d84aaae4945f7eab740e8410b50aa3bd3f0c5f9c7c71bad"
+  },
+  "candidate_binding": {
+    "strategy": "EXACT_HEAD_AT_VALIDATION",
+    "independent_acceptance_status": "NOT_RUN",
+    "required_command": "python3 tests/m2/probes/validate_m2_b001.py --all --candidate <exact-commit> --candidate-tree <exact-tree>"
+  },
+  "acceptance_items": [
+    {
+      "acceptance_id": "M2-ACC-001",
+      "execution_status": "PASS",
+      "assertion": "M1 accepted, R2 installed, and the IMPLEMENT route is fresh at the frozen source commit/tree.",
+      "commands": [
+        {"command": "python3 tools/codex_route.py check --map .codex/routes/generated/m2-b001-implement.reading-map.json --route-id M2-B001-CAPABILITY-PROBES-IMPLEMENT --mode IMPLEMENT --milestone M2 --batch-id M2-B001", "exit_code": 0, "output_sha256": "ec55c6a28a1c81a4233ad89775168f2e110d58011d3ee09c650b7873e4a72252", "observed_output": "CHECK: PASS; CODEX_ROUTE_FRESH=PASS"},
+        {"command": "python3 tools/validate_r2_install.py", "exit_code": 0, "output_sha256": "2e477e70b1f88e762eb36d00209deb3610dd7c98db2a6c0d45e539a73c83c5b7", "observed_output": "R2_VALIDATION: PASS; package/runtime boundary and installed authority gates passed"}
+      ],
+      "evidence_paths": ["reports/m2/probes/evidence-manifest.json", "reports/m2/probes/platform-inventory.json"]
+    },
+    {
+      "acceptance_id": "M2-ACC-002",
+      "execution_status": "PASS",
+      "assertion": "The installed R2 authority contains 191 decisions with exact groups, index, traceability, and deferred register.",
+      "commands": [
+        {"command": "python3 tools/validate_r2_install.py", "exit_code": 0, "output_sha256": "2e477e70b1f88e762eb36d00209deb3610dd7c98db2a6c0d45e539a73c83c5b7", "observed_output": "191 decisions, exact groups, index, traceability, and deferred register: PASS"}
+      ],
+      "evidence_paths": ["reports/m2/probes/evidence-manifest.json"]
+    },
+    {
+      "acceptance_id": "M2-ACC-028",
+      "execution_status": "BLOCKED_EXTERNAL",
+      "assertion": "Every B001-applicable local stage has current source-bound evidence and the absolute-reject control passes; runtime generation and restore/hot-update stages are absent, while independent ACCEPT correctly remains NOT_RUN.",
+      "commands": [
+        {"command": "python3 tests/m2/probes/validate_m2_b001.py --local-check R2-INT-011", "exit_code": 0, "output_sha256": "ff2a3d538718074de12e7701670fc14a0584cc98687235b151f8e633bbb21d09", "observed_output": "local applicable stages PASS; S12/S13 BLOCKED_EXTERNAL; S14 NOT_RUN"}
+      ],
+      "evidence_paths": ["reports/m2/probes/safety-stage-evidence.json", "reports/m2/probes/external-gates.json", "workflow/queue/m2-b001-trpg-platform-probes.json", "workflow/queue/m2-b001-creator-tool-probes.json"]
+    }
+  ]
+}

@@ -1,0 +1,103 @@
+{
+  "schema_version": "rules-residue.m2.platform-inventory/1.0",
+  "batch_id": "M2-B001",
+  "game_source_binding": {
+    "commit": "c595ac5257aff83bd69d96e3acd64cf3485dc8cb",
+    "tree": "877927e564ba781ca5f355a3ec3d5f7da7ce879f",
+    "route_binding_digest": "e2aacf21c69b34841d84aaae4945f7eab740e8410b50aa3bd3f0c5f9c7c71bad"
+  },
+  "external_system": {
+    "name": "TRPG_PLATFORM",
+    "source_path": "/home/zyc14588/TRPG_PLATFORM",
+    "probe_clone": "/tmp/rules-residue-m2-b001-platform-probe",
+    "branch": "m1/b002-lua-runtime",
+    "commit": "a6ce0e1f1f7cddcd191899946093626a81e00111",
+    "tree": "dc15acda453948fc78afdc259fea3e543f9e001c",
+    "tracked_worktree_clean": true,
+    "mutation_policy": "READ_ONLY_SOURCE_ISOLATED_TEMPORARY_OUTPUTS"
+  },
+  "creator_tool": {
+    "separate_known_sibling_found": false,
+    "known_names_checked": [
+      "/home/zyc14588/Creator-Tool",
+      "/home/zyc14588/creator-tool",
+      "/home/zyc14588/creator_tool"
+    ],
+    "embedded_candidate": "/home/zyc14588/TRPG_PLATFORM/apps/creator-studio",
+    "observed_state": "Creator Studio is an M0 shell whose executable UI test requires no button, form, input, creator control, or game control. No standard import/edit/export/re-import workflow is available."
+  },
+  "source_artifacts": [
+    {"path": "README.md", "sha256": "0d4807fb5993bea56db67f37b174d62618ae6c24e1921f26ef24e8da82b02859"},
+    {"path": "schemas/package/manifest-v1.schema.json", "sha256": "3137440a9e382893affb11d45987ae09c0e0e0dfa6755bba13f09b0be35710af"},
+    {"path": "cmd/creator-cli/package.go", "sha256": "f98333c32d44f604cfa11018d7a484a4fd2ddfbf9c4edeab40c39bbfb521372f"},
+    {"path": "apps/creator-studio/frontend/src/App.tsx", "sha256": "4f63cecbf537afe3fb1dc0ca7b65d983ced02058debad57846166eee35d0e1e5"},
+    {"path": "apps/creator-studio/frontend/src/App.test.tsx", "sha256": "d7d537101a31ab2cdf57a9fd6a064368e67e1da53d20dc0cdf8fd6079c3881c2"},
+    {"path": "internal/luaruntime/vm/reconstruct.go", "sha256": "598d85c38b7a45ac6a68060dc3a44d76d3604b2e9902df564c1af54886fe43e3"},
+    {"path": "internal/luaruntime/vm/reconstruct_test.go", "sha256": "0f8429899200f097011b2e1d70249957dacd98be2260933937b44b1420509aa8"},
+    {"path": "internal/luaruntime/vm/vm_test.go", "sha256": "ceba9bf320c7225ab9d92a2bca81ce9be3e5f64090c52c8b1464ea19a863da7f"}
+  ],
+  "command_evidence": [
+    {
+      "command_id": "PLATFORM-IDENTITY",
+      "command": "git status --short --untracked-files=no; git branch --show-current; git rev-parse HEAD; git rev-parse HEAD^{tree}",
+      "workdir": "/tmp/rules-residue-m2-b001-platform-probe",
+      "exit_code": 0,
+      "raw_output_sha256": "8ce9c2adb2f287f2feeb5568546851f05257269077dbdf853209b0a176bf8ea3",
+      "observed_output": "tracked status empty; branch=m1/b002-lua-runtime; commit=a6ce0e1f1f7cddcd191899946093626a81e00111; tree=dc15acda453948fc78afdc259fea3e543f9e001c"
+    },
+    {
+      "command_id": "PLATFORM-CAPABILITY-SCAN",
+      "command": "rg -n -i '(seat|max[_-]?players|player[_-]?count|reconnect|deceased|spectator|campaign[_-]?termination|lineage|true[_-]?ending|safety[_-]?filter|hot[_-]?update)' apps cmd internal schemas",
+      "workdir": "/tmp/rules-residue-m2-b001-platform-probe",
+      "exit_code": 1,
+      "raw_output_sha256": "e79be6268c71bf276ba120ff125b735eb2ea1b64832f91db12e97a116a817d05",
+      "observed_output": "No matches in bounded implementation/schema roots; rg exit 1 is the expected no-match status."
+    },
+    {
+      "command_id": "PLATFORM-PACKAGE-LUA-TESTS",
+      "command": "GOCACHE=/tmp/rules-residue-m2-b001-go-cache go test -count=1 ./internal/package/... ./cmd/creator-cli/... ./internal/luaruntime/... ./cmd/lua-runner/...",
+      "workdir": "/tmp/rules-residue-m2-b001-platform-probe",
+      "exit_code": 0,
+      "raw_output_sha256": "901a20018fa12d4ea8cdca599ccb02841902aaf427cea4921ad5acdf54bc3146",
+      "observed_output": "All package capability/dependency/manifest/model, creator-cli, Lua checkpoint/ipc/profile/vm, and lua-runner packages passed."
+    },
+    {
+      "command_id": "CREATOR-SHELL-TEST",
+      "command": "./node_modules/.bin/vitest run src/App.test.tsx",
+      "workdir": "/tmp/rules-residue-m2-b001-platform-probe/apps/creator-studio/frontend",
+      "exit_code": 0,
+      "raw_output_sha256": "030b7e0365a6b511f7a50c25ed03f012570dea818bf3c5f88b49a247a0164a47",
+      "observed_output": "1 test file and 1 test passed; the test asserts Creator Studio exposes no button, form, input, creator control, or game control."
+    },
+    {
+      "command_id": "SEAT-MANIFEST-REJECTION",
+      "command": "GOCACHE=/tmp/rules-residue-m2-b001-go-cache go run ./cmd/creator-cli package validate --manifest /tmp/rules-residue-m2-b001-implement/tests/m2/probes/fixtures/platform-manifest-seat.toml --lock internal/package/testdata/package.lock.json",
+      "workdir": "/tmp/rules-residue-m2-b001-platform-probe",
+      "exit_code": 1,
+      "raw_output_sha256": "79a2d1852397b788180b043695755a1ec0624088210cfe5d2817d72bc8d6febc",
+      "observed_output": "package contract error: validate manifest: manifest contains unknown fields: player_seats"
+    },
+    {
+      "command_id": "EQUIPMENT-EXTENSION-REJECTION",
+      "command": "GOCACHE=/tmp/rules-residue-m2-b001-go-cache go run ./cmd/creator-cli package validate --manifest /tmp/rules-residue-m2-b001-implement/tests/m2/probes/fixtures/platform-manifest-extension.toml --lock internal/package/testdata/package.lock.json",
+      "workdir": "/tmp/rules-residue-m2-b001-platform-probe",
+      "exit_code": 1,
+      "raw_output_sha256": "e19599e9eb747d14fb11bf7e5ec3a5666a4a8b066352da43e0a965c00871f678",
+      "observed_output": "package contract error: validate manifest: manifest contains unknown fields: rules_residue.equipment_rule, rules_residue.equipment_rule.schema_version, rules_residue.equipment_rule.semantic_kind"
+    }
+  ],
+  "observed_capabilities": {
+    "package_manifest_validation": "AVAILABLE_AND_TESTED",
+    "package_lock_and_identity": "AVAILABLE_AND_TESTED",
+    "deterministic_lua_vm_and_checkpoint_reconstruction": "AVAILABLE_AND_TESTED",
+    "seat_lifecycle": "NO_IMPLEMENTATION_LOCATED_OR_EXECUTABLE",
+    "deceased_private_projection_and_action_policy": "NO_IMPLEMENTATION_LOCATED_OR_EXECUTABLE",
+    "campaign_persistence_and_version_lock": "CHECKPOINT_SUBCAPABILITY_ONLY_NO_CAMPAIGN_LIFECYCLE",
+    "lineage_profile_unlock": "NO_IMPLEMENTATION_LOCATED_OR_EXECUTABLE",
+    "campaign_termination_authorization": "NO_IMPLEMENTATION_LOCATED_OR_EXECUTABLE",
+    "host_context_builder": "NO_IMPLEMENTATION_LOCATED_OR_EXECUTABLE",
+    "runtime_safety_stages": "NO_IMPLEMENTATION_LOCATED_OR_EXECUTABLE",
+    "creator_round_trip": "CREATOR_SHELL_ONLY_NO_CONTROLS",
+    "namespaced_manifest_extensions": "REJECTED_BY_STANDARD_VALIDATOR"
+  }
+}

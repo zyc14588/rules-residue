@@ -1,0 +1,218 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "rules-residue.m2/external-probe-result/1.0",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version", "task_id", "packet_sha256", "game_source_commit",
+    "game_source_tree", "game_candidate_commit", "game_candidate_tree",
+    "external_system", "probe_results", "commands", "evidence_paths",
+    "evidence_artifacts"
+  ],
+  "properties": {
+    "schema_version": {"const": "rules-residue.m2.external-probe-result/1.0"},
+    "task_id": {"type": "string", "pattern": "^RR-TASK-[0-9]{4,}$"},
+    "packet_sha256": {"$ref": "#/$defs/sha256"},
+    "game_source_commit": {"$ref": "#/$defs/git_oid"},
+    "game_source_tree": {"$ref": "#/$defs/git_oid"},
+    "game_candidate_commit": {"$ref": "#/$defs/git_oid"},
+    "game_candidate_tree": {"$ref": "#/$defs/git_oid"},
+    "external_system": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "name", "repository_commit", "repository_tree", "tracked_worktree_clean",
+        "identity_command_ids"
+      ],
+      "properties": {
+        "name": {"enum": ["TRPG_PLATFORM", "Creator Tool"]},
+        "repository_commit": {"$ref": "#/$defs/git_oid"},
+        "repository_tree": {"$ref": "#/$defs/git_oid"},
+        "tracked_worktree_clean": {"const": true},
+        "identity_command_ids": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["repository_commit", "repository_tree", "tracked_worktree_clean"],
+          "properties": {
+            "repository_commit": {"$ref": "#/$defs/command_id"},
+            "repository_tree": {"$ref": "#/$defs/command_id"},
+            "tracked_worktree_clean": {"$ref": "#/$defs/command_id"}
+          }
+        }
+      }
+    },
+    "probe_results": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "probe_id", "target", "execution_status", "observed_result",
+          "procedure_results"
+        ],
+        "properties": {
+          "probe_id": {"type": "string", "pattern": "^R2-INT-0(0[1-9]|1[0-2])$"},
+          "target": {"enum": ["B:TRPG_PLATFORM", "C:Creator Tool"]},
+          "execution_status": {"$ref": "#/$defs/execution_status"},
+          "observed_result": {"type": "string", "minLength": 1},
+          "procedure_results": {
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["procedure", "execution_status", "command_ids", "evidence_paths"],
+              "properties": {
+                "procedure": {"type": "string", "minLength": 1},
+                "execution_status": {"$ref": "#/$defs/execution_status"},
+                "command_ids": {
+                  "type": "array",
+                  "uniqueItems": true,
+                  "items": {"$ref": "#/$defs/command_id"}
+                },
+                "evidence_paths": {
+                  "type": "array",
+                  "minItems": 1,
+                  "uniqueItems": true,
+                  "items": {"$ref": "#/$defs/evidence_path"}
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "commands": {
+      "type": "array",
+      "minItems": 4,
+      "uniqueItems": true,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["command_id", "command", "exit_code", "output_sha256", "evidence_path"],
+        "properties": {
+          "command_id": {"$ref": "#/$defs/command_id"},
+          "command": {
+            "type": "string",
+            "minLength": 1,
+            "not": {"enum": ["true", ":", "/bin/true"]}
+          },
+          "exit_code": {"type": "integer", "minimum": 0, "maximum": 255},
+          "output_sha256": {"$ref": "#/$defs/sha256"},
+          "evidence_path": {"$ref": "#/$defs/evidence_path"}
+        }
+      }
+    },
+    "evidence_paths": {
+      "type": "array",
+      "minItems": 4,
+      "uniqueItems": true,
+      "items": {"$ref": "#/$defs/evidence_path"}
+    },
+    "evidence_artifacts": {
+      "type": "array",
+      "minItems": 4,
+      "uniqueItems": true,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["path", "sha256"],
+        "properties": {
+          "path": {"$ref": "#/$defs/evidence_path"},
+          "sha256": {"$ref": "#/$defs/sha256"}
+        }
+      }
+    }
+  },
+  "allOf": [
+    {
+      "oneOf": [
+        {
+          "properties": {
+            "task_id": {"const": "RR-TASK-2001"},
+            "packet_sha256": {"const": "7d21cb8f5a68f9911fa8b70c00561c7df46904b615f4151281701f53a070aaf1"},
+            "external_system": {
+              "properties": {"name": {"const": "TRPG_PLATFORM"}},
+              "required": ["name"]
+            },
+            "probe_results": {
+              "minItems": 11,
+              "maxItems": 11,
+              "items": {
+                "properties": {
+                  "probe_id": {"enum": ["R2-INT-001", "R2-INT-002", "R2-INT-003", "R2-INT-004", "R2-INT-005", "R2-INT-006", "R2-INT-008", "R2-INT-009", "R2-INT-010", "R2-INT-011", "R2-INT-012"]},
+                  "target": {"const": "B:TRPG_PLATFORM"}
+                },
+                "required": ["probe_id", "target"]
+              },
+              "allOf": [
+                {"contains": {"properties": {"probe_id": {"const": "R2-INT-001"}}, "required": ["probe_id"]}, "minContains": 1, "maxContains": 1},
+                {"contains": {"properties": {"probe_id": {"const": "R2-INT-002"}}, "required": ["probe_id"]}, "minContains": 1, "maxContains": 1},
+                {"contains": {"properties": {"probe_id": {"const": "R2-INT-003"}}, "required": ["probe_id"]}, "minContains": 1, "maxContains": 1},
+                {"contains": {"properties": {"probe_id": {"const": "R2-INT-004"}}, "required": ["probe_id"]}, "minContains": 1, "maxContains": 1},
+                {"contains": {"properties": {"probe_id": {"const": "R2-INT-005"}}, "required": ["probe_id"]}, "minContains": 1, "maxContains": 1},
+                {"contains": {"properties": {"probe_id": {"const": "R2-INT-006"}}, "required": ["probe_id"]}, "minContains": 1, "maxContains": 1},
+                {"contains": {"properties": {"probe_id": {"const": "R2-INT-008"}}, "required": ["probe_id"]}, "minContains": 1, "maxContains": 1},
+                {"contains": {"properties": {"probe_id": {"const": "R2-INT-009"}}, "required": ["probe_id"]}, "minContains": 1, "maxContains": 1},
+                {"contains": {"properties": {"probe_id": {"const": "R2-INT-010"}}, "required": ["probe_id"]}, "minContains": 1, "maxContains": 1},
+                {"contains": {"properties": {"probe_id": {"const": "R2-INT-011"}}, "required": ["probe_id"]}, "minContains": 1, "maxContains": 1},
+                {"contains": {"properties": {"probe_id": {"const": "R2-INT-012"}}, "required": ["probe_id"]}, "minContains": 1, "maxContains": 1}
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "task_id": {"const": "RR-TASK-2002"},
+            "packet_sha256": {"const": "e1beb6ed3413ae9b711f760b0a8cf0d6deb5e13fd92d928e20a9a92fb40f6af9"},
+            "external_system": {
+              "properties": {"name": {"const": "Creator Tool"}},
+              "required": ["name"]
+            },
+            "probe_results": {
+              "minItems": 4,
+              "maxItems": 4,
+              "items": {
+                "properties": {
+                  "probe_id": {"enum": ["R2-INT-001", "R2-INT-006", "R2-INT-010", "R2-INT-011"]},
+                  "target": {"const": "C:Creator Tool"}
+                },
+                "required": ["probe_id", "target"]
+              },
+              "allOf": [
+                {"contains": {"properties": {"probe_id": {"const": "R2-INT-001"}}, "required": ["probe_id"]}, "minContains": 1, "maxContains": 1},
+                {"contains": {"properties": {"probe_id": {"const": "R2-INT-006"}}, "required": ["probe_id"]}, "minContains": 1, "maxContains": 1},
+                {"contains": {"properties": {"probe_id": {"const": "R2-INT-010"}}, "required": ["probe_id"]}, "minContains": 1, "maxContains": 1},
+                {"contains": {"properties": {"probe_id": {"const": "R2-INT-011"}}, "required": ["probe_id"]}, "minContains": 1, "maxContains": 1}
+              ]
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "$defs": {
+    "command_id": {"type": "string", "pattern": "^[A-Z][A-Z0-9_-]{2,63}$"},
+    "evidence_path": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.(?:/|$))[A-Za-z0-9._/-]+$"
+    },
+    "execution_status": {
+      "enum": ["PASS", "FAIL", "BLOCKED_EXTERNAL", "BLOCKED_ENVIRONMENT"]
+    },
+    "git_oid": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{40}$",
+      "not": {"const": "0000000000000000000000000000000000000000"}
+    },
+    "sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$",
+      "not": {"const": "0000000000000000000000000000000000000000000000000000000000000000"}
+    }
+  }
+}

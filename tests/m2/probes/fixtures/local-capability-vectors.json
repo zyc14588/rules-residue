@@ -1,0 +1,107 @@
+{
+  "schema_version": "rules-residue.m2.local-capability-vectors/1.0",
+  "fixture_kind": "INTERFACE_ONLY_NOT_RELEASE_CONTENT",
+  "seat_matrix": {
+    "player_counts": [2, 3, 4, 5, 6],
+    "required_lifecycle": ["declare", "create", "join", "save", "reload", "reconnect", "authorize"],
+    "hard_cap": null,
+    "standard_path_required": true
+  },
+  "deceased_projection": {
+    "role_transition": "LIVING_TO_DECEASED",
+    "projection": {"private_per_seat": true, "tether_required": true, "living_chat_visible": false},
+    "allowed_actions": ["observe_tethered", "paid_trace"],
+    "rejected_actions": ["living_chat", "out_of_tether", "unauthorized_intervention"],
+    "audit_every_decision": true
+  },
+  "intent_adapter": {
+    "terminal_action": "commit_irreversible_world_action",
+    "vectors": [
+      {"id": "discussion", "prepared": true, "authorized": true, "intent_kind": "discussion", "expected": "REJECT_NO_MUTATION"},
+      {"id": "hypothesis", "prepared": true, "authorized": true, "intent_kind": "hypothesis", "expected": "REJECT_NO_MUTATION"},
+      {"id": "observation", "prepared": true, "authorized": true, "intent_kind": "observation", "expected": "REJECT_NO_MUTATION"},
+      {"id": "ambiguous", "prepared": true, "authorized": true, "intent_kind": "ambiguous_action", "expected": "REJECT_NO_MUTATION"},
+      {"id": "unprepared_exact", "prepared": false, "authorized": true, "intent_kind": "commit_irreversible_world_action", "expected": "REJECT_NO_MUTATION"},
+      {"id": "unauthorized_exact", "prepared": true, "authorized": false, "intent_kind": "commit_irreversible_world_action", "expected": "REJECT_NO_MUTATION"},
+      {"id": "authorized_exact", "prepared": true, "authorized": true, "intent_kind": "commit_irreversible_world_action", "expected": "ACCEPT_TERMINAL_WITHOUT_SECOND_POPUP"}
+    ]
+  },
+  "warning_adapter": {
+    "vectors": [
+      {"id": "ordinary_hazard", "category": "PUZZLE_SIGNAL", "conspicuous": false, "reveals_answer": false, "accessible_equivalent": true},
+      {"id": "platform_safety", "category": "PLATFORM_SAFETY", "conspicuous": true, "reveals_answer": false, "accessible_equivalent": true},
+      {"id": "logical_anomaly_entry", "category": "MANDATORY_IN_WORLD", "conspicuous": true, "reveals_answer": false, "accessible_equivalent": true},
+      {"id": "campaign_termination", "category": "MANDATORY_IN_WORLD", "conspicuous": true, "reveals_answer": false, "accessible_equivalent": true}
+    ]
+  },
+  "persistence_reference": {
+    "stable_boundary": true,
+    "binding_fields": ["package_version", "content_version", "seed_answer_hash", "event_log_hash"],
+    "reload_preserves": ["seed_answer_hash", "event_log_hash", "explicit_state_hash"],
+    "reload_rerolls": false,
+    "accelerated_event_counts": [0, 1000, 10000]
+  },
+  "lineage_unlock": {
+    "cross_campaign_fields": ["opaque_true_ending_unlock"],
+    "forbidden_inheritance": ["answers", "rules", "costs", "anchors", "anomalies", "key_item_state"],
+    "production_value": "DEFERRED"
+  },
+  "observation_interfaces": [
+    {"interface_id": "OBS-01", "region_role": "M2_TEST_REGION", "implementation": "REAL_TEST_INTERFACE", "release_eligible": false},
+    {"interface_id": "OBS-02", "region_role": "INTERFACE_ONLY", "implementation": "TEST_ONLY_FIXTURE", "release_eligible": false},
+    {"interface_id": "OBS-03", "region_role": "INTERFACE_ONLY", "implementation": "TEST_ONLY_FIXTURE", "release_eligible": false},
+    {"interface_id": "OBS-04", "region_role": "INTERFACE_ONLY", "implementation": "TEST_ONLY_FIXTURE", "release_eligible": false},
+    {"interface_id": "OBS-05", "region_role": "INTERFACE_ONLY", "implementation": "TEST_ONLY_FIXTURE", "release_eligible": false},
+    {"interface_id": "OBS-06", "region_role": "INTERFACE_ONLY", "implementation": "TEST_ONLY_FIXTURE", "release_eligible": false}
+  ],
+  "memory_separation": {
+    "stores": ["player_memory_claim", "world_evidence", "agent_memory", "authority_state"],
+    "allowed_promotions": [
+      {"from": "world_evidence", "to": "authority_state", "requires": "explicit_validation"}
+    ],
+    "forbidden_promotions": [
+      {"from": "player_memory_claim", "to": "authority_state"},
+      {"from": "agent_memory", "to": "authority_state"}
+    ],
+    "ordinary_ai_context": ["authorized_visible_world_evidence", "bounded_agent_memory"],
+    "excluded_from_ordinary_ai": ["unrelated_authority_truth", "other_participant_private_claims"]
+  },
+  "termination_reference": {
+    "event_type": "CAMPAIGN_TERMINATED",
+    "threshold_state": "ACCEPTED_IMMUTABLE",
+    "post_threshold_action_classes": ["world_action", "chat_action", "host_action", "ai_action", "rollback_action"],
+    "expected_authorization": "REJECT_AND_AUDIT",
+    "causal_chain_frozen": true
+  },
+  "equipment_extension": {
+    "namespace": "org.trpgplatform.rules-residue/equipment-rule",
+    "fixtures": [
+      {"id": "long", "semantic_kind": "LONG_RULE", "canonical_effect": "typed-effect-long"},
+      {"id": "short", "semantic_kind": "SHORT_RULE", "canonical_effect": "typed-effect-short"}
+    ],
+    "unknown_field_policy": "REJECT",
+    "privileged_official_format": false
+  },
+  "logical_anomaly": {
+    "seed_profiles": {
+      "seed-alpha": {"variant": "normal"},
+      "seed-beta": {"variant": "mirror"}
+    },
+    "rules": [
+      {"rule_id": "base-block", "scope": "ANOMALY_GATE", "trigger": "cross", "condition": "always", "effect": "BLOCKED", "priority": 10, "exceptions": ["permit-token"], "conflicts": ["mirror-permit"]},
+      {"rule_id": "mirror-permit", "scope": "ANOMALY_GATE", "trigger": "cross", "condition": "seed_variant_is_mirror", "effect": "ALLOWED_WITH_COST", "priority": 20, "exceptions": ["permit-token"], "conflicts": ["base-block"]},
+      {"rule_id": "permit-token", "scope": "ANOMALY_GATE", "trigger": "cross", "condition": "has_permit_token", "effect": "ALLOWED", "priority": 30, "exceptions": [], "conflicts": ["base-block", "mirror-permit"]}
+    ],
+    "cases": [
+      {"case_id": "alpha-no-token", "seed": "seed-alpha", "has_permit_token": false, "expected_effect": "BLOCKED"},
+      {"case_id": "alpha-token", "seed": "seed-alpha", "has_permit_token": true, "expected_effect": "ALLOWED"},
+      {"case_id": "beta-no-token", "seed": "seed-beta", "has_permit_token": false, "expected_effect": "ALLOWED_WITH_COST"},
+      {"case_id": "beta-token", "seed": "seed-beta", "has_permit_token": true, "expected_effect": "ALLOWED"}
+    ],
+    "no_death_solution_case_ids": ["alpha-token", "beta-token"]
+  },
+  "safety": {
+    "benign_object": {"object_id": "B001-PROBE-CONTRACT", "labels": [], "decision": "ALLOW"},
+    "absolute_reject_vector": {"object_id": "B001-SYMBOLIC-NEGATIVE", "labels": ["R2_ABSOLUTE_RED_LINE"], "decision": "REJECT_AND_REDESIGN"}
+  }
+}

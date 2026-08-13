@@ -1,0 +1,47 @@
+{
+  "schema_version": "rules-residue.task-packet/1.0",
+  "task_id": "RR-TASK-2002",
+  "status": "PLANNED",
+  "owner": "codex",
+  "task_type": "acceptance",
+  "objective": "Independently execute the M2-B001 Creator Tool standard-path round-trip probes for R2-INT-001, R2-INT-006, R2-INT-010, and R2-INT-011 without privileged official-game formats or tool mutation.",
+  "authority": [
+    "R2-INTEGRATION-CONFLICTS",
+    "R2-AUTH-M1-INTEGRATION",
+    "R2-M2-VALIDATION-MATRIX",
+    "R2-M2-STOP-CONDITIONS"
+  ],
+  "inputs": [
+    "docs/implementation/m2/probes/external-result-v1.schema.json",
+    "reports/m2/probes/probe-results.json",
+    "tests/m2/probes/fixtures/platform-manifest-seat.toml",
+    "tests/m2/probes/fixtures/platform-manifest-extension.toml"
+  ],
+  "allowed_paths": [
+    "reports/m2/probes/external/m2-b001-creator-tool-result.json",
+    "reports/m2/probes/external/m2-b001-creator-tool-evidence/**"
+  ],
+  "forbidden_paths": [
+    "Creator Tool/**",
+    "TRPG_PLATFORM/**",
+    "game-package/**",
+    "docs/authority/**",
+    "governance/**",
+    "schemas/**"
+  ],
+  "open_decisions": [],
+  "acceptance": [
+    "Pin and report the exact clean Creator Tool repository/version identity.",
+    "Return exactly one C:Creator Tool result for every assigned probe and exactly one status/evidence record for every frozen probe procedure.",
+    "Use only the standard third-party-compatible import, edit, export, and re-import path.",
+    "Prove lossless seat, lineage-unlock, namespaced equipment-rule, provenance, and safety-stage preservation with canonical pre/post hashes.",
+    "Record exact commands/actions, exit codes, output digests, and evidence paths.",
+    "Keep missing controls or unavailable round-trip behavior BLOCKED_EXTERNAL; never substitute the existence of a shell or proposal for PASS."
+  ],
+  "expected_outputs": [
+    "One exact-candidate-bound external result JSON covering every assigned C:Creator Tool probe and procedure exactly once.",
+    "Canonical before/after hashes and loss report for every supported object.",
+    "Exact Creator Tool identity and reproducible command/action evidence."
+  ],
+  "notes": "Frozen game source_commit=c595ac5257aff83bd69d96e3acd64cf3485dc8cb and source_tree=877927e564ba781ca5f355a3ec3d5f7da7ce879f. Invocation MUST supply exact candidate_commit and candidate_tree, never a branch or latest alias. The return MUST bind this packet SHA-256 and both repositories' identities. A proposal is not approval. Read-only tool inspection and isolated temporary outputs only; do not edit, stage, commit, install into, or otherwise mutate Creator Tool or TRPG_PLATFORM."
+}

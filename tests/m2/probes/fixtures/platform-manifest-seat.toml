@@ -1,0 +1,33 @@
+schema_version = 1
+artifact_type = "package"
+package_id = "example.rules/hidden-cards"
+package_kind = "game-system"
+version = "1.2.3"
+display_name = "Seat declaration probe"
+entrypoint = "lua/main.lua"
+lua_profile = "platform-lua-5.5-p1"
+player_seats = 6
+
+[host_api]
+major = 1
+min_minor = 0
+max_minor = 2
+
+[build]
+source = "local capability probe"
+revision = "m2-b001"
+builder = "m2-b001-probe"
+
+[rights]
+authors = ["Rules Residue"]
+source = "original"
+statement = "Internal capability probe only"
+
+[capabilities]
+required = ["host.event", "host.state"]
+
+[[dependencies]]
+package_id = "example.shared/card-library"
+version = "2.0.0"
+optional = false
+features = ["standard-deck"]

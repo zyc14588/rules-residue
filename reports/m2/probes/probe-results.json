@@ -1,0 +1,311 @@
+{
+  "schema_version": "rules-residue.m2.probe-results/1.0",
+  "batch_id": "M2-B001",
+  "source_binding": {
+    "source_commit": "c595ac5257aff83bd69d96e3acd64cf3485dc8cb",
+    "source_tree": "877927e564ba781ca5f355a3ec3d5f7da7ce879f",
+    "route_id": "M2-B001-CAPABILITY-PROBES-IMPLEMENT",
+    "route_binding_digest": "e2aacf21c69b34841d84aaae4945f7eab740e8410b50aa3bd3f0c5f9c7c71bad"
+  },
+  "probes": [
+    {
+      "probe_id": "R2-INT-001",
+      "r2_requirement": "A standard package and host can declare, create, persist, reconnect, and authorize 2 through 6 player seats without a hard four-player ceiling.",
+      "classification": "PLATFORM_CAPABILITY_PROBE",
+      "target_system": ["A:rules-residue", "B:TRPG_PLATFORM", "C:Creator Tool"],
+      "existing_capability": {"local": "A 2/3/4/5/6 interface matrix is executable.", "external": "The pinned standard manifest rejects player_seats; no seat lifecycle implementation or Creator controls were located."},
+      "probe_procedure": ["Validate the complete local seat matrix.", "Submit an explicit six-seat declaration to the pinned standard validator.", "Require create/join/save/reload/reconnect/authorization and Creator round-trip from the portable packets."],
+      "commands_actions_actually_run": [
+        {"command": "python3 tests/m2/probes/validate_m2_b001.py --local-check R2-INT-001", "exit_code": 0, "observed_output": "counts 2,3,4,5,6 validated", "output_sha256": "2b6ee7425ccbd4185fd83299709cd8196868b2dd38609ef9605c4188c22a1d32", "evidence_path": "tests/m2/probes/fixtures/local-capability-vectors.json"},
+        {"command": "GOCACHE=/tmp/rules-residue-m2-b001-go-cache go run ./cmd/creator-cli package validate --manifest /tmp/rules-residue-m2-b001-implement/tests/m2/probes/fixtures/platform-manifest-seat.toml --lock internal/package/testdata/package.lock.json", "exit_code": 1, "observed_output": "standard manifest rejected unknown field player_seats", "output_sha256": "79a2d1852397b788180b043695755a1ec0624088210cfe5d2817d72bc8d6febc", "evidence_path": "reports/m2/probes/platform-inventory.json"}
+      ],
+      "evidence_paths": ["tests/m2/probes/fixtures/local-capability-vectors.json", "tests/m2/probes/fixtures/platform-manifest-seat.toml", "reports/m2/probes/platform-inventory.json", "workflow/queue/m2-b001-trpg-platform-probes.json", "workflow/queue/m2-b001-creator-tool-probes.json"],
+      "observed_result": "The package-side count matrix is coherent, but the pinned standard manifest rejects the seat declaration and no executable Host or Creator seat lifecycle exists.",
+      "expected_result": "Every count from two through six completes the standard declaration, lifecycle, authorization, reconnect, and Creator round-trip path.",
+      "execution_status": "FAIL",
+      "root_cause": "Pinned TRPG_PLATFORM exposes no seat declaration/lifecycle surface and embedded Creator Studio has no creator controls.",
+      "adapter_feasibility": {"preserves_r2": true, "local_status": "PASS", "limitations": "A local matrix cannot remove a Host cap or provide persistence, reconnect, authorization, or Creator preservation."},
+      "platform_change_necessity": {"state": "PROPOSAL_REQUIRED", "approval_status": "NOT_APPROVED", "reason": "A standard six-seat Host and Creator declaration/lifecycle capability is absent at the pinned candidate."},
+      "downstream_blocked_batches": ["M2-B006", "M2-B015", "M2-B016"],
+      "target_results": [
+        {"target": "A:rules-residue", "execution_status": "PASS", "evidence_paths": ["tests/m2/probes/fixtures/local-capability-vectors.json"]},
+        {"target": "B:TRPG_PLATFORM", "execution_status": "FAIL", "evidence_paths": ["reports/m2/probes/platform-inventory.json"]},
+        {"target": "C:Creator Tool", "execution_status": "BLOCKED_EXTERNAL", "evidence_paths": ["reports/m2/probes/platform-inventory.json"]}
+      ],
+      "candidate_binding": {"strategy": "EXACT_HEAD_AT_VALIDATION", "required_source_commit": "c595ac5257aff83bd69d96e3acd64cf3485dc8cb", "required_source_tree": "877927e564ba781ca5f355a3ec3d5f7da7ce879f", "route_binding_digest": "e2aacf21c69b34841d84aaae4945f7eab740e8410b50aa3bd3f0c5f9c7c71bad", "evidence_manifest": "reports/m2/probes/evidence-manifest.json", "must_be_clean": true}
+    },
+    {
+      "probe_id": "R2-INT-002",
+      "r2_requirement": "After one death, the host provides a private tethered deceased projection and strict action whitelist while rejecting living chat and out-of-range actions.",
+      "classification": "PLATFORM_CAPABILITY_PROBE",
+      "target_system": ["A:rules-residue", "B:TRPG_PLATFORM"],
+      "existing_capability": {"local": "A private/tethered projection and allow/reject matrix is executable.", "external": "No per-participant projection, deceased role, action-policy, or audit implementation was located."},
+      "probe_procedure": ["Validate the local role transition, view isolation, whitelist, and rejection set.", "Require a pinned Host death event, per-seat projection hashes, accepted paid trace, and audited rejects."],
+      "commands_actions_actually_run": [
+        {"command": "python3 tests/m2/probes/validate_m2_b001.py --local-check R2-INT-002", "exit_code": 0, "observed_output": "private tether and two-action whitelist validated", "output_sha256": "056313b5bd62be7c713a553a3b7279abeb4302b2959576bd23b8aaa1bf0fb7ac", "evidence_path": "tests/m2/probes/fixtures/local-capability-vectors.json"},
+        {"command": "rg -n -i '(seat|max[_-]?players|player[_-]?count|reconnect|deceased|spectator|campaign[_-]?termination|lineage|true[_-]?ending|safety[_-]?filter|hot[_-]?update)' apps cmd internal schemas", "exit_code": 1, "observed_output": "no bounded implementation/schema match", "output_sha256": "e79be6268c71bf276ba120ff125b735eb2ea1b64832f91db12e97a116a817d05", "evidence_path": "reports/m2/probes/platform-inventory.json"}
+      ],
+      "evidence_paths": ["tests/m2/probes/fixtures/local-capability-vectors.json", "reports/m2/probes/platform-inventory.json", "workflow/queue/m2-b001-trpg-platform-probes.json"],
+      "observed_result": "Local policy semantics are deterministic, but the pinned Host has no executable deceased projection/action-policy lifecycle.",
+      "expected_result": "A dead seat receives only its private tethered view and declared actions; living chat, out-of-range, and unauthorized actions reject and audit.",
+      "execution_status": "BLOCKED_EXTERNAL",
+      "root_cause": "The pinned Host candidate contains no participant projection/action hook on which the adapter can run.",
+      "adapter_feasibility": {"preserves_r2": true, "local_status": "PASS", "limitations": "The adapter requires existing per-participant projection and authorization hooks."},
+      "platform_change_necessity": {"state": "PROPOSAL_REQUIRED", "approval_status": "NOT_APPROVED", "reason": "Private per-seat projection and action enforcement are absent."},
+      "downstream_blocked_batches": ["M2-B006", "M2-B015", "M2-B016"],
+      "target_results": [
+        {"target": "A:rules-residue", "execution_status": "PASS", "evidence_paths": ["tests/m2/probes/fixtures/local-capability-vectors.json"]},
+        {"target": "B:TRPG_PLATFORM", "execution_status": "BLOCKED_EXTERNAL", "evidence_paths": ["reports/m2/probes/platform-inventory.json"]}
+      ],
+      "candidate_binding": {"strategy": "EXACT_HEAD_AT_VALIDATION", "required_source_commit": "c595ac5257aff83bd69d96e3acd64cf3485dc8cb", "required_source_tree": "877927e564ba781ca5f355a3ec3d5f7da7ce879f", "route_binding_digest": "e2aacf21c69b34841d84aaae4945f7eab740e8410b50aa3bd3f0c5f9c7c71bad", "evidence_manifest": "reports/m2/probes/evidence-manifest.json", "must_be_clean": true}
+    },
+    {
+      "probe_id": "R2-INT-003",
+      "r2_requirement": "A multi-step in-world action contract accepts exact terminal intent without a final popup and rejects discussion, hypotheses, and observation.",
+      "classification": "R2_COMPATIBILITY_ADAPTER",
+      "target_system": ["A:rules-residue", "B:TRPG_PLATFORM"],
+      "existing_capability": {"local": "Seven adversarial intent vectors prove draft/validate/commit separation.", "external": "No Host action-policy or UI implementation exists to prove no final popup."},
+      "probe_procedure": ["Run discussion, hypothesis, observation, ambiguous, unprepared, unauthorized, and exact-authorized vectors.", "Require the pinned Host to accept only the exact terminal action without a second popup and emit an audit trace."],
+      "commands_actions_actually_run": [
+        {"command": "python3 tests/m2/probes/validate_m2_b001.py --local-check R2-INT-003", "exit_code": 0, "observed_output": "six vectors rejected without mutation and one exact authorized vector committed", "output_sha256": "bfb0428c1fdea77369a40f6f360c52c510bf97d8479b40b91678cf8b43d5a2fb", "evidence_path": "tests/m2/probes/fixtures/local-capability-vectors.json"}
+      ],
+      "evidence_paths": ["tests/m2/probes/fixtures/local-capability-vectors.json", "reports/m2/probes/platform-inventory.json", "workflow/queue/m2-b001-trpg-platform-probes.json"],
+      "observed_result": "The adapter semantics reject every non-terminal or unauthorized vector, but Host/UI integration cannot be executed.",
+      "expected_result": "Only an exact authorized terminal world action commits after in-world preparation and no final popup is added.",
+      "execution_status": "BLOCKED_EXTERNAL",
+      "root_cause": "Pinned TRPG_PLATFORM has no Host action-policy/UI path to integrate or audit the adapter.",
+      "adapter_feasibility": {"preserves_r2": true, "local_status": "PASS", "limitations": "Host must expose separate draft, validation, and commit hooks and permit the terminal UI policy."},
+      "platform_change_necessity": {"state": "CONDITIONAL_PROPOSAL", "approval_status": "NOT_APPROVED", "reason": "A proposal is needed if a future Host cannot host the proven action adapter."},
+      "downstream_blocked_batches": ["M2-B010", "M2-B012", "M2-B015"],
+      "target_results": [
+        {"target": "A:rules-residue", "execution_status": "PASS", "evidence_paths": ["tests/m2/probes/fixtures/local-capability-vectors.json"]},
+        {"target": "B:TRPG_PLATFORM", "execution_status": "BLOCKED_EXTERNAL", "evidence_paths": ["reports/m2/probes/platform-inventory.json"]}
+      ],
+      "candidate_binding": {"strategy": "EXACT_HEAD_AT_VALIDATION", "required_source_commit": "c595ac5257aff83bd69d96e3acd64cf3485dc8cb", "required_source_tree": "877927e564ba781ca5f355a3ec3d5f7da7ce879f", "route_binding_digest": "e2aacf21c69b34841d84aaae4945f7eab740e8410b50aa3bd3f0c5f9c7c71bad", "evidence_manifest": "reports/m2/probes/evidence-manifest.json", "must_be_clean": true}
+    },
+    {
+      "probe_id": "R2-INT-004",
+      "r2_requirement": "Platform safety/legal warnings stay distinct from puzzle signals while anomaly entry and campaign termination remain conspicuously warned in-world.",
+      "classification": "R2_COMPATIBILITY_ADAPTER",
+      "target_system": ["A:rules-residue", "B:TRPG_PLATFORM"],
+      "existing_capability": {"local": "Four warning categories preserve weak ordinary signals, conspicuous mandatory warnings, no answer disclosure, and accessibility.", "external": "No Host warning taxonomy/rendering path exists."},
+      "probe_procedure": ["Validate ordinary hazard, platform safety, anomaly entry, and termination warning vectors.", "Require accessible Host rendering without answer disclosure."],
+      "commands_actions_actually_run": [
+        {"command": "python3 tests/m2/probes/validate_m2_b001.py --local-check R2-INT-004", "exit_code": 0, "observed_output": "four warning categories validated with no answer disclosure", "output_sha256": "8ba7ff156f9f9e8c4850630734be2e2e5426a0030c32bbf9c996189bd7e03cab", "evidence_path": "tests/m2/probes/fixtures/local-capability-vectors.json"}
+      ],
+      "evidence_paths": ["tests/m2/probes/fixtures/local-capability-vectors.json", "reports/m2/probes/platform-inventory.json", "workflow/queue/m2-b001-trpg-platform-probes.json"],
+      "observed_result": "Package-side warning taxonomy is coherent; Host rendering and policy separation are unavailable.",
+      "expected_result": "Safety/legal warnings render distinctly while only anomaly entry and campaign termination receive conspicuous in-world warnings, with accessible equivalents and no answers.",
+      "execution_status": "BLOCKED_EXTERNAL",
+      "root_cause": "Pinned TRPG_PLATFORM exposes no warning category/rendering contract.",
+      "adapter_feasibility": {"preserves_r2": true, "local_status": "PASS", "limitations": "The Host must preserve package warning types and text separately from platform safety UI."},
+      "platform_change_necessity": {"state": "CONDITIONAL_PROPOSAL", "approval_status": "NOT_APPROVED", "reason": "A UI/policy proposal is required if future Host warning hooks cannot keep the categories separate."},
+      "downstream_blocked_batches": ["M2-B008", "M2-B010", "M2-B015"],
+      "target_results": [
+        {"target": "A:rules-residue", "execution_status": "PASS", "evidence_paths": ["tests/m2/probes/fixtures/local-capability-vectors.json"]},
+        {"target": "B:TRPG_PLATFORM", "execution_status": "BLOCKED_EXTERNAL", "evidence_paths": ["reports/m2/probes/platform-inventory.json"]}
+      ],
+      "candidate_binding": {"strategy": "EXACT_HEAD_AT_VALIDATION", "required_source_commit": "c595ac5257aff83bd69d96e3acd64cf3485dc8cb", "required_source_tree": "877927e564ba781ca5f355a3ec3d5f7da7ce879f", "route_binding_digest": "e2aacf21c69b34841d84aaae4945f7eab740e8410b50aa3bd3f0c5f9c7c71bad", "evidence_manifest": "reports/m2/probes/evidence-manifest.json", "must_be_clean": true}
+    },
+    {
+      "probe_id": "R2-INT-005",
+      "r2_requirement": "Long campaigns support stable-boundary saves, package/content version locks, reload without reroll, and multi-session replay.",
+      "classification": "PLATFORM_CAPABILITY_PROBE",
+      "target_system": ["A:rules-residue", "B:TRPG_PLATFORM", "D:long-duration persistence environment"],
+      "existing_capability": {"local": "A save/version/seed/log binding fixture covers accelerated event volumes.", "external": "Pinned Lua checkpoint reconstruction passes, but no campaign persistence, version lock, reconnect, or endurance environment exists."},
+      "probe_procedure": ["Validate stable-boundary binding and accelerated event counts locally.", "Run pinned checkpoint/reconstruction tests.", "Require multi-session save/reload/reconnect and old/new version behavior in an external endurance environment."],
+      "commands_actions_actually_run": [
+        {"command": "python3 tests/m2/probes/validate_m2_b001.py --local-check R2-INT-005", "exit_code": 0, "observed_output": "save bindings and event counts 0,1000,10000 validated", "output_sha256": "9a0fbe7c5283bdc8a47269a6170518c64ae56a3dc7aa3af20bcbb10585300650", "evidence_path": "tests/m2/probes/fixtures/local-capability-vectors.json"},
+        {"command": "GOCACHE=/tmp/rules-residue-m2-b001-go-cache go test -count=1 ./internal/package/... ./cmd/creator-cli/... ./internal/luaruntime/... ./cmd/lua-runner/...", "exit_code": 0, "observed_output": "package and Lua checkpoint/reconstruction suites passed", "output_sha256": "901a20018fa12d4ea8cdca599ccb02841902aaf427cea4921ad5acdf54bc3146", "evidence_path": "reports/m2/probes/platform-inventory.json"}
+      ],
+      "evidence_paths": ["tests/m2/probes/fixtures/local-capability-vectors.json", "reports/m2/probes/platform-inventory.json", "workflow/queue/m2-b001-trpg-platform-probes.json"],
+      "observed_result": "Checkpoint reconstruction and version-bound package primitives pass, but the required campaign lifecycle and long-duration environment are absent.",
+      "expected_result": "Long campaign state saves and reloads identically across sessions with fixed package/content versions, immutable answers, and replay parity.",
+      "execution_status": "BLOCKED_EXTERNAL",
+      "root_cause": "Only Lua checkpoint/package primitives exist; no Host campaign store, reconnect path, version migration policy, or endurance deployment is executable.",
+      "adapter_feasibility": {"preserves_r2": true, "local_status": "PASS", "limitations": "Package logic cannot supply Host persistence, version locking, or multi-session reconnect."},
+      "platform_change_necessity": {"state": "PROPOSAL_REQUIRED", "approval_status": "NOT_APPROVED", "reason": "Host persistence and package/content version-lock capabilities are missing."},
+      "downstream_blocked_batches": ["M2-B005", "M2-B015", "M2-B016"],
+      "target_results": [
+        {"target": "A:rules-residue", "execution_status": "PASS", "evidence_paths": ["tests/m2/probes/fixtures/local-capability-vectors.json"]},
+        {"target": "B:TRPG_PLATFORM", "execution_status": "BLOCKED_EXTERNAL", "evidence_paths": ["reports/m2/probes/platform-inventory.json"]},
+        {"target": "D:long-duration persistence environment", "execution_status": "BLOCKED_EXTERNAL", "evidence_paths": ["workflow/queue/m2-b001-trpg-platform-probes.json"]}
+      ],
+      "candidate_binding": {"strategy": "EXACT_HEAD_AT_VALIDATION", "required_source_commit": "c595ac5257aff83bd69d96e3acd64cf3485dc8cb", "required_source_tree": "877927e564ba781ca5f355a3ec3d5f7da7ce879f", "route_binding_digest": "e2aacf21c69b34841d84aaae4945f7eab740e8410b50aa3bd3f0c5f9c7c71bad", "evidence_manifest": "reports/m2/probes/evidence-manifest.json", "must_be_clean": true}
+    },
+    {
+      "probe_id": "R2-INT-006",
+      "r2_requirement": "A lineage/account true-ending unlock can be declared without inheriting answers, rules, costs, anchors, anomalies, or key-item state.",
+      "classification": "PLATFORM_CAPABILITY_PROBE",
+      "target_system": ["A:rules-residue", "B:TRPG_PLATFORM", "C:Creator Tool"],
+      "existing_capability": {"local": "An opaque one-flag interface and complete negative inheritance matrix are executable.", "external": "No account/lineage profile declaration, campaign creation integration, provenance, or Creator preservation exists."},
+      "probe_procedure": ["Validate that only one opaque unlock crosses campaigns and all authority-bearing fields are forbidden.", "Require profile storage, new-campaign behavior, provenance, and Creator preservation externally."],
+      "commands_actions_actually_run": [
+        {"command": "python3 tests/m2/probes/validate_m2_b001.py --local-check R2-INT-006", "exit_code": 0, "observed_output": "one opaque unlock and six forbidden inheritance fields validated", "output_sha256": "1c7e99367edeb7d6ddd7a4ddab218493419151f1aabde53e7ce7ade0f3a8b3bb", "evidence_path": "tests/m2/probes/fixtures/local-capability-vectors.json"}
+      ],
+      "evidence_paths": ["tests/m2/probes/fixtures/local-capability-vectors.json", "reports/m2/probes/platform-inventory.json", "workflow/queue/m2-b001-trpg-platform-probes.json", "workflow/queue/m2-b001-creator-tool-probes.json"],
+      "observed_result": "The M2 interface can keep the unlock opaque, but profile storage and Creator/Host preservation cannot be executed.",
+      "expected_result": "Only an opaque bounded unlock crosses campaigns, with provenance; no answer, rule, cost, anchor, anomaly, or key-item authority is inherited.",
+      "execution_status": "BLOCKED_EXTERNAL",
+      "root_cause": "Pinned platform has no account/lineage campaign metadata surface and Creator Studio has no round-trip controls.",
+      "adapter_feasibility": {"preserves_r2": true, "local_status": "PASS", "limitations": "Sufficient only for the M2 interface fixture; release requires external profile and Creator support."},
+      "platform_change_necessity": {"state": "PROPOSAL_REQUIRED", "approval_status": "NOT_APPROVED", "reason": "A bounded lineage/profile capability and standard Creator declaration are missing."},
+      "downstream_blocked_batches": [],
+      "target_results": [
+        {"target": "A:rules-residue", "execution_status": "PASS", "evidence_paths": ["tests/m2/probes/fixtures/local-capability-vectors.json"]},
+        {"target": "B:TRPG_PLATFORM", "execution_status": "BLOCKED_EXTERNAL", "evidence_paths": ["reports/m2/probes/platform-inventory.json"]},
+        {"target": "C:Creator Tool", "execution_status": "BLOCKED_EXTERNAL", "evidence_paths": ["reports/m2/probes/platform-inventory.json"]}
+      ],
+      "candidate_binding": {"strategy": "EXACT_HEAD_AT_VALIDATION", "required_source_commit": "c595ac5257aff83bd69d96e3acd64cf3485dc8cb", "required_source_tree": "877927e564ba781ca5f355a3ec3d5f7da7ce879f", "route_binding_digest": "e2aacf21c69b34841d84aaae4945f7eab740e8410b50aa3bd3f0c5f9c7c71bad", "evidence_manifest": "reports/m2/probes/evidence-manifest.json", "must_be_clean": true}
+    },
+    {
+      "probe_id": "R2-INT-007",
+      "r2_requirement": "Six observation interfaces coexist with exactly one real M2_TEST_REGION and five interface-only fixtures.",
+      "classification": "PACKAGE_DECLARABLE",
+      "target_system": ["A:rules-residue"],
+      "existing_capability": {"local": "Six unique non-release interfaces exist: one REAL_TEST_INTERFACE for M2_TEST_REGION and five TEST_ONLY_FIXTURE objects.", "external": "No external target is required by this probe."},
+      "probe_procedure": ["Count unique interface IDs.", "Require exactly one M2_TEST_REGION marker and five interface-only markers.", "Reject any release-eligible or launch-complete claim."],
+      "commands_actions_actually_run": [
+        {"command": "python3 tests/m2/probes/validate_m2_b001.py --local-check R2-INT-007", "exit_code": 0, "observed_output": "OBS-01 through OBS-06 validated; one real test interface and five interface-only fixtures", "output_sha256": "29a2d384f916aca04d2f93add6c11da3de0b22f996be7d65de17b8e36b570883", "evidence_path": "tests/m2/probes/fixtures/local-capability-vectors.json"}
+      ],
+      "evidence_paths": ["tests/m2/probes/fixtures/local-capability-vectors.json", "tests/m2/probes/validate_m2_b001.py"],
+      "observed_result": "All six interface IDs are unique; exactly one is the real M2 test interface, five are interface-only, and none claims release eligibility.",
+      "expected_result": "Six-observation eligibility can be simulated faithfully without counting one region six times or presenting fixtures as release content.",
+      "execution_status": "PASS",
+      "root_cause": "No gap observed for this package-declarable interface-only capability.",
+      "adapter_feasibility": {"preserves_r2": true, "local_status": "PASS", "limitations": "This proves only interface eligibility, not six completed production Regions."},
+      "platform_change_necessity": {"state": "NOT_NEEDED", "approval_status": "NOT_REQUIRED", "reason": "The capability is package-declarable and locally verified."},
+      "downstream_blocked_batches": [],
+      "target_results": [
+        {"target": "A:rules-residue", "execution_status": "PASS", "evidence_paths": ["tests/m2/probes/fixtures/local-capability-vectors.json"]}
+      ],
+      "candidate_binding": {"strategy": "EXACT_HEAD_AT_VALIDATION", "required_source_commit": "c595ac5257aff83bd69d96e3acd64cf3485dc8cb", "required_source_tree": "877927e564ba781ca5f355a3ec3d5f7da7ce879f", "route_binding_digest": "e2aacf21c69b34841d84aaae4945f7eab740e8410b50aa3bd3f0c5f9c7c71bad", "evidence_manifest": "reports/m2/probes/evidence-manifest.json", "must_be_clean": true}
+    },
+    {
+      "probe_id": "R2-INT-008",
+      "r2_requirement": "A package emits an auditable campaign-termination event that freezes the causal chain, removes every action, and cannot be ordinarily rolled back.",
+      "classification": "PLATFORM_CAPABILITY_PROBE",
+      "target_system": ["A:rules-residue", "B:TRPG_PLATFORM"],
+      "existing_capability": {"local": "A reference terminal event revokes world, chat, Host, AI, and rollback actions and audits rejects.", "external": "Pinned platform has host.event as a generic capability but no terminal campaign state or post-threshold authorization implementation."},
+      "probe_procedure": ["Validate the local terminal event, immutable threshold, causal freeze, and complete action revocation.", "Require Host event persistence, frozen save/summary, rejected ordinary rollback, and audit trace."],
+      "commands_actions_actually_run": [
+        {"command": "python3 tests/m2/probes/validate_m2_b001.py --local-check R2-INT-008", "exit_code": 0, "observed_output": "five post-threshold action classes revoked and audited", "output_sha256": "9da95b100c875ff378de4038610ec1ba276fa5eff12e86fc05b1598adc212a7f", "evidence_path": "tests/m2/probes/fixtures/local-capability-vectors.json"}
+      ],
+      "evidence_paths": ["tests/m2/probes/fixtures/local-capability-vectors.json", "reports/m2/probes/platform-inventory.json", "workflow/queue/m2-b001-trpg-platform-probes.json"],
+      "observed_result": "The package-side authorization reference is complete, but no Host campaign-termination lifecycle exists to enforce immutability.",
+      "expected_result": "Accepted campaign termination freezes the causal chain and save/summary; all later action classes and ordinary rollback reject and audit.",
+      "execution_status": "BLOCKED_EXTERNAL",
+      "root_cause": "Generic host.event/host.state grants do not establish an immutable campaign terminal state or revoke all controls.",
+      "adapter_feasibility": {"preserves_r2": true, "local_status": "PASS", "limitations": "Local simulation is not Host-level immutability or M2 end-to-end acceptance."},
+      "platform_change_necessity": {"state": "PROPOSAL_REQUIRED", "approval_status": "NOT_APPROVED", "reason": "A Host termination and post-threshold authorization contract is absent."},
+      "downstream_blocked_batches": ["M2-B012", "M2-B015", "M2-B016"],
+      "target_results": [
+        {"target": "A:rules-residue", "execution_status": "PASS", "evidence_paths": ["tests/m2/probes/fixtures/local-capability-vectors.json"]},
+        {"target": "B:TRPG_PLATFORM", "execution_status": "BLOCKED_EXTERNAL", "evidence_paths": ["reports/m2/probes/platform-inventory.json"]}
+      ],
+      "candidate_binding": {"strategy": "EXACT_HEAD_AT_VALIDATION", "required_source_commit": "c595ac5257aff83bd69d96e3acd64cf3485dc8cb", "required_source_tree": "877927e564ba781ca5f355a3ec3d5f7da7ce879f", "route_binding_digest": "e2aacf21c69b34841d84aaae4945f7eab740e8410b50aa3bd3f0c5f9c7c71bad", "evidence_manifest": "reports/m2/probes/evidence-manifest.json", "must_be_clean": true}
+    },
+    {
+      "probe_id": "R2-INT-009",
+      "r2_requirement": "Player memory claims, world evidence, Agent memory, and authority state are separate stores with explicit one-way projections.",
+      "classification": "PACKAGE_DECLARABLE",
+      "target_system": ["A:rules-residue", "B:TRPG_PLATFORM"],
+      "existing_capability": {"local": "Four stores, one validated evidence-to-authority promotion, two forbidden memory promotions, and a bounded ordinary-AI context are executable.", "external": "Pinned platform has isolated Lua VMs but no Host AI context builder or participant projection integration."},
+      "probe_procedure": ["Validate four distinct stores and the only allowed authority promotion.", "Reject player-memory and Agent-memory truth promotion.", "Require Host/AI projection hashes and leakage tests externally."],
+      "commands_actions_actually_run": [
+        {"command": "python3 tests/m2/probes/validate_m2_b001.py --local-check R2-INT-009", "exit_code": 0, "observed_output": "four stores and one-way validated promotion checked", "output_sha256": "4e00fe5af78d4a688cc42b0b5e6041a5a44638b3f8cf3b32804259699352b468", "evidence_path": "tests/m2/probes/fixtures/local-capability-vectors.json"},
+        {"command": "GOCACHE=/tmp/rules-residue-m2-b001-go-cache go test -count=1 ./internal/package/... ./cmd/creator-cli/... ./internal/luaruntime/... ./cmd/lua-runner/...", "exit_code": 0, "observed_output": "Lua VM/session isolation suites passed", "output_sha256": "901a20018fa12d4ea8cdca599ccb02841902aaf427cea4921ad5acdf54bc3146", "evidence_path": "reports/m2/probes/platform-inventory.json"}
+      ],
+      "evidence_paths": ["tests/m2/probes/fixtures/local-capability-vectors.json", "reports/m2/probes/platform-inventory.json", "workflow/queue/m2-b001-trpg-platform-probes.json"],
+      "observed_result": "Package projection semantics and VM isolation are demonstrated, but the Host context-construction and participant projection path is unavailable.",
+      "expected_result": "Only explicitly validated world evidence can change authority; player and Agent memory cannot, and ordinary AI/player projections contain no unrelated truth.",
+      "execution_status": "BLOCKED_EXTERNAL",
+      "root_cause": "Pinned platform has no Host AI context builder or per-participant projection path to execute the integration checks.",
+      "adapter_feasibility": {"preserves_r2": true, "local_status": "PASS", "limitations": "Package projections need a Host context builder that honors typed inputs and per-recipient isolation."},
+      "platform_change_necessity": {"state": "CONDITIONAL_PROPOSAL", "approval_status": "NOT_APPROVED", "reason": "A proposal is required if the future Host context builder cannot enforce the proven projections."},
+      "downstream_blocked_batches": ["M2-B003", "M2-B010", "M2-B015"],
+      "target_results": [
+        {"target": "A:rules-residue", "execution_status": "PASS", "evidence_paths": ["tests/m2/probes/fixtures/local-capability-vectors.json"]},
+        {"target": "B:TRPG_PLATFORM", "execution_status": "BLOCKED_EXTERNAL", "evidence_paths": ["reports/m2/probes/platform-inventory.json"]}
+      ],
+      "candidate_binding": {"strategy": "EXACT_HEAD_AT_VALIDATION", "required_source_commit": "c595ac5257aff83bd69d96e3acd64cf3485dc8cb", "required_source_tree": "877927e564ba781ca5f355a3ec3d5f7da7ce879f", "route_binding_digest": "e2aacf21c69b34841d84aaae4945f7eab740e8410b50aa3bd3f0c5f9c7c71bad", "evidence_manifest": "reports/m2/probes/evidence-manifest.json", "must_be_clean": true}
+    },
+    {
+      "probe_id": "R2-INT-010",
+      "r2_requirement": "Namespaced equipment-rule extensions survive manifest validation, host load, Creator import/edit/export, and runtime execution without a privileged format.",
+      "classification": "R2_COMPATIBILITY_ADAPTER",
+      "target_system": ["A:rules-residue", "B:TRPG_PLATFORM", "C:Creator Tool"],
+      "existing_capability": {"local": "A namespaced long/short interface with unknown-field rejection and no privileged format is executable.", "external": "The pinned standard manifest rejects the namespaced extension and Creator Studio has no round-trip controls."},
+      "probe_procedure": ["Validate local namespace, long/short semantics, unknown-field policy, and non-privileged constraint.", "Submit the extension to the pinned standard validator.", "Require Host load/runtime trace and lossless Creator round-trip externally."],
+      "commands_actions_actually_run": [
+        {"command": "python3 tests/m2/probes/validate_m2_b001.py --local-check R2-INT-010", "exit_code": 0, "observed_output": "long and short namespaced fixtures validated", "output_sha256": "790f8ddccfb849849f5cb34fcf3d6909e9e1f7aef8282b6e4daf442e68a0e829", "evidence_path": "tests/m2/probes/fixtures/local-capability-vectors.json"},
+        {"command": "GOCACHE=/tmp/rules-residue-m2-b001-go-cache go run ./cmd/creator-cli package validate --manifest /tmp/rules-residue-m2-b001-implement/tests/m2/probes/fixtures/platform-manifest-extension.toml --lock internal/package/testdata/package.lock.json", "exit_code": 1, "observed_output": "standard manifest rejected rules_residue.equipment_rule and its fields", "output_sha256": "e19599e9eb747d14fb11bf7e5ec3a5666a4a8b066352da43e0a965c00871f678", "evidence_path": "reports/m2/probes/platform-inventory.json"}
+      ],
+      "evidence_paths": ["tests/m2/probes/fixtures/local-capability-vectors.json", "tests/m2/probes/fixtures/platform-manifest-extension.toml", "reports/m2/probes/platform-inventory.json", "workflow/queue/m2-b001-trpg-platform-probes.json", "workflow/queue/m2-b001-creator-tool-probes.json"],
+      "observed_result": "Local extension semantics preserve R2, but the actual pinned standard manifest path rejects the namespace before Host load and no Creator round-trip path exists.",
+      "expected_result": "The standard third-party path validates, loads, losslessly round-trips, and executes both equipment-rule forms with identical canonical semantics.",
+      "execution_status": "FAIL",
+      "root_cause": "The pinned manifest contract closes unknown fields and supplies no registered namespaced extension container; Creator Studio is only a shell.",
+      "adapter_feasibility": {"preserves_r2": true, "local_status": "PASS", "limitations": "The adapter cannot enter the standard path until a namespaced extension point and Creator preservation exist."},
+      "platform_change_necessity": {"state": "PROPOSAL_REQUIRED", "approval_status": "NOT_APPROVED", "reason": "A standard extension container and Creator round-trip capability are required; no privileged official-game field is allowed."},
+      "downstream_blocked_batches": ["M2-B002", "M2-B009", "M2-B015"],
+      "target_results": [
+        {"target": "A:rules-residue", "execution_status": "PASS", "evidence_paths": ["tests/m2/probes/fixtures/local-capability-vectors.json"]},
+        {"target": "B:TRPG_PLATFORM", "execution_status": "FAIL", "evidence_paths": ["reports/m2/probes/platform-inventory.json"]},
+        {"target": "C:Creator Tool", "execution_status": "BLOCKED_EXTERNAL", "evidence_paths": ["reports/m2/probes/platform-inventory.json"]}
+      ],
+      "candidate_binding": {"strategy": "EXACT_HEAD_AT_VALIDATION", "required_source_commit": "c595ac5257aff83bd69d96e3acd64cf3485dc8cb", "required_source_tree": "877927e564ba781ca5f355a3ec3d5f7da7ce879f", "route_binding_digest": "e2aacf21c69b34841d84aaae4945f7eab740e8410b50aa3bd3f0c5f9c7c71bad", "evidence_manifest": "reports/m2/probes/evidence-manifest.json", "must_be_clean": true}
+    },
+    {
+      "probe_id": "R2-INT-011",
+      "r2_requirement": "Every safety stage emits fresh evidence, including runtime generation, restore, migration/hot update, asset import, build, and independent acceptance.",
+      "classification": "PLATFORM_CAPABILITY_PROBE",
+      "target_system": ["A:rules-residue", "B:TRPG_PLATFORM", "C:Creator Tool"],
+      "existing_capability": {"local": "B001 applicable input/generation/semantic/global stages have unique current records and a symbolic absolute-reject control; stale evidence is rejected by tests.", "external": "No runtime generation, hot-update/migration/restore, asset-import, or Creator safety stage exists; independent ACCEPT has not run."},
+      "probe_procedure": ["Hash-bind each B001 safety stage to the current fixture and use unique run IDs.", "Execute the symbolic absolute-reject control and stale-evidence negative test.", "Require fresh runtime/restore/hot-update/Creator records from exact external candidates and a fresh independent ACCEPT record."],
+      "commands_actions_actually_run": [
+        {"command": "python3 tests/m2/probes/validate_m2_b001.py --local-check R2-INT-011", "exit_code": 0, "observed_output": "current local stage records validated; runtime and restore stages reported BLOCKED_EXTERNAL; independent acceptance NOT_RUN", "output_sha256": "ff2a3d538718074de12e7701670fc14a0584cc98687235b151f8e633bbb21d09", "evidence_path": "reports/m2/probes/safety-stage-evidence.json"},
+        {"command": "rg -n -i '(seat|max[_-]?players|player[_-]?count|reconnect|deceased|spectator|campaign[_-]?termination|lineage|true[_-]?ending|safety[_-]?filter|hot[_-]?update)' apps cmd internal schemas", "exit_code": 1, "observed_output": "no runtime safety or hot-update implementation match", "output_sha256": "e79be6268c71bf276ba120ff125b735eb2ea1b64832f91db12e97a116a817d05", "evidence_path": "reports/m2/probes/platform-inventory.json"}
+      ],
+      "evidence_paths": ["reports/m2/probes/safety-stage-evidence.json", "tests/m2/probes/fixtures/local-capability-vectors.json", "reports/m2/probes/platform-inventory.json", "workflow/queue/m2-b001-trpg-platform-probes.json", "workflow/queue/m2-b001-creator-tool-probes.json"],
+      "observed_result": "Current B001-applicable local filtering passes and fails closed on stale/weakened evidence, but mandatory external runtime/restore and Creator stages are unavailable and independent ACCEPT is correctly unexecuted.",
+      "expected_result": "Every applicable local and external stage independently rejects the absolute red line and emits fresh source/object-bound evidence; no stale record is reusable.",
+      "execution_status": "BLOCKED_EXTERNAL",
+      "root_cause": "Pinned platform/Creator candidate lacks external safety stages; role isolation also forbids IMPLEMENT from fabricating independent ACCEPT evidence.",
+      "adapter_feasibility": {"preserves_r2": true, "local_status": "PASS", "limitations": "Local repeat filtering cannot certify external runtime generation, restore/migration/hot-update, asset import, or Creator stages."},
+      "platform_change_necessity": {"state": "PROPOSAL_REQUIRED", "approval_status": "NOT_APPROVED", "reason": "Fresh external runtime and Creator safety-stage evidence capabilities are missing."},
+      "downstream_blocked_batches": ["M2-B001", "M2-B002", "M2-B003", "M2-B004", "M2-B005", "M2-B006", "M2-B007", "M2-B008", "M2-B009", "M2-B010", "M2-B011", "M2-B012", "M2-B013", "M2-B014", "M2-B015", "M2-B016"],
+      "target_results": [
+        {"target": "A:rules-residue", "execution_status": "PASS", "evidence_paths": ["reports/m2/probes/safety-stage-evidence.json"]},
+        {"target": "B:TRPG_PLATFORM", "execution_status": "BLOCKED_EXTERNAL", "evidence_paths": ["reports/m2/probes/platform-inventory.json"]},
+        {"target": "C:Creator Tool", "execution_status": "BLOCKED_EXTERNAL", "evidence_paths": ["reports/m2/probes/platform-inventory.json"]}
+      ],
+      "candidate_binding": {"strategy": "EXACT_HEAD_AT_VALIDATION", "required_source_commit": "c595ac5257aff83bd69d96e3acd64cf3485dc8cb", "required_source_tree": "877927e564ba781ca5f355a3ec3d5f7da7ce879f", "route_binding_digest": "e2aacf21c69b34841d84aaae4945f7eab740e8410b50aa3bd3f0c5f9c7c71bad", "evidence_manifest": "reports/m2/probes/evidence-manifest.json", "must_be_clean": true}
+    },
+    {
+      "probe_id": "R2-INT-012",
+      "r2_requirement": "Logical abnormality is deterministic rules, scopes, priorities, exceptions/collisions, and seeded answers rather than engine nondeterminism.",
+      "classification": "R2_COMPATIBILITY_ADAPTER",
+      "target_system": ["A:rules-residue", "B:TRPG_PLATFORM"],
+      "existing_capability": {"local": "A conflicting-rule fixture declares scope, trigger, condition, effect, priority, exceptions, and conflicts; same-seed/reload parity, controlled new-seed difference, and two no-death paths execute.", "external": "Pinned deterministic Lua VM, isolation, checkpoint, reconstruction, and compatibility mutation tests pass."},
+      "probe_procedure": ["Resolve every conflict case by deterministic priority.", "Repeat and deep-copy reload each case.", "Compare controlled seed variants and require no-death solutions.", "Run pinned package and Lua checkpoint/reconstruction suites."],
+      "commands_actions_actually_run": [
+        {"command": "python3 tests/m2/probes/validate_m2_b001.py --local-check R2-INT-012", "exit_code": 0, "observed_output": "alpha/beta repeat and reload traces matched; controlled seed difference and no-death token paths validated", "output_sha256": "aba1eb9ac421fa899b1bf4bc7500778667737b6e25a6c9acb71ae934d5381ba7", "evidence_path": "tests/m2/probes/fixtures/local-capability-vectors.json"},
+        {"command": "GOCACHE=/tmp/rules-residue-m2-b001-go-cache go test -count=1 ./internal/package/... ./cmd/creator-cli/... ./internal/luaruntime/... ./cmd/lua-runner/...", "exit_code": 0, "observed_output": "deterministic Lua VM, isolation, checkpoint, reconstruction, compatibility, and package suites passed", "output_sha256": "901a20018fa12d4ea8cdca599ccb02841902aaf427cea4921ad5acdf54bc3146", "evidence_path": "reports/m2/probes/platform-inventory.json"}
+      ],
+      "evidence_paths": ["tests/m2/probes/fixtures/local-capability-vectors.json", "tests/m2/probes/validate_m2_b001.py", "reports/m2/probes/platform-inventory.json"],
+      "observed_result": "The package-side conflict adapter passes and the pinned Lua substrate is deterministic/reconstructable, but no Host seed/event-log integration exists to execute the actual anomaly fixture end to end.",
+      "expected_result": "The same seed and log always resolve scopes, priorities, exceptions, and collisions identically across repeat/reload; a controlled new seed may differ and a no-death solution remains.",
+      "execution_status": "BLOCKED_EXTERNAL",
+      "root_cause": "The pinned platform supplies deterministic Lua/checkpoint primitives but no Host seed, event-log, typed-effect, or package integration path for the actual anomaly fixture.",
+      "adapter_feasibility": {"preserves_r2": true, "local_status": "PASS", "limitations": "This proves the capability and reference semantics, not B002 production Schema or B004 runtime content."},
+      "platform_change_necessity": {"state": "CONDITIONAL_PROPOSAL", "approval_status": "NOT_APPROVED", "reason": "A proposal is required only if the future Host seed/event-log/typed-effect integration cannot run the proven package-side adapter deterministically."},
+      "downstream_blocked_batches": ["M2-B002", "M2-B004", "M2-B008"],
+      "target_results": [
+        {"target": "A:rules-residue", "execution_status": "PASS", "evidence_paths": ["tests/m2/probes/fixtures/local-capability-vectors.json"]},
+        {"target": "B:TRPG_PLATFORM", "execution_status": "BLOCKED_EXTERNAL", "evidence_paths": ["reports/m2/probes/platform-inventory.json"]}
+      ],
+      "candidate_binding": {"strategy": "EXACT_HEAD_AT_VALIDATION", "required_source_commit": "c595ac5257aff83bd69d96e3acd64cf3485dc8cb", "required_source_tree": "877927e564ba781ca5f355a3ec3d5f7da7ce879f", "route_binding_digest": "e2aacf21c69b34841d84aaae4945f7eab740e8410b50aa3bd3f0c5f9c7c71bad", "evidence_manifest": "reports/m2/probes/evidence-manifest.json", "must_be_clean": true}
+    }
+  ]
+}

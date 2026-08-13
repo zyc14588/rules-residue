@@ -1,0 +1,45 @@
+{
+  "schema_version": "rules-residue.task-packet/1.0",
+  "task_id": "RR-TASK-2001",
+  "status": "PLANNED",
+  "owner": "codex",
+  "task_type": "acceptance",
+  "objective": "Independently execute the M2-B001 TRPG_PLATFORM capability probes for R2-INT-001, R2-INT-002, R2-INT-003, R2-INT-004, R2-INT-005, R2-INT-006, R2-INT-008, R2-INT-009, R2-INT-010, R2-INT-011, and R2-INT-012 without modifying the platform or lowering R2.",
+  "authority": [
+    "R2-INTEGRATION-CONFLICTS",
+    "R2-AUTH-M1-INTEGRATION",
+    "R2-M2-VALIDATION-MATRIX",
+    "R2-M2-STOP-CONDITIONS"
+  ],
+  "inputs": [
+    "docs/implementation/m2/probes/external-result-v1.schema.json",
+    "reports/m2/probes/probe-results.json",
+    "tests/m2/probes/fixtures/local-capability-vectors.json"
+  ],
+  "allowed_paths": [
+    "reports/m2/probes/external/m2-b001-trpg-platform-result.json",
+    "reports/m2/probes/external/m2-b001-trpg-platform-evidence/**"
+  ],
+  "forbidden_paths": [
+    "TRPG_PLATFORM/**",
+    "game-package/**",
+    "docs/authority/**",
+    "governance/**",
+    "schemas/**"
+  ],
+  "open_decisions": [],
+  "acceptance": [
+    "Pin and report the exact clean TRPG_PLATFORM commit and tree.",
+    "Return exactly one B:TRPG_PLATFORM result for every assigned probe and exactly one status/evidence record for every frozen probe procedure.",
+    "Run every applicable create/persist/reconnect/authorize/privacy/action/save/reload/termination/context/safety/determinism procedure; record exact commands, exit codes, output digests, and evidence paths.",
+    "Validate the returned JSON against external-result-v1 and the exact Task Packet hash.",
+    "Keep an unavailable or unexecuted capability BLOCKED_EXTERNAL or BLOCKED_ENVIRONMENT; never promote it to PASS.",
+    "Treat a platform change as a proposal until separately approved with bound evidence."
+  ],
+  "expected_outputs": [
+    "One exact-candidate-bound external result JSON covering every assigned B:TRPG_PLATFORM probe and procedure exactly once.",
+    "Per-probe observed result and execution status.",
+    "Exact platform identity and reproducible command evidence."
+  ],
+  "notes": "Frozen game source_commit=c595ac5257aff83bd69d96e3acd64cf3485dc8cb and source_tree=877927e564ba781ca5f355a3ec3d5f7da7ce879f. Invocation MUST supply exact candidate_commit and candidate_tree, never a branch or latest alias. The return MUST bind this packet SHA-256 and both repositories' identities. A proposal is not approval. Read-only platform inspection and isolated temporary outputs only; do not edit, stage, commit, install into, or otherwise mutate TRPG_PLATFORM."
+}

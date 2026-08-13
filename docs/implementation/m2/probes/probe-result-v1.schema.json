@@ -1,0 +1,120 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "rules-residue.m2/probe-result/1.0",
+  "type": "object",
+  "required": ["schema_version", "batch_id", "source_binding", "probes"],
+  "properties": {
+    "schema_version": {"const": "rules-residue.m2.probe-results/1.0"},
+    "batch_id": {"const": "M2-B001"},
+    "source_binding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["source_commit", "source_tree", "route_id", "route_binding_digest"],
+      "properties": {
+        "source_commit": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+        "source_tree": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+        "route_id": {"const": "M2-B001-CAPABILITY-PROBES-IMPLEMENT"},
+        "route_binding_digest": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+      }
+    },
+    "probes": {
+      "type": "array",
+      "minItems": 12,
+      "maxItems": 12,
+      "items": {"$ref": "#/$defs/probe"}
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "status": {
+      "enum": ["PASS", "FAIL", "NOT_RUN", "BLOCKED_EXTERNAL", "BLOCKED_ENVIRONMENT"]
+    },
+    "command": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["command", "exit_code", "observed_output", "output_sha256", "evidence_path"],
+      "properties": {
+        "command": {"type": "string", "minLength": 1},
+        "exit_code": {"type": "integer", "minimum": 0},
+        "observed_output": {"type": "string"},
+        "output_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "evidence_path": {"type": "string", "minLength": 1}
+      }
+    },
+    "probe": {
+      "type": "object",
+      "required": [
+        "probe_id", "r2_requirement", "classification", "target_system",
+        "existing_capability", "probe_procedure", "commands_actions_actually_run",
+        "evidence_paths", "observed_result", "expected_result", "execution_status",
+        "root_cause", "adapter_feasibility", "platform_change_necessity",
+        "downstream_blocked_batches", "target_results", "candidate_binding"
+      ],
+      "properties": {
+        "probe_id": {"type": "string", "pattern": "^R2-INT-0(0[1-9]|1[0-2])$"},
+        "r2_requirement": {"type": "string", "minLength": 1},
+        "classification": {
+          "enum": ["PLATFORM_CAPABILITY_PROBE", "R2_COMPATIBILITY_ADAPTER", "PACKAGE_DECLARABLE"]
+        },
+        "target_system": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string"}},
+        "existing_capability": {"type": "object"},
+        "probe_procedure": {"type": "array", "minItems": 1, "items": {"type": "string"}},
+        "commands_actions_actually_run": {"type": "array", "items": {"$ref": "#/$defs/command"}},
+        "evidence_paths": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string"}},
+        "observed_result": {"type": "string", "minLength": 1},
+        "expected_result": {"type": "string", "minLength": 1},
+        "execution_status": {"$ref": "#/$defs/status"},
+        "root_cause": {"type": "string", "minLength": 1},
+        "adapter_feasibility": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["preserves_r2", "local_status", "limitations"],
+          "properties": {
+            "preserves_r2": {"const": true},
+            "local_status": {"$ref": "#/$defs/status"},
+            "limitations": {"type": "string"}
+          }
+        },
+        "platform_change_necessity": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["state", "approval_status", "reason"],
+          "properties": {
+            "state": {"enum": ["NOT_NEEDED", "CONDITIONAL_PROPOSAL", "PROPOSAL_REQUIRED"]},
+            "approval_status": {"enum": ["NOT_REQUIRED", "NOT_APPROVED", "APPROVED_WITH_BOUND_EVIDENCE"]},
+            "reason": {"type": "string"}
+          }
+        },
+        "downstream_blocked_batches": {"type": "array", "uniqueItems": true, "items": {"type": "string", "pattern": "^M2-B[0-9]{3}$"}},
+        "target_results": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["target", "execution_status", "evidence_paths"],
+            "properties": {
+              "target": {"type": "string"},
+              "execution_status": {"$ref": "#/$defs/status"},
+              "evidence_paths": {"type": "array", "items": {"type": "string"}}
+            }
+          }
+        },
+        "candidate_binding": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["strategy", "required_source_commit", "required_source_tree", "route_binding_digest", "evidence_manifest", "must_be_clean"],
+          "properties": {
+            "strategy": {"const": "EXACT_HEAD_AT_VALIDATION"},
+            "required_source_commit": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+            "required_source_tree": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+            "route_binding_digest": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+            "evidence_manifest": {"type": "string"},
+            "must_be_clean": {"const": true}
+          }
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}
