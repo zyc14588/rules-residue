@@ -33,5 +33,33 @@
     "*",
     "git_history_all",
     "prior_chat_transcripts"
-  ]
+  ],
+  "active_plan": {
+    "business_milestone": "R2-AUTHORITY-INSTALL",
+    "route_milestone": "M1",
+    "batch_id": "M1-B002",
+    "state": "FROZEN",
+    "state_transition": [
+      "PLANNED",
+      "FROZEN"
+    ],
+    "role": "PLAN",
+    "objective": "Install the frozen R2 authority and progressive-delivery package without starting M2 implementation or changing runtime inputs.",
+    "source_branch": "design/r1-story-architecture",
+    "source_commit": "e8e536fe5c96c389736ffcf8d4855fa146a2b9c2",
+    "source_tree": "d06c3e1e4f1984447caef3b3e9012f8adc7ae20c",
+    "package_path": "/home/zyc14588/RULE_RESIDUAL_R2_AUTHORITY_AND_PROGRESSIVE_DELIVERY_v1.0.0",
+    "package_version": "1.0.0",
+    "package_manifest_sha256": "a5adb9fad5439926e0c8d46f23f3e3e107812bdd9ce13097acea04b8cc0a7ba1",
+    "task_envelope": "workflow/queue/RR-TASK-0004.json",
+    "frozen_plan": ".codex/plans/r2-authority-install/INSTALL_PLAN.md",
+    "package_disposition": ".codex/plans/r2-authority-install/package-disposition.yaml",
+    "plan_route_request": ".codex/routes/r2-authority-install-plan-request.json",
+    "plan_route_binding_digest": "d6bbdced99464e6aad9216278cafa7bed2f42df54f3af9134853e81a53d36ff4",
+    "plan_context_ratio": 0.5246327718098959,
+    "implementation_state": "NOT_STARTED",
+    "acceptance_context": "NEW_READ_ONLY_WORKTREE_AT_FIXED_CANDIDATE",
+    "integration_policy": "FAST_FORWARD_ONLY_AFTER_INDEPENDENT_ACCEPT_PASS",
+    "next_allowed_action": "IMPLEMENT"
+  }
 }

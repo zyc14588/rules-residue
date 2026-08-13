@@ -1,0 +1,205 @@
+{
+  "schema_version": "1.0",
+  "route_id": "R2-AUTHORITY-INSTALL-PLAN",
+  "mode": "PLAN",
+  "milestone": "M1",
+  "batch_id": "M1-B002",
+  "capacity_bytes": 196608,
+  "documents": [
+    {
+      "path": "AGENTS.md",
+      "required_sections": [
+        "M1-AGENTS-CONTRACT"
+      ],
+      "optional_sections": [],
+      "reason": "Bind the repository construction contract before planning R2 installation."
+    },
+    {
+      "path": "README.md",
+      "required_sections": [
+        "M1-README-ENTRY"
+      ],
+      "optional_sections": [],
+      "reason": "Bind the repository authority order, project identity, and supported entry points."
+    },
+    {
+      "path": ".codex/SESSION_START.md",
+      "required_sections": [
+        "M1-CODEX-SESSION-START"
+      ],
+      "optional_sections": [],
+      "reason": "Bind the repository-native progressive-disclosure session contract."
+    },
+    {
+      "path": "/home/zyc14588/RULE_RESIDUAL_R2_AUTHORITY_AND_PROGRESSIVE_DELIVERY_v1.0.0/README.md",
+      "required_sections": [
+        "R2-DELIVERY-README"
+      ],
+      "optional_sections": [],
+      "reason": "Bind the immutable R2 delivery package entry contract."
+    },
+    {
+      "path": "/home/zyc14588/RULE_RESIDUAL_R2_AUTHORITY_AND_PROGRESSIVE_DELIVERY_v1.0.0/00_BASELINE_AND_INTEGRATION/M1_BASELINE_BINDING.md",
+      "required_sections": [
+        "R2-INTEGRATION-M1-BASELINE"
+      ],
+      "optional_sections": [],
+      "reason": "Bind the package's declared M1 baseline assumptions for compatibility planning."
+    },
+    {
+      "path": "/home/zyc14588/RULE_RESIDUAL_R2_AUTHORITY_AND_PROGRESSIVE_DELIVERY_v1.0.0/00_BASELINE_AND_INTEGRATION/M1_R2_INTEGRATION_CONFLICTS.md",
+      "required_sections": [
+        "R2-INTEGRATION-CONFLICTS"
+      ],
+      "optional_sections": [],
+      "reason": "Bind the R2-INT-001 through R2-INT-012 conflict register."
+    },
+    {
+      "path": "/home/zyc14588/RULE_RESIDUAL_R2_AUTHORITY_AND_PROGRESSIVE_DELIVERY_v1.0.0/00_BASELINE_AND_INTEGRATION/INSTALLATION_STRATEGY.md",
+      "required_sections": [
+        "R2-INTEGRATION-INSTALLATION"
+      ],
+      "optional_sections": [],
+      "reason": "Bind the package installation strategy without loading unrelated package prose."
+    },
+    {
+      "path": "/home/zyc14588/RULE_RESIDUAL_R2_AUTHORITY_AND_PROGRESSIVE_DELIVERY_v1.0.0/03_CODEX_PROGRESSIVE_DISCLOSURE/README.md",
+      "required_sections": [
+        "R2-CODEX-README"
+      ],
+      "optional_sections": [],
+      "reason": "Bind the R2 progressive-disclosure prompt-set overview."
+    },
+    {
+      "path": "/home/zyc14588/RULE_RESIDUAL_R2_AUTHORITY_AND_PROGRESSIVE_DELIVERY_v1.0.0/03_CODEX_PROGRESSIVE_DISCLOSURE/SESSION_START.md",
+      "required_sections": [
+        "R2-CODEX-SESSION-START"
+      ],
+      "optional_sections": [],
+      "reason": "Bind the package session-start role and freshness contract."
+    },
+    {
+      "path": "/home/zyc14588/RULE_RESIDUAL_R2_AUTHORITY_AND_PROGRESSIVE_DELIVERY_v1.0.0/03_CODEX_PROGRESSIVE_DISCLOSURE/R2-AUTHORITY-INSTALL/PLAN.md",
+      "required_sections": [
+        "R2-CODEX-R2-INSTALL-PLAN"
+      ],
+      "optional_sections": [],
+      "reason": "Bind the immutable package PLAN role contract."
+    },
+    {
+      "path": "/home/zyc14588/RULE_RESIDUAL_R2_AUTHORITY_AND_PROGRESSIVE_DELIVERY_v1.0.0/01_REPO_OVERLAY/docs/authority/r2/00_R2_AUTHORITY_ENTRY.md",
+      "required_sections": [
+        "R2-AUTH-ENTRY"
+      ],
+      "optional_sections": [],
+      "reason": "Bind the proposed R2 authority hierarchy and entry point."
+    },
+    {
+      "path": "/home/zyc14588/RULE_RESIDUAL_R2_AUTHORITY_AND_PROGRESSIVE_DELIVERY_v1.0.0/01_REPO_OVERLAY/docs/authority/r2/R2_DECISION_INDEX.md",
+      "required_sections": [
+        "R2-AUTH-DECISION-INDEX"
+      ],
+      "optional_sections": [],
+      "reason": "Bind the human-readable index for all 191 frozen R2 decisions."
+    },
+    {
+      "path": "/home/zyc14588/RULE_RESIDUAL_R2_AUTHORITY_AND_PROGRESSIVE_DELIVERY_v1.0.0/01_REPO_OVERLAY/docs/authority/r2/02_WORLD_AND_MAIN_TRUTH.md",
+      "required_sections": [
+        "R2-AUTH-WORLD-TRUTH"
+      ],
+      "optional_sections": [],
+      "reason": "Bind the R2 world and main-truth source needed for the M1 OPEN supersession map."
+    },
+    {
+      "path": "/home/zyc14588/RULE_RESIDUAL_R2_AUTHORITY_AND_PROGRESSIVE_DELIVERY_v1.0.0/01_REPO_OVERLAY/docs/authority/r2/03_RULE_CAUSALITY_LOOP_AND_COST.md",
+      "required_sections": [
+        "R2-AUTH-RULE-LOOP"
+      ],
+      "optional_sections": [],
+      "reason": "Bind causal-rule, loop, death, and cost boundaries affected by R2 truth propagation."
+    },
+    {
+      "path": "/home/zyc14588/RULE_RESIDUAL_R2_AUTHORITY_AND_PROGRESSIVE_DELIVERY_v1.0.0/01_REPO_OVERLAY/docs/authority/r2/06_FINAL_BOSS_ENDINGS_AND_RETURN.md",
+      "required_sections": [
+        "R2-AUTH-ENDINGS"
+      ],
+      "optional_sections": [],
+      "reason": "Bind final-boss, ending, causal-bomb, and return-home truth needed for supersession planning."
+    },
+    {
+      "path": "/home/zyc14588/RULE_RESIDUAL_R2_AUTHORITY_AND_PROGRESSIVE_DELIVERY_v1.0.0/01_REPO_OVERLAY/docs/authority/r2/09_CONTENT_SAFETY_AND_ABSOLUTE_RED_LINES.md",
+      "required_sections": [
+        "R2-AUTH-SAFETY"
+      ],
+      "optional_sections": [],
+      "reason": "Bind the repeat-filter lifecycle and absolute minor-abuse red line."
+    },
+    {
+      "path": "/home/zyc14588/RULE_RESIDUAL_R2_AUTHORITY_AND_PROGRESSIVE_DELIVERY_v1.0.0/01_REPO_OVERLAY/docs/authority/r2/14_M1_INTEGRATION_CONTRACT.md",
+      "required_sections": [
+        "R2-AUTH-M1-INTEGRATION"
+      ],
+      "optional_sections": [],
+      "reason": "Bind the explicit M1-to-R2 compatibility and no-runtime-change contract."
+    },
+    {
+      "path": "/home/zyc14588/RULE_RESIDUAL_R2_AUTHORITY_AND_PROGRESSIVE_DELIVERY_v1.0.0/01_REPO_OVERLAY/docs/authority/r2/R2_TRACEABILITY.md",
+      "required_sections": [
+        "R2-AUTH-TRACEABILITY"
+      ],
+      "optional_sections": [],
+      "reason": "Bind the 191-of-191 traceability requirements."
+    },
+    {
+      "path": "/home/zyc14588/RULE_RESIDUAL_R2_AUTHORITY_AND_PROGRESSIVE_DELIVERY_v1.0.0/01_REPO_OVERLAY/authoring/story/00_STORY_BIBLE.md",
+      "required_sections": [
+        "R2-AUTHORING-STORY-BIBLE"
+      ],
+      "optional_sections": [],
+      "reason": "Bind the candidate R2 story-source merge target."
+    },
+    {
+      "path": "/home/zyc14588/RULE_RESIDUAL_R2_AUTHORITY_AND_PROGRESSIVE_DELIVERY_v1.0.0/01_REPO_OVERLAY/authoring/story/01_TRUTH_BIBLE.md",
+      "required_sections": [
+        "R2-AUTHORING-TRUTH-BIBLE"
+      ],
+      "optional_sections": [],
+      "reason": "Bind the candidate R2 GM-only truth source and active-truth uniqueness contract."
+    },
+    {
+      "path": "/home/zyc14588/RULE_RESIDUAL_R2_AUTHORITY_AND_PROGRESSIVE_DELIVERY_v1.0.0/01_REPO_OVERLAY/authoring/story/02_MAIN_MYSTERY_GRAPH.md",
+      "required_sections": [
+        "R2-AUTHORING-MYSTERY-GRAPH"
+      ],
+      "optional_sections": [],
+      "reason": "Bind the candidate main-mystery graph merge target."
+    },
+    {
+      "path": "/home/zyc14588/RULE_RESIDUAL_R2_AUTHORITY_AND_PROGRESSIVE_DELIVERY_v1.0.0/01_REPO_OVERLAY/authoring/story/03_RETURN_HOME_ARC.md",
+      "required_sections": [
+        "R2-AUTHORING-RETURN-ARC"
+      ],
+      "optional_sections": [],
+      "reason": "Bind the candidate return-home arc and common-dream ending truth."
+    },
+    {
+      "path": "/home/zyc14588/RULE_RESIDUAL_R2_AUTHORITY_AND_PROGRESSIVE_DELIVERY_v1.0.0/01_REPO_OVERLAY/authoring/story/04_REVEAL_POLICY.md",
+      "required_sections": [
+        "R2-AUTHORING-REVEAL-POLICY"
+      ],
+      "optional_sections": [],
+      "reason": "Bind the candidate reveal policy and player/GM separation contract."
+    }
+  ],
+  "forbidden_bulk_reads": [
+    "docs/**",
+    "authoring/**",
+    "governance/**",
+    "schemas/**",
+    "workflow/**",
+    "package/**",
+    "*",
+    "git_history_all",
+    "prior_chat_transcripts"
+  ]
+}
