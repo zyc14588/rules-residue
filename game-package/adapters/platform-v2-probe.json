@@ -1,0 +1,47 @@
+{
+  "schema_version": "rules-residue.platform-v2-probe-adapter/1.0",
+  "adapter_id": "R2-INT-010-REM-001",
+  "artifact_role": "MINIMAL_CAPABILITY_PROBE_SOURCE_NOT_CREATOR_EVIDENCE",
+  "source_package_id": "org.trpgplatform.rules-residue",
+  "platform_package_id": "org.trpgplatform/rules-residue",
+  "namespace_derivation": {
+    "algorithm": "stable-package-id-dot-namespace-plus-probe-v1",
+    "suffix": "probe",
+    "derived_namespace": "org.trpgplatform.rules-residue.probe"
+  },
+  "v2_manifest": {
+    "package_kind": "library",
+    "display_name": "Rules Residue R2-INT-010 minimal capability probe",
+    "build": {
+      "source": "rules-residue/game-package",
+      "revision": "R2-INT-010-REM-001",
+      "builder": "rules-residue-platform-v2-probe-adapter/1.0"
+    },
+    "rights": {
+      "authors": [
+        "Rules Residue Project"
+      ],
+      "source": "original",
+      "license_expression": "LicenseRef-Pending-FirstParty"
+    },
+    "capabilities": {
+      "required": []
+    }
+  },
+  "scope": {
+    "label": "R2-INT-010-REM-001 minimal capability probe / NOT formal M2-B002 semantics",
+    "formal_B002": false,
+    "formal_B009": false
+  },
+  "extension_descriptor": {
+    "namespace": "org.trpgplatform.rules-residue.probe",
+    "required": true,
+    "contract_version": 1,
+    "schema_path": "extensions/org.trpgplatform.rules-residue.probe/minimal-capability-probe.schema.json",
+    "schema_sha256": "sha256:f76fb60157ebc0fedab0e553410af36e4150147d322bcb04dec11bcf937c09b9",
+    "payload_path": "extensions/org.trpgplatform.rules-residue.probe/minimal-capability-probe.json",
+    "host_api_major": 1,
+    "host_api_min_minor": 0,
+    "host_api_max_minor": 0
+  }
+}

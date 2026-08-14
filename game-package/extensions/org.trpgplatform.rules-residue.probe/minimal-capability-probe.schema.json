@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "R2-INT-010-REM-001 minimal capability probe / NOT formal M2-B002 semantics",
+  "$comment": "Local generic JSON edit probe only. formal_B002=false; formal_B009=false; no rule-equipment, short/long algorithm, Lua, or runtime semantics.",
+  "type": "object",
+  "required": [
+    "probe_id",
+    "formal_B002",
+    "formal_B009",
+    "count",
+    "enabled"
+  ],
+  "properties": {
+    "probe_id": {
+      "const": "R2-INT-010-REM-001"
+    },
+    "formal_B002": {
+      "const": false
+    },
+    "formal_B009": {
+      "const": false
+    },
+    "count": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 1000000
+    },
+    "enabled": {
+      "type": "boolean"
+    }
+  },
+  "additionalProperties": false
+}
