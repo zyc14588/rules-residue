@@ -1,0 +1,203 @@
+{
+  "schema_version": "rules-residue.m2.remediation-evidence/1.0",
+  "evidence_id": "R2-INT-010-REM-001-J001",
+  "nature": "ADDITIVE_REMEDIATION_EVIDENCE",
+  "task_id": "R2-INT-010-REM-001",
+  "previous_status": "FAIL",
+  "new_status": "RESOLVED_ADAPTER",
+  "classification": "R2_COMPATIBILITY_ADAPTER",
+  "transition_reason": "Exact cross-repository execution proves that the approved generic namespaced JSON extension path preserves and round-trips the rules-residue probe through Host and Creator Tool, resolving R2-INT-010 as an adapter without claiming formal M2-B002, formal M2-B009, or aggregate readiness.",
+  "previous_evidence": [
+    {
+      "evidence_id": "M2-B001-R2-INT-010",
+      "record_role": "STATUS_PREDECESSOR",
+      "path": "reports/m2/probes/probe-results.json",
+      "sha256": "154e7c0ddf8ce7b2243ad6c78d10ceb6cddf02c3aeb6592716dcc5ad8fc64218",
+      "previous_status": "FAIL",
+      "disposition": "RETAINED_IMMUTABLE_PREVIOUS_EVIDENCE"
+    },
+    {
+      "evidence_id": "M2-B001-EXT-001-SUPPLEMENT",
+      "record_role": "STATUS_PREDECESSOR",
+      "path": "reports/m2/probes/external/m2-b001-ext-001/supplement.json",
+      "sha256": "d2f21f4853e5b77e2796ba3cbe3c7001b4731cdbb251661d6375ac2d5cff193c",
+      "previous_status": "FAIL",
+      "disposition": "RETAINED_IMMUTABLE_PREVIOUS_EVIDENCE"
+    },
+    {
+      "evidence_id": "M2-B001-EXT-001-MANIFEST",
+      "record_role": "IMMUTABLE_HASH_MANIFEST",
+      "path": "reports/m2/probes/external/m2-b001-ext-001/evidence-manifest.json",
+      "sha256": "c842d67ec1f83145fdb67a33368e1f7dfbf8f8bc28cf8b9ab7b98202e813af1f",
+      "previous_status": "NOT_APPLICABLE",
+      "disposition": "RETAINED_IMMUTABLE_PREVIOUS_EVIDENCE"
+    }
+  ],
+  "formal_semantics": {
+    "formal_B002": false,
+    "formal_B009": false
+  },
+  "route_binding": {
+    "route_id": "R2-INT-010-REM-001-EVIDENCE-IMPLEMENT",
+    "mode": "IMPLEMENT",
+    "milestone": "M1",
+    "batch_id": "M1-B010",
+    "source_commit": "c6a840b10db46dc475cd9af9e6a1a13f1e68abd4",
+    "source_tree": "cfb11378935d4b2bf380a6505e87589c18b1eaa2",
+    "binding_digest": "0f60912817903a926e07bd7e11d6b66402d5676c2aa45ee0faa4485db70b81e6",
+    "freshness_status": "PASS"
+  },
+  "antecedents": {
+    "platform_change_proposal": {
+      "proposal_id": "PLATFORM-CHANGE-R2-INT-010-REM-001",
+      "commit": "a767115af691b728c60bd272dce3fc01f2258bc7",
+      "disposition": "ANTECEDENT_ONLY_NOT_EXECUTION_EVIDENCE"
+    },
+    "owner_governance_approval_candidate": {
+      "owner_decision_id": "OWNER-DECISION-PLATFORM-CHANGE-R2-INT-010-REM-001",
+      "commit": "608157e05e0a5beaba3c87a5f8f6f525e73a1132",
+      "disposition": "ANTECEDENT_ONLY_NOT_EXECUTION_EVIDENCE"
+    }
+  },
+  "exact_target_pair": [
+    {
+      "target": "A:rules-residue",
+      "repository": "rules-residue",
+      "commit": "c6a840b10db46dc475cd9af9e6a1a13f1e68abd4",
+      "tree": "cfb11378935d4b2bf380a6505e87589c18b1eaa2"
+    },
+    {
+      "target": "B:TRPG_PLATFORM",
+      "repository": "TRPG_PLATFORM",
+      "commit": "1339c490bd8cae1e2a6e6607fc0f1db019faab64",
+      "tree": "25d5645caf883a73f165db0179accbca48ddf526"
+    }
+  ],
+  "creator_tool": {
+    "platform_commit": "1339c490bd8cae1e2a6e6607fc0f1db019faab64",
+    "platform_tree": "25d5645caf883a73f165db0179accbca48ddf526",
+    "binary_version": "0.1.0-m1",
+    "build_command": "argv-v1:pnpm|--dir|apps/creator-studio/frontend|build||go|build|-trimpath|-buildvcs=false|-tags|production,webkit2_41|-o|<CREATOR_BINARY>|./apps/creator-studio",
+    "binary_sha256": "7e31836febd753ca32dc0b81d9f9d8fc7c15fee123730fc4998ca1ee30b7e3a2"
+  },
+  "evidence_links": {
+    "execution_records": "reports/m2/probes/remediations/r2-int-010-rem-001/execution-records.json",
+    "evidence_manifest": "reports/m2/probes/remediations/r2-int-010-rem-001/evidence-manifest.json"
+  },
+  "phase_results": [
+    {
+      "evidence_id": "J-E001",
+      "phase": "SOURCE_ARCHIVE_HOST_IMPORT_INSPECT_EXPORT_REIMPORT",
+      "execution_status": "PASS",
+      "source_archive_sha256": "14eb81c8e804932c556d2e7fbe5333ba343b65542d378213db621e3dbc849776",
+      "source_tree_sha256": "20daecd7a1b40e7d1e8dd6052e7935671bddd543ac991e2e99d8d8530210455b",
+      "source_builds_byte_and_mode_identical": true,
+      "phases": ["import", "inspect", "export", "reimport"]
+    },
+    {
+      "evidence_id": "J-E002",
+      "phase": "CREATOR_IMPORT_INSPECT_EDIT_VALIDATE_EXPORT_REIMPORT",
+      "execution_status": "PASS",
+      "phases": ["import", "inspect", "edit", "validate", "export", "reimport"]
+    },
+    {
+      "evidence_id": "J-E003",
+      "phase": "DETERMINISTIC_CREATOR_EXPORT",
+      "execution_status": "PASS",
+      "output_sha256": [
+        "ccd11063676ea1eea382833ab970e86c355ca4eb59aa7dc447412a4449ec6650",
+        "ccd11063676ea1eea382833ab970e86c355ca4eb59aa7dc447412a4449ec6650"
+      ]
+    },
+    {
+      "evidence_id": "J-E004",
+      "phase": "HOST_PRESERVATION_AFTER_CREATOR_RELOAD",
+      "execution_status": "PASS",
+      "manifest_preserved": true,
+      "descriptor_preserved": true,
+      "schema_preserved": true,
+      "other_content_preserved": true,
+      "semantic_equality_after_reload": true
+    },
+    {
+      "evidence_id": "J-E005",
+      "phase": "CREATOR_SCHEMA_INVALID_EDIT_REJECTION",
+      "execution_status": "PASS",
+      "observed_code": "ERR_EXTENSION_SCHEMA_VALIDATION"
+    },
+    {
+      "evidence_id": "J-E006",
+      "phase": "SIX_TYPED_HOST_PAIR_NEGATIVES",
+      "execution_status": "PASS",
+      "cases": [
+        {"name": "schema_digest_mismatch", "observed_code": "ERR_EXTENSION_SCHEMA_DIGEST_MISMATCH"},
+        {"name": "remote_schema_ref_digest_rebound", "observed_code": "ERR_EXTENSION_INVALID"},
+        {"name": "cross_file_schema_ref_digest_rebound", "observed_code": "ERR_EXTENSION_INVALID"},
+        {"name": "path_traversal", "observed_code": "ERR_EXTENSION_INVALID"},
+        {"name": "absolute_path", "observed_code": "ERR_EXTENSION_INVALID"},
+        {"name": "required_unsupported_host_api", "observed_code": "ERR_EXTENSION_REQUIRED_UNSUPPORTED"}
+      ]
+    },
+    {
+      "evidence_id": "J-E007",
+      "phase": "RULES_SOURCE_SYMLINK_REJECTION",
+      "execution_status": "PASS",
+      "output_absent": true,
+      "observed": "REJECTED_SYMBOLIC_LINK"
+    }
+  ],
+  "non_claims": {
+    "formal_B002": {"execution_status": "NOT_RUN", "claimed": false},
+    "formal_B009": {"execution_status": "NOT_RUN", "claimed": false},
+    "aggregate_status": "NOT_CLAIMED"
+  },
+  "projections": {
+    "probe_status": {
+      "R2-INT-010": "RESOLVED_ADAPTER"
+    },
+    "external_gates": [
+      {
+        "gate_id": "EXT-CREATOR-EXTENSIONS",
+        "execution_status": "BLOCKED_EXTERNAL",
+        "blocking_probe_ids": ["R2-INT-006"]
+      },
+      {
+        "gate_id": "EXT-RUNTIME-SAFETY",
+        "execution_status": "BLOCKED_EXTERNAL",
+        "blocking_probe_ids": ["R2-INT-011", "R2-INT-012"]
+      }
+    ],
+    "readiness": {
+      "M2-B002_READY": "NO",
+      "M2-B002": "NOT_STARTED",
+      "blocking_ids": ["R2-INT-011", "R2-INT-012", "DEFER-R2-C14-001"]
+    }
+  },
+  "integrity_classes": [
+    {
+      "class_id": "F001",
+      "meaning": "VALIDATOR_SUPPORTED_ATTACK_CLASS",
+      "validator_coverage": [
+        "forged_pass",
+        "duplicate_record",
+        "missing_field",
+        "wrong_repository_commit_tree",
+        "missing_or_wrong_target_pair",
+        "altered_mapping"
+      ]
+    },
+    {
+      "class_id": "F002",
+      "meaning": "VALIDATOR_SUPPORTED_ATTACK_CLASS",
+      "validator_coverage": [
+        "stale_historical_hash_or_evidence",
+        "proposal_as_execution",
+        "not_run_as_pass",
+        "mismatched_creator_output",
+        "mismatched_platform_rules_pair",
+        "historical_rewrite",
+        "integrity_class_status_misuse"
+      ]
+    }
+  ]
+}

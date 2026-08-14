@@ -1,0 +1,122 @@
+{
+  "schema_version": "rules-residue.m2.remediation-execution-records/1.0",
+  "evidence_set_id": "R2-INT-010-REM-001-J001",
+  "task_id": "R2-INT-010-REM-001",
+  "previous_status": "FAIL",
+  "source_phase": "I_CROSS_REPOSITORY_ACCEPT_RAW",
+  "normalization": "UTF8_TEXT_LF; scratch paths replaced by angle-bracket labels; JSON observations reduced to ordered decision-relevant fields; no binary bytes embedded",
+  "records": [
+    {
+      "evidence_id": "J-R001",
+      "command": "git rev-parse HEAD^{commit} [TRPG_PLATFORM]",
+      "exit_code": 0,
+      "source_capture_sha256": "489bca3b4ae03053e1b561b144b1405aed1fc49ac6e105f3db795e6c29e077d5",
+      "normalized_text": "repository=TRPG_PLATFORM\ncommit=1339c490bd8cae1e2a6e6607fc0f1db019faab64\n"
+    },
+    {
+      "evidence_id": "J-R002",
+      "command": "git rev-parse HEAD^{tree} [TRPG_PLATFORM]",
+      "exit_code": 0,
+      "source_capture_sha256": "3f4c74712d65e0db879fcb53b6eaf6c2f4d8faca87b8a3045c5e9366f8426066",
+      "normalized_text": "repository=TRPG_PLATFORM\ntree=25d5645caf883a73f165db0179accbca48ddf526\n"
+    },
+    {
+      "evidence_id": "J-R003",
+      "command": "git rev-parse HEAD^{commit} [rules-residue]",
+      "exit_code": 0,
+      "source_capture_sha256": "5910128106dd97095f601ec219f3350fca165f5dc4768e9bfbd1baad59d51428",
+      "normalized_text": "repository=rules-residue\ncommit=c6a840b10db46dc475cd9af9e6a1a13f1e68abd4\n"
+    },
+    {
+      "evidence_id": "J-R004",
+      "command": "git rev-parse HEAD^{tree} [rules-residue]",
+      "exit_code": 0,
+      "source_capture_sha256": "e43a0714c55445bc72b5365365df3bb5e96ae1034a3456868a9f50e845c00b5c",
+      "normalized_text": "repository=rules-residue\ntree=cfb11378935d4b2bf380a6505e87589c18b1eaa2\n"
+    },
+    {
+      "evidence_id": "J-R005",
+      "command": "<CREATOR_BINARY> identity",
+      "exit_code": 0,
+      "source_capture_sha256": "3905414c20e0c0cd13035c3139f7e424b37f0f81407c7ac47bf8c0a8ab0290ba",
+      "normalized_text": "platform_commit=1339c490bd8cae1e2a6e6607fc0f1db019faab64\nplatform_tree=25d5645caf883a73f165db0179accbca48ddf526\nbinary_version=0.1.0-m1\nbuild_command=argv-v1:pnpm|--dir|apps/creator-studio/frontend|build||go|build|-trimpath|-buildvcs=false|-tags|production,webkit2_41|-o|<CREATOR_BINARY>|./apps/creator-studio\nbinary_sha256=7e31836febd753ca32dc0b81d9f9d8fc7c15fee123730fc4998ca1ee30b7e3a2\n"
+    },
+    {
+      "evidence_id": "J-R006",
+      "command": "<CREATOR_BINARY> extension edit --archive <SOURCE_ARCHIVE> --namespace org.trpgplatform.rules-residue.probe --json-file <COUNT_2> --output <OUTPUT_1> --conflict-token sha256:14eb81c8e804932c556d2e7fbe5333ba343b65542d378213db621e3dbc849776",
+      "exit_code": 0,
+      "source_capture_sha256": "932a3c7fec54b224cb2bc1d9af7065120c327aacc0419e3038821860ec94a1bb",
+      "normalized_text": "phases=import:ok,inspect:ok,edit:ok,validate:ok,export:ok,reimport:ok\nsource_archive_sha256=14eb81c8e804932c556d2e7fbe5333ba343b65542d378213db621e3dbc849776\noutput_archive_sha256=ccd11063676ea1eea382833ab970e86c355ca4eb59aa7dc447412a4449ec6650\ncanonical_payload={count:2,enabled:true,formal_B002:false,formal_B009:false,probe_id:R2-INT-010-REM-001}\n"
+    },
+    {
+      "evidence_id": "J-R007",
+      "command": "<CREATOR_BINARY> extension edit --archive <SOURCE_ARCHIVE> --namespace org.trpgplatform.rules-residue.probe --json-file <COUNT_2> --output <OUTPUT_2> --conflict-token sha256:14eb81c8e804932c556d2e7fbe5333ba343b65542d378213db621e3dbc849776",
+      "exit_code": 0,
+      "source_capture_sha256": "02893c89dec3d8fb913c1b8baa33a464d4837114b55fd5f4a65ba1a6cdf29380",
+      "normalized_text": "phases=import:ok,inspect:ok,edit:ok,validate:ok,export:ok,reimport:ok\nsource_archive_sha256=14eb81c8e804932c556d2e7fbe5333ba343b65542d378213db621e3dbc849776\noutput_archive_sha256=ccd11063676ea1eea382833ab970e86c355ca4eb59aa7dc447412a4449ec6650\ncanonical_payload={count:2,enabled:true,formal_B002:false,formal_B009:false,probe_id:R2-INT-010-REM-001}\n"
+    },
+    {
+      "evidence_id": "J-R008",
+      "command": "<HOST_ARCHIVE_BINARY> <RULES_SOURCE_1_PROJECT> <RULES_SOURCE_1_LOCK> <SOURCE_ARCHIVE> <HOST_BUILD_JSON>",
+      "exit_code": 0,
+      "source_capture_sha256": "f6bc8616f9b6c009fdf471b69b343d9fc2011ea1105cacf90f0819e8a0c1ecb5",
+      "normalized_text": "source_archive_sha256=14eb81c8e804932c556d2e7fbe5333ba343b65542d378213db621e3dbc849776\nextension_status=SUPPORTED_EDITABLE\nreimport_manifest_equal=true\nreimport_descriptor_equal=true\nreimport_schema_equal=true\nreimport_payload_equal=true\nrepack_byte_identical=true\nformal_B002=false\nformal_B009=false\n"
+    },
+    {
+      "evidence_id": "J-R009",
+      "command": "go run -buildvcs=false verify.go <SOURCE_ARCHIVE> <OUTPUT_1> <OUTPUT_2> <HOST_RELOAD_JSON>",
+      "exit_code": 0,
+      "source_capture_sha256": "0a9c253eb3361ac3a730a114abc1c45ca63d9ab41a1f805061bfb9dc1eb4734a",
+      "normalized_text": "manifest_preserved=true\ndescriptor_preserved=true\nschema_preserved=true\nother_content_preserved=true\nschema_valid_after_reload=true\nsemantic_equality_after_reload=true\nrepeat_archive_bytes_equal=true\noutput_1_sha256=ccd11063676ea1eea382833ab970e86c355ca4eb59aa7dc447412a4449ec6650\noutput_2_sha256=ccd11063676ea1eea382833ab970e86c355ca4eb59aa7dc447412a4449ec6650\nformal_B002=false\nformal_B009=false\n"
+    },
+    {
+      "evidence_id": "J-R010",
+      "command": "go run -buildvcs=false negative.go <RULES_SOURCE_1_LOCK> <HOST_NEGATIVES_JSON>",
+      "exit_code": 0,
+      "source_capture_sha256": "f61261745850c6b7a4fcf078d2266dfdc893e35da99da315e58ee76aa59ed433",
+      "normalized_text": "schema_digest_mismatch=ERR_EXTENSION_SCHEMA_DIGEST_MISMATCH\nremote_schema_ref_digest_rebound=ERR_EXTENSION_INVALID\ncross_file_schema_ref_digest_rebound=ERR_EXTENSION_INVALID\npath_traversal=ERR_EXTENSION_INVALID\nabsolute_path=ERR_EXTENSION_INVALID\nrequired_unsupported_host_api=ERR_EXTENSION_REQUIRED_UNSUPPORTED\nall_rejected_typed=true\n"
+    },
+    {
+      "evidence_id": "J-R011",
+      "command": "python3 <RULES_SYMLINK_NEGATIVE_HARNESS>",
+      "exit_code": 0,
+      "source_capture_sha256": "3a3a5ec434a57a3fcd012b9bedb161a858220e72a90ae2a63e2204ca3c2b61a5",
+      "normalized_text": "rules_commit=c6a840b10db46dc475cd9af9e6a1a13f1e68abd4\nrules_tree=cfb11378935d4b2bf380a6505e87589c18b1eaa2\nrejected=true\noutput_absent=true\ndetail=probe schema path contains a symbolic link\n"
+    },
+    {
+      "evidence_id": "J-R012",
+      "command": "<CREATOR_BINARY> extension edit --archive <SOURCE_ARCHIVE> --namespace org.trpgplatform.rules-residue.probe --json-file <SCHEMA_INVALID> --output <MUST_NOT_EXIST> --conflict-token sha256:14eb81c8e804932c556d2e7fbe5333ba343b65542d378213db621e3dbc849776",
+      "exit_code": 1,
+      "source_capture_sha256": "70a81dc517a31badea49892c100a34f5c21f72931e510cced3be8358efb4deb5",
+      "normalized_text": "phases=import:ok,inspect:ok,validate:error\nerror_code=ERR_EXTENSION_SCHEMA_VALIDATION\noutput_absent=true\n"
+    },
+    {
+      "evidence_id": "J-R013",
+      "command": "go test ./internal/package/... ./cmd/creator-cli/... ./apps/creator-studio/... ./tests/integration/package_extensions/... -count=1",
+      "exit_code": 0,
+      "source_capture_sha256": "8af8f98e409ce4a7ae4e7c22e92a752c94541f97c3bff4b32ca0e6fb5f29b086",
+      "normalized_text": "platform_focused_suite=PASS\nplatform_commit=1339c490bd8cae1e2a6e6607fc0f1db019faab64\nplatform_tree=25d5645caf883a73f165db0179accbca48ddf526\n"
+    },
+    {
+      "evidence_id": "J-R014",
+      "command": "python3 -m unittest discover -s tests -p test_platform_v2_probe_adapter.py -v",
+      "exit_code": 0,
+      "source_capture_sha256": "ea0dd9962fe7336a3f763634767c97e08c43c745aba7a662144c0cada60c48df",
+      "normalized_text": "rules_focused_adapter_suite=PASS\nrules_commit=c6a840b10db46dc475cd9af9e6a1a13f1e68abd4\nrules_tree=cfb11378935d4b2bf380a6505e87589c18b1eaa2\n"
+    },
+    {
+      "evidence_id": "J-R015",
+      "command": "python3 tools/run_acceptance.py [exact rules archive]",
+      "exit_code": 0,
+      "source_capture_sha256": "653a3d88668c06cc55c1d6524a262b76d826a687c0be6a801f870d13256124fa",
+      "normalized_text": "rules_full_acceptance=PASS\nrules_commit=c6a840b10db46dc475cd9af9e6a1a13f1e68abd4\nrules_tree=cfb11378935d4b2bf380a6505e87589c18b1eaa2\n"
+    },
+    {
+      "evidence_id": "J-R016",
+      "command": "python3 harness/compare_source_builds.py <RULES_SOURCE_1> <RULES_SOURCE_2> <SOURCE_BUILD_COMPARISON_JSON>",
+      "exit_code": 0,
+      "source_capture_sha256": "1d4d173a365e43317669a8c96de5cf09d377421f64fd960b891a1c57c067e087",
+      "normalized_text": "source_comparison_artifact_sha256=80a2993e9e958e4c258b20d683856e579723dd83814a1e731a5873e2c2581bec\nsource_tree_sha256=20daecd7a1b40e7d1e8dd6052e7935671bddd543ac991e2e99d8d8530210455b\nrecursive_byte_and_mode_identical=true\nresult=PASS\n"
+    }
+  ]
+}

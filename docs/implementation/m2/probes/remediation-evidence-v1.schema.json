@@ -1,0 +1,423 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "rules-residue.m2/remediation-evidence/1.0",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "evidence_id",
+    "nature",
+    "task_id",
+    "previous_status",
+    "new_status",
+    "classification",
+    "transition_reason",
+    "previous_evidence",
+    "formal_semantics",
+    "route_binding",
+    "antecedents",
+    "exact_target_pair",
+    "creator_tool",
+    "evidence_links",
+    "phase_results",
+    "non_claims",
+    "projections",
+    "integrity_classes"
+  ],
+  "properties": {
+    "schema_version": {"const": "rules-residue.m2.remediation-evidence/1.0"},
+    "evidence_id": {"const": "R2-INT-010-REM-001-J001"},
+    "nature": {"const": "ADDITIVE_REMEDIATION_EVIDENCE"},
+    "task_id": {"const": "R2-INT-010-REM-001"},
+    "previous_status": {"const": "FAIL"},
+    "new_status": {"const": "RESOLVED_ADAPTER"},
+    "classification": {"const": "R2_COMPATIBILITY_ADAPTER"},
+    "transition_reason": {"const": "Exact cross-repository execution proves that the approved generic namespaced JSON extension path preserves and round-trips the rules-residue probe through Host and Creator Tool, resolving R2-INT-010 as an adapter without claiming formal M2-B002, formal M2-B009, or aggregate readiness."},
+    "previous_evidence": {
+      "type": "array",
+      "prefixItems": [
+        {"$ref": "#/$defs/previous_probe_result"},
+        {"$ref": "#/$defs/previous_ext_supplement"},
+        {"$ref": "#/$defs/previous_ext_manifest"}
+      ],
+      "items": false,
+      "minItems": 3
+    },
+    "formal_semantics": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["formal_B002", "formal_B009"],
+      "properties": {
+        "formal_B002": {"const": false},
+        "formal_B009": {"const": false}
+      }
+    },
+    "route_binding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["route_id", "mode", "milestone", "batch_id", "source_commit", "source_tree", "binding_digest", "freshness_status"],
+      "properties": {
+        "route_id": {"const": "R2-INT-010-REM-001-EVIDENCE-IMPLEMENT"},
+        "mode": {"const": "IMPLEMENT"},
+        "milestone": {"const": "M1"},
+        "batch_id": {"const": "M1-B010"},
+        "source_commit": {"const": "c6a840b10db46dc475cd9af9e6a1a13f1e68abd4"},
+        "source_tree": {"const": "cfb11378935d4b2bf380a6505e87589c18b1eaa2"},
+        "binding_digest": {"const": "0f60912817903a926e07bd7e11d6b66402d5676c2aa45ee0faa4485db70b81e6"},
+        "freshness_status": {"const": "PASS"}
+      }
+    },
+    "antecedents": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["platform_change_proposal", "owner_governance_approval_candidate"],
+      "properties": {
+        "platform_change_proposal": {"$ref": "#/$defs/proposal_antecedent"},
+        "owner_governance_approval_candidate": {"$ref": "#/$defs/approval_antecedent"}
+      }
+    },
+    "exact_target_pair": {
+      "type": "array",
+      "prefixItems": [
+        {"$ref": "#/$defs/rules_target"},
+        {"$ref": "#/$defs/platform_target"}
+      ],
+      "items": false,
+      "minItems": 2
+    },
+    "creator_tool": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["platform_commit", "platform_tree", "binary_version", "build_command", "binary_sha256"],
+      "properties": {
+        "platform_commit": {"const": "1339c490bd8cae1e2a6e6607fc0f1db019faab64"},
+        "platform_tree": {"const": "25d5645caf883a73f165db0179accbca48ddf526"},
+        "binary_version": {"const": "0.1.0-m1"},
+        "build_command": {"const": "argv-v1:pnpm|--dir|apps/creator-studio/frontend|build||go|build|-trimpath|-buildvcs=false|-tags|production,webkit2_41|-o|<CREATOR_BINARY>|./apps/creator-studio"},
+        "binary_sha256": {"const": "7e31836febd753ca32dc0b81d9f9d8fc7c15fee123730fc4998ca1ee30b7e3a2"}
+      }
+    },
+    "evidence_links": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["execution_records", "evidence_manifest"],
+      "properties": {
+        "execution_records": {"const": "reports/m2/probes/remediations/r2-int-010-rem-001/execution-records.json"},
+        "evidence_manifest": {"const": "reports/m2/probes/remediations/r2-int-010-rem-001/evidence-manifest.json"}
+      }
+    },
+    "phase_results": {
+      "type": "array",
+      "prefixItems": [
+        {"$ref": "#/$defs/phase_e001"},
+        {"$ref": "#/$defs/phase_e002"},
+        {"$ref": "#/$defs/phase_e003"},
+        {"$ref": "#/$defs/phase_e004"},
+        {"$ref": "#/$defs/phase_e005"},
+        {"$ref": "#/$defs/phase_e006"},
+        {"$ref": "#/$defs/phase_e007"}
+      ],
+      "items": false,
+      "minItems": 7
+    },
+    "non_claims": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["formal_B002", "formal_B009", "aggregate_status"],
+      "properties": {
+        "formal_B002": {"$ref": "#/$defs/not_run"},
+        "formal_B009": {"$ref": "#/$defs/not_run"},
+        "aggregate_status": {"const": "NOT_CLAIMED"}
+      }
+    },
+    "projections": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["probe_status", "external_gates", "readiness"],
+      "properties": {
+        "probe_status": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["R2-INT-010"],
+          "properties": {"R2-INT-010": {"const": "RESOLVED_ADAPTER"}}
+        },
+        "external_gates": {
+          "type": "array",
+          "prefixItems": [
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["gate_id", "execution_status", "blocking_probe_ids"],
+              "properties": {
+                "gate_id": {"const": "EXT-CREATOR-EXTENSIONS"},
+                "execution_status": {"const": "BLOCKED_EXTERNAL"},
+                "blocking_probe_ids": {"const": ["R2-INT-006"]}
+              }
+            },
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["gate_id", "execution_status", "blocking_probe_ids"],
+              "properties": {
+                "gate_id": {"const": "EXT-RUNTIME-SAFETY"},
+                "execution_status": {"const": "BLOCKED_EXTERNAL"},
+                "blocking_probe_ids": {"const": ["R2-INT-011", "R2-INT-012"]}
+              }
+            }
+          ],
+          "items": false,
+          "minItems": 2
+        },
+        "readiness": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["M2-B002_READY", "M2-B002", "blocking_ids"],
+          "properties": {
+            "M2-B002_READY": {"const": "NO"},
+            "M2-B002": {"const": "NOT_STARTED"},
+            "blocking_ids": {"const": ["R2-INT-011", "R2-INT-012", "DEFER-R2-C14-001"]}
+          }
+        }
+      }
+    },
+    "integrity_classes": {
+      "type": "array",
+      "prefixItems": [
+        {"$ref": "#/$defs/integrity_f001"},
+        {"$ref": "#/$defs/integrity_f002"}
+      ],
+      "items": false,
+      "minItems": 2
+    }
+  },
+  "$defs": {
+    "git_oid": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+    "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "path": {"type": "string", "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.(?:/|$))[A-Za-z0-9._/-]+$"},
+    "previous_probe_result": {
+      "type": "object", "additionalProperties": false,
+      "required": ["evidence_id", "record_role", "path", "sha256", "previous_status", "disposition"],
+      "properties": {
+        "evidence_id": {"const": "M2-B001-R2-INT-010"}, "record_role": {"const": "STATUS_PREDECESSOR"},
+        "path": {"const": "reports/m2/probes/probe-results.json"}, "sha256": {"const": "154e7c0ddf8ce7b2243ad6c78d10ceb6cddf02c3aeb6592716dcc5ad8fc64218"},
+        "previous_status": {"const": "FAIL"}, "disposition": {"const": "RETAINED_IMMUTABLE_PREVIOUS_EVIDENCE"}
+      }
+    },
+    "previous_ext_supplement": {
+      "type": "object", "additionalProperties": false,
+      "required": ["evidence_id", "record_role", "path", "sha256", "previous_status", "disposition"],
+      "properties": {
+        "evidence_id": {"const": "M2-B001-EXT-001-SUPPLEMENT"}, "record_role": {"const": "STATUS_PREDECESSOR"},
+        "path": {"const": "reports/m2/probes/external/m2-b001-ext-001/supplement.json"}, "sha256": {"const": "d2f21f4853e5b77e2796ba3cbe3c7001b4731cdbb251661d6375ac2d5cff193c"},
+        "previous_status": {"const": "FAIL"}, "disposition": {"const": "RETAINED_IMMUTABLE_PREVIOUS_EVIDENCE"}
+      }
+    },
+    "previous_ext_manifest": {
+      "type": "object", "additionalProperties": false,
+      "required": ["evidence_id", "record_role", "path", "sha256", "previous_status", "disposition"],
+      "properties": {
+        "evidence_id": {"const": "M2-B001-EXT-001-MANIFEST"}, "record_role": {"const": "IMMUTABLE_HASH_MANIFEST"},
+        "path": {"const": "reports/m2/probes/external/m2-b001-ext-001/evidence-manifest.json"}, "sha256": {"const": "c842d67ec1f83145fdb67a33368e1f7dfbf8f8bc28cf8b9ab7b98202e813af1f"},
+        "previous_status": {"const": "NOT_APPLICABLE"}, "disposition": {"const": "RETAINED_IMMUTABLE_PREVIOUS_EVIDENCE"}
+      }
+    },
+    "proposal_antecedent": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["proposal_id", "commit", "disposition"],
+      "properties": {
+        "proposal_id": {"const": "PLATFORM-CHANGE-R2-INT-010-REM-001"},
+        "commit": {"const": "a767115af691b728c60bd272dce3fc01f2258bc7"},
+        "disposition": {"const": "ANTECEDENT_ONLY_NOT_EXECUTION_EVIDENCE"}
+      }
+    },
+    "approval_antecedent": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["owner_decision_id", "commit", "disposition"],
+      "properties": {
+        "owner_decision_id": {"const": "OWNER-DECISION-PLATFORM-CHANGE-R2-INT-010-REM-001"},
+        "commit": {"const": "608157e05e0a5beaba3c87a5f8f6f525e73a1132"},
+        "disposition": {"const": "ANTECEDENT_ONLY_NOT_EXECUTION_EVIDENCE"}
+      }
+    },
+    "rules_target": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["target", "repository", "commit", "tree"],
+      "properties": {
+        "target": {"const": "A:rules-residue"},
+        "repository": {"const": "rules-residue"},
+        "commit": {"const": "c6a840b10db46dc475cd9af9e6a1a13f1e68abd4"},
+        "tree": {"const": "cfb11378935d4b2bf380a6505e87589c18b1eaa2"}
+      }
+    },
+    "platform_target": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["target", "repository", "commit", "tree"],
+      "properties": {
+        "target": {"const": "B:TRPG_PLATFORM"},
+        "repository": {"const": "TRPG_PLATFORM"},
+        "commit": {"const": "1339c490bd8cae1e2a6e6607fc0f1db019faab64"},
+        "tree": {"const": "25d5645caf883a73f165db0179accbca48ddf526"}
+      }
+    },
+    "not_run": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["execution_status", "claimed"],
+      "properties": {
+        "execution_status": {"const": "NOT_RUN"},
+        "claimed": {"const": false}
+      }
+    },
+    "phase_e001": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["evidence_id", "phase", "execution_status", "source_archive_sha256", "source_tree_sha256", "source_builds_byte_and_mode_identical", "phases"],
+      "properties": {
+        "evidence_id": {"const": "J-E001"},
+        "phase": {"const": "SOURCE_ARCHIVE_HOST_IMPORT_INSPECT_EXPORT_REIMPORT"},
+        "execution_status": {"const": "PASS"},
+        "source_archive_sha256": {"const": "14eb81c8e804932c556d2e7fbe5333ba343b65542d378213db621e3dbc849776"},
+        "source_tree_sha256": {"const": "20daecd7a1b40e7d1e8dd6052e7935671bddd543ac991e2e99d8d8530210455b"},
+        "source_builds_byte_and_mode_identical": {"const": true},
+        "phases": {"const": ["import", "inspect", "export", "reimport"]}
+      }
+    },
+    "phase_e002": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["evidence_id", "phase", "execution_status", "phases"],
+      "properties": {
+        "evidence_id": {"const": "J-E002"},
+        "phase": {"const": "CREATOR_IMPORT_INSPECT_EDIT_VALIDATE_EXPORT_REIMPORT"},
+        "execution_status": {"const": "PASS"},
+        "phases": {"const": ["import", "inspect", "edit", "validate", "export", "reimport"]}
+      }
+    },
+    "phase_e003": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["evidence_id", "phase", "execution_status", "output_sha256"],
+      "properties": {
+        "evidence_id": {"const": "J-E003"},
+        "phase": {"const": "DETERMINISTIC_CREATOR_EXPORT"},
+        "execution_status": {"const": "PASS"},
+        "output_sha256": {"const": ["ccd11063676ea1eea382833ab970e86c355ca4eb59aa7dc447412a4449ec6650", "ccd11063676ea1eea382833ab970e86c355ca4eb59aa7dc447412a4449ec6650"]}
+      }
+    },
+    "phase_e004": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["evidence_id", "phase", "execution_status", "manifest_preserved", "descriptor_preserved", "schema_preserved", "other_content_preserved", "semantic_equality_after_reload"],
+      "properties": {
+        "evidence_id": {"const": "J-E004"},
+        "phase": {"const": "HOST_PRESERVATION_AFTER_CREATOR_RELOAD"},
+        "execution_status": {"const": "PASS"},
+        "manifest_preserved": {"const": true},
+        "descriptor_preserved": {"const": true},
+        "schema_preserved": {"const": true},
+        "other_content_preserved": {"const": true},
+        "semantic_equality_after_reload": {"const": true}
+      }
+    },
+    "phase_e005": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["evidence_id", "phase", "execution_status", "observed_code"],
+      "properties": {
+        "evidence_id": {"const": "J-E005"},
+        "phase": {"const": "CREATOR_SCHEMA_INVALID_EDIT_REJECTION"},
+        "execution_status": {"const": "PASS"},
+        "observed_code": {"const": "ERR_EXTENSION_SCHEMA_VALIDATION"}
+      }
+    },
+    "phase_e006": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["evidence_id", "phase", "execution_status", "cases"],
+      "properties": {
+        "evidence_id": {"const": "J-E006"},
+        "phase": {"const": "SIX_TYPED_HOST_PAIR_NEGATIVES"},
+        "execution_status": {"const": "PASS"},
+        "cases": {
+          "type": "array",
+          "prefixItems": [
+            {"$ref": "#/$defs/negative_schema_digest"},
+            {"$ref": "#/$defs/negative_remote_ref"},
+            {"$ref": "#/$defs/negative_cross_file_ref"},
+            {"$ref": "#/$defs/negative_path_traversal"},
+            {"$ref": "#/$defs/negative_absolute_path"},
+            {"$ref": "#/$defs/negative_host_api"}
+          ],
+          "items": false,
+          "minItems": 6
+        }
+      }
+    },
+    "phase_e007": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["evidence_id", "phase", "execution_status", "output_absent", "observed"],
+      "properties": {
+        "evidence_id": {"const": "J-E007"},
+        "phase": {"const": "RULES_SOURCE_SYMLINK_REJECTION"},
+        "execution_status": {"const": "PASS"},
+        "output_absent": {"const": true},
+        "observed": {"const": "REJECTED_SYMBOLIC_LINK"}
+      }
+    },
+    "negative_schema_digest": {"$ref": "#/$defs/negative_case_schema_digest"},
+    "negative_remote_ref": {"$ref": "#/$defs/negative_case_remote_ref"},
+    "negative_cross_file_ref": {"$ref": "#/$defs/negative_case_cross_file_ref"},
+    "negative_path_traversal": {"$ref": "#/$defs/negative_case_path_traversal"},
+    "negative_absolute_path": {"$ref": "#/$defs/negative_case_absolute_path"},
+    "negative_host_api": {"$ref": "#/$defs/negative_case_host_api"},
+    "negative_case_schema_digest": {
+      "type": "object", "additionalProperties": false, "required": ["name", "observed_code"],
+      "properties": {"name": {"const": "schema_digest_mismatch"}, "observed_code": {"const": "ERR_EXTENSION_SCHEMA_DIGEST_MISMATCH"}}
+    },
+    "negative_case_remote_ref": {
+      "type": "object", "additionalProperties": false, "required": ["name", "observed_code"],
+      "properties": {"name": {"const": "remote_schema_ref_digest_rebound"}, "observed_code": {"const": "ERR_EXTENSION_INVALID"}}
+    },
+    "negative_case_cross_file_ref": {
+      "type": "object", "additionalProperties": false, "required": ["name", "observed_code"],
+      "properties": {"name": {"const": "cross_file_schema_ref_digest_rebound"}, "observed_code": {"const": "ERR_EXTENSION_INVALID"}}
+    },
+    "negative_case_path_traversal": {
+      "type": "object", "additionalProperties": false, "required": ["name", "observed_code"],
+      "properties": {"name": {"const": "path_traversal"}, "observed_code": {"const": "ERR_EXTENSION_INVALID"}}
+    },
+    "negative_case_absolute_path": {
+      "type": "object", "additionalProperties": false, "required": ["name", "observed_code"],
+      "properties": {"name": {"const": "absolute_path"}, "observed_code": {"const": "ERR_EXTENSION_INVALID"}}
+    },
+    "negative_case_host_api": {
+      "type": "object", "additionalProperties": false, "required": ["name", "observed_code"],
+      "properties": {"name": {"const": "required_unsupported_host_api"}, "observed_code": {"const": "ERR_EXTENSION_REQUIRED_UNSUPPORTED"}}
+    },
+    "integrity_f001": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["class_id", "meaning", "validator_coverage"],
+      "properties": {
+        "class_id": {"const": "F001"},
+        "meaning": {"const": "VALIDATOR_SUPPORTED_ATTACK_CLASS"},
+        "validator_coverage": {"const": ["forged_pass", "duplicate_record", "missing_field", "wrong_repository_commit_tree", "missing_or_wrong_target_pair", "altered_mapping"]}
+      }
+    },
+    "integrity_f002": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["class_id", "meaning", "validator_coverage"],
+      "properties": {
+        "class_id": {"const": "F002"},
+        "meaning": {"const": "VALIDATOR_SUPPORTED_ATTACK_CLASS"},
+        "validator_coverage": {"const": ["stale_historical_hash_or_evidence", "proposal_as_execution", "not_run_as_pass", "mismatched_creator_output", "mismatched_platform_rules_pair", "historical_rewrite", "integrity_class_status_misuse"]}
+      }
+    }
+  }
+}

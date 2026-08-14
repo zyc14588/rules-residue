@@ -1,0 +1,58 @@
+{
+  "schema_version": "rules-residue.m2.remediation-evidence-manifest/1.0",
+  "evidence_set_id": "R2-INT-010-REM-001-J001",
+  "task_id": "R2-INT-010-REM-001",
+  "artifacts": [
+    {
+      "path": "docs/implementation/m2/probes/remediation-evidence-v1.schema.json",
+      "sha256": "30196175d77325d2c854b2fb902489b97c79dbfd08f2a6b2a12aceabb37829e4"
+    },
+    {
+      "path": "reports/m2/probes/remediations/r2-int-010-rem-001/evidence.json",
+      "sha256": "287708242e1418a7e8a88d4918e049dafdb31ecd498819a5e5b6cd7ce40d81f9"
+    },
+    {
+      "path": "reports/m2/probes/remediations/r2-int-010-rem-001/execution-records.json",
+      "sha256": "9d3bc8c8e5681d14740fcccf525bcf42087dfe5e7e6287bf50852f43c17475c4"
+    },
+    {
+      "path": "tests/m2/probes/validate_r2_int_010_rem_001.py",
+      "sha256": "57cc5839cf13ee33177412a9e7164275dfb40cc66d18fd454ab73821b840c848"
+    },
+    {
+      "path": "tests/m2/probes/test_r2_int_010_rem_001.py",
+      "sha256": "76215aa2571042940586d7019fb8e29d7e988e3896f657d4352c1eca3304d33d"
+    }
+  ],
+  "immutable_historical_artifacts": [
+    {
+      "path": "reports/m2/probes/probe-results.json",
+      "sha256": "154e7c0ddf8ce7b2243ad6c78d10ceb6cddf02c3aeb6592716dcc5ad8fc64218"
+    },
+    {
+      "path": "reports/m2/probes/evidence-manifest.json",
+      "sha256": "3a48da621e45980d9b2258513954e1f29480fd9e12a35dcd29c12b77015c8ca7"
+    },
+    {
+      "path": "reports/m2/probes/external-gates.json",
+      "sha256": "a8951312cb9f23cf3f999a7258900603716ea6f0b4e7f684b8f6a53ed8f13a2d"
+    },
+    {
+      "path": "reports/m2/probes/external-evidence-index.json",
+      "sha256": "b4bf268d7f9ee1627edea5c1ff87fa74774e3f5689c97cd11f0af6881178a22c"
+    },
+    {
+      "path": "reports/m2/probes/external/m2-b001-ext-001/evidence-manifest.json",
+      "sha256": "c842d67ec1f83145fdb67a33368e1f7dfbf8f8bc28cf8b9ab7b98202e813af1f"
+    },
+    {
+      "path": "reports/m2/probes/external/m2-b001-ext-001/platform-command-evidence.json",
+      "sha256": "f709a45ecee13a8ccb5722f52acc96fb3c08c662e500aaa7c26681404b73637e"
+    },
+    {
+      "path": "reports/m2/probes/external/m2-b001-ext-001/supplement.json",
+      "sha256": "d2f21f4853e5b77e2796ba3cbe3c7001b4731cdbb251661d6375ac2d5cff193c"
+    }
+  ],
+  "historical_mutation_policy": "REJECT_ANY_CURRENT_BYTE_MISMATCH; ADDITIVE_EVIDENCE_ONLY"
+}
