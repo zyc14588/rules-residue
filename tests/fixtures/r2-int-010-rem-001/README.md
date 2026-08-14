@@ -1,15 +1,16 @@
-# Platform v2 minimal probe adapter
+# R2-INT-010-REM-001 source-only test/integration fixture
 
-This directory is the rules-side source boundary for the
+This directory is the repository source boundary for the
 `R2-INT-010-REM-001 minimal capability probe / NOT formal M2-B002 semantics`.
-It preserves the existing `trpg.game-package.manifest/0.1-draft` package and
-provides a deterministic adapter input for a separate standard platform v2
-project.
+It is outside the frozen `game-package/` runtime and supplies deterministic
+inputs for a separate temporary standard platform v2 project.
 
-`game-package/adapters/` and `game-package/extensions/` are intentionally
-outside the legacy runtime whitelist. They do not enter the legacy
-`package.lock.json` or legacy `.trpgpkg`; the generator copies only the named
-source files into its separate v2 project boundary.
+This fixture is **NOT a Creator artifact**, **NOT Host evidence**, and **NOT
+Creator/Host PASS evidence**. It does not modify the legacy
+`trpg.game-package.manifest/0.1-draft` package, its manifest, or its lock. The
+builder reads only the legacy package ID and version, then copies these named
+fixture bytes into the temporary v2 project at legal local package paths under
+`adapters/` and `extensions/<derived-namespace>/`.
 
 The adapter derives its extension namespace from the stable package ID by
 normalizing a platform `/` separator to `.`, retaining canonical dotted IDs,
@@ -30,7 +31,6 @@ python3 tools/build_platform_v2_probe.py --output-root /tmp/rules-residue-v2-pro
 ```
 
 The output contains `project/`, which has a standard v2 `package.toml`, and a
-sibling `source-exact-lock.json` seed. It is not a Creator archive and is not
-Host/Creator PASS evidence. A later independent cross-repository phase must
-use the accepted platform Host and real accepted Creator binary to import,
-edit, export, and re-import it.
+sibling `source-exact-lock.json` seed. A later independent cross-repository
+phase must use the accepted platform Host and real accepted Creator binary to
+import, edit, export, and re-import it.

@@ -12,6 +12,7 @@ from tools.build_package import build_package
 from tools.build_platform_v2_probe import (
     MAX_PAYLOAD_BYTES,
     MAX_SCHEMA_BYTES,
+    PROBE_SOURCE_ROOT,
     PROBE_SCOPE_LABEL,
     _load_json_bytes,
     _portable_collision_key,
@@ -37,6 +38,16 @@ def copy_game_package(directory: str) -> Path:
     return root
 
 
+def copy_probe_source(directory: str) -> Path:
+    root = Path(directory) / "r2-int-010-rem-001"
+    shutil.copytree(PROBE_SOURCE_ROOT, root)
+    return root
+
+
+def fixture_file(root: Path, descriptor_path: object) -> Path:
+    return root / Path(str(descriptor_path)).name
+
+
 def write_json_file(path: Path, value: object) -> None:
     path.write_text(
         json.dumps(value, ensure_ascii=False, indent=2) + "\n",
@@ -46,8 +57,8 @@ def write_json_file(path: Path, value: object) -> None:
 
 
 def rebind_schema_digest(root: Path, descriptor: dict[str, object]) -> None:
-    schema_path = root / str(descriptor["schema_path"])
-    adapter_path = root / "adapters/platform-v2-probe.json"
+    schema_path = fixture_file(root, descriptor["schema_path"])
+    adapter_path = root / "platform-v2-probe.json"
     adapter = json.loads(adapter_path.read_text(encoding="utf-8"))
     adapter["extension_descriptor"]["schema_sha256"] = (
         "sha256:" + hashlib.sha256(schema_path.read_bytes()).hexdigest()
@@ -186,17 +197,15 @@ class PlatformV2ProbeContractTests(unittest.TestCase):
 
     def test_tampered_schema_namespace_and_source_binding_fail_closed(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
-            root = Path(directory) / "game-package"
-            shutil.copytree(GAME_PACKAGE_ROOT, root)
-            schema_path = root / self.descriptor["schema_path"]
+            root = copy_probe_source(directory)
+            schema_path = fixture_file(root, self.descriptor["schema_path"])
             schema_path.write_bytes(schema_path.read_bytes() + b"\n")
             with self.assertRaisesRegex(ValueError, "exact raw schema bytes"):
                 load_adapter_inputs(root)
 
         with tempfile.TemporaryDirectory() as directory:
-            root = Path(directory) / "game-package"
-            shutil.copytree(GAME_PACKAGE_ROOT, root)
-            adapter_path = root / "adapters/platform-v2-probe.json"
+            root = copy_probe_source(directory)
+            adapter_path = root / "platform-v2-probe.json"
             adapter = json.loads(adapter_path.read_text(encoding="utf-8"))
             adapter["namespace_derivation"]["derived_namespace"] = "outside.vendor.probe"
             adapter_path.write_text(json.dumps(adapter), encoding="utf-8")
@@ -211,21 +220,19 @@ class PlatformV2ProbeContractTests(unittest.TestCase):
             manifest["id"] = "outside.vendor.game"
             manifest_path.write_text(json.dumps(manifest), encoding="utf-8")
             with self.assertRaisesRegex(ValueError, "stable legacy manifest ID"):
-                load_adapter_inputs(root)
+                load_adapter_inputs(game_package_root=root)
 
     def test_parent_and_leaf_symlink_escapes_fail_before_read(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
-            root = copy_game_package(directory)
-            outside = Path(directory) / "outside-extensions"
-            shutil.copytree(root / "extensions", outside)
-            shutil.rmtree(root / "extensions")
-            (root / "extensions").symlink_to(outside, target_is_directory=True)
-            with self.assertRaisesRegex(ValueError, "contains a symbolic link"):
+            outside = copy_probe_source(directory)
+            root = Path(directory) / "fixture-link"
+            root.symlink_to(outside, target_is_directory=True)
+            with self.assertRaisesRegex(ValueError, "real directory, not a symlink"):
                 load_adapter_inputs(root)
 
         with tempfile.TemporaryDirectory() as directory:
-            root = copy_game_package(directory)
-            payload_path = root / self.descriptor["payload_path"]
+            root = copy_probe_source(directory)
+            payload_path = fixture_file(root, self.descriptor["payload_path"])
             outside = Path(directory) / "outside-payload.json"
             shutil.copyfile(payload_path, outside)
             payload_path.unlink()
@@ -235,16 +242,16 @@ class PlatformV2ProbeContractTests(unittest.TestCase):
 
     def test_schema_and_payload_size_limits_run_before_read_or_parse(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
-            root = copy_game_package(directory)
-            schema_path = root / self.descriptor["schema_path"]
+            root = copy_probe_source(directory)
+            schema_path = fixture_file(root, self.descriptor["schema_path"])
             with schema_path.open("wb") as handle:
                 handle.truncate(MAX_SCHEMA_BYTES + 1)
             with self.assertRaisesRegex(ValueError, f"exceeds {MAX_SCHEMA_BYTES} bytes before read"):
                 load_adapter_inputs(root)
 
         with tempfile.TemporaryDirectory() as directory:
-            root = copy_game_package(directory)
-            payload_path = root / self.descriptor["payload_path"]
+            root = copy_probe_source(directory)
+            payload_path = fixture_file(root, self.descriptor["payload_path"])
             with payload_path.open("wb") as handle:
                 handle.truncate(MAX_PAYLOAD_BYTES + 1)
             with self.assertRaisesRegex(ValueError, f"exceeds {MAX_PAYLOAD_BYTES} bytes before read"):
@@ -277,8 +284,8 @@ class PlatformV2ProbeContractTests(unittest.TestCase):
         for keyword, reference in rejected:
             with self.subTest(keyword=keyword, reference=reference):
                 with tempfile.TemporaryDirectory() as directory:
-                    root = copy_game_package(directory)
-                    schema_path = root / self.descriptor["schema_path"]
+                    root = copy_probe_source(directory)
+                    schema_path = fixture_file(root, self.descriptor["schema_path"])
                     schema = json.loads(schema_path.read_text(encoding="utf-8"))
                     schema["properties"]["count"][keyword] = reference
                     write_json_file(schema_path, schema)
@@ -287,8 +294,8 @@ class PlatformV2ProbeContractTests(unittest.TestCase):
                         load_adapter_inputs(root)
 
         with tempfile.TemporaryDirectory() as directory:
-            root = copy_game_package(directory)
-            schema_path = root / self.descriptor["schema_path"]
+            root = copy_probe_source(directory)
+            schema_path = fixture_file(root, self.descriptor["schema_path"])
             schema = json.loads(schema_path.read_text(encoding="utf-8"))
             schema["properties"]["count"]["$ref"] = "#/$defs/local-count"
             schema["$defs"] = {"local-count": {"type": "integer"}}
@@ -326,8 +333,8 @@ class PlatformV2ProbeContractTests(unittest.TestCase):
         )
 
         with tempfile.TemporaryDirectory() as directory:
-            root = copy_game_package(directory)
-            adapter_path = root / "adapters/platform-v2-probe.json"
+            root = copy_probe_source(directory)
+            adapter_path = root / "platform-v2-probe.json"
             adapter = json.loads(adapter_path.read_text(encoding="utf-8"))
             adapter["extension_descriptor"]["payload_path"] = adapter[
                 "extension_descriptor"
@@ -387,6 +394,20 @@ class PlatformV2ProbeBuildBoundaryTests(unittest.TestCase):
                 build_source_fixture(first.output_root)
 
     def test_adapter_source_stays_out_of_legacy_lock_and_package_bytes(self) -> None:
+        self.assertFalse(PROBE_SOURCE_ROOT.is_relative_to(GAME_PACKAGE_ROOT))
+        self.assertEqual(
+            {
+                path.relative_to(PROBE_SOURCE_ROOT).as_posix()
+                for path in PROBE_SOURCE_ROOT.iterdir()
+                if path.is_file()
+            },
+            {
+                "README.md",
+                "platform-v2-probe.json",
+                "minimal-capability-probe.schema.json",
+                "minimal-capability-probe.json",
+            },
+        )
         source_only_paths = {
             "adapters/platform-v2-probe.json",
             "extensions/org.trpgplatform.rules-residue.probe/minimal-capability-probe.schema.json",

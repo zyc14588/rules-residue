@@ -20,6 +20,8 @@ from tools.lib.common import GAME_PACKAGE_ROOT, PROJECT_ROOT
 from tools.lib.schema_subset import validate
 
 
+PROBE_SOURCE_ROOT = PROJECT_ROOT / "tests" / "fixtures" / "r2-int-010-rem-001"
+ADAPTER_SOURCE_PATH = PurePosixPath("platform-v2-probe.json")
 ADAPTER_PATH = PurePosixPath("adapters/platform-v2-probe.json")
 PROBE_SUFFIX = "probe"
 PROBE_ID = "R2-INT-010-REM-001"
@@ -182,14 +184,14 @@ def _load_json_bytes(data: bytes, label: str) -> Any:
     return value
 
 
-def _validated_game_package_root(game_package_root: Path) -> Path:
-    root = Path(os.path.abspath(os.fspath(game_package_root)))
+def _validated_real_directory(directory: Path, label: str) -> Path:
+    root = Path(os.path.abspath(os.fspath(directory)))
     try:
         metadata = os.lstat(root)
     except OSError as error:
-        raise ValueError(f"game-package root is unavailable: {root}: {error}") from error
+        raise ValueError(f"{label} is unavailable: {root}: {error}") from error
     if stat.S_ISLNK(metadata.st_mode) or not stat.S_ISDIR(metadata.st_mode):
-        raise ValueError("game-package root must be a real directory, not a symlink")
+        raise ValueError(f"{label} must be a real directory, not a symlink")
     return root
 
 
@@ -202,7 +204,7 @@ def _confined_file_bytes(
     if relative.is_absolute() or not relative.parts or any(
         part in {"", ".", ".."} for part in relative.parts
     ):
-        raise ValueError(f"{label} path escapes the game-package root")
+        raise ValueError(f"{label} path escapes its source root")
     current = root
     metadata = os.lstat(root)
     for index, part in enumerate(relative.parts):
@@ -223,7 +225,7 @@ def _confined_file_bytes(
     resolved_root = root.resolve(strict=True)
     resolved_file = current.resolve(strict=True)
     if not resolved_file.is_relative_to(resolved_root):
-        raise ValueError(f"{label} path escapes the game-package root")
+        raise ValueError(f"{label} path escapes its source root")
     flags = os.O_RDONLY | getattr(os, "O_NOFOLLOW", 0)
     descriptor = os.open(current, flags)
     try:
@@ -446,11 +448,15 @@ def _validate_v2_manifest_source(value: Any) -> dict[str, Any]:
     return manifest
 
 
-def load_adapter_inputs(game_package_root: Path = GAME_PACKAGE_ROOT) -> AdapterInputs:
-    root = _validated_game_package_root(game_package_root)
+def load_adapter_inputs(
+    source_root: Path = PROBE_SOURCE_ROOT,
+    game_package_root: Path = GAME_PACKAGE_ROOT,
+) -> AdapterInputs:
+    root = _validated_real_directory(source_root, "probe fixture root")
+    legacy_root = _validated_real_directory(game_package_root, "game-package root")
     definition_value, adapter_bytes = _load_json_file(
         root,
-        ADAPTER_PATH,
+        ADAPTER_SOURCE_PATH,
         "platform v2 probe adapter",
         MAX_ADAPTER_BYTES,
     )
@@ -463,7 +469,7 @@ def load_adapter_inputs(game_package_root: Path = GAME_PACKAGE_ROOT) -> AdapterI
         raise ValueError("probe adapter artifact role is not a source-only boundary")
 
     legacy_value, _ = _load_json_file(
-        root,
+        legacy_root,
         PurePosixPath("manifest.json"),
         "legacy package manifest",
         MAX_LEGACY_MANIFEST_BYTES,
@@ -535,10 +541,10 @@ def load_adapter_inputs(game_package_root: Path = GAME_PACKAGE_ROOT) -> AdapterI
         raise ValueError("payload_path must be distinct local JSON under the derived namespace")
 
     schema_value, schema_bytes = _load_json_file(
-        root, schema_path, "probe schema", MAX_SCHEMA_BYTES
+        root, PurePosixPath(schema_path.name), "probe schema", MAX_SCHEMA_BYTES
     )
     payload_value, payload_bytes = _load_json_file(
-        root, payload_path, "probe payload", MAX_PAYLOAD_BYTES
+        root, PurePosixPath(payload_path.name), "probe payload", MAX_PAYLOAD_BYTES
     )
     if not isinstance(schema_value, dict) or not isinstance(payload_value, dict):
         raise ValueError("probe schema and payload must be JSON objects")
@@ -625,8 +631,11 @@ def render_platform_v2_manifest(inputs: AdapterInputs) -> bytes:
     return "\n".join(lines).encode("utf-8")
 
 
-def source_project_files(game_package_root: Path = GAME_PACKAGE_ROOT) -> tuple[dict[str, bytes], bytes]:
-    inputs = load_adapter_inputs(game_package_root)
+def source_project_files(
+    source_root: Path = PROBE_SOURCE_ROOT,
+    game_package_root: Path = GAME_PACKAGE_ROOT,
+) -> tuple[dict[str, bytes], bytes]:
+    inputs = load_adapter_inputs(source_root, game_package_root)
     descriptor = inputs.definition["extension_descriptor"]
     files = {
         "package.toml": render_platform_v2_manifest(inputs),
@@ -670,11 +679,12 @@ def compute_source_tree_sha256(files: dict[str, bytes], lock_bytes: bytes) -> st
 
 def build_source_fixture(
     output_root: Path,
+    source_root: Path = PROBE_SOURCE_ROOT,
     game_package_root: Path = GAME_PACKAGE_ROOT,
 ) -> BuildResult:
     if output_root.exists() or output_root.is_symlink():
         raise ValueError(f"output root already exists: {output_root}")
-    files, lock_bytes = source_project_files(game_package_root)
+    files, lock_bytes = source_project_files(source_root, game_package_root)
     project_root = output_root / "project"
     project_root.mkdir(parents=True, exist_ok=False)
     for relative, data in files.items():

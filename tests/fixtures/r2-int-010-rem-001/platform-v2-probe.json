@@ -13,7 +13,7 @@
     "package_kind": "library",
     "display_name": "Rules Residue R2-INT-010 minimal capability probe",
     "build": {
-      "source": "rules-residue/game-package",
+      "source": "rules-residue/tests/fixtures/r2-int-010-rem-001",
       "revision": "R2-INT-010-REM-001",
       "builder": "rules-residue-platform-v2-probe-adapter/1.0"
     },
