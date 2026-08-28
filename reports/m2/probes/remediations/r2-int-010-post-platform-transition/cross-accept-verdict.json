@@ -1,0 +1,652 @@
+{
+  "output_type": "r2_int_010_exact_pair_cross_repository_accept",
+  "task_id": "R2-INT-010-EXACT-PAIR-CROSS-REPOSITORY-ACCEPT-001",
+  "result": "PASS_EXACT_PAIR_CROSS_REPOSITORY_ACCEPTED",
+  "identity": {
+    "rules_commit": "455cd5d66c683565a4aad7ef8d6523421d37db71",
+    "rules_tree": "d74aae0baf791566a770ef1aaed2da7562f681d5",
+    "platform_commit": "1339c490bd8cae1e2a6e6607fc0f1db019faab64",
+    "platform_tree": "25d5645caf883a73f165db0179accbca48ddf526",
+    "platform_acceptance_authority": "65731845177d1657e9f192f3e7c56969ebe81bc5",
+    "platform_acceptance_authority_tree": "3c176856c7ded8858e9771c94c9f06e1f1cb8da3",
+    "creator_binary_sha256": "7e31836febd753ca32dc0b81d9f9d8fc7c15fee123730fc4998ca1ee30b7e3a2",
+    "rules_signature_valid": true,
+    "platform_signature_valid": true,
+    "acceptance_authority_signature_valid": true
+  },
+  "route": {
+    "route_id": "R2-INT-010-EXACT-PAIR-CROSS-REPO-ACCEPT-001",
+    "mode": "ACCEPT",
+    "milestone": "M2",
+    "batch_id": "M2-B001",
+    "source_commit": "455cd5d66c683565a4aad7ef8d6523421d37db71",
+    "source_tree": "d74aae0baf791566a770ef1aaed2da7562f681d5",
+    "binding_digest": "b1b0a5da64303da31b2f7005c35ca9deabc4f6bc08b9b7dda56315dcdfca69bd",
+    "check": "PASS"
+  },
+  "platform_route": {
+    "mode": "ACCEPT",
+    "milestone": "M1",
+    "batch_id": "M1-B010",
+    "source_commit": "1339c490bd8cae1e2a6e6607fc0f1db019faab64",
+    "source_tree": "25d5645caf883a73f165db0179accbca48ddf526",
+    "binding_digest": "0da97ea8cd6e8a0997ccde70c1e006d0890759da2d11deccd1980e427537d552",
+    "check": "PASS"
+  },
+  "antecedents": {
+    "platform_acceptance_record_exact": true,
+    "provisional_dispositions_preserved": true,
+    "provisional_execution_evidence_used": false
+  },
+  "source_build": {
+    "first_tree_sha256": "6e39adca4ec609630a2dec5bca6d4d95e48f58045097b74b7a6211b8d1b27ee0",
+    "second_tree_sha256": "6e39adca4ec609630a2dec5bca6d4d95e48f58045097b74b7a6211b8d1b27ee0",
+    "byte_identical": true,
+    "mode_identical": true,
+    "historical_match": false,
+    "historical_authority": false,
+    "source_archive_sha256": "d5e3b7694927980b042b5a76702c5e538d48ced5d01643630fd6cdf8a6481111",
+    "source_archive_content_hash": "sha256:0a460227d4a17fb1b2d1e612fdca7f259b84145a53891fc732b7fff664a42d5c"
+  },
+  "creator": {
+    "identity_match": true,
+    "binary_version": "0.1.0-m1",
+    "binary_sha256": "7e31836febd753ca32dc0b81d9f9d8fc7c15fee123730fc4998ca1ee30b7e3a2",
+    "namespace": "org.trpgplatform.rules-residue.probe",
+    "edited_probe_id": "R2-INT-010-POST-PLATFORM-001",
+    "edited_count": 2,
+    "real_edit_roundtrip": true,
+    "first_output_sha256": "0fc25114c2d1fc9119cbf0d055bdbc38c74e3085e4a4c7b0487bf576be1071ea",
+    "second_output_sha256": "0fc25114c2d1fc9119cbf0d055bdbc38c74e3085e4a4c7b0487bf576be1071ea",
+    "deterministic_second_run": true,
+    "invalid_schema_rejected": true,
+    "invalid_schema_error_code": "ERR_EXTENSION_SCHEMA_VALIDATION",
+    "invalid_schema_output_absent": true
+  },
+  "host": {
+    "source_import": "PASS",
+    "extension_status": "SUPPORTED_EDITABLE",
+    "source_repack_byte_identical": true,
+    "source_manifest_equal": true,
+    "source_descriptor_equal": true,
+    "source_schema_equal": true,
+    "source_payload_equal": true,
+    "creator_reload": "PASS",
+    "manifest_preserved": true,
+    "descriptor_preserved": true,
+    "schema_preserved": true,
+    "other_content_preserved": true,
+    "schema_valid_after_reload": true,
+    "semantic_equality_after_reload": true,
+    "typed_negative_matrix": "PASS"
+  },
+  "rules": {
+    "post_platform_adapter_suite": "PASS",
+    "symlink_negative": "PASS",
+    "validate_m2_b001_all": "PASS",
+    "full_repository_acceptance": "PASS"
+  },
+  "regressions": {
+    "platform_focused": "PASS",
+    "rules_post_platform_adapter": "PASS",
+    "rules_validate_m2_b001_all": "PASS",
+    "rules_full_repository_acceptance": "PASS"
+  },
+  "binding_attacks": {
+    "wrong_platform_identity_rejected": true,
+    "wrong_rules_identity_rejected": true,
+    "wrong_creator_identity_rejected": true,
+    "missing_target_rejected": true,
+    "swapped_platform_rules_trees_rejected": true,
+    "old_c6_rules_identity_rejected": true,
+    "old_65_evidence_identity_rejected": true,
+    "old_provisional_identity_rejected": true,
+    "old_provisional_archive_hash_rejected": true
+  },
+  "evidence": [
+    {
+      "evidence_id": "XPAIR-R001",
+      "command": "bash -euo pipefail -c 'test \"$(git -C /tmp/r2-int-010-exact-pair-rules-455cd5d6 rev-parse HEAD)\" = 455cd5d66c683565a4aad7ef8d6523421d37db71; test \"$(git -C /tmp/r2-int-010-exact-pair-rules-455cd5d6 rev-parse HEAD^{tree})\" = d74aae0baf791566a770ef1aaed2da7562f681d5; git -C /tmp/r2-int-010-exact-pair-rules-455cd5d6 -c gpg.format=ssh -c gpg.ssh.allowedSignersFile=/tmp/trpg-platform-allowed-signers verify-commit HEAD; test -z \"$(git -C /tmp/r2-int-010-exact-pair-rules-455cd5d6 status --porcelain=v1 --untracked-files=all)\"; test \"$(git -C /tmp/r2-int-010-exact-pair-platform-1339c490 rev-parse HEAD)\" = 1339c490bd8cae1e2a6e6607fc0f1db019faab64; test \"$(git -C /tmp/r2-int-010-exact-pair-platform-1339c490 rev-parse HEAD^{tree})\" = 25d5645caf883a73f165db0179accbca48ddf526; git -C /tmp/r2-int-010-exact-pair-platform-1339c490 verify-commit HEAD; test -z \"$(git -C /tmp/r2-int-010-exact-pair-platform-1339c490 status --porcelain=v1 --untracked-files=all)\"'",
+      "start_utc": "2026-08-28T15:14:16.162535Z",
+      "finish_utc": "2026-08-28T15:14:16.265039Z",
+      "exit_code": 0,
+      "classification": "PASS",
+      "log_path": "/tmp/r2-int-010-exact-pair/evidence/XPAIR-R001.log",
+      "log_sha256": "db75643fc902660e88c24d683ae53b54919d2b6837b9c740aa81240bced2dcad",
+      "normalized_decision_relevant_result": {
+        "initial_worktrees_clean": true,
+        "platform_identity_exact": true,
+        "rules_identity_exact": true,
+        "signatures_valid": true
+      }
+    },
+    {
+      "evidence_id": "XPAIR-R002",
+      "command": "python3 tools/codex_route.py generate --request /tmp/r2-int-010-exact-pair/cross-accept-request.json --output /tmp/r2-int-010-exact-pair/cross-accept-reading-map.json --repo-root /tmp/r2-int-010-exact-pair-rules-455cd5d6",
+      "start_utc": "2026-08-28T15:14:16.341623Z",
+      "finish_utc": "2026-08-28T15:14:16.433321Z",
+      "exit_code": 0,
+      "classification": "PASS",
+      "log_path": "/tmp/r2-int-010-exact-pair/evidence/XPAIR-R002.log",
+      "log_sha256": "0a342feba1207e4cbd325037af07db43a6557c02d6f0260b6dcda3ad318958c1",
+      "normalized_decision_relevant_result": {
+        "candidate_bound": true,
+        "route_generated": true
+      }
+    },
+    {
+      "evidence_id": "XPAIR-R003",
+      "command": "python3 tools/codex_route.py check --map /tmp/r2-int-010-exact-pair/cross-accept-reading-map.json --route-id R2-INT-010-EXACT-PAIR-CROSS-REPO-ACCEPT-001 --mode ACCEPT --milestone M2 --batch-id M2-B001 --repo-root /tmp/r2-int-010-exact-pair-rules-455cd5d6",
+      "start_utc": "2026-08-28T15:14:16.506777Z",
+      "finish_utc": "2026-08-28T15:14:16.608545Z",
+      "exit_code": 0,
+      "classification": "PASS",
+      "log_path": "/tmp/r2-int-010-exact-pair/evidence/XPAIR-R003.log",
+      "log_sha256": "ec55c6a28a1c81a4233ad89775168f2e110d58011d3ee09c650b7873e4a72252",
+      "normalized_decision_relevant_result": {
+        "batch_id": "M2-B001",
+        "milestone": "M2",
+        "mode": "ACCEPT",
+        "route_check": "PASS"
+      }
+    },
+    {
+      "evidence_id": "XPAIR-R005",
+      "command": "just codex-check",
+      "start_utc": "2026-08-28T15:15:36.863802Z",
+      "finish_utc": "2026-08-28T15:15:37.509756Z",
+      "exit_code": 0,
+      "classification": "PASS",
+      "log_path": "/tmp/r2-int-010-exact-pair/evidence/XPAIR-R005.log",
+      "log_sha256": "33de8ce08e45704c210eb75c70f67e58ff6a169428210e88fc2998e0a6c58b1f",
+      "normalized_decision_relevant_result": {
+        "repository_equivalent_freshness_gate": "PASS"
+      }
+    },
+    {
+      "evidence_id": "XPAIR-R006",
+      "command": "bash -euo pipefail -c 'record=reports/m2/probes/external/r2-int-010-platform-acceptance/platform-acceptance.json; manifest=reports/m2/probes/external/r2-int-010-platform-acceptance/evidence-manifest.json; provenance=reports/m2/probes/remediations/r2-int-010-rem-001/provenance-disposition.json; git ls-files --error-unmatch \"$record\" \"$manifest\" \"$provenance\"; test \"$(jq -r .platform.code_commit \"$record\")\" = 1339c490bd8cae1e2a6e6607fc0f1db019faab64; test \"$(jq -r .platform.code_tree \"$record\")\" = 25d5645caf883a73f165db0179accbca48ddf526; test \"$(jq -r .platform.acceptance_authority_commit \"$record\")\" = 65731845177d1657e9f192f3e7c56969ebe81bc5; test \"$(jq -r .platform.acceptance_authority_tree \"$record\")\" = 3c176856c7ded8858e9771c94c9f06e1f1cb8da3; test \"$(jq -r .platform.acceptance_status \"$record\")\" = PASS; test \"$(jq -r .platform.creator_binary_sha256 \"$record\")\" = 7e31836febd753ca32dc0b81d9f9d8fc7c15fee123730fc4998ca1ee30b7e3a2; test \"$(sha256sum \"$record\" | cut -d\" \" -f1)\" = \"$(jq -r .artifact.sha256 \"$manifest\")\"; test \"$(jq -r \"[.historical_antecedents[] | select(.commit == \\\"02f261a326cc7bffead5e6a46017c352f822aa94\\\" or .commit == \\\"c6a840b10db46dc475cd9af9e6a1a13f1e68abd4\\\" or .commit == \\\"65a0a1671720345425e0368136793754567187cc\\\") | select(.classification == \\\"PRE_PLATFORM_PROVISIONAL_NOT_ACCEPTED\\\")] | length\" \"$provenance\")\" = 3; test \"$(jq -r .policy.may_be_used_as_execution_evidence \"$provenance\")\" = false; test \"$(jq -r .policy.may_transition_R2_INT_010 \"$provenance\")\" = false; test \"$(git -C /tmp/r2-int-010-exact-pair-platform-1339c490 show -s --format=%T 65731845177d1657e9f192f3e7c56969ebe81bc5)\" = 3c176856c7ded8858e9771c94c9f06e1f1cb8da3; git -C /tmp/r2-int-010-exact-pair-platform-1339c490 verify-commit 65731845177d1657e9f192f3e7c56969ebe81bc5'",
+      "start_utc": "2026-08-28T15:16:10.950218Z",
+      "finish_utc": "2026-08-28T15:16:11.004138Z",
+      "exit_code": 0,
+      "classification": "PASS",
+      "log_path": "/tmp/r2-int-010-exact-pair/evidence/XPAIR-R006.log",
+      "log_sha256": "e8074783d7d0a1faa5780e8db5c3092d09efca50764d3222aadf5d0511293fb2",
+      "normalized_decision_relevant_result": {
+        "acceptance_authority_exact": true,
+        "creator_sha_bound": true,
+        "old_evidence_not_execution_authority": true,
+        "old_provisional_classification_preserved": true,
+        "platform_antecedent_exact": true
+      }
+    },
+    {
+      "evidence_id": "XPAIR-R007",
+      "command": "env GOCACHE=/tmp/r2-int-010-exact-pair/go-cache-platform go run ./cmd/projectctl codex route --mode ACCEPT --milestone M1 --batch M1-B010",
+      "start_utc": "2026-08-28T15:17:06.948373Z",
+      "finish_utc": "2026-08-28T15:17:07.076797Z",
+      "exit_code": 0,
+      "classification": "PASS",
+      "log_path": "/tmp/r2-int-010-exact-pair/evidence/XPAIR-R007.log",
+      "log_sha256": "0e5054f212ea6cc3ee945c8d1948fa98f4f31c85d285b816f020edf72e95c969",
+      "normalized_decision_relevant_result": {
+        "batch_id": "M1-B010",
+        "milestone": "M1",
+        "mode": "ACCEPT",
+        "platform_accept_route_generated": true
+      }
+    },
+    {
+      "evidence_id": "XPAIR-R008",
+      "command": "env GOCACHE=/tmp/r2-int-010-exact-pair/go-cache-platform go run ./cmd/projectctl codex check",
+      "start_utc": "2026-08-28T15:17:07.107099Z",
+      "finish_utc": "2026-08-28T15:17:07.231873Z",
+      "exit_code": 0,
+      "classification": "PASS",
+      "log_path": "/tmp/r2-int-010-exact-pair/evidence/XPAIR-R008.log",
+      "log_sha256": "54c69610e328cb1eb536c9cbe92b3f7fd4c3141c63caf15e2aa0dac8889e2edc",
+      "normalized_decision_relevant_result": {
+        "platform_codex_check": "PASS"
+      }
+    },
+    {
+      "evidence_id": "XPAIR-R010",
+      "command": "env pnpm_config_store_dir=/tmp/r2-int-010-exact-pair/pnpm-store pnpm install --frozen-lockfile",
+      "start_utc": "2026-08-28T15:20:16.569736Z",
+      "finish_utc": "2026-08-28T15:20:19.896214Z",
+      "exit_code": 0,
+      "classification": "PASS",
+      "log_path": "/tmp/r2-int-010-exact-pair/evidence/XPAIR-R010.log",
+      "log_sha256": "ae8b84768255d42c29e3a3807f039c76d582aced46930573516a2c01e87c9bc8",
+      "normalized_decision_relevant_result": {
+        "network_retry": "approved",
+        "pnpm_frozen_install": "PASS",
+        "tracked_mutation": false
+      }
+    },
+    {
+      "evidence_id": "XPAIR-R011",
+      "command": "bash /tmp/r2-int-010-exact-pair/build_creator.sh",
+      "start_utc": "2026-08-28T15:20:44.003812Z",
+      "finish_utc": "2026-08-28T15:20:54.760755Z",
+      "exit_code": 0,
+      "classification": "PASS",
+      "log_path": "/tmp/r2-int-010-exact-pair/evidence/XPAIR-R011.log",
+      "log_sha256": "8e458edff8b39ad9b1ad7545353018ee303e2821575cf8dec749f9430a6e02c6",
+      "normalized_decision_relevant_result": {
+        "binary_sha256": "7e31836febd753ca32dc0b81d9f9d8fc7c15fee123730fc4998ca1ee30b7e3a2",
+        "canonical_build_recipe_match": true,
+        "creator_identity_match": true
+      }
+    },
+    {
+      "evidence_id": "XPAIR-R012",
+      "command": "python3 tests/m2/probes/r2_int_010_post_platform/builder.py --output-root /tmp/r2-int-010-exact-pair/source-build-1",
+      "start_utc": "2026-08-28T15:21:41.951086Z",
+      "finish_utc": "2026-08-28T15:21:41.985481Z",
+      "exit_code": 0,
+      "classification": "PASS",
+      "log_path": "/tmp/r2-int-010-exact-pair/evidence/XPAIR-R012.log",
+      "log_sha256": "35aa157b7c894681c06158b93fd1eff49410ef535cb41a8240350d5d7f122555",
+      "normalized_decision_relevant_result": {
+        "formal_B002": false,
+        "formal_B009": false,
+        "fresh_output_directory": true,
+        "source_build": 1
+      }
+    },
+    {
+      "evidence_id": "XPAIR-R013",
+      "command": "python3 tests/m2/probes/r2_int_010_post_platform/builder.py --output-root /tmp/r2-int-010-exact-pair/source-build-2",
+      "start_utc": "2026-08-28T15:21:42.015238Z",
+      "finish_utc": "2026-08-28T15:21:42.050564Z",
+      "exit_code": 0,
+      "classification": "PASS",
+      "log_path": "/tmp/r2-int-010-exact-pair/evidence/XPAIR-R013.log",
+      "log_sha256": "06839ca6dd7121ec6c6bdbbd532404aa1356da07a09a0233b673b875229b194b",
+      "normalized_decision_relevant_result": {
+        "formal_B002": false,
+        "formal_B009": false,
+        "fresh_output_directory": true,
+        "source_build": 2
+      }
+    },
+    {
+      "evidence_id": "XPAIR-R014",
+      "command": "bash -euo pipefail -c 'first=/tmp/r2-int-010-exact-pair/source-build-1; second=/tmp/r2-int-010-exact-pair/source-build-2; diff --no-dereference --recursive \"$first\" \"$second\"; first_modes=$(find \"$first\" -printf \"%P\\t%y\\t%m\\n\" | sort | sha256sum | cut -d\" \" -f1); second_modes=$(find \"$second\" -printf \"%P\\t%y\\t%m\\n\" | sort | sha256sum | cut -d\" \" -f1); test \"$first_modes\" = \"$second_modes\"; first_tree=$(jq -r .source_tree_sha256 \"$first/source-exact-lock.json\"); second_tree=$(jq -r .source_tree_sha256 \"$second/source-exact-lock.json\"); test \"$first_tree\" = \"$second_tree\"; test \"$first_tree\" = 6e39adca4ec609630a2dec5bca6d4d95e48f58045097b74b7a6211b8d1b27ee0; test \"$(find \"$first/project\" -type f | wc -l)\" = 5; test \"$(find \"$first\" -type l | wc -l)\" = 0; test \"$(find \"$first\" -type f ! -perm 0644 | wc -l)\" = 0; printf \"source_tree_sha256=%s\\nmode_snapshot_sha256=%s\\n\" \"$first_tree\" \"$first_modes\"; find \"$first\" -type f -printf \"%P\\t%s\\t%m\\n\" | sort; sha256sum \"$first/project/package.toml\" \"$first/project/adapters/platform-v2-adapter.json\" \"$first/project/adapters/post-platform-source-metadata.json\" \"$first/project/extensions/org.trpgplatform.rules-residue.probe/minimal-capability-probe.schema.json\" \"$first/project/extensions/org.trpgplatform.rules-residue.probe/minimal-capability-probe.json\" \"$first/source-exact-lock.json\"'",
+      "start_utc": "2026-08-28T15:21:57.985094Z",
+      "finish_utc": "2026-08-28T15:21:58.001592Z",
+      "exit_code": 0,
+      "classification": "PASS",
+      "log_path": "/tmp/r2-int-010-exact-pair/evidence/XPAIR-R014.log",
+      "log_sha256": "2a0c6ba383118673eb5157a71b0fce1a3700ba603dccb9a18f262cc9fde59582",
+      "normalized_decision_relevant_result": {
+        "byte_identical": true,
+        "first_tree_sha256": "6e39adca4ec609630a2dec5bca6d4d95e48f58045097b74b7a6211b8d1b27ee0",
+        "historical_authority": false,
+        "historical_match": false,
+        "mode_identical": true,
+        "second_tree_sha256": "6e39adca4ec609630a2dec5bca6d4d95e48f58045097b74b7a6211b8d1b27ee0"
+      }
+    },
+    {
+      "evidence_id": "XPAIR-R015",
+      "command": "env GOCACHE=/tmp/r2-int-010-exact-pair/go-cache-platform go run ./r2_xpair_harness source /tmp/r2-int-010-exact-pair/source-build-1/project /tmp/r2-int-010-exact-pair/artifacts/source.trpgpkg",
+      "start_utc": "2026-08-28T15:24:12.524705Z",
+      "finish_utc": "2026-08-28T15:24:13.237646Z",
+      "exit_code": 0,
+      "classification": "PASS",
+      "log_path": "/tmp/r2-int-010-exact-pair/evidence/XPAIR-R015.log",
+      "log_sha256": "3425f8bad8e1ec9e3604aead94ec93c0c70470b4a3ca3b9b24c61bd415fd6696",
+      "normalized_decision_relevant_result": {
+        "descriptor_equal": true,
+        "extension_status": "SUPPORTED_EDITABLE",
+        "formal_B002": false,
+        "formal_B009": false,
+        "manifest_equal": true,
+        "payload_equal": true,
+        "repack_byte_identical": true,
+        "schema_equal": true,
+        "source_import": "PASS"
+      }
+    },
+    {
+      "evidence_id": "XPAIR-R016",
+      "command": "/tmp/r2-int-010-exact-pair/artifacts/creator-studio extension edit --archive /tmp/r2-int-010-exact-pair/artifacts/source.trpgpkg --namespace org.trpgplatform.rules-residue.probe --json-file /tmp/r2-int-010-exact-pair/artifacts/valid-edit.json --output /tmp/r2-int-010-exact-pair/artifacts/output-1.trpgpkg --conflict-token sha256:d5e3b7694927980b042b5a76702c5e538d48ced5d01643630fd6cdf8a6481111",
+      "start_utc": "2026-08-28T15:24:34.062601Z",
+      "finish_utc": "2026-08-28T15:24:34.094115Z",
+      "exit_code": 0,
+      "classification": "PASS",
+      "log_path": "/tmp/r2-int-010-exact-pair/evidence/XPAIR-R016.log",
+      "log_sha256": "2b229cb528fb2d691b0fe693f66cd1463ef6a12d9dcb6d72c29be622fbcdacda",
+      "normalized_decision_relevant_result": {
+        "creator_edit_round": 1,
+        "expected_phases": [
+          "import",
+          "inspect",
+          "edit",
+          "validate",
+          "export",
+          "reimport"
+        ],
+        "formal_B002": false,
+        "formal_B009": false
+      }
+    },
+    {
+      "evidence_id": "XPAIR-R017",
+      "command": "/tmp/r2-int-010-exact-pair/artifacts/creator-studio extension edit --archive /tmp/r2-int-010-exact-pair/artifacts/source.trpgpkg --namespace org.trpgplatform.rules-residue.probe --json-file /tmp/r2-int-010-exact-pair/artifacts/valid-edit.json --output /tmp/r2-int-010-exact-pair/artifacts/output-2.trpgpkg --conflict-token sha256:d5e3b7694927980b042b5a76702c5e538d48ced5d01643630fd6cdf8a6481111",
+      "start_utc": "2026-08-28T15:24:34.125669Z",
+      "finish_utc": "2026-08-28T15:24:34.158890Z",
+      "exit_code": 0,
+      "classification": "PASS",
+      "log_path": "/tmp/r2-int-010-exact-pair/evidence/XPAIR-R017.log",
+      "log_sha256": "a7e678dfc4eee6b33bb44fa26317982d278452509490cec65151e9666ff84a95",
+      "normalized_decision_relevant_result": {
+        "creator_edit_round": 2,
+        "expected_phases": [
+          "import",
+          "inspect",
+          "edit",
+          "validate",
+          "export",
+          "reimport"
+        ],
+        "formal_B002": false,
+        "formal_B009": false
+      }
+    },
+    {
+      "evidence_id": "XPAIR-R019",
+      "command": "bash -euo pipefail -c 'first=/tmp/r2-int-010-exact-pair/evidence/XPAIR-R016.log; second=/tmp/r2-int-010-exact-pair/evidence/XPAIR-R017.log; output1=/tmp/r2-int-010-exact-pair/artifacts/output-1.trpgpkg; output2=/tmp/r2-int-010-exact-pair/artifacts/output-2.trpgpkg; jq -e '\"'\"'[.phases[] | select(.status == \"ok\") | .name] == [\"import\",\"inspect\",\"edit\",\"validate\",\"export\",\"reimport\"] and .identity.platform_commit == \"1339c490bd8cae1e2a6e6607fc0f1db019faab64\" and .identity.platform_tree == \"25d5645caf883a73f165db0179accbca48ddf526\" and .identity.binary_version == \"0.1.0-m1\" and .identity.binary_sha256 == \"sha256:7e31836febd753ca32dc0b81d9f9d8fc7c15fee123730fc4998ca1ee30b7e3a2\" and (.edit.canonical_json | fromjson) == {\"count\":2,\"enabled\":true,\"formal_B002\":false,\"formal_B009\":false,\"probe_id\":\"R2-INT-010-POST-PLATFORM-001\"} and .export.archive_hash == .reimport.conflict_token and .export.content_hash == .reimport.content_hash'\"'\"' \"$first\" \"$second\" >/dev/null; cmp \"$output1\" \"$output2\"; first_sha=$(sha256sum \"$output1\" | cut -d\" \" -f1); second_sha=$(sha256sum \"$output2\" | cut -d\" \" -f1); test \"$first_sha\" = \"$second_sha\"; test \"$first_sha\" = 0fc25114c2d1fc9119cbf0d055bdbc38c74e3085e4a4c7b0487bf576be1071ea; printf \"first_output_sha256=%s\\nsecond_output_sha256=%s\\n\" \"$first_sha\" \"$second_sha\"'",
+      "start_utc": "2026-08-28T15:25:05.091080Z",
+      "finish_utc": "2026-08-28T15:25:05.098418Z",
+      "exit_code": 0,
+      "classification": "PASS",
+      "log_path": "/tmp/r2-int-010-exact-pair/evidence/XPAIR-R019.log",
+      "log_sha256": "2b3ea24f88e3e8861fa283dc4f7880e905326c2346535e7adbe846288caa131c",
+      "normalized_decision_relevant_result": {
+        "all_creator_phases_ok": true,
+        "creator_identity_match": true,
+        "deterministic_second_run": true,
+        "first_output_sha256": "0fc25114c2d1fc9119cbf0d055bdbc38c74e3085e4a4c7b0487bf576be1071ea",
+        "second_output_sha256": "0fc25114c2d1fc9119cbf0d055bdbc38c74e3085e4a4c7b0487bf576be1071ea"
+      }
+    },
+    {
+      "evidence_id": "XPAIR-R020",
+      "command": "env GOCACHE=/tmp/r2-int-010-exact-pair/go-cache-platform go run ./r2_xpair_harness reload /tmp/r2-int-010-exact-pair/artifacts/source.trpgpkg /tmp/r2-int-010-exact-pair/artifacts/output-1.trpgpkg",
+      "start_utc": "2026-08-28T15:25:10.546088Z",
+      "finish_utc": "2026-08-28T15:25:10.588067Z",
+      "exit_code": 0,
+      "classification": "PASS",
+      "log_path": "/tmp/r2-int-010-exact-pair/evidence/XPAIR-R020.log",
+      "log_sha256": "3857132fb0c61dc0caf2264d8d76b566c0666ad64acafe4bcdeef8e19aa0d2d4",
+      "normalized_decision_relevant_result": {
+        "count": 2,
+        "creator_reload": "PASS",
+        "descriptor_preserved": true,
+        "formal_B002": false,
+        "formal_B009": false,
+        "manifest_preserved": true,
+        "other_content_preserved": true,
+        "schema_preserved": true,
+        "schema_valid_after_reload": true,
+        "semantic_equality_after_reload": true
+      }
+    },
+    {
+      "evidence_id": "XPAIR-R021",
+      "command": "/tmp/r2-int-010-exact-pair/artifacts/creator-studio extension edit --archive /tmp/r2-int-010-exact-pair/artifacts/source.trpgpkg --namespace org.trpgplatform.rules-residue.probe --json-file /tmp/r2-int-010-exact-pair/artifacts/invalid-edit.json --output /tmp/r2-int-010-exact-pair/artifacts/must-not-exist.trpgpkg --conflict-token sha256:d5e3b7694927980b042b5a76702c5e538d48ced5d01643630fd6cdf8a6481111",
+      "start_utc": "2026-08-28T15:25:25.940367Z",
+      "finish_utc": "2026-08-28T15:25:25.968525Z",
+      "exit_code": 1,
+      "classification": "PASS",
+      "log_path": "/tmp/r2-int-010-exact-pair/evidence/XPAIR-R021.log",
+      "log_sha256": "ef7833b8c79088c03b11d6dea8c2c80c58a51e0ea4d8c501bc7a0c48c28d6a53",
+      "normalized_decision_relevant_result": {
+        "error_code": "ERR_EXTENSION_SCHEMA_VALIDATION",
+        "negative": "creator_schema_invalid",
+        "output_absent": true,
+        "validation_phase": "error"
+      },
+      "expected_exit_code": 1
+    },
+    {
+      "evidence_id": "XPAIR-R022",
+      "command": "bash -euo pipefail -c 'log=/tmp/r2-int-010-exact-pair/evidence/XPAIR-R021.log; jq -e '\"'\"'.operation == \"extension.edit\" and .identity.platform_commit == \"1339c490bd8cae1e2a6e6607fc0f1db019faab64\" and .identity.platform_tree == \"25d5645caf883a73f165db0179accbca48ddf526\" and .identity.binary_sha256 == \"sha256:7e31836febd753ca32dc0b81d9f9d8fc7c15fee123730fc4998ca1ee30b7e3a2\" and .error.code == \"ERR_EXTENSION_SCHEMA_VALIDATION\" and .phases[-1] == {\"name\":\"validate\",\"status\":\"error\"}'\"'\"' \"$log\" >/dev/null; test ! -e /tmp/r2-int-010-exact-pair/artifacts/must-not-exist.trpgpkg'",
+      "start_utc": "2026-08-28T15:25:34.138545Z",
+      "finish_utc": "2026-08-28T15:25:34.140693Z",
+      "exit_code": 0,
+      "classification": "PASS",
+      "log_path": "/tmp/r2-int-010-exact-pair/evidence/XPAIR-R022.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "normalized_decision_relevant_result": {
+        "creator_identity_match": true,
+        "error_code": "ERR_EXTENSION_SCHEMA_VALIDATION",
+        "invalid_schema_output_absent": true,
+        "invalid_schema_rejected": true,
+        "validation_phase_error": true
+      },
+      "expected_exit_code": 0
+    },
+    {
+      "evidence_id": "XPAIR-R023",
+      "command": "env GOCACHE=/tmp/r2-int-010-exact-pair/go-cache-platform go run ./r2_xpair_harness negatives /tmp/r2-int-010-exact-pair/source-build-1/project",
+      "start_utc": "2026-08-28T15:25:40.355092Z",
+      "finish_utc": "2026-08-28T15:25:40.398022Z",
+      "exit_code": 0,
+      "classification": "PASS",
+      "log_path": "/tmp/r2-int-010-exact-pair/evidence/XPAIR-R023.log",
+      "log_sha256": "4a30d5cd98311355960b860569903997ed9dab4365618103f238d6be10aa2263",
+      "normalized_decision_relevant_result": {
+        "absolute_path": "ERR_EXTENSION_INVALID",
+        "cross_file_schema_ref": "ERR_EXTENSION_INVALID",
+        "path_traversal": "ERR_EXTENSION_INVALID",
+        "remote_schema_ref": "ERR_EXTENSION_INVALID",
+        "required_unsupported_host_api": "ERR_EXTENSION_REQUIRED_UNSUPPORTED",
+        "schema_digest_mismatch": "ERR_EXTENSION_SCHEMA_DIGEST_MISMATCH",
+        "typed_negative_matrix": "PASS"
+      },
+      "expected_exit_code": 0
+    },
+    {
+      "evidence_id": "XPAIR-R024",
+      "command": "python3 /tmp/r2-int-010-exact-pair/rules_symlink_negative.py",
+      "start_utc": "2026-08-28T15:26:04.389743Z",
+      "finish_utc": "2026-08-28T15:26:04.426755Z",
+      "exit_code": 0,
+      "classification": "PASS",
+      "log_path": "/tmp/r2-int-010-exact-pair/evidence/XPAIR-R024.log",
+      "log_sha256": "83104cf64827b443697e5a3721465148f5de92c1b0a4cfa19bfad4ebfc2bd2b1",
+      "normalized_decision_relevant_result": {
+        "old_provisional_source_used": false,
+        "outputs_absent": true,
+        "root_symlink_rejected": true,
+        "rules_symlink_negative": "PASS",
+        "schema_leaf_symlink_rejected": true
+      },
+      "expected_exit_code": 0
+    },
+    {
+      "evidence_id": "XPAIR-R025",
+      "command": "env GOCACHE=/tmp/r2-int-010-exact-pair/go-cache-platform TRPG_CREATOR_ACCEPTANCE_COMMIT=1339c490bd8cae1e2a6e6607fc0f1db019faab64 TRPG_CREATOR_ACCEPTANCE_TREE=25d5645caf883a73f165db0179accbca48ddf526 go test ./internal/package/... ./cmd/creator-cli/... ./apps/creator-studio/... ./tests/integration/package_extensions/... -count=1",
+      "start_utc": "2026-08-28T15:26:38.929008Z",
+      "finish_utc": "2026-08-28T15:26:42.884284Z",
+      "exit_code": 0,
+      "classification": "PASS",
+      "log_path": "/tmp/r2-int-010-exact-pair/evidence/XPAIR-R025.log",
+      "log_sha256": "5367a92ca1de6b534462d570af9bbdbfacfdd5ef88d7593d9877fad9935f560b",
+      "normalized_decision_relevant_result": {
+        "count": 1,
+        "exact_candidate_binding": true,
+        "platform_focused_regression": "PASS"
+      },
+      "expected_exit_code": 0
+    },
+    {
+      "evidence_id": "XPAIR-R026",
+      "command": "python3 -m unittest tests.m2.probes.test_r2_int_010_post_platform_adapter -v",
+      "start_utc": "2026-08-28T15:26:50.953242Z",
+      "finish_utc": "2026-08-28T15:26:51.036572Z",
+      "exit_code": 0,
+      "classification": "PASS",
+      "log_path": "/tmp/r2-int-010-exact-pair/evidence/XPAIR-R026.log",
+      "log_sha256": "4e3bbc90e2cceed51211dcae2237775fa7ac1fddb448ea80aad9dd4b1f6c4f8c",
+      "normalized_decision_relevant_result": {
+        "post_platform_adapter_suite": "PASS"
+      },
+      "expected_exit_code": 0
+    },
+    {
+      "evidence_id": "XPAIR-R027",
+      "command": "python3 tests/m2/probes/validate_m2_b001.py --all",
+      "start_utc": "2026-08-28T15:26:51.067812Z",
+      "finish_utc": "2026-08-28T15:26:51.103327Z",
+      "exit_code": 0,
+      "classification": "PASS",
+      "log_path": "/tmp/r2-int-010-exact-pair/evidence/XPAIR-R027.log",
+      "log_sha256": "4bee340f80d332293ff5b77b77ba14ebb2f6d7553ae7403b4fd0c1cea0c12c32",
+      "normalized_decision_relevant_result": {
+        "validate_m2_b001_all": "PASS"
+      },
+      "expected_exit_code": 0
+    },
+    {
+      "evidence_id": "XPAIR-R028",
+      "command": "python3 tools/run_acceptance.py",
+      "start_utc": "2026-08-28T15:26:51.134395Z",
+      "finish_utc": "2026-08-28T15:26:55.274966Z",
+      "exit_code": 0,
+      "classification": "PASS",
+      "log_path": "/tmp/r2-int-010-exact-pair/evidence/XPAIR-R028.log",
+      "log_sha256": "9c02876644020e5c5d1983159324519ae96b06e5cabed26d728ebc694df9d386",
+      "normalized_decision_relevant_result": {
+        "full_repository_acceptance": "PASS"
+      },
+      "expected_exit_code": 0
+    },
+    {
+      "evidence_id": "XPAIR-R029",
+      "command": "python3 /tmp/r2-int-010-exact-pair/binding_attacks.py",
+      "start_utc": "2026-08-28T15:29:22.721298Z",
+      "finish_utc": "2026-08-28T15:29:22.799757Z",
+      "exit_code": 0,
+      "classification": "PASS",
+      "log_path": "/tmp/r2-int-010-exact-pair/evidence/XPAIR-R029.log",
+      "log_sha256": "f48a955fba262d4eff80634e83e1098633599637dbe96cc4e2ac90dc8dc987e2",
+      "normalized_decision_relevant_result": {
+        "binding_attack_matrix": "PASS",
+        "missing_target_rejected": true,
+        "old_provisional_archive_hash_rejected": true,
+        "old_provisional_identity_rejected": true,
+        "swapped_trees_rejected": true,
+        "wrong_creator_identity_rejected": true,
+        "wrong_platform_identity_rejected": true,
+        "wrong_rules_identity_rejected": true
+      },
+      "expected_exit_code": 0
+    },
+    {
+      "evidence_id": "XPAIR-R030",
+      "command": "python3 tools/codex_route.py check --map /tmp/r2-int-010-exact-pair/cross-accept-reading-map.json --route-id R2-INT-010-EXACT-PAIR-CROSS-REPO-ACCEPT-001 --mode ACCEPT --milestone M2 --batch-id M2-B001 --repo-root /tmp/r2-int-010-exact-pair-rules-455cd5d6",
+      "start_utc": "2026-08-28T15:29:41.021294Z",
+      "finish_utc": "2026-08-28T15:29:41.059839Z",
+      "exit_code": 0,
+      "classification": "PASS",
+      "log_path": "/tmp/r2-int-010-exact-pair/evidence/XPAIR-R030.log",
+      "log_sha256": "ec55c6a28a1c81a4233ad89775168f2e110d58011d3ee09c650b7873e4a72252",
+      "normalized_decision_relevant_result": {
+        "route_check": "PASS",
+        "route_id": "R2-INT-010-EXACT-PAIR-CROSS-REPO-ACCEPT-001",
+        "rules_binding": "b1b0a5da64303da31b2f7005c35ca9deabc4f6bc08b9b7dda56315dcdfca69bd"
+      },
+      "expected_exit_code": 0
+    },
+    {
+      "evidence_id": "XPAIR-R031",
+      "command": "env GOCACHE=/tmp/r2-int-010-exact-pair/go-cache-platform go run ./cmd/projectctl codex check",
+      "start_utc": "2026-08-28T15:29:40.987103Z",
+      "finish_utc": "2026-08-28T15:29:41.116621Z",
+      "exit_code": 0,
+      "classification": "PASS",
+      "log_path": "/tmp/r2-int-010-exact-pair/evidence/XPAIR-R031.log",
+      "log_sha256": "54c69610e328cb1eb536c9cbe92b3f7fd4c3141c63caf15e2aa0dac8889e2edc",
+      "normalized_decision_relevant_result": {
+        "batch_id": "M1-B010",
+        "milestone": "M1",
+        "mode": "ACCEPT",
+        "platform_binding": "0da97ea8cd6e8a0997ccde70c1e006d0890759da2d11deccd1980e427537d552",
+        "platform_route_check": "PASS"
+      },
+      "expected_exit_code": 0
+    },
+    {
+      "evidence_id": "XPAIR-R032",
+      "command": "python3 /tmp/r2-int-010-exact-pair/final_clean.py",
+      "start_utc": "2026-08-28T15:30:05.275761Z",
+      "finish_utc": "2026-08-28T15:30:05.356313Z",
+      "exit_code": 0,
+      "classification": "PASS",
+      "log_path": "/tmp/r2-int-010-exact-pair/evidence/XPAIR-R032.log",
+      "log_sha256": "29886a9fdbe97ed98739dacee52d3b632136526bb834ed21adf89fd607ba54d3",
+      "normalized_decision_relevant_result": {
+        "creator_and_archives_rehashed": true,
+        "platform_clean": true,
+        "rules_clean": true,
+        "temporary_platform_harness_absent": true
+      },
+      "expected_exit_code": 0
+    }
+  ],
+  "audit_diagnostics": [
+    {
+      "evidence_id": "XPAIR-R004",
+      "classification": "FAIL",
+      "exit_code": 1,
+      "log_path": "/tmp/r2-int-010-exact-pair/evidence/XPAIR-R004.log",
+      "log_sha256": "f718031b71a6eb82bab59b71d6f3fe40fc7744ce7bfb810d8499a7ac0b9e304c",
+      "reason": "Legacy Go-shaped route command is not registered in the Rules repository.",
+      "superseded_by": "XPAIR-R005"
+    },
+    {
+      "evidence_id": "XPAIR-R009",
+      "classification": "FAIL",
+      "exit_code": 1,
+      "log_path": "/tmp/r2-int-010-exact-pair/evidence/XPAIR-R009.log",
+      "log_sha256": "76f53c01ab6792d2743534544111af503868e6ed61f30b5500974f7fe061e264",
+      "reason": "Sandboxed pnpm registry access returned EAI_AGAIN.",
+      "superseded_by": "XPAIR-R010"
+    },
+    {
+      "evidence_id": "XPAIR-R018",
+      "classification": "FAIL",
+      "exit_code": 3,
+      "log_path": "/tmp/r2-int-010-exact-pair/evidence/XPAIR-R018.log",
+      "log_sha256": "958a3c7f5cf56c9d5ace0acfb06bc5c196a33509a3ff48621da2be336098b423",
+      "reason": "The first local jq assertion was over-escaped; no product operation failed.",
+      "superseded_by": "XPAIR-R019"
+    }
+  ],
+  "findings": [],
+  "governance": {
+    "platform_acceptance": "PASS",
+    "rules_adapter_acceptance": "PASS",
+    "cross_repository_acceptance": "PASS",
+    "r2_int_010": "FAIL",
+    "formal_b002": false,
+    "formal_b009": false,
+    "m2_b002_started": false,
+    "m1_b010_state": "VERIFYING"
+  },
+  "mutations": {
+    "tracked_files_changed": [],
+    "commits_created": [],
+    "remote_writes": []
+  },
+  "final_clean": {
+    "platform": true,
+    "rules": true
+  },
+  "next_gate": "R2-INT-010-EVIDENCE-TRANSITION-IMPLEMENT"
+}

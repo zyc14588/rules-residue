@@ -1,0 +1,242 @@
+{
+  "schema_version": "rules-residue.m2.r2-int-010-post-platform-transition/1.0",
+  "evidence_id": "R2-INT-010-POST-PLATFORM-TRANSITION-T001",
+  "nature": "ADDITIVE_STATUS_TRANSITION_CANDIDATE",
+  "task_id": "R2-INT-010-EVIDENCE-TRANSITION-IMPLEMENT-001",
+  "previous_status": "FAIL",
+  "new_status": "RESOLVED_ADAPTER",
+  "classification": "R2_COMPATIBILITY_ADAPTER",
+  "transition_reason": "在 platform candidate 独立 PASS 后重新施工并独立接受了 post-platform rules adapter；随后 exact platform/rules/Creator pair 在全新只读 cross-repository ACCEPT 中真实执行 Host + Creator 链路并 PASS。",
+  "acceptance_state": {
+    "authoritative_r2_int_010": "FAIL",
+    "transition_candidate": "IMPLEMENTED_NOT_ACCEPTED",
+    "transition_acceptance": "NOT_RUN"
+  },
+  "route_binding": {
+    "route_id": "M2-B001-EXTERNAL-PROBE-UPDATE-001",
+    "mode": "IMPLEMENT",
+    "milestone": "M2",
+    "batch_id": "M2-B001",
+    "source_commit": "455cd5d66c683565a4aad7ef8d6523421d37db71",
+    "source_tree": "d74aae0baf791566a770ef1aaed2da7562f681d5",
+    "binding_digest": "33883e8cc5bd4d3ebf9efa0be52bd9f3cd3ea70a9a5af9f8a1eae6c6d9ec54a7",
+    "freshness_status": "PASS"
+  },
+  "antecedents": {
+    "platform_independent_acceptance": {
+      "commit": "1339c490bd8cae1e2a6e6607fc0f1db019faab64",
+      "tree": "25d5645caf883a73f165db0179accbca48ddf526",
+      "result": "PASS",
+      "acceptance_authority_commit": "65731845177d1657e9f192f3e7c56969ebe81bc5",
+      "acceptance_authority_tree": "3c176856c7ded8858e9771c94c9f06e1f1cb8da3",
+      "record_path": "reports/m2/probes/external/r2-int-010-platform-acceptance/platform-acceptance.json",
+      "record_sha256": "bba1b6f68f30143938c2e22b7bc4a0366549ca1f90a0b81af477f13bd142841e"
+    },
+    "rules_adapter_independent_acceptance": {
+      "commit": "455cd5d66c683565a4aad7ef8d6523421d37db71",
+      "tree": "d74aae0baf791566a770ef1aaed2da7562f681d5",
+      "result": "PASS",
+      "route_id": "R2-INT-010-POST-PLATFORM-ADAPTER-ACCEPT-001",
+      "route_binding_digest": "e1e368e9b9dbd9cbef2a2020c4cd05327b3e5f8f6c2363e15be82699bb5fa215",
+      "audit_label": "RULES_ADAPTER_INDEPENDENT_ACCEPT_AUDIT",
+      "audit_log_sha256": {
+        "route_check": "ec55c6a28a1c81a4233ad89775168f2e110d58011d3ee09c650b7873e4a72252",
+        "adversarial_probes": "14887ee19f6bd4cee863021a6b60be71d316e0f308b0c25f9fa153bea46a64b1",
+        "full_acceptance": "5c92d34a01ef9df2ddae2ce009ad73c3ae0e2a6d6450490c00f0beac780e24be",
+        "candidate_signature": "488449835f4e163f25723736fe9b71f5a559578a9e7ad0b9aabe2fd8c38a9bbb",
+        "scope_policy": "3598f4ef5f51771921742f404535855c9cb744482e38c2e42e15240f2e14625f"
+      }
+    },
+    "exact_pair_cross_repository_acceptance": {
+      "result": "PASS_EXACT_PAIR_CROSS_REPOSITORY_ACCEPTED",
+      "source_verdict_sha256": "099aaa7244b4a443e31bcdb733bbef2728de11b5129382328b4274ffe2534185",
+      "persisted_verdict_path": "reports/m2/probes/remediations/r2-int-010-post-platform-transition/cross-accept-verdict.json",
+      "accepted_evidence_count": 29
+    }
+  },
+  "exact_target_pair": [
+    {
+      "target": "A:rules-residue",
+      "repository": "rules-residue",
+      "commit": "455cd5d66c683565a4aad7ef8d6523421d37db71",
+      "tree": "d74aae0baf791566a770ef1aaed2da7562f681d5"
+    },
+    {
+      "target": "B:TRPG_PLATFORM",
+      "repository": "TRPG_PLATFORM",
+      "commit": "1339c490bd8cae1e2a6e6607fc0f1db019faab64",
+      "tree": "25d5645caf883a73f165db0179accbca48ddf526"
+    }
+  ],
+  "creator_identity": {
+    "platform_commit": "1339c490bd8cae1e2a6e6607fc0f1db019faab64",
+    "platform_tree": "25d5645caf883a73f165db0179accbca48ddf526",
+    "binary_version": "0.1.0-m1",
+    "binary_sha256": "7e31836febd753ca32dc0b81d9f9d8fc7c15fee123730fc4998ca1ee30b7e3a2"
+  },
+  "creator_build": {
+    "source_verdict_evidence_id": "XPAIR-R011",
+    "source_command": "bash /tmp/r2-int-010-exact-pair/build_creator.sh",
+    "normalized_command": "bash <EXACT_PAIR_AUDIT_ROOT>/build_creator.sh",
+    "identity_match": true
+  },
+  "previous_evidence": [
+    {
+      "evidence_id": "M2-B001-R2-INT-010",
+      "record_role": "STATUS_PREDECESSOR",
+      "path": "reports/m2/probes/probe-results.json",
+      "sha256": "154e7c0ddf8ce7b2243ad6c78d10ceb6cddf02c3aeb6592716dcc5ad8fc64218",
+      "previous_status": "FAIL",
+      "disposition": "IMMUTABLE_PREDECESSOR"
+    },
+    {
+      "evidence_id": "R2-INT-010-REM-001-J001",
+      "record_role": "PRE_PLATFORM_PROVISIONAL_EVIDENCE",
+      "path": "reports/m2/probes/remediations/r2-int-010-rem-001/evidence.json",
+      "sha256": "287708242e1418a7e8a88d4918e049dafdb31ecd498819a5e5b6cd7ce40d81f9",
+      "disposition": "SUPERSEDED_PRE_PLATFORM_PROVISIONAL_NOT_ACCEPTED",
+      "may_be_used_as_execution_evidence": false
+    },
+    {
+      "evidence_id": "R2-INT-010-REM-001-EXECUTION-RECORDS",
+      "record_role": "PRE_PLATFORM_PROVISIONAL_EXECUTION_RECORDS",
+      "path": "reports/m2/probes/remediations/r2-int-010-rem-001/execution-records.json",
+      "sha256": "9d3bc8c8e5681d14740fcccf525bcf42087dfe5e7e6287bf50852f43c17475c4",
+      "disposition": "SUPERSEDED_PRE_PLATFORM_PROVISIONAL_NOT_ACCEPTED",
+      "may_be_used_as_execution_evidence": false
+    },
+    {
+      "evidence_id": "R2-INT-010-REM-001-EVIDENCE-MANIFEST",
+      "record_role": "PRE_PLATFORM_PROVISIONAL_MANIFEST",
+      "path": "reports/m2/probes/remediations/r2-int-010-rem-001/evidence-manifest.json",
+      "sha256": "eb5e811122efc10cdd1350b2c44031b9bdd58690482df2105ad35f0c62d1b03e",
+      "disposition": "SUPERSEDED_PRE_PLATFORM_PROVISIONAL_NOT_ACCEPTED",
+      "may_be_used_as_execution_evidence": false
+    }
+  ],
+  "historical_commits": [
+    {
+      "commit": "02f261a326cc7bffead5e6a46017c352f822aa94",
+      "classification": "PRE_PLATFORM_PROVISIONAL_NOT_ACCEPTED"
+    },
+    {
+      "commit": "c6a840b10db46dc475cd9af9e6a1a13f1e68abd4",
+      "classification": "PRE_PLATFORM_PROVISIONAL_NOT_ACCEPTED"
+    },
+    {
+      "commit": "65a0a1671720345425e0368136793754567187cc",
+      "classification": "PRE_PLATFORM_PROVISIONAL_NOT_ACCEPTED"
+    }
+  ],
+  "execution_authority": {
+    "type": "VERIFIED_PERSISTED_EXACT_PAIR_ACCEPT_VERDICT",
+    "artifact": "reports/m2/probes/remediations/r2-int-010-post-platform-transition/cross-accept-verdict.json",
+    "sha256": "099aaa7244b4a443e31bcdb733bbef2728de11b5129382328b4274ffe2534185",
+    "accepted_evidence_count": 29,
+    "old_provisional_used_as_execution_evidence": false,
+    "host_creator_rerun_this_transition": false
+  },
+  "evidence_links": {
+    "execution_records": "reports/m2/probes/remediations/r2-int-010-post-platform-transition/execution-records.json",
+    "evidence_manifest": "reports/m2/probes/remediations/r2-int-010-post-platform-transition/evidence-manifest.json",
+    "cross_accept_verdict": "reports/m2/probes/remediations/r2-int-010-post-platform-transition/cross-accept-verdict.json",
+    "cross_accept_manifest": "reports/m2/probes/remediations/r2-int-010-post-platform-transition/cross-accept-verdict.manifest.json"
+  },
+  "phase_results": [
+    {
+      "phase": "SOURCE_DOUBLE_BUILD",
+      "execution_status": "PASS",
+      "evidence_source": "PERSISTED_EXACT_PAIR_ACCEPT_VERDICT",
+      "source_verdict_evidence_ids": ["XPAIR-R012", "XPAIR-R013", "XPAIR-R014"]
+    },
+    {
+      "phase": "HOST_IMPORT_REPACK_REIMPORT",
+      "execution_status": "PASS",
+      "evidence_source": "PERSISTED_EXACT_PAIR_ACCEPT_VERDICT",
+      "source_verdict_evidence_ids": ["XPAIR-R015"]
+    },
+    {
+      "phase": "CREATOR_REAL_EDIT",
+      "execution_status": "PASS",
+      "evidence_source": "PERSISTED_EXACT_PAIR_ACCEPT_VERDICT",
+      "source_verdict_evidence_ids": ["XPAIR-R016", "XPAIR-R019"]
+    },
+    {
+      "phase": "CREATOR_REPEAT_DETERMINISM",
+      "execution_status": "PASS",
+      "evidence_source": "PERSISTED_EXACT_PAIR_ACCEPT_VERDICT",
+      "source_verdict_evidence_ids": ["XPAIR-R017", "XPAIR-R019"]
+    },
+    {
+      "phase": "HOST_RELOAD_AFTER_CREATOR",
+      "execution_status": "PASS",
+      "evidence_source": "PERSISTED_EXACT_PAIR_ACCEPT_VERDICT",
+      "source_verdict_evidence_ids": ["XPAIR-R020"]
+    },
+    {
+      "phase": "CREATOR_SCHEMA_INVALID_REJECTION",
+      "execution_status": "PASS",
+      "evidence_source": "PERSISTED_EXACT_PAIR_ACCEPT_VERDICT",
+      "source_verdict_evidence_ids": ["XPAIR-R021", "XPAIR-R022"]
+    },
+    {
+      "phase": "HOST_TYPED_NEGATIVES",
+      "execution_status": "PASS",
+      "evidence_source": "PERSISTED_EXACT_PAIR_ACCEPT_VERDICT",
+      "source_verdict_evidence_ids": ["XPAIR-R023"]
+    },
+    {
+      "phase": "RULES_SYMLINK_NEGATIVE",
+      "execution_status": "PASS",
+      "evidence_source": "PERSISTED_EXACT_PAIR_ACCEPT_VERDICT",
+      "source_verdict_evidence_ids": ["XPAIR-R024"]
+    },
+    {
+      "phase": "PLATFORM_REGRESSION",
+      "execution_status": "PASS",
+      "evidence_source": "PERSISTED_EXACT_PAIR_ACCEPT_VERDICT",
+      "source_verdict_evidence_ids": ["XPAIR-R025"]
+    },
+    {
+      "phase": "RULES_REGRESSION",
+      "execution_status": "PASS",
+      "evidence_source": "PERSISTED_EXACT_PAIR_ACCEPT_VERDICT",
+      "source_verdict_evidence_ids": ["XPAIR-R026", "XPAIR-R027", "XPAIR-R028"]
+    },
+    {
+      "phase": "IDENTITY_ATTACKS",
+      "execution_status": "PASS",
+      "evidence_source": "PERSISTED_EXACT_PAIR_ACCEPT_VERDICT",
+      "source_verdict_evidence_ids": ["XPAIR-R029"]
+    }
+  ],
+  "non_claims": {
+    "formal_B002": {
+      "execution_status": "NOT_RUN",
+      "claimed": false
+    },
+    "formal_B009": {
+      "execution_status": "NOT_RUN",
+      "claimed": false
+    },
+    "aggregate_status": "NOT_CLAIMED"
+  },
+  "readiness_projection": {
+    "M2-B002_READY": "NO",
+    "M2-B002": "NOT_STARTED",
+    "blocking_ids": ["R2-INT-011", "R2-INT-012", "DEFER-R2-C14-001"],
+    "projection_only": true
+  },
+  "integrity_requirements": [
+    "REJECT_FORGED_NEW_STATUS_PASS",
+    "REJECT_PREVIOUS_STATUS_REWRITE",
+    "REJECT_WRONG_EXACT_PAIR",
+    "REJECT_WRONG_CREATOR_IDENTITY",
+    "REJECT_OLD_PROVISIONAL_SUBSTITUTION",
+    "REJECT_EXACT_PAIR_VERDICT_HASH_CHANGE",
+    "REJECT_MISSING_OR_ALTERED_EXACT_PAIR_EVIDENCE",
+    "REJECT_FORMAL_OR_AGGREGATE_PROMOTION",
+    "REJECT_READINESS_PROMOTION",
+    "REJECT_DUPLICATE_JSON_KEYS_AND_NONFINITE_CONSTANTS"
+  ]
+}

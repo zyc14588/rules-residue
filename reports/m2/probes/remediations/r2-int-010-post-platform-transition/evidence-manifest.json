@@ -1,0 +1,97 @@
+{
+  "schema_version": "rules-residue.m2.r2-int-010-post-platform-transition-manifest/1.0",
+  "evidence_set_id": "R2-INT-010-POST-PLATFORM-TRANSITION-T001",
+  "task_id": "R2-INT-010-EVIDENCE-TRANSITION-IMPLEMENT-001",
+  "artifacts": [
+    {
+      "path": "reports/m2/probes/remediations/r2-int-010-post-platform-transition/evidence.json",
+      "sha256": "f2e9c48517cd9437aa464041f28b15e8ff96c8df8533c58fa8afb001d22fdd18"
+    },
+    {
+      "path": "reports/m2/probes/remediations/r2-int-010-post-platform-transition/execution-records.json",
+      "sha256": "dc98a5c7f48a8325ba7312c9082f0d514d121e4dba4f931ae66d7c59b1f0db06"
+    },
+    {
+      "path": "reports/m2/probes/remediations/r2-int-010-post-platform-transition/cross-accept-verdict.json",
+      "sha256": "099aaa7244b4a443e31bcdb733bbef2728de11b5129382328b4274ffe2534185"
+    },
+    {
+      "path": "reports/m2/probes/remediations/r2-int-010-post-platform-transition/cross-accept-verdict.manifest.json",
+      "sha256": "11e484b44776af6f5f845e5082185ee8fa61868e7610b4947013de9252aac060"
+    },
+    {
+      "path": "tests/m2/probes/validate_r2_int_010_post_platform_transition.py",
+      "sha256": "846bdfc5b3637bd516ff4df75df738c55629e3961b7088439c3d9c7a8e1d266d"
+    },
+    {
+      "path": "tests/m2/probes/test_r2_int_010_post_platform_transition.py",
+      "sha256": "0170793c33ccf9aaaccb245fa3318cb7783c85b69fc159c98b0387ef8fbaa77b"
+    }
+  ],
+  "immutable_historical_artifacts": [
+    {
+      "path": "reports/m2/probes/probe-results.json",
+      "sha256": "154e7c0ddf8ce7b2243ad6c78d10ceb6cddf02c3aeb6592716dcc5ad8fc64218"
+    },
+    {
+      "path": "reports/m2/probes/external-gates.json",
+      "sha256": "a8951312cb9f23cf3f999a7258900603716ea6f0b4e7f684b8f6a53ed8f13a2d"
+    },
+    {
+      "path": "reports/m2/probes/evidence-manifest.json",
+      "sha256": "3a48da621e45980d9b2258513954e1f29480fd9e12a35dcd29c12b77015c8ca7"
+    },
+    {
+      "path": "reports/m2/probes/remediations/r2-int-010-rem-001/evidence.json",
+      "sha256": "287708242e1418a7e8a88d4918e049dafdb31ecd498819a5e5b6cd7ce40d81f9"
+    },
+    {
+      "path": "reports/m2/probes/remediations/r2-int-010-rem-001/execution-records.json",
+      "sha256": "9d3bc8c8e5681d14740fcccf525bcf42087dfe5e7e6287bf50852f43c17475c4"
+    },
+    {
+      "path": "reports/m2/probes/remediations/r2-int-010-rem-001/evidence-manifest.json",
+      "sha256": "eb5e811122efc10cdd1350b2c44031b9bdd58690482df2105ad35f0c62d1b03e"
+    },
+    {
+      "path": "reports/m2/probes/remediations/r2-int-010-rem-001/provenance-disposition.json",
+      "sha256": "09425d3f343d0a1141bd06558107b2f6daa4478d02bc4799c751c3ff0aaca36e"
+    },
+    {
+      "path": "reports/m2/probes/external/r2-int-010-platform-acceptance/platform-acceptance.json",
+      "sha256": "bba1b6f68f30143938c2e22b7bc4a0366549ca1f90a0b81af477f13bd142841e"
+    },
+    {
+      "path": "reports/m2/probes/external/r2-int-010-platform-acceptance/evidence-manifest.json",
+      "sha256": "bfa8cd4c45f9ea183883798f5e3e35bed36306a44972ee807ac1248f345e988e"
+    }
+  ],
+  "immutable_predecessor_commits": [
+    {
+      "commit": "02f261a326cc7bffead5e6a46017c352f822aa94",
+      "classification": "PRE_PLATFORM_PROVISIONAL_NOT_ACCEPTED"
+    },
+    {
+      "commit": "c6a840b10db46dc475cd9af9e6a1a13f1e68abd4",
+      "classification": "PRE_PLATFORM_PROVISIONAL_NOT_ACCEPTED"
+    },
+    {
+      "commit": "65a0a1671720345425e0368136793754567187cc",
+      "classification": "PRE_PLATFORM_PROVISIONAL_NOT_ACCEPTED"
+    }
+  ],
+  "source_exact_pair": {
+    "source_verdict_sha256": "099aaa7244b4a443e31bcdb733bbef2728de11b5129382328b4274ffe2534185",
+    "source_manifest_sha256": "04d3086860294a819da9f3155482c45877e2902a3e306157058bdd1eec1f0bf3",
+    "accepted_evidence_count": 29,
+    "source_manifest_verified": true
+  },
+  "policies": {
+    "historical_mutation": "REJECT_ANY_CURRENT_BYTE_MISMATCH",
+    "evidence_evolution": "ADDITIVE_ONLY",
+    "old_provisional_execution_authority": false,
+    "transition_acceptance": "NOT_RUN",
+    "authoritative_r2_int_010": "FAIL",
+    "schema_reuse": "NOT_USED_HARDCODED_PRE_PLATFORM_SCHEMA_LEFT_UNCHANGED"
+  }
+}

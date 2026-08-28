@@ -1,0 +1,67 @@
+{
+  "schema_version": "rules-residue.m2.r2-int-010-cross-accept-manifest/1.0",
+  "evidence_set_id": "R2-INT-010-POST-PLATFORM-TRANSITION-T001",
+  "task_id": "R2-INT-010-EVIDENCE-TRANSITION-IMPLEMENT-001",
+  "artifact": {
+    "path": "reports/m2/probes/remediations/r2-int-010-post-platform-transition/cross-accept-verdict.json",
+    "sha256": "099aaa7244b4a443e31bcdb733bbef2728de11b5129382328b4274ffe2534185",
+    "copy_policy": "BYTE_IDENTICAL_READ_ONLY_SOURCE_VERDICT_COPY",
+    "source_path_label": "EXACT_PAIR_ACCEPT_VERDICT_SOURCE"
+  },
+  "source_manifest_verification": {
+    "source_path_label": "EXACT_PAIR_ACCEPT_MANIFEST_SOURCE",
+    "source_manifest_sha256": "04d3086860294a819da9f3155482c45877e2902a3e306157058bdd1eec1f0bf3",
+    "final_verdict_sha256": "099aaa7244b4a443e31bcdb733bbef2728de11b5129382328b4274ffe2534185",
+    "accepted_evidence_count": 29,
+    "diagnostic_attempt_count": 3,
+    "evidence_records_all_log_hash_verified": true
+  },
+  "exact_identity": {
+    "result": "PASS_EXACT_PAIR_CROSS_REPOSITORY_ACCEPTED",
+    "rules_commit": "455cd5d66c683565a4aad7ef8d6523421d37db71",
+    "rules_tree": "d74aae0baf791566a770ef1aaed2da7562f681d5",
+    "platform_commit": "1339c490bd8cae1e2a6e6607fc0f1db019faab64",
+    "platform_tree": "25d5645caf883a73f165db0179accbca48ddf526",
+    "creator_binary_sha256": "7e31836febd753ca32dc0b81d9f9d8fc7c15fee123730fc4998ca1ee30b7e3a2",
+    "formal_B002": false,
+    "formal_B009": false
+  },
+  "accepted_evidence_ids": [
+    "XPAIR-R001",
+    "XPAIR-R002",
+    "XPAIR-R003",
+    "XPAIR-R005",
+    "XPAIR-R006",
+    "XPAIR-R007",
+    "XPAIR-R008",
+    "XPAIR-R010",
+    "XPAIR-R011",
+    "XPAIR-R012",
+    "XPAIR-R013",
+    "XPAIR-R014",
+    "XPAIR-R015",
+    "XPAIR-R016",
+    "XPAIR-R017",
+    "XPAIR-R019",
+    "XPAIR-R020",
+    "XPAIR-R021",
+    "XPAIR-R022",
+    "XPAIR-R023",
+    "XPAIR-R024",
+    "XPAIR-R025",
+    "XPAIR-R026",
+    "XPAIR-R027",
+    "XPAIR-R028",
+    "XPAIR-R029",
+    "XPAIR-R030",
+    "XPAIR-R031",
+    "XPAIR-R032"
+  ],
+  "diagnostic_evidence_ids": ["XPAIR-R004", "XPAIR-R009", "XPAIR-R018"],
+  "persistence_policy": {
+    "decision_relevant_fields_preserved": true,
+    "accepted_evidence_records_preserved": 29,
+    "secrets_embedded": false,
+    "source_scratch_paths_are_non_authoritative": true
+  }
+}

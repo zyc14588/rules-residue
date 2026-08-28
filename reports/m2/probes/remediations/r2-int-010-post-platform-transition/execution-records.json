@@ -1,0 +1,188 @@
+{
+  "schema_version": "rules-residue.m2.r2-int-010-post-platform-transition-execution/1.0",
+  "evidence_set_id": "R2-INT-010-POST-PLATFORM-TRANSITION-T001",
+  "task_id": "R2-INT-010-EVIDENCE-TRANSITION-IMPLEMENT-001",
+  "previous_status": "FAIL",
+  "source_phase": "VERIFIED_EXACT_PAIR_ACCEPT_VERDICT_PROJECTION",
+  "execution_scope": {
+    "host_creator_rerun": false,
+    "execution_authority": "PERSISTED_EXACT_PAIR_ACCEPT_VERDICT",
+    "old_j_records_reused": false
+  },
+  "records": [
+    {
+      "evidence_id": "T-R001",
+      "operation": "VERIFY_EXACT_PAIR_VERDICT_SHA256",
+      "command": "sha256sum <EXACT_PAIR_ACCEPT_VERDICT_SOURCE>",
+      "exit_code": 0,
+      "verification_status": "PASS",
+      "observed": {
+        "sha256": "099aaa7244b4a443e31bcdb733bbef2728de11b5129382328b4274ffe2534185"
+      }
+    },
+    {
+      "evidence_id": "T-R002",
+      "operation": "VERIFY_EXACT_PAIR_SOURCE_MANIFEST",
+      "command": "verify <EXACT_PAIR_ACCEPT_MANIFEST_SOURCE>",
+      "exit_code": 0,
+      "verification_status": "PASS",
+      "observed": {
+        "manifest_sha256": "04d3086860294a819da9f3155482c45877e2902a3e306157058bdd1eec1f0bf3",
+        "accepted_evidence_count": 29,
+        "diagnostic_attempt_count": 3,
+        "evidence_records_all_log_hash_verified": true
+      }
+    },
+    {
+      "evidence_id": "T-R003",
+      "operation": "VERIFY_RULES_COMMIT_TREE",
+      "command": "read identity from verified exact-pair verdict",
+      "exit_code": 0,
+      "verification_status": "PASS",
+      "observed": {
+        "commit": "455cd5d66c683565a4aad7ef8d6523421d37db71",
+        "tree": "d74aae0baf791566a770ef1aaed2da7562f681d5"
+      }
+    },
+    {
+      "evidence_id": "T-R004",
+      "operation": "VERIFY_PLATFORM_COMMIT_TREE",
+      "command": "read identity from verified exact-pair verdict",
+      "exit_code": 0,
+      "verification_status": "PASS",
+      "observed": {
+        "commit": "1339c490bd8cae1e2a6e6607fc0f1db019faab64",
+        "tree": "25d5645caf883a73f165db0179accbca48ddf526"
+      }
+    },
+    {
+      "evidence_id": "T-R005",
+      "operation": "VERIFY_CREATOR_IDENTITY",
+      "command": "read XPAIR-R011 from verified exact-pair verdict",
+      "exit_code": 0,
+      "verification_status": "PASS",
+      "observed": {
+        "binary_version": "0.1.0-m1",
+        "binary_sha256": "7e31836febd753ca32dc0b81d9f9d8fc7c15fee123730fc4998ca1ee30b7e3a2",
+        "source_build_command": "bash /tmp/r2-int-010-exact-pair/build_creator.sh",
+        "source_verdict_evidence_id": "XPAIR-R011"
+      }
+    },
+    {
+      "evidence_id": "T-R006",
+      "operation": "VERIFY_RULES_ADAPTER_INDEPENDENT_ACCEPTANCE_IDENTITY",
+      "command": "verify <RULES_ADAPTER_INDEPENDENT_ACCEPT_AUDIT>",
+      "exit_code": 0,
+      "verification_status": "PASS",
+      "observed": {
+        "result": "PASS",
+        "route_id": "R2-INT-010-POST-PLATFORM-ADAPTER-ACCEPT-001",
+        "route_binding_digest": "e1e368e9b9dbd9cbef2a2020c4cd05327b3e5f8f6c2363e15be82699bb5fa215",
+        "commit": "455cd5d66c683565a4aad7ef8d6523421d37db71",
+        "tree": "d74aae0baf791566a770ef1aaed2da7562f681d5"
+      }
+    },
+    {
+      "evidence_id": "T-R007",
+      "operation": "VERIFY_PLATFORM_INDEPENDENT_ACCEPTANCE_IDENTITY",
+      "command": "verify reports/m2/probes/external/r2-int-010-platform-acceptance/platform-acceptance.json",
+      "exit_code": 0,
+      "verification_status": "PASS",
+      "observed": {
+        "result": "PASS",
+        "commit": "1339c490bd8cae1e2a6e6607fc0f1db019faab64",
+        "tree": "25d5645caf883a73f165db0179accbca48ddf526",
+        "acceptance_authority_commit": "65731845177d1657e9f192f3e7c56969ebe81bc5",
+        "acceptance_authority_tree": "3c176856c7ded8858e9771c94c9f06e1f1cb8da3"
+      }
+    },
+    {
+      "evidence_id": "T-R008",
+      "operation": "VERIFY_EXACT_PAIR_RESULT",
+      "command": "read result from verified exact-pair verdict",
+      "exit_code": 0,
+      "verification_status": "PASS",
+      "observed": {
+        "result": "PASS_EXACT_PAIR_CROSS_REPOSITORY_ACCEPTED"
+      }
+    },
+    {
+      "evidence_id": "T-R009",
+      "operation": "VERIFY_EXACT_PAIR_EVIDENCE_INTEGRITY",
+      "command": "rehash every accepted evidence log listed by <EXACT_PAIR_ACCEPT_VERDICT_SOURCE>",
+      "exit_code": 0,
+      "verification_status": "PASS",
+      "observed": {
+        "accepted_evidence_count": 29,
+        "unique_evidence_ids": 29,
+        "verified_log_hashes": 29
+      }
+    },
+    {
+      "evidence_id": "T-R010",
+      "operation": "VERIFY_PREVIOUS_FAIL_EVIDENCE_SHA256",
+      "command": "sha256sum reports/m2/probes/probe-results.json",
+      "exit_code": 0,
+      "verification_status": "PASS",
+      "observed": {
+        "evidence_id": "M2-B001-R2-INT-010",
+        "previous_status": "FAIL",
+        "sha256": "154e7c0ddf8ce7b2243ad6c78d10ceb6cddf02c3aeb6592716dcc5ad8fc64218",
+        "disposition": "IMMUTABLE_PREDECESSOR"
+      }
+    },
+    {
+      "evidence_id": "T-R011",
+      "operation": "VERIFY_OLD_PROVISIONAL_DISPOSITION",
+      "command": "verify reports/m2/probes/remediations/r2-int-010-rem-001/provenance-disposition.json",
+      "exit_code": 0,
+      "verification_status": "PASS",
+      "observed": {
+        "commits": [
+          "02f261a326cc7bffead5e6a46017c352f822aa94",
+          "c6a840b10db46dc475cd9af9e6a1a13f1e68abd4",
+          "65a0a1671720345425e0368136793754567187cc"
+        ],
+        "disposition": "SUPERSEDED_PRE_PLATFORM_PROVISIONAL_NOT_ACCEPTED",
+        "may_be_used_as_execution_evidence": false
+      }
+    },
+    {
+      "evidence_id": "T-R012",
+      "operation": "VERIFY_FORMAL_B002_NON_CLAIM",
+      "command": "read governance and phase records from verified exact-pair verdict",
+      "exit_code": 0,
+      "verification_status": "PASS",
+      "observed": {
+        "formal_B002": false,
+        "execution_status": "NOT_RUN",
+        "claimed": false
+      }
+    },
+    {
+      "evidence_id": "T-R013",
+      "operation": "VERIFY_FORMAL_B009_NON_CLAIM",
+      "command": "read governance and phase records from verified exact-pair verdict",
+      "exit_code": 0,
+      "verification_status": "PASS",
+      "observed": {
+        "formal_B009": false,
+        "execution_status": "NOT_RUN",
+        "claimed": false
+      }
+    },
+    {
+      "evidence_id": "T-R014",
+      "operation": "VERIFY_AGGREGATE_READINESS_NON_CLAIM",
+      "command": "project remaining authoritative blockers without mutating frozen predecessor records",
+      "exit_code": 0,
+      "verification_status": "PASS",
+      "observed": {
+        "aggregate_status": "NOT_CLAIMED",
+        "M2-B002_READY": "NO",
+        "M2-B002": "NOT_STARTED",
+        "blocking_ids": ["R2-INT-011", "R2-INT-012", "DEFER-R2-C14-001"]
+      }
+    }
+  ]
+}
