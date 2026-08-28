@@ -1,0 +1,35 @@
+{
+  "schema_version": "rules-residue.r2-int-010-post-platform-source/1.0",
+  "task_id": "R2-INT-010-POST-PLATFORM-ADAPTER-RECONSTRUCT-001",
+  "adapter_id": "R2-INT-010-POST-PLATFORM-ADAPTER-001",
+  "artifact_role": "SOURCE_ONLY_MINIMAL_COMPATIBILITY_ADAPTER_CANDIDATE_NOT_ACCEPTED",
+  "package": {
+    "stable_id": "org.trpgplatform.rules-residue",
+    "version": "0.1.0-dev.1"
+  },
+  "scope": {
+    "capability": "MINIMAL_CAPABILITY_PROBE_ONLY",
+    "formal_B002": false,
+    "formal_B009": false,
+    "equipment_runtime": false,
+    "lua": false,
+    "rule_engine": false,
+    "privileged_package_identity": false,
+    "official_game_special_case": false
+  },
+  "platform_acceptance": {
+    "binding_id": "R2-INT-010-PLATFORM-ACCEPTANCE-001",
+    "status": "PASS",
+    "platform_code_commit": "1339c490bd8cae1e2a6e6607fc0f1db019faab64",
+    "platform_code_tree": "25d5645caf883a73f165db0179accbca48ddf526",
+    "acceptance_authority_commit": "65731845177d1657e9f192f3e7c56969ebe81bc5",
+    "acceptance_authority_tree": "3c176856c7ded8858e9771c94c9f06e1f1cb8da3",
+    "creator_binary_sha256": "7e31836febd753ca32dc0b81d9f9d8fc7c15fee123730fc4998ca1ee30b7e3a2"
+  },
+  "governance": {
+    "rules_adapter_acceptance": "NOT_RUN",
+    "cross_repository_acceptance": "NOT_RUN",
+    "r2_int_010": "FAIL",
+    "m2_b002_started": false
+  }
+}

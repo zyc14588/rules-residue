@@ -1,0 +1,38 @@
+{
+  "schema_version": "rules-residue.m2.platform-acceptance-antecedent/1.0",
+  "record_id": "R2-INT-010-PLATFORM-ACCEPTANCE-001",
+  "task_id": "R2-INT-010-POST-PLATFORM-ADAPTER-RECONSTRUCT-001",
+  "record_role": "ACCEPTED_PLATFORM_CAPABILITY_ANTECEDENT_ONLY",
+  "platform": {
+    "code_commit": "1339c490bd8cae1e2a6e6607fc0f1db019faab64",
+    "code_tree": "25d5645caf883a73f165db0179accbca48ddf526",
+    "acceptance_authority_commit": "65731845177d1657e9f192f3e7c56969ebe81bc5",
+    "acceptance_authority_tree": "3c176856c7ded8858e9771c94c9f06e1f1cb8da3",
+    "acceptance_status": "PASS",
+    "creator_binary_sha256": "7e31836febd753ca32dc0b81d9f9d8fc7c15fee123730fc4998ca1ee30b7e3a2"
+  },
+  "adapter_state": {
+    "post_platform_adapter": "IMPLEMENTED_NOT_ACCEPTED",
+    "independent_adapter_acceptance": "NOT_RUN",
+    "cross_repository_acceptance": "NOT_RUN",
+    "r2_int_010": "FAIL",
+    "m2_b002_started": false
+  },
+  "forbidden_claims": [
+    "RESOLVED_ADAPTER",
+    "M2-B001_ACCEPTED",
+    "M2-B002_READY",
+    "FORMAL_B002_PASS",
+    "FORMAL_B009_PASS",
+    "R2-INT-010_PASS"
+  ],
+  "registration": {
+    "rules_source_commit": "65a0a1671720345425e0368136793754567187cc",
+    "rules_source_tree": "4f438d0aca3daea8bb66959560f9642d8f62810a",
+    "route_id": "M2-B001-EXTERNAL-PROBE-UPDATE-001",
+    "mode": "IMPLEMENT",
+    "milestone": "M2",
+    "batch_id": "M2-B001",
+    "binding_digest": "a7a37c8e3384d71e1b6a6759e421fb37f0560ebfbd6742d63664e37977691cb7"
+  }
+}

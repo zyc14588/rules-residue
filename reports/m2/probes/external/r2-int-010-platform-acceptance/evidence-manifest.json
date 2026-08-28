@@ -1,0 +1,15 @@
+{
+  "schema_version": "rules-residue.m2.platform-acceptance-manifest/1.0",
+  "evidence_set_id": "R2-INT-010-PLATFORM-ACCEPTANCE-001",
+  "task_id": "R2-INT-010-POST-PLATFORM-ADAPTER-RECONSTRUCT-001",
+  "artifact": {
+    "path": "reports/m2/probes/external/r2-int-010-platform-acceptance/platform-acceptance.json",
+    "sha256": "bba1b6f68f30143938c2e22b7bc4a0366549ca1f90a0b81af477f13bd142841e"
+  },
+  "registered_claim": "PLATFORM_CAPABILITY_ACCEPTANCE_PASS_ONLY",
+  "downstream_non_claims": {
+    "rules_adapter_acceptance": "NOT_RUN",
+    "cross_repository_acceptance": "NOT_RUN",
+    "r2_int_010": "FAIL"
+  }
+}

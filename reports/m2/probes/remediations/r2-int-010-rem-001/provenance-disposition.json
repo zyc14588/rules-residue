@@ -1,0 +1,42 @@
+{
+  "schema_version": "rules-residue.m2.provisional-provenance-disposition/1.0",
+  "record_id": "R2-INT-010-REM-001-PROVENANCE-DISPOSITION-001",
+  "task_id": "R2-INT-010-POST-PLATFORM-ADAPTER-RECONSTRUCT-001",
+  "historical_antecedents": [
+    {
+      "label": "initial_adapter",
+      "commit": "02f261a326cc7bffead5e6a46017c352f822aa94",
+      "classification": "PRE_PLATFORM_PROVISIONAL_NOT_ACCEPTED"
+    },
+    {
+      "label": "adapter_fix",
+      "commit": "c6a840b10db46dc475cd9af9e6a1a13f1e68abd4",
+      "classification": "PRE_PLATFORM_PROVISIONAL_NOT_ACCEPTED"
+    },
+    {
+      "label": "old_evidence",
+      "commit": "65a0a1671720345425e0368136793754567187cc",
+      "classification": "PRE_PLATFORM_PROVISIONAL_NOT_ACCEPTED"
+    }
+  ],
+  "policy": {
+    "may_be_used_as_historical_antecedent": true,
+    "may_be_used_as_execution_evidence": false,
+    "may_satisfy_post_platform_adapter_gate": false,
+    "may_transition_R2_INT_010": false
+  },
+  "historical_artifact_paths": [
+    "tests/fixtures/r2-int-010-rem-001/**",
+    "tools/build_platform_v2_probe.py",
+    "reports/m2/probes/remediations/r2-int-010-rem-001/evidence.json",
+    "reports/m2/probes/remediations/r2-int-010-rem-001/evidence-manifest.json",
+    "reports/m2/probes/remediations/r2-int-010-rem-001/execution-records.json"
+  ],
+  "old_provisional_files_modified": false,
+  "current_gate": {
+    "platform_acceptance": "PASS",
+    "rules_adapter_acceptance": "NOT_RUN",
+    "cross_repository_acceptance": "NOT_RUN",
+    "r2_int_010": "FAIL"
+  }
+}

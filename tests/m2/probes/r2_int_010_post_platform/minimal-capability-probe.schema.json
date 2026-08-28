@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "R2-INT-010 post-platform minimal capability probe only / NOT formal M2-B002 or M2-B009",
+  "$comment": "Generic local JSON extension probe. No equipment runtime, Lua, rule engine, privileged package identity, or official-game special case.",
+  "type": "object",
+  "required": [
+    "probe_id",
+    "formal_B002",
+    "formal_B009",
+    "count",
+    "enabled"
+  ],
+  "properties": {
+    "probe_id": {
+      "const": "R2-INT-010-POST-PLATFORM-001"
+    },
+    "formal_B002": {
+      "const": false
+    },
+    "formal_B009": {
+      "const": false
+    },
+    "count": {
+      "$ref": "#/$defs/bounded_count"
+    },
+    "enabled": {
+      "type": "boolean"
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "bounded_count": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 1000000
+    }
+  }
+}
