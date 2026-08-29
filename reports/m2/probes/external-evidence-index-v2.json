@@ -1,0 +1,138 @@
+{
+  "schema_version": "rules-residue.m2.external-evidence-index/2.0",
+  "index_id": "M2-B001-EXTERNAL-EVIDENCE-INDEX-V2",
+  "batch_id": "M2-B001",
+  "ordinal": 2,
+  "predecessor_index": {
+    "path": "reports/m2/probes/external-evidence-index.json",
+    "sha256": "b4bf268d7f9ee1627edea5c1ff87fa74774e3f5689c97cd11f0af6881178a22c",
+    "schema_version": "rules-residue.m2.external-evidence-index/1.0",
+    "last_evidence_ordinal": 1,
+    "disposition": "IMMUTABLE_ORDINAL_PREDECESSOR"
+  },
+  "formal_batch": {
+    "status": "ACCEPTED_UNCHANGED",
+    "commit": "fdc1f4c9d8bc565888f33b44684cd6ccbe80c127",
+    "tree": "f37e15cdd65e0a39eebcddb21f56a2c58ae6939e",
+    "result_path": "reports/m2/probes/probe-results.json",
+    "result_sha256": "154e7c0ddf8ce7b2243ad6c78d10ceb6cddf02c3aeb6592716dcc5ad8fc64218"
+  },
+  "evidence_chain": [
+    {
+      "ordinal": 0,
+      "evidence_id": "M2-B001",
+      "nature": "FORMAL_BATCH_EVIDENCE",
+      "path": "reports/m2/probes/probe-results.json",
+      "sha256": "154e7c0ddf8ce7b2243ad6c78d10ceb6cddf02c3aeb6592716dcc5ad8fc64218",
+      "disposition": "IMMUTABLE_FORMAL_BASE"
+    },
+    {
+      "ordinal": 1,
+      "evidence_id": "M2-B001-EXT-001",
+      "nature": "EXTERNAL_EVIDENCE_SUPPLEMENT",
+      "path": "reports/m2/probes/external/m2-b001-ext-001/supplement.json",
+      "sha256": "d2f21f4853e5b77e2796ba3cbe3c7001b4731cdbb251661d6375ac2d5cff193c",
+      "disposition": "IMMUTABLE_HISTORICAL_FAIL_SUPPLEMENT"
+    },
+    {
+      "ordinal": 2,
+      "evidence_id": "R2-INT-010-REM-001-J001",
+      "nature": "PRE_PLATFORM_PROVISIONAL_EVIDENCE",
+      "path": "reports/m2/probes/remediations/r2-int-010-rem-001/evidence.json",
+      "sha256": "287708242e1418a7e8a88d4918e049dafdb31ecd498819a5e5b6cd7ce40d81f9",
+      "disposition": "SUPERSEDED_PRE_PLATFORM_PROVISIONAL_NOT_ACCEPTED"
+    },
+    {
+      "ordinal": 3,
+      "evidence_id": "R2-INT-010-POST-PLATFORM-TRANSITION-T001",
+      "nature": "ACCEPTED_POST_PLATFORM_STATUS_TRANSITION",
+      "path": "reports/m2/probes/remediations/r2-int-010-post-platform-transition/evidence.json",
+      "sha256": "f2e9c48517cd9437aa464041f28b15e8ff96c8df8533c58fa8afb001d22fdd18",
+      "disposition": "EFFECTIVE_RESOLVED_ADAPTER_PROJECTION"
+    },
+    {
+      "ordinal": 4,
+      "evidence_id": "M2-B001-RECOVERY-CLOSEOUT-001-E002",
+      "nature": "ADDITIVE_RECOVERY_CLOSEOUT_EVIDENCE_CANDIDATE",
+      "path": "reports/m2/probes/closeouts/m2-b001-recovery-closeout-001/evidence.json",
+      "sha256": "42c7b840fae52caa0b5dc4e0a4f8c939a730352ece6915435b660984f247bd77",
+      "disposition": "PENDING_INDEPENDENT_ACCEPT_AND_LIFECYCLE_CLOSEOUT"
+    }
+  ],
+  "authority_bindings": {
+    "accepted_post_platform_pair": {
+      "rules_commit": "455cd5d66c683565a4aad7ef8d6523421d37db71",
+      "rules_tree": "d74aae0baf791566a770ef1aaed2da7562f681d5",
+      "platform_commit": "1339c490bd8cae1e2a6e6607fc0f1db019faab64",
+      "platform_tree": "25d5645caf883a73f165db0179accbca48ddf526",
+      "verdict": "PASS_EXACT_PAIR_CROSS_REPOSITORY_ACCEPTED",
+      "verdict_sha256": "099aaa7244b4a443e31bcdb733bbef2728de11b5129382328b4274ffe2534185"
+    },
+    "rules_transition": {
+      "commit": "be1f8dca3c694c9b93a3193348772ae750fc77e1",
+      "tree": "e4ad6e4f5ad4f672c827b1f37c1980b7655353d6",
+      "effective_R2-INT-010": "RESOLVED_ADAPTER"
+    },
+    "platform_closeout": {
+      "commit": "cde53640e143b7adb9e36d7d8bc4fedb6f0ed401",
+      "tree": "52ddf06463b01b1e0c5532af3796d4592d4ddea8",
+      "batch_id": "M1-B010",
+      "state": "COMPLETED",
+      "active_implementation_wip": "NONE"
+    },
+    "prior_attempt": {
+      "task_id": "RULES-RESIDUE-M2-B001-RECOVERY-CLOSEOUT-IMPLEMENT-001",
+      "commit": "854b43980f0633a4b2e01e61d326d7526cb11c8e",
+      "tree": "411565bc632e24806f67e39d9c6100d0cdb321f9",
+      "disposition": "QUARANTINED_UNACCEPTED_LOCAL_CANDIDATE"
+    }
+  },
+  "projections": {
+    "historical_R2-INT-010": "FAIL",
+    "effective_R2-INT-010": "RESOLVED_ADAPTER",
+    "formal_B002": false,
+    "formal_B009": false,
+    "M2-B002": "NOT_STARTED",
+    "M2-B002_READY": "NO",
+    "aggregate_M2_pass": false,
+    "aggregate_external_capability_pass": false,
+    "blocking_ids": [
+      "R2-INT-011",
+      "R2-INT-012",
+      "DEFER-R2-C14-001"
+    ]
+  },
+  "execution_evidence_exclusions": [
+    {
+      "identity": "OWNER_ROUTE_AUTHORITY",
+      "reason": "ROUTING_AUTHORIZATION_ONLY_NON_AUTHORITATIVE_PROJECTION"
+    },
+    {
+      "identity": "PLATFORM_CHANGE_PROPOSAL",
+      "reason": "ANTECEDENT_ONLY_NOT_EXECUTION_EVIDENCE"
+    },
+    {
+      "identity": "OWNER_APPROVAL_ANTECEDENT",
+      "reason": "ANTECEDENT_ONLY_NOT_EXECUTION_EVIDENCE"
+    },
+    {
+      "identity": "EARLY_PHASE_J",
+      "reason": "PRE_PLATFORM_PROVISIONAL_NOT_ACCEPTED"
+    },
+    {
+      "identity": "ATTEMPT_001",
+      "reason": "QUARANTINED_UNACCEPTED_LOCAL_CANDIDATE"
+    }
+  ],
+  "candidate_binding": {
+    "strategy": "EXACT_HEAD_AT_VALIDATION",
+    "execution_status": "NOT_RUN",
+    "required_phase": "INDEPENDENT_ACCEPT",
+    "must_bind_exact_commit_tree": true,
+    "clean_worktree_required": true
+  },
+  "resolution_rule": "Apply evidence_chain in ordinal order; preserve historical FAIL, accept only the post-platform transition as the effective R2-INT-010 projection, and require independent exact-HEAD validation before lifecycle closeout.",
+  "formal_batch_reopened": false,
+  "lifecycle_closeout_executed": false,
+  "independent_acceptance_required": true
+}

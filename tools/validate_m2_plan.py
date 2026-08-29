@@ -71,6 +71,19 @@ BATCH_RESULTS = [
     "BLOCKED_DESIGN_CONFLICT",
 ]
 
+RECOVERY_EVIDENCE_PATH = (
+    Path("reports")
+    / "m2"
+    / "probes"
+    / "closeouts"
+    / "m2-b001-recovery-closeout-001"
+    / "evidence.json"
+)
+FROZEN_RECOVERY_PENDING = "FROZEN_WITH_RECOVERY_EVIDENCE_PENDING_LIFECYCLE_CLOSEOUT"
+ACCEPTED_WITH_BLOCKERS = "ACCEPTED_WITH_DOWNSTREAM_BLOCKERS"
+INVALID_MIXED_STATE = "INVALID_MIXED_STATE"
+EXPECTED_RECOVERY_BLOCKERS = ["R2-INT-011", "R2-INT-012", "DEFER-R2-C14-001"]
+
 
 def _read_json(path: Path, errors: list[str]) -> Any:
     try:
@@ -259,19 +272,82 @@ def _check_probe_contract(probes: dict[str, Any], errors: list[str]) -> None:
         errors.append("probe result contract does not preserve every required evidence field")
 
 
-def collect_errors(project_root: Path = PROJECT_ROOT) -> list[str]:
+def _classify_lifecycle(
+    milestone: dict[str, Any],
+    recovery: dict[str, Any],
+    errors: list[str],
+) -> str:
+    if recovery.get("evidence_id") != "M2-B001-RECOVERY-CLOSEOUT-001-E002":
+        errors.append("recovery closeout evidence identity is missing or stale")
+    if recovery.get("task_id") != "RULES-RESIDUE-M2-B001-RECOVERY-CLOSEOUT-IMPLEMENT-002":
+        errors.append("recovery closeout task identity is missing or stale")
+    if recovery.get("closeout_id") != "M2-B001-RECOVERY-CLOSEOUT-001" or recovery.get("attempt_number") != 2:
+        errors.append("recovery closeout/attempt identity is missing or stale")
+    if recovery.get("historical_projection") != {
+        "R2-INT-010": "FAIL",
+        "source_path": "reports/m2/probes/probe-results.json",
+        "source_sha256": "154e7c0ddf8ce7b2243ad6c78d10ceb6cddf02c3aeb6592716dcc5ad8fc64218",
+    }:
+        errors.append("recovery closeout must preserve historical R2-INT-010=FAIL")
+    if recovery.get("effective_projection", {}).get("R2-INT-010") != "RESOLVED_ADAPTER":
+        errors.append("recovery closeout must project effective R2-INT-010=RESOLVED_ADAPTER")
+    if recovery.get("non_claims") != {
+        "formal_B002": False,
+        "formal_B009": False,
+        "aggregate_M2_pass": False,
+        "aggregate_external_capability_pass": False,
+    }:
+        errors.append("recovery closeout overclaims formal or aggregate readiness")
+    if recovery.get("readiness") != {
+        "M2-B002": "NOT_STARTED",
+        "M2-B002_READY": "NO",
+        "blocking_ids": EXPECTED_RECOVERY_BLOCKERS,
+    }:
+        errors.append("recovery closeout downstream blockers or readiness changed")
+    if recovery.get("candidate_binding") != {
+        "strategy": "EXACT_HEAD_AT_VALIDATION",
+        "execution_status": "NOT_RUN",
+        "required_phase": "INDEPENDENT_ACCEPT",
+        "must_bind_exact_commit_tree": True,
+        "clean_worktree_required": True,
+    }:
+        errors.append("recovery closeout candidate binding is not pending exact-HEAD validation")
+
+    active = milestone.get("active_plan")
+    active_state = active.get("implementation_state") if isinstance(active, dict) else None
+    lifecycle_pair = (milestone.get("state"), active_state)
+    if lifecycle_pair == ("FROZEN", "NOT_STARTED"):
+        if recovery.get("lifecycle") != {
+            "candidate_state": FROZEN_RECOVERY_PENDING,
+            "lifecycle_closeout_executed": False,
+            "independent_acceptance": "NOT_RUN",
+        }:
+            errors.append("frozen recovery evidence falsely claims lifecycle closeout")
+        return FROZEN_RECOVERY_PENDING
+    if lifecycle_pair == ("ACCEPTED", "ACCEPTED"):
+        return ACCEPTED_WITH_BLOCKERS
+
+    errors.append(
+        f"{INVALID_MIXED_STATE}: milestone state and active implementation state are {lifecycle_pair!r}"
+    )
+    return INVALID_MIXED_STATE
+
+
+def collect_validation(project_root: Path = PROJECT_ROOT) -> tuple[list[str], str]:
     global PROJECT_ROOT, PLAN_ROOT
     original_root = PROJECT_ROOT
     original_plan_root = PLAN_ROOT
     PROJECT_ROOT = project_root.resolve()
     PLAN_ROOT = PROJECT_ROOT / ".codex" / "plans" / "m2-vertical-slice"
     errors: list[str] = []
+    lifecycle_state = INVALID_MIXED_STATE
     try:
         batches = _read_json(PLAN_ROOT / "batches.json", errors)
         probes = _read_json(PLAN_ROOT / "capability-probes.json", errors)
         controls = _read_json(PLAN_ROOT / "controls.json", errors)
         milestone = _read_json(PROJECT_ROOT / ".codex" / "state" / "MILESTONE_PLAN.yaml", errors)
         route = _read_json(PROJECT_ROOT / ".codex" / "routes" / "m2-vertical-slice-plan-request.json", errors)
+        recovery = _read_json(PROJECT_ROOT / RECOVERY_EVIDENCE_PATH, errors)
 
         if isinstance(batches, dict):
             _check_dag(batches, errors)
@@ -286,11 +362,13 @@ def collect_errors(project_root: Path = PROJECT_ROOT) -> list[str]:
         if isinstance(controls, dict):
             _check_controls(controls, errors)
         if isinstance(milestone, dict):
-            if (milestone.get("milestone"), milestone.get("batch_id"), milestone.get("state")) != ("M2", "M2-B001", "FROZEN"):
-                errors.append("milestone machine source must be M2 / M2-B001 / FROZEN")
+            if (milestone.get("milestone"), milestone.get("batch_id")) != ("M2", "M2-B001"):
+                errors.append("milestone machine source must remain M2 / M2-B001")
             active = milestone.get("active_plan")
-            if not isinstance(active, dict) or active.get("implementation_state") != "NOT_STARTED":
-                errors.append("active M2 plan must remain NOT_STARTED")
+            if not isinstance(active, dict):
+                errors.append("active M2 plan must remain an object")
+            if isinstance(recovery, dict):
+                lifecycle_state = _classify_lifecycle(milestone, recovery, errors)
         if isinstance(route, dict):
             identity = (route.get("route_id"), route.get("mode"), route.get("milestone"), route.get("batch_id"))
             if identity != ("M2-VERTICAL-SLICE-PLAN", "PLAN", "M2", "M2-B001"):
@@ -311,11 +389,22 @@ def collect_errors(project_root: Path = PROJECT_ROOT) -> list[str]:
     finally:
         PROJECT_ROOT = original_root
         PLAN_ROOT = original_plan_root
-    return errors
+    return errors, lifecycle_state
+
+
+def collect_errors(project_root: Path = PROJECT_ROOT) -> list[str]:
+    return collect_validation(project_root)[0]
+
+
+def classify_lifecycle(project_root: Path = PROJECT_ROOT) -> str:
+    errors, lifecycle_state = collect_validation(project_root)
+    if errors:
+        return INVALID_MIXED_STATE
+    return lifecycle_state
 
 
 def main() -> int:
-    errors = collect_errors()
+    errors, lifecycle_state = collect_validation()
     if errors:
         print("M2_PLAN_VALIDATION: FAIL")
         for error in errors:
@@ -326,6 +415,7 @@ def main() -> int:
     print("- 12 integration probes and 31 acceptance gates: PASS")
     print("- Task Packet ownership, deferred checkpoints, and external NOT_RUN states: PASS")
     print("- routed machine-input projections match their repository sources byte-for-byte: PASS")
+    print(f"- M2-B001 lifecycle state: {lifecycle_state}")
     return 0
 
 

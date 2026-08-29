@@ -1,0 +1,273 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://rules-residue.invalid/schemas/m2-b001-recovery-closeout-v1.schema.json",
+  "title": "Rules Residue M2-B001 recovery closeout evidence",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "evidence_id",
+    "task_id",
+    "closeout_id",
+    "attempt_number",
+    "nature",
+    "source_binding",
+    "route_binding",
+    "formal_m2_b001",
+    "historical_projection",
+    "effective_projection",
+    "accepted_post_platform_pair",
+    "rules_transition",
+    "platform_closeout",
+    "prior_attempts",
+    "non_authoritative_antecedents",
+    "non_claims",
+    "readiness",
+    "lifecycle",
+    "candidate_binding",
+    "evidence_links"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "rules-residue.m2.m2-b001-recovery-closeout/1.0"
+    },
+    "evidence_id": {
+      "const": "M2-B001-RECOVERY-CLOSEOUT-001-E002"
+    },
+    "task_id": {
+      "const": "RULES-RESIDUE-M2-B001-RECOVERY-CLOSEOUT-IMPLEMENT-002"
+    },
+    "closeout_id": {
+      "const": "M2-B001-RECOVERY-CLOSEOUT-001"
+    },
+    "attempt_number": {
+      "const": 2
+    },
+    "nature": {
+      "const": "ADDITIVE_RECOVERY_CLOSEOUT_EVIDENCE_CANDIDATE"
+    },
+    "source_binding": {
+      "$ref": "#/$defs/sourceBinding"
+    },
+    "route_binding": {
+      "$ref": "#/$defs/routeBinding"
+    },
+    "formal_m2_b001": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "commit", "tree", "result_path", "result_sha256"],
+      "properties": {
+        "status": {"const": "ACCEPTED_UNCHANGED"},
+        "commit": {"$ref": "#/$defs/sha1"},
+        "tree": {"$ref": "#/$defs/sha1"},
+        "result_path": {"type": "string", "minLength": 1},
+        "result_sha256": {"$ref": "#/$defs/sha256"}
+      }
+    },
+    "historical_projection": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["R2-INT-010", "source_path", "source_sha256"],
+      "properties": {
+        "R2-INT-010": {"const": "FAIL"},
+        "source_path": {"type": "string", "minLength": 1},
+        "source_sha256": {"$ref": "#/$defs/sha256"}
+      }
+    },
+    "effective_projection": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["R2-INT-010", "transition_path", "transition_sha256"],
+      "properties": {
+        "R2-INT-010": {"const": "RESOLVED_ADAPTER"},
+        "transition_path": {"type": "string", "minLength": 1},
+        "transition_sha256": {"$ref": "#/$defs/sha256"}
+      }
+    },
+    "accepted_post_platform_pair": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["rules", "platform", "verdict", "verdict_sha256"],
+      "properties": {
+        "rules": {"$ref": "#/$defs/commitTree"},
+        "platform": {"$ref": "#/$defs/commitTree"},
+        "verdict": {"const": "PASS_EXACT_PAIR_CROSS_REPOSITORY_ACCEPTED"},
+        "verdict_sha256": {"$ref": "#/$defs/sha256"}
+      }
+    },
+    "rules_transition": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["commit", "tree", "status"],
+      "properties": {
+        "commit": {"$ref": "#/$defs/sha1"},
+        "tree": {"$ref": "#/$defs/sha1"},
+        "status": {"const": "RESOLVED_ADAPTER"}
+      }
+    },
+    "platform_closeout": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["commit", "tree", "batch_id", "state", "active_implementation_wip"],
+      "properties": {
+        "commit": {"$ref": "#/$defs/sha1"},
+        "tree": {"$ref": "#/$defs/sha1"},
+        "batch_id": {"const": "M1-B010"},
+        "state": {"const": "COMPLETED"},
+        "active_implementation_wip": {"const": "NONE"}
+      }
+    },
+    "prior_attempts": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["task_id", "commit", "tree", "disposition"],
+        "properties": {
+          "task_id": {"const": "RULES-RESIDUE-M2-B001-RECOVERY-CLOSEOUT-IMPLEMENT-001"},
+          "commit": {"$ref": "#/$defs/sha1"},
+          "tree": {"$ref": "#/$defs/sha1"},
+          "disposition": {"const": "QUARANTINED_UNACCEPTED_LOCAL_CANDIDATE"}
+        }
+      }
+    },
+    "non_authoritative_antecedents": {
+      "type": "array",
+      "minItems": 7,
+      "maxItems": 7,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["identity", "category", "disposition", "may_be_used_as_execution_evidence"],
+        "properties": {
+          "identity": {"type": "string", "minLength": 1},
+          "category": {"type": "string", "minLength": 1},
+          "disposition": {"type": "string", "minLength": 1},
+          "may_be_used_as_execution_evidence": {"const": false}
+        }
+      }
+    },
+    "non_claims": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["formal_B002", "formal_B009", "aggregate_M2_pass", "aggregate_external_capability_pass"],
+      "properties": {
+        "formal_B002": {"const": false},
+        "formal_B009": {"const": false},
+        "aggregate_M2_pass": {"const": false},
+        "aggregate_external_capability_pass": {"const": false}
+      }
+    },
+    "readiness": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["M2-B002", "M2-B002_READY", "blocking_ids"],
+      "properties": {
+        "M2-B002": {"const": "NOT_STARTED"},
+        "M2-B002_READY": {"const": "NO"},
+        "blocking_ids": {
+          "type": "array",
+          "minItems": 3,
+          "maxItems": 3,
+          "prefixItems": [
+            {"const": "R2-INT-011"},
+            {"const": "R2-INT-012"},
+            {"const": "DEFER-R2-C14-001"}
+          ],
+          "items": false
+        }
+      }
+    },
+    "lifecycle": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["candidate_state", "lifecycle_closeout_executed", "independent_acceptance"],
+      "properties": {
+        "candidate_state": {"const": "FROZEN_WITH_RECOVERY_EVIDENCE_PENDING_LIFECYCLE_CLOSEOUT"},
+        "lifecycle_closeout_executed": {"const": false},
+        "independent_acceptance": {"const": "NOT_RUN"}
+      }
+    },
+    "candidate_binding": {
+      "$ref": "#/$defs/candidateBinding"
+    },
+    "evidence_links": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["execution_records", "evidence_manifest", "external_evidence_index_v2"],
+      "properties": {
+        "execution_records": {"type": "string", "minLength": 1},
+        "evidence_manifest": {"type": "string", "minLength": 1},
+        "external_evidence_index_v2": {"type": "string", "minLength": 1}
+      }
+    }
+  },
+  "$defs": {
+    "sha1": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{40}$"
+    },
+    "sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "commitTree": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["commit", "tree"],
+      "properties": {
+        "commit": {"$ref": "#/$defs/sha1"},
+        "tree": {"$ref": "#/$defs/sha1"}
+      }
+    },
+    "sourceBinding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["commit", "tree"],
+      "properties": {
+        "commit": {"const": "be1f8dca3c694c9b93a3193348772ae750fc77e1"},
+        "tree": {"const": "e4ad6e4f5ad4f672c827b1f37c1980b7655353d6"}
+      }
+    },
+    "routeBinding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "route_id",
+        "mode",
+        "milestone",
+        "batch_id",
+        "source_commit",
+        "source_tree",
+        "binding_digest",
+        "owner_package_id",
+        "owner_manifest_sha256"
+      ],
+      "properties": {
+        "route_id": {"const": "M2-B001-RECOVERY-CLOSEOUT-IMPLEMENT-002"},
+        "mode": {"const": "IMPLEMENT"},
+        "milestone": {"const": "M2"},
+        "batch_id": {"const": "M2-B001"},
+        "source_commit": {"const": "be1f8dca3c694c9b93a3193348772ae750fc77e1"},
+        "source_tree": {"const": "e4ad6e4f5ad4f672c827b1f37c1980b7655353d6"},
+        "binding_digest": {"const": "f4b61ceab917a056ce392318319635c74b54a9375bb8ea0e78f2b67c1dc33cc6"},
+        "owner_package_id": {"const": "RR-M2-B001-RECOVERY-ATTEMPT-002-V1"},
+        "owner_manifest_sha256": {"const": "dff66863f19d85f5f22f2453181f14c0c5ce484c8825a15ee7a95b7e0ea38989"}
+      }
+    },
+    "candidateBinding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["strategy", "execution_status", "required_phase", "must_bind_exact_commit_tree", "clean_worktree_required"],
+      "properties": {
+        "strategy": {"const": "EXACT_HEAD_AT_VALIDATION"},
+        "execution_status": {"const": "NOT_RUN"},
+        "required_phase": {"const": "INDEPENDENT_ACCEPT"},
+        "must_bind_exact_commit_tree": {"const": true},
+        "clean_worktree_required": {"const": true}
+      }
+    }
+  }
+}

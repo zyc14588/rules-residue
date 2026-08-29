@@ -1,0 +1,292 @@
+from __future__ import annotations
+
+import copy
+import json
+import shutil
+import subprocess
+import tempfile
+import unittest
+from pathlib import Path
+from typing import Any, Callable
+
+from validate_m2_b001_recovery_closeout import (
+    ALLOWED_CHANGED_PATHS,
+    ARTIFACT_PATHS,
+    ATTEMPT_001_COMMIT,
+    BLOCKING_IDS,
+    EVIDENCE_PATH_TEXT,
+    EXECUTION_PATH_TEXT,
+    IMMUTABLE_HASHES,
+    INDEX_V1_PATH_TEXT,
+    INDEX_V2_PATH_TEXT,
+    MANIFEST_PATH_TEXT,
+    RecoveryValidationError,
+    collect_changed_paths,
+    validate_candidate_checkout,
+    validate_changed_paths,
+    validate_recovery,
+)
+
+
+ROOT = Path(__file__).resolve().parents[3]
+
+
+def _read_json(path: Path) -> dict[str, Any]:
+    return json.loads(path.read_text(encoding="utf-8"))
+
+
+def _write_json(path: Path, value: dict[str, Any]) -> None:
+    path.write_text(json.dumps(value, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+
+
+def _set_path(value: Any, path: tuple[Any, ...], replacement: Any) -> None:
+    target = value
+    for component in path[:-1]:
+        target = target[component]
+    target[path[-1]] = replacement
+
+
+def _delete_path(value: Any, path: tuple[Any, ...]) -> None:
+    target = value
+    for component in path[:-1]:
+        target = target[component]
+    del target[path[-1]]
+
+
+def _promote_antecedent(identity: str) -> Callable[[dict[str, Any]], None]:
+    def mutate(value: dict[str, Any]) -> None:
+        item = next(entry for entry in value["non_authoritative_antecedents"] if entry["identity"] == identity)
+        item["may_be_used_as_execution_evidence"] = True
+
+    return mutate
+
+
+def _replace_blockers(value: dict[str, Any], blockers: list[str]) -> None:
+    value["readiness"]["blocking_ids"] = blockers
+
+
+class RecoveryCloseoutTests(unittest.TestCase):
+    maxDiff = None
+
+    def make_fixture(self, temporary_root: Path) -> None:
+        paths = list(IMMUTABLE_HASHES) + ARTIFACT_PATHS + [MANIFEST_PATH_TEXT]
+        for relative in dict.fromkeys(paths):
+            source = ROOT / relative
+            target = temporary_root / relative
+            target.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copy2(source, target)
+
+    def mutate_fixture(
+        self,
+        temporary_root: Path,
+        relative: str,
+        mutator: Callable[[dict[str, Any]], None],
+    ) -> None:
+        path = temporary_root / relative
+        value = _read_json(path)
+        mutator(value)
+        _write_json(path, value)
+
+    def assert_json_attack_rejected(
+        self,
+        relative: str,
+        mutator: Callable[[dict[str, Any]], None],
+    ) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            self.make_fixture(root)
+            self.mutate_fixture(root, relative, mutator)
+            with self.assertRaises(RecoveryValidationError):
+                validate_recovery(root, check_git=False)
+
+    def test_valid_recovery_fixture_passes(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            self.make_fixture(root)
+            validate_recovery(root, check_git=False)
+
+    def test_reject_predecessor_evidence_hash_drift(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            self.make_fixture(root)
+            path = root / "reports/m2/probes/probe-results.json"
+            path.write_bytes(path.read_bytes() + b"\n")
+            with self.assertRaises(RecoveryValidationError):
+                validate_recovery(root, check_git=False)
+
+    def test_reject_v1_index_rewrite(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            self.make_fixture(root)
+            path = root / INDEX_V1_PATH_TEXT
+            path.write_bytes(path.read_bytes() + b"\n")
+            with self.assertRaises(RecoveryValidationError):
+                validate_recovery(root, check_git=False)
+
+    def test_reject_execution_missing_started_at(self) -> None:
+        self.assert_json_attack_rejected(
+            EXECUTION_PATH_TEXT,
+            lambda value: value["records"][0].pop("started_at"),
+        )
+
+    def test_reject_execution_expected_exit_only(self) -> None:
+        def mutate(value: dict[str, Any]) -> None:
+            record = value["records"][0]
+            record["expected_exit_code"] = record.pop("exit_code")
+
+        self.assert_json_attack_rejected(EXECUTION_PATH_TEXT, mutate)
+
+    def test_reject_execution_missing_output_digest(self) -> None:
+        self.assert_json_attack_rejected(
+            EXECUTION_PATH_TEXT,
+            lambda value: value["records"][0].pop("stderr_sha256"),
+        )
+
+    def test_reject_execution_finished_before_started(self) -> None:
+        def mutate(value: dict[str, Any]) -> None:
+            record = value["records"][0]
+            record["finished_at"] = "2000-01-01T00:00:00Z"
+
+        self.assert_json_attack_rejected(EXECUTION_PATH_TEXT, mutate)
+
+    def make_git_checkout(self, root: Path) -> tuple[str, str]:
+        subprocess.run(["git", "init", "-q"], cwd=root, check=True)
+        subprocess.run(["git", "config", "user.name", "Recovery Tests"], cwd=root, check=True)
+        subprocess.run(["git", "config", "user.email", "recovery-tests@example.invalid"], cwd=root, check=True)
+        marker = root / "marker.txt"
+        marker.write_text("base\n", encoding="utf-8")
+        subprocess.run(["git", "add", "marker.txt"], cwd=root, check=True)
+        subprocess.run(["git", "commit", "-q", "-m", "base"], cwd=root, check=True)
+        commit = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=root, text=True).strip()
+        tree = subprocess.check_output(["git", "rev-parse", "HEAD^{tree}"], cwd=root, text=True).strip()
+        return commit, tree
+
+    def test_exact_candidate_checkout_passes(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            commit, tree = self.make_git_checkout(root)
+            validate_candidate_checkout(root, commit, tree, source_commit=commit)
+
+    def test_reject_candidate_validation_wrong_commit(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            commit, tree = self.make_git_checkout(root)
+            wrong = "0" * 40 if commit != "0" * 40 else "1" * 40
+            with self.assertRaises(RecoveryValidationError):
+                validate_candidate_checkout(root, wrong, tree, source_commit=commit)
+
+    def test_reject_candidate_validation_wrong_tree(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            commit, tree = self.make_git_checkout(root)
+            wrong = "0" * 40 if tree != "0" * 40 else "1" * 40
+            with self.assertRaises(RecoveryValidationError):
+                validate_candidate_checkout(root, commit, wrong, source_commit=commit)
+
+    def test_reject_dirty_candidate_worktree(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            commit, tree = self.make_git_checkout(root)
+            (root / "marker.txt").write_text("dirty\n", encoding="utf-8")
+            with self.assertRaises(RecoveryValidationError):
+                validate_candidate_checkout(root, commit, tree, source_commit=commit)
+
+    def test_reject_allowed_path_outside_diff(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            commit, _ = self.make_git_checkout(root)
+            outside = root / "outside-approved-scope.txt"
+            outside.write_text("attack\n", encoding="utf-8")
+            changed = collect_changed_paths(root, source_ref=commit)
+            with self.assertRaises(RecoveryValidationError):
+                validate_changed_paths(changed, require_complete=False)
+
+    def test_approved_path_set_is_exact(self) -> None:
+        self.assertEqual(len(ALLOWED_CHANGED_PATHS), 10)
+        validate_changed_paths(ALLOWED_CHANGED_PATHS)
+
+
+def _set_attack(path: tuple[Any, ...], replacement: Any) -> Callable[[dict[str, Any]], None]:
+    return lambda value: _set_path(value, path, replacement)
+
+
+def _delete_attack(path: tuple[Any, ...]) -> Callable[[dict[str, Any]], None]:
+    return lambda value: _delete_path(value, path)
+
+
+EVIDENCE_ATTACKS: dict[str, Callable[[dict[str, Any]], None]] = {
+    "formal_b002_true": _set_attack(("non_claims", "formal_B002"), True),
+    "formal_b009_true": _set_attack(("non_claims", "formal_B009"), True),
+    "m2_b002_implementing": _set_attack(("readiness", "M2-B002"), "IMPLEMENTING"),
+    "m2_b002_ready_yes": _set_attack(("readiness", "M2-B002_READY"), "YES"),
+    "aggregate_m2_pass_true": _set_attack(("non_claims", "aggregate_M2_pass"), True),
+    "aggregate_external_capability_pass_true": _set_attack(("non_claims", "aggregate_external_capability_pass"), True),
+    "wrong_rules_commit": _set_attack(("accepted_post_platform_pair", "rules", "commit"), "0" * 40),
+    "wrong_rules_tree": _set_attack(("accepted_post_platform_pair", "rules", "tree"), "0" * 40),
+    "wrong_platform_commit": _set_attack(("accepted_post_platform_pair", "platform", "commit"), "0" * 40),
+    "wrong_platform_tree": _set_attack(("accepted_post_platform_pair", "platform", "tree"), "0" * 40),
+    "wrong_exact_pair_verdict_digest": _set_attack(("accepted_post_platform_pair", "verdict_sha256"), "0" * 64),
+    "wrong_formal_b001_commit": _set_attack(("formal_m2_b001", "commit"), "0" * 40),
+    "wrong_formal_b001_tree": _set_attack(("formal_m2_b001", "tree"), "0" * 40),
+    "wrong_platform_closeout_commit": _set_attack(("platform_closeout", "commit"), "0" * 40),
+    "wrong_platform_closeout_tree": _set_attack(("platform_closeout", "tree"), "0" * 40),
+    "promote_c6_commit": _set_attack(("accepted_post_platform_pair", "rules", "commit"), "c6a840b10db46dc475cd9af9e6a1a13f1e68abd4"),
+    "promote_65_commit": _set_attack(("accepted_post_platform_pair", "rules", "commit"), "65a0a1671720345425e0368136793754567187cc"),
+    "promote_proposal": _promote_antecedent("PLATFORM_CHANGE_PROPOSAL"),
+    "promote_owner_approval_antecedent": _promote_antecedent("OWNER_APPROVAL_ANTECEDENT"),
+    "promote_early_phase_j": _promote_antecedent("EARLY_PHASE_J"),
+    "promote_attempt_001": _promote_antecedent("ATTEMPT_001"),
+    "promote_owner_route_authority": _promote_antecedent("OWNER_ROUTE_AUTHORITY"),
+    "missing_blocker": lambda value: _replace_blockers(value, BLOCKING_IDS[:-1]),
+    "extra_blocker": lambda value: _replace_blockers(value, [*BLOCKING_IDS, "EXTRA-BLOCKER"]),
+    "renamed_blocker": lambda value: _replace_blockers(value, ["R2-INT-011", "R2-INT-012-RENAMED", "DEFER-R2-C14-001"]),
+    "reordered_blockers": lambda value: _replace_blockers(value, list(reversed(BLOCKING_IDS))),
+    "candidate_strategy_not_exact_head": _set_attack(("candidate_binding", "strategy"), "EMBEDDED_COMMIT"),
+    "candidate_execution_status_forged_pass": _set_attack(("candidate_binding", "execution_status"), "PASS"),
+    "historical_fail_rewritten": _set_attack(("historical_projection", "R2-INT-010"), "RESOLVED_ADAPTER"),
+    "required_field_missing": _delete_attack(("task_id",)),
+    "unknown_field": _set_attack(("unexpected" ,), True),
+    "wrong_evidence_id": _set_attack(("evidence_id",), "WRONG-EVIDENCE"),
+    "wrong_task_id": _set_attack(("task_id",), "WRONG-TASK"),
+    "wrong_closeout_id": _set_attack(("closeout_id",), "WRONG-CLOSEOUT"),
+    "wrong_attempt_number": _set_attack(("attempt_number",), 1),
+    "wrong_route_id": _set_attack(("route_binding", "route_id"), "WRONG-ROUTE"),
+    "wrong_route_digest": _set_attack(("route_binding", "binding_digest"), "0" * 64),
+    "manifest_circular_binding": _set_attack(("evidence_links", "evidence_manifest_sha256"), "0" * 64),
+}
+
+
+MANIFEST_ATTACKS: dict[str, Callable[[dict[str, Any]], None]] = {
+    "manifest_missing_item": lambda value: value["artifacts"].pop(),
+    "manifest_duplicate_item": lambda value: value["artifacts"].append(copy.deepcopy(value["artifacts"][0])),
+    "manifest_forged_digest": _set_attack(("artifacts", 0, "sha256"), "0" * 64),
+    "manifest_self_binding": lambda value: value["artifacts"].append({"path": MANIFEST_PATH_TEXT, "sha256": "0" * 64}),
+}
+
+
+INDEX_ATTACKS: dict[str, Callable[[dict[str, Any]], None]] = {
+    "ordinal_predecessor_hash_mismatch": _set_attack(("predecessor_index", "sha256"), "0" * 64),
+}
+
+
+def _install_generated_attack_tests() -> None:
+    groups = [
+        (EVIDENCE_PATH_TEXT, EVIDENCE_ATTACKS),
+        (MANIFEST_PATH_TEXT, MANIFEST_ATTACKS),
+        (INDEX_V2_PATH_TEXT, INDEX_ATTACKS),
+    ]
+    for relative, attacks in groups:
+        for attack_name, mutator in attacks.items():
+            def test(self: RecoveryCloseoutTests, relative: str = relative, mutator: Callable[[dict[str, Any]], None] = mutator) -> None:
+                self.assert_json_attack_rejected(relative, mutator)
+
+            test.__name__ = f"test_reject_{attack_name}"
+            test.__qualname__ = f"RecoveryCloseoutTests.{test.__name__}"
+            setattr(RecoveryCloseoutTests, test.__name__, test)
+
+
+_install_generated_attack_tests()
+
+
+if __name__ == "__main__":
+    unittest.main()

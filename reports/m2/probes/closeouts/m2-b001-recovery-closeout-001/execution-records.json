@@ -1,0 +1,170 @@
+{
+  "schema_version": "rules-residue.m2.m2-b001-recovery-closeout-execution/1.0",
+  "evidence_id": "M2-B001-RECOVERY-CLOSEOUT-001-E002",
+  "task_id": "RULES-RESIDUE-M2-B001-RECOVERY-CLOSEOUT-IMPLEMENT-002",
+  "closeout_id": "M2-B001-RECOVERY-CLOSEOUT-001",
+  "attempt_number": 2,
+  "source_binding": {
+    "commit": "be1f8dca3c694c9b93a3193348772ae750fc77e1",
+    "tree": "e4ad6e4f5ad4f672c827b1f37c1980b7655353d6"
+  },
+  "route_binding": {
+    "route_id": "M2-B001-RECOVERY-CLOSEOUT-IMPLEMENT-002",
+    "mode": "IMPLEMENT",
+    "milestone": "M2",
+    "batch_id": "M2-B001",
+    "source_commit": "be1f8dca3c694c9b93a3193348772ae750fc77e1",
+    "source_tree": "e4ad6e4f5ad4f672c827b1f37c1980b7655353d6",
+    "binding_digest": "f4b61ceab917a056ce392318319635c74b54a9375bb8ea0e78f2b67c1dc33cc6",
+    "owner_package_id": "RR-M2-B001-RECOVERY-ATTEMPT-002-V1",
+    "owner_manifest_sha256": "dff66863f19d85f5f22f2453181f14c0c5ce484c8825a15ee7a95b7e0ea38989"
+  },
+  "candidate_binding": {
+    "strategy": "EXACT_HEAD_AT_VALIDATION",
+    "execution_status": "NOT_RUN",
+    "required_phase": "INDEPENDENT_ACCEPT",
+    "must_bind_exact_commit_tree": true,
+    "clean_worktree_required": true
+  },
+  "recording_policy": {
+    "stdout_stderr_bytes": "CAPTURED_SEPARATELY",
+    "combined_output_encoding": "STDOUT_BYTES_THEN_STDERR_BYTES",
+    "closure_results_location": "IMPLEMENT_FINAL_REPORT_ONLY"
+  },
+  "records": [
+    {
+      "command_id": "A2-R001",
+      "argv": [
+        "python3",
+        "tools/codex_route.py",
+        "check",
+        "--map",
+        ".codex/routes/generated/m2-b001-recovery-closeout-implement-002.reading-map.json",
+        "--route-id",
+        "M2-B001-RECOVERY-CLOSEOUT-IMPLEMENT-002",
+        "--mode",
+        "IMPLEMENT",
+        "--milestone",
+        "M2",
+        "--batch-id",
+        "M2-B001",
+        "--repo-root",
+        "/home/zyc14588/worktrees/rules-residue-m2-b001-recovery-implement-v2",
+        "--allow-root",
+        "/home/zyc14588/secs/owner-inputs/RR-M2-B001-RECOVERY-ATTEMPT-002-V1"
+      ],
+      "cwd": "/home/zyc14588/worktrees/rules-residue-m2-b001-recovery-implement-v2",
+      "started_at": "2026-08-29T17:15:17.059686Z",
+      "finished_at": "2026-08-29T17:15:17.095479Z",
+      "exit_code": 0,
+      "stdout_sha256": "ec55c6a28a1c81a4233ad89775168f2e110d58011d3ee09c650b7873e4a72252",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "combined_output_sha256": "ec55c6a28a1c81a4233ad89775168f2e110d58011d3ee09c650b7873e4a72252",
+      "result": "PASS"
+    },
+    {
+      "command_id": "A2-R002",
+      "argv": ["python3", "tests/m2/probes/validate_m2_b001.py", "--all"],
+      "cwd": "/home/zyc14588/worktrees/rules-residue-m2-b001-recovery-implement-v2",
+      "started_at": "2026-08-29T17:15:17.095518Z",
+      "finished_at": "2026-08-29T17:15:17.132963Z",
+      "exit_code": 0,
+      "stdout_sha256": "4bee340f80d332293ff5b77b77ba14ebb2f6d7553ae7403b4fd0c1cea0c12c32",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "combined_output_sha256": "4bee340f80d332293ff5b77b77ba14ebb2f6d7553ae7403b4fd0c1cea0c12c32",
+      "result": "PASS"
+    },
+    {
+      "command_id": "A2-R003",
+      "argv": ["python3", "tests/m2/probes/validate_m2_b001_external_supplement.py", "--supplement"],
+      "cwd": "/home/zyc14588/worktrees/rules-residue-m2-b001-recovery-implement-v2",
+      "started_at": "2026-08-29T17:15:17.132990Z",
+      "finished_at": "2026-08-29T17:15:17.172222Z",
+      "exit_code": 0,
+      "stdout_sha256": "623485e2e853d65ad4d5d84f464f916ab6211b3d3c5482a3b1468a2e1626da9a",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "combined_output_sha256": "623485e2e853d65ad4d5d84f464f916ab6211b3d3c5482a3b1468a2e1626da9a",
+      "result": "PASS"
+    },
+    {
+      "command_id": "A2-R004",
+      "argv": ["python3", "tests/m2/probes/validate_r2_int_010_rem_001.py", "--validate"],
+      "cwd": "/home/zyc14588/worktrees/rules-residue-m2-b001-recovery-implement-v2",
+      "started_at": "2026-08-29T17:15:17.172261Z",
+      "finished_at": "2026-08-29T17:15:17.200046Z",
+      "exit_code": 0,
+      "stdout_sha256": "09732a476fb99250f3581d49f2ddea9588cb2fbb4a345e58ab919e84f4b059ad",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "combined_output_sha256": "09732a476fb99250f3581d49f2ddea9588cb2fbb4a345e58ab919e84f4b059ad",
+      "result": "PASS"
+    },
+    {
+      "command_id": "A2-R005",
+      "argv": ["python3", "tests/m2/probes/validate_r2_int_010_post_platform_transition.py", "--validate"],
+      "cwd": "/home/zyc14588/worktrees/rules-residue-m2-b001-recovery-implement-v2",
+      "started_at": "2026-08-29T17:15:17.200073Z",
+      "finished_at": "2026-08-29T17:15:17.231910Z",
+      "exit_code": 0,
+      "stdout_sha256": "f3fed8cff2db860a12d66d1314108e559df6189f3f0992159ea79a9d8aba76cb",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "combined_output_sha256": "f3fed8cff2db860a12d66d1314108e559df6189f3f0992159ea79a9d8aba76cb",
+      "result": "PASS"
+    },
+    {
+      "command_id": "A2-R006",
+      "argv": ["python3", "tools/validate_m2_plan.py"],
+      "cwd": "/home/zyc14588/worktrees/rules-residue-m2-b001-recovery-implement-v2",
+      "started_at": "2026-08-29T17:15:17.231930Z",
+      "finished_at": "2026-08-29T17:15:17.250274Z",
+      "exit_code": 0,
+      "stdout_sha256": "9628ee1a751d3ca0b8b2783a29369d7a0310d47a3937fd5519b40b35073613a6",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "combined_output_sha256": "9628ee1a751d3ca0b8b2783a29369d7a0310d47a3937fd5519b40b35073613a6",
+      "result": "PASS"
+    },
+    {
+      "command_id": "A2-R007",
+      "argv": ["git", "diff", "--check"],
+      "cwd": "/home/zyc14588/worktrees/rules-residue-m2-b001-recovery-implement-v2",
+      "started_at": "2026-08-29T17:15:17.250289Z",
+      "finished_at": "2026-08-29T17:15:17.252709Z",
+      "exit_code": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "combined_output_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "result": "PASS"
+    },
+    {
+      "command_id": "A2-R008",
+      "argv": [
+        "git",
+        "-C",
+        "/home/zyc14588/worktrees/TRPG_PLATFORM_M1_B010_CLOSEOUT",
+        "show",
+        "--no-patch",
+        "--format=%H %T",
+        "cde53640e143b7adb9e36d7d8bc4fedb6f0ed401"
+      ],
+      "cwd": "/home/zyc14588/worktrees/rules-residue-m2-b001-recovery-implement-v2",
+      "started_at": "2026-08-29T17:15:17.252714Z",
+      "finished_at": "2026-08-29T17:15:17.254451Z",
+      "exit_code": 0,
+      "stdout_sha256": "e3ca58850bd455fc437f7eb48a4b1d5620c572e15455b9a2835eeef2312e6365",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "combined_output_sha256": "e3ca58850bd455fc437f7eb48a4b1d5620c572e15455b9a2835eeef2312e6365",
+      "result": "PASS"
+    },
+    {
+      "command_id": "A2-R009",
+      "argv": ["git", "show", "--no-patch", "--format=%H %T %P", "854b43980f0633a4b2e01e61d326d7526cb11c8e"],
+      "cwd": "/home/zyc14588/worktrees/rules-residue-m2-b001-recovery-implement-v2",
+      "started_at": "2026-08-29T17:15:17.254458Z",
+      "finished_at": "2026-08-29T17:15:17.257084Z",
+      "exit_code": 0,
+      "stdout_sha256": "20281197941354c4ea2f1ef6069074065f64d9cf9c883b368787d8b6027d8258",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "combined_output_sha256": "20281197941354c4ea2f1ef6069074065f64d9cf9c883b368787d8b6027d8258",
+      "result": "PASS"
+    }
+  ]
+}

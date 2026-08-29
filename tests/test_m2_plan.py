@@ -4,7 +4,13 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from tools.validate_m2_plan import collect_errors
+from tools.validate_m2_plan import (
+    ACCEPTED_WITH_BLOCKERS,
+    FROZEN_RECOVERY_PENDING,
+    INVALID_MIXED_STATE,
+    collect_errors,
+    collect_validation,
+)
 
 
 class M2PlanTests(unittest.TestCase):
@@ -20,6 +26,7 @@ class M2PlanTests(unittest.TestCase):
             ".codex/routes/m2-vertical-slice-plan-request.json",
             "docs/implementation/r2/M2_REFERENCE_WORK_PACKAGES.yaml",
             "governance/evidence/r2-authority-install/integration-conflicts.yaml",
+            "reports/m2/probes/closeouts/m2-b001-recovery-closeout-001/evidence.json",
         ]:
             source = self.root / relative
             target = temporary_root / relative
@@ -28,6 +35,53 @@ class M2PlanTests(unittest.TestCase):
 
     def test_frozen_m2_plan_is_machine_valid(self) -> None:
         self.assertEqual(collect_errors(), [])
+
+    def test_frozen_plan_with_recovery_evidence_is_pending_lifecycle_closeout(self) -> None:
+        errors, state = collect_validation()
+        self.assertEqual(errors, [])
+        self.assertEqual(state, FROZEN_RECOVERY_PENDING)
+
+    def test_accepted_lifecycle_with_downstream_blockers_is_valid(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            self.make_fixture(root)
+            path = root / ".codex/state/MILESTONE_PLAN.yaml"
+            data = json.loads(path.read_text(encoding="utf-8"))
+            data["state"] = "ACCEPTED"
+            data["active_plan"]["implementation_state"] = "ACCEPTED"
+            path.write_text(json.dumps(data, ensure_ascii=False), encoding="utf-8")
+            errors, state = collect_validation(root)
+            self.assertEqual(errors, [])
+            self.assertEqual(state, ACCEPTED_WITH_BLOCKERS)
+
+    def test_mixed_lifecycle_state_is_rejected(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            self.make_fixture(root)
+            path = root / ".codex/state/MILESTONE_PLAN.yaml"
+            data = json.loads(path.read_text(encoding="utf-8"))
+            data["state"] = "ACCEPTED"
+            path.write_text(json.dumps(data, ensure_ascii=False), encoding="utf-8")
+            errors, state = collect_validation(root)
+            self.assertEqual(state, INVALID_MIXED_STATE)
+            self.assertTrue(any(INVALID_MIXED_STATE in error for error in errors))
+
+    def test_accepted_lifecycle_cannot_drop_downstream_blockers(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            self.make_fixture(root)
+            milestone_path = root / ".codex/state/MILESTONE_PLAN.yaml"
+            milestone = json.loads(milestone_path.read_text(encoding="utf-8"))
+            milestone["state"] = "ACCEPTED"
+            milestone["active_plan"]["implementation_state"] = "ACCEPTED"
+            milestone_path.write_text(json.dumps(milestone, ensure_ascii=False), encoding="utf-8")
+            recovery_path = root / "reports/m2/probes/closeouts/m2-b001-recovery-closeout-001/evidence.json"
+            recovery = json.loads(recovery_path.read_text(encoding="utf-8"))
+            recovery["readiness"]["blocking_ids"].pop()
+            recovery_path.write_text(json.dumps(recovery, ensure_ascii=False), encoding="utf-8")
+            errors, state = collect_validation(root)
+            self.assertEqual(state, ACCEPTED_WITH_BLOCKERS)
+            self.assertTrue(any("downstream blockers" in error for error in errors))
 
     def test_forward_dependency_is_rejected(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:

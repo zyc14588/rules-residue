@@ -1,0 +1,122 @@
+{
+  "schema_version": "rules-residue.m2.m2-b001-recovery-closeout-manifest/1.0",
+  "evidence_id": "M2-B001-RECOVERY-CLOSEOUT-001-E002",
+  "task_id": "RULES-RESIDUE-M2-B001-RECOVERY-CLOSEOUT-IMPLEMENT-002",
+  "closeout_id": "M2-B001-RECOVERY-CLOSEOUT-001",
+  "attempt_number": 2,
+  "artifacts": [
+    {
+      "path": "docs/implementation/m2/probes/m2-b001-recovery-closeout-v1.schema.json",
+      "sha256": "217289ec44f7f721e1060776ee035744c8600107dc3cddf647f94edac6ea934e"
+    },
+    {
+      "path": "reports/m2/probes/closeouts/m2-b001-recovery-closeout-001/evidence.json",
+      "sha256": "42c7b840fae52caa0b5dc4e0a4f8c939a730352ece6915435b660984f247bd77"
+    },
+    {
+      "path": "reports/m2/probes/closeouts/m2-b001-recovery-closeout-001/execution-records.json",
+      "sha256": "445c9344d18f225654e6f45c14a84af1fc0b25fced7b52c325b51ff492c619f1"
+    },
+    {
+      "path": "reports/m2/probes/external-evidence-index-v2.json",
+      "sha256": "0dd20ad375a40eb3854b3a5426b6666d7eca93ffd75cfb3a9be99c47f21c2627"
+    },
+    {
+      "path": "tests/m2/probes/validate_m2_b001_recovery_closeout.py",
+      "sha256": "480806fa120b820abef437a9a54dfd5e8f2e2bef690610de98170f7b8b19dc4d"
+    },
+    {
+      "path": "tests/m2/probes/test_m2_b001_recovery_closeout.py",
+      "sha256": "7a556ec636356534d6d78a4b2db87fe095eb57e21e77d28325275ebc94f8828d"
+    },
+    {
+      "path": "tests/test_m2_b001_recovery_closeout.py",
+      "sha256": "29d44f2451450d2e4776d283e320db8aba1dac39e78b2a74c01c5047b5c5a8ef"
+    },
+    {
+      "path": "tools/validate_m2_plan.py",
+      "sha256": "a8dab684e6e06c64337fe4491d417555fb61d6a937b8b31cf6e63afff991d390"
+    },
+    {
+      "path": "tests/test_m2_plan.py",
+      "sha256": "0dac09af680fd4a19599fd8931530b3b732891f8ae25d74258ce24a6807b35f0"
+    }
+  ],
+  "immutable_predecessors": [
+    {
+      "path": "reports/m2/probes/probe-results.json",
+      "sha256": "154e7c0ddf8ce7b2243ad6c78d10ceb6cddf02c3aeb6592716dcc5ad8fc64218"
+    },
+    {
+      "path": "reports/m2/probes/external-gates.json",
+      "sha256": "a8951312cb9f23cf3f999a7258900603716ea6f0b4e7f684b8f6a53ed8f13a2d"
+    },
+    {
+      "path": "reports/m2/probes/evidence-manifest.json",
+      "sha256": "3a48da621e45980d9b2258513954e1f29480fd9e12a35dcd29c12b77015c8ca7"
+    },
+    {
+      "path": "reports/m2/probes/external-evidence-index.json",
+      "sha256": "b4bf268d7f9ee1627edea5c1ff87fa74774e3f5689c97cd11f0af6881178a22c"
+    },
+    {
+      "path": "reports/m2/probes/external/m2-b001-ext-001/supplement.json",
+      "sha256": "d2f21f4853e5b77e2796ba3cbe3c7001b4731cdbb251661d6375ac2d5cff193c"
+    },
+    {
+      "path": "reports/m2/probes/external/m2-b001-ext-001/evidence-manifest.json",
+      "sha256": "c842d67ec1f83145fdb67a33368e1f7dfbf8f8bc28cf8b9ab7b98202e813af1f"
+    },
+    {
+      "path": "reports/m2/probes/external/m2-b001-ext-001/platform-command-evidence.json",
+      "sha256": "f709a45ecee13a8ccb5722f52acc96fb3c08c662e500aaa7c26681404b73637e"
+    },
+    {
+      "path": "reports/m2/probes/remediations/r2-int-010-rem-001/evidence.json",
+      "sha256": "287708242e1418a7e8a88d4918e049dafdb31ecd498819a5e5b6cd7ce40d81f9"
+    },
+    {
+      "path": "reports/m2/probes/remediations/r2-int-010-rem-001/execution-records.json",
+      "sha256": "9d3bc8c8e5681d14740fcccf525bcf42087dfe5e7e6287bf50852f43c17475c4"
+    },
+    {
+      "path": "reports/m2/probes/remediations/r2-int-010-rem-001/evidence-manifest.json",
+      "sha256": "eb5e811122efc10cdd1350b2c44031b9bdd58690482df2105ad35f0c62d1b03e"
+    },
+    {
+      "path": "reports/m2/probes/remediations/r2-int-010-post-platform-transition/evidence.json",
+      "sha256": "f2e9c48517cd9437aa464041f28b15e8ff96c8df8533c58fa8afb001d22fdd18"
+    },
+    {
+      "path": "reports/m2/probes/remediations/r2-int-010-post-platform-transition/execution-records.json",
+      "sha256": "dc98a5c7f48a8325ba7312c9082f0d514d121e4dba4f931ae66d7c59b1f0db06"
+    },
+    {
+      "path": "reports/m2/probes/remediations/r2-int-010-post-platform-transition/evidence-manifest.json",
+      "sha256": "02c10c84c64959e3c186c4aabde3fb82f129ce1c30f788eeaa13b8ff6745c480"
+    }
+  ],
+  "predecessor_index": {
+    "path": "reports/m2/probes/external-evidence-index.json",
+    "sha256": "b4bf268d7f9ee1627edea5c1ff87fa74774e3f5689c97cd11f0af6881178a22c",
+    "disposition": "IMMUTABLE_ORDINAL_PREDECESSOR"
+  },
+  "prior_attempt": {
+    "commit": "854b43980f0633a4b2e01e61d326d7526cb11c8e",
+    "tree": "411565bc632e24806f67e39d9c6100d0cdb321f9",
+    "disposition": "QUARANTINED_UNACCEPTED_LOCAL_CANDIDATE"
+  },
+  "self": {
+    "path": "reports/m2/probes/closeouts/m2-b001-recovery-closeout-001/evidence-manifest.json",
+    "included_in_artifacts": false,
+    "reason": "NON_CIRCULAR_MANIFEST_SELF_EXCLUSION"
+  },
+  "policies": {
+    "manifest_self_binding": false,
+    "metadata_manifest_digest_cycle": false,
+    "owner_authority_execution_evidence": false,
+    "candidate_commit_tree_embedded": false,
+    "candidate_binding_strategy": "EXACT_HEAD_AT_VALIDATION",
+    "closure_results_embedded": false
+  }
+}
