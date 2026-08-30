@@ -6,12 +6,13 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import os
 import re
 import subprocess
 import sys
 from datetime import datetime
 from pathlib import Path, PurePosixPath
-from typing import Any, Iterable
+from typing import Any, Callable, Iterable
 
 
 ROOT = Path(__file__).resolve().parents[3]
@@ -40,6 +41,12 @@ EXACT_PAIR_SHA256 = "099aaa7244b4a443e31bcdb733bbef2728de11b5129382328b4274ffe25
 
 ATTEMPT_001_COMMIT = "854b43980f0633a4b2e01e61d326d7526cb11c8e"
 ATTEMPT_001_TREE = "411565bc632e24806f67e39d9c6100d0cdb321f9"
+
+RECOVERY_CANDIDATE_COMMIT = "f5964d4c0b02e5969747a628dae64a02f87b8417"
+RECOVERY_CANDIDATE_TREE = "75ec646592260f764fa1862b20c164e8ecb46f1d"
+CURRENT_RECOVERY_CANDIDATE = "CURRENT_RECOVERY_CANDIDATE"
+HISTORICAL_ACCEPTED_RECOVERY = "HISTORICAL_ACCEPTED_RECOVERY"
+VALIDATION_MODES = {CURRENT_RECOVERY_CANDIDATE, HISTORICAL_ACCEPTED_RECOVERY}
 
 SCHEMA_PATH_TEXT = "docs/implementation/m2/probes/m2-b001-recovery-closeout-v1.schema.json"
 CLOSEOUT_DIR = "reports/m2/probes/closeouts/m2-b001-recovery-closeout-001"
@@ -92,6 +99,34 @@ ARTIFACT_PATHS = [
     PLAN_TEST_PATH_TEXT,
 ]
 ALLOWED_CHANGED_PATHS = ARTIFACT_PATHS + [MANIFEST_PATH_TEXT]
+
+CANDIDATE_B_ALLOWED_CHANGED_PATHS = [
+    ".codex/state/MILESTONE_PLAN.yaml",
+    ".codex/plans/m2-vertical-slice/M2_VERTICAL_SLICE_PLAN.md",
+    ".codex/plans/m2-vertical-slice/batches.json",
+    ".codex/plans/m2-vertical-slice/capability-probes.json",
+    ".codex/plans/m2-vertical-slice/controls.json",
+    ".codex/plans/m2-vertical-slice/READING_MAP_REQUESTS.md",
+    "tools/validate_project.py",
+    PLAN_TEST_PATH_TEXT,
+    VALIDATOR_PATH_TEXT,
+    PROBE_TEST_PATH_TEXT,
+    BRIDGE_TEST_PATH_TEXT,
+]
+
+EVOLVABLE_HISTORICAL_ARTIFACT_PATHS = {
+    VALIDATOR_PATH_TEXT,
+    PROBE_TEST_PATH_TEXT,
+    BRIDGE_TEST_PATH_TEXT,
+    PLAN_TEST_PATH_TEXT,
+}
+
+CURRENTLY_IMMUTABLE_RECOVERY_ARTIFACT_PATHS = [
+    EVIDENCE_PATH_TEXT,
+    EXECUTION_PATH_TEXT,
+    MANIFEST_PATH_TEXT,
+    INDEX_V2_PATH_TEXT,
+]
 
 BLOCKING_IDS = ["R2-INT-011", "R2-INT-012", "DEFER-R2-C14-001"]
 
@@ -612,7 +647,12 @@ def validate_index(root: Path, data: dict[str, Any]) -> None:
     require(data["independent_acceptance_required"] is True, "independent ACCEPT requirement was removed")
 
 
-def validate_manifest(root: Path, data: dict[str, Any]) -> None:
+def validate_manifest(
+    root: Path,
+    data: dict[str, Any],
+    *,
+    artifact_reader: Callable[[str], bytes] | None = None,
+) -> None:
     require_exact_keys(
         data,
         [
@@ -642,7 +682,12 @@ def validate_manifest(root: Path, data: dict[str, Any]) -> None:
     artifact_paths = [item.get("path") for item in artifacts if isinstance(item, dict)]
     require(len(artifact_paths) == len(set(artifact_paths)), "manifest duplicate item")
     require(MANIFEST_PATH_TEXT not in artifact_paths, "manifest self-binding is forbidden")
-    expected_artifacts = [{"path": path_text, "sha256": sha256_path(root / path_text)} for path_text in ARTIFACT_PATHS]
+    if artifact_reader is None:
+        artifact_reader = lambda path_text: (root / path_text).read_bytes()
+    expected_artifacts = [
+        {"path": path_text, "sha256": hashlib.sha256(artifact_reader(path_text)).hexdigest()}
+        for path_text in ARTIFACT_PATHS
+    ]
     require(artifacts == expected_artifacts, "manifest item missing, reordered, or forged digest")
     expected_predecessors = [{"path": path_text, "sha256": digest} for path_text, digest in IMMUTABLE_HASHES.items()]
     require(data["immutable_predecessors"] == expected_predecessors, "manifest immutable predecessor coverage or digest changed")
@@ -672,15 +717,118 @@ def validate_manifest(root: Path, data: dict[str, Any]) -> None:
 
 
 def _git(root: Path, args: list[str]) -> str:
+    environment = dict(os.environ)
+    environment["GIT_NO_REPLACE_OBJECTS"] = "1"
     result = subprocess.run(
         ["git", *args],
         cwd=root,
         capture_output=True,
         text=True,
         check=False,
+        env=environment,
     )
     require(result.returncode == 0, f"git {' '.join(args)} failed: {result.stderr.strip()}")
     return result.stdout.strip()
+
+
+def _git_bytes(root: Path, args: list[str]) -> bytes:
+    environment = dict(os.environ)
+    environment["GIT_NO_REPLACE_OBJECTS"] = "1"
+    result = subprocess.run(
+        ["git", *args],
+        cwd=root,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        text=False,
+        check=False,
+        env=environment,
+    )
+    stderr = result.stderr.decode("utf-8", errors="replace").strip()
+    require(result.returncode == 0, f"git {' '.join(args)} failed: {stderr}")
+    return result.stdout
+
+
+def _validate_historical_anchor_identity(
+    root: Path,
+    historical_commit: str,
+    historical_tree: str,
+) -> None:
+    require(
+        re.fullmatch(r"[0-9a-f]{40}", historical_commit) is not None,
+        "historical recovery commit must be full SHA-1",
+    )
+    require(
+        re.fullmatch(r"[0-9a-f]{40}", historical_tree) is not None,
+        "historical recovery tree must be full SHA-1",
+    )
+    require(
+        _git(root, ["cat-file", "-t", historical_commit]) == "commit",
+        "historical recovery object is not a commit",
+    )
+    require(
+        _git(root, ["rev-parse", f"{historical_commit}^{{commit}}"])
+        == historical_commit,
+        "historical recovery commit identity changed",
+    )
+    require(
+        _git(root, ["rev-parse", f"{historical_commit}^{{tree}}"])
+        == historical_tree,
+        "historical recovery tree identity changed",
+    )
+
+
+def validate_historical_anchor(root: Path) -> None:
+    _validate_historical_anchor_identity(
+        root,
+        RECOVERY_CANDIDATE_COMMIT,
+        RECOVERY_CANDIDATE_TREE,
+    )
+
+
+def read_historical_blob(root: Path, path_text: str) -> bytes:
+    path = PurePosixPath(path_text)
+    require(
+        not path.is_absolute() and ".." not in path.parts,
+        f"invalid historical manifest path: {path_text}",
+    )
+    # `git show <commit>:<path>` is the sole source for historical bytes. There
+    # is intentionally no filesystem or working-tree fallback.
+    return _git_bytes(
+        root,
+        ["show", f"{RECOVERY_CANDIDATE_COMMIT}:{path.as_posix()}"],
+    )
+
+
+def validate_historical_manifest_entries(
+    root: Path,
+    manifest: dict[str, Any],
+) -> None:
+    seen: set[str] = set()
+    for group in ("artifacts", "immutable_predecessors"):
+        entries = manifest.get(group)
+        require(isinstance(entries, list), f"recovery manifest {group} must be an array")
+        for index, item in enumerate(entries):
+            require_exact_keys(item, ["path", "sha256"], f"recovery manifest {group}[{index}]")
+            path_text = item["path"]
+            digest = item["sha256"]
+            require(isinstance(path_text, str), f"recovery manifest {group}[{index}].path must be text")
+            require(isinstance(digest, str) and HEX_64.fullmatch(digest) is not None, f"recovery manifest {group}[{index}].sha256 is invalid")
+            require(path_text not in seen, f"recovery manifest tracked path is duplicated: {path_text}")
+            seen.add(path_text)
+            actual = hashlib.sha256(
+                read_historical_blob(root, path_text)
+            ).hexdigest()
+            require(actual == digest, f"historical recovery manifest hash mismatch: {path_text}")
+
+
+def validate_current_recovery_artifacts_are_historical(root: Path) -> None:
+    for path_text in CURRENTLY_IMMUTABLE_RECOVERY_ARTIFACT_PATHS:
+        path = root / path_text
+        require(path.is_file(), f"immutable recovery artifact missing: {path_text}")
+        require(
+            path.read_bytes() == read_historical_blob(root, path_text),
+            f"immutable recovery artifact changed after Candidate A2: {path_text}",
+        )
 
 
 def collect_changed_paths(root: Path, source_ref: str = SOURCE_COMMIT) -> list[str]:
@@ -704,6 +852,32 @@ def validate_changed_paths(paths: Iterable[str], require_complete: bool = True) 
         require(not missing, f"approved recovery artifact missing from diff: {missing}")
 
 
+def validate_candidate_b_changed_paths(
+    paths: Iterable[str],
+    require_complete: bool = True,
+) -> None:
+    normalized: list[str] = []
+    for path_text in paths:
+        path = PurePosixPath(path_text)
+        require(not path.is_absolute() and ".." not in path.parts, f"invalid changed path: {path_text}")
+        normalized.append(path.as_posix())
+    actual = set(normalized)
+    allowed = set(CANDIDATE_B_ALLOWED_CHANGED_PATHS)
+    outside = sorted(actual - allowed)
+    require(not outside, f"Candidate B changed path outside owner allowlist: {outside}")
+    changed_historical_artifacts = actual & set(ARTIFACT_PATHS)
+    non_evolvable = sorted(
+        changed_historical_artifacts - EVOLVABLE_HISTORICAL_ARTIFACT_PATHS
+    )
+    require(
+        not non_evolvable,
+        f"historical manifest artifact is not evolvable in Candidate B: {non_evolvable}",
+    )
+    if require_complete:
+        missing = sorted(allowed - actual)
+        require(not missing, f"Candidate B approved lifecycle path missing from diff: {missing}")
+
+
 def validate_candidate_checkout(
     root: Path,
     candidate: str,
@@ -725,14 +899,51 @@ def validate_candidate_checkout(
     require(_git(root, ["status", "--porcelain", "--untracked-files=all"]) == "", "dirty candidate worktree")
 
 
+def validate_historical_candidate_checkout(
+    root: Path,
+    candidate: str | None = None,
+    candidate_tree: str | None = None,
+) -> None:
+    require((candidate is None) == (candidate_tree is None), "candidate commit and tree must be supplied together")
+    if candidate is not None and candidate_tree is not None:
+        validate_candidate_checkout(
+            root,
+            candidate,
+            candidate_tree,
+            source_commit=RECOVERY_CANDIDATE_COMMIT,
+        )
+    else:
+        current_commit = _git(root, ["rev-parse", "HEAD"])
+        ancestry = subprocess.run(
+            ["git", "merge-base", "--is-ancestor", RECOVERY_CANDIDATE_COMMIT, current_commit],
+            cwd=root,
+            capture_output=True,
+            text=True,
+            check=False,
+            env={**os.environ, "GIT_NO_REPLACE_OBJECTS": "1"},
+        )
+        require(ancestry.returncode == 0, "current checkout does not descend from accepted Candidate A2")
+    validate_candidate_b_changed_paths(
+        collect_changed_paths(root, source_ref=RECOVERY_CANDIDATE_COMMIT)
+    )
+
+
 def validate_recovery(
     project_root: Path = ROOT,
     *,
+    mode: str,
     candidate: str | None = None,
     candidate_tree: str | None = None,
     check_git: bool = True,
 ) -> None:
     root = project_root.resolve()
+    require(mode in VALIDATION_MODES, f"unknown recovery validation mode: {mode}")
+    require((candidate is None) == (candidate_tree is None), "candidate commit and tree must be supplied together")
+
+    if mode == HISTORICAL_ACCEPTED_RECOVERY:
+        validate_historical_anchor(root)
+        validate_current_recovery_artifacts_are_historical(root)
+
     schema = load_json(root / SCHEMA_PATH_TEXT)
     evidence = load_json(root / EVIDENCE_PATH_TEXT)
     execution = load_json(root / EXECUTION_PATH_TEXT)
@@ -744,18 +955,34 @@ def validate_recovery(
     validate_immutable_predecessors(root)
     validate_execution_records(execution)
     validate_index(root, index)
-    validate_manifest(root, manifest)
-
-    require((candidate is None) == (candidate_tree is None), "candidate commit and tree must be supplied together")
-    if candidate is not None and candidate_tree is not None:
-        validate_candidate_checkout(root, candidate, candidate_tree)
-    if check_git:
-        validate_changed_paths(collect_changed_paths(root))
+    if mode == CURRENT_RECOVERY_CANDIDATE:
+        validate_manifest(root, manifest)
+        if check_git:
+            require(candidate is not None and candidate_tree is not None, "current recovery mode requires exact Candidate A2 commit/tree")
+            require(candidate == RECOVERY_CANDIDATE_COMMIT, "current recovery mode target is not Candidate A2")
+            require(candidate_tree == RECOVERY_CANDIDATE_TREE, "current recovery mode tree is not Candidate A2")
+            validate_candidate_checkout(
+                root,
+                candidate,
+                candidate_tree,
+                source_commit=SOURCE_COMMIT,
+            )
+            validate_changed_paths(collect_changed_paths(root))
+    else:
+        validate_manifest(
+            root,
+            manifest,
+            artifact_reader=lambda path_text: read_historical_blob(root, path_text),
+        )
+        validate_historical_manifest_entries(root, manifest)
+        if check_git:
+            validate_historical_candidate_checkout(root, candidate, candidate_tree)
 
 
 def parse_args(argv: list[str]) -> argparse.Namespace:
     parser = argparse.ArgumentParser()
     parser.add_argument("--validate", action="store_true", help="validate Attempt 002 recovery closeout evidence")
+    parser.add_argument("--mode", choices=sorted(VALIDATION_MODES), required=True)
     parser.add_argument("--candidate", help="exact candidate commit for independent ACCEPT")
     parser.add_argument("--candidate-tree", help="exact candidate tree for independent ACCEPT")
     return parser.parse_args(argv)
@@ -765,15 +992,26 @@ def main(argv: list[str] | None = None) -> int:
     args = parse_args(argv or sys.argv[1:])
     try:
         require(args.validate, "select --validate")
-        validate_recovery(candidate=args.candidate, candidate_tree=args.candidate_tree)
+        validate_recovery(
+            mode=args.mode,
+            candidate=args.candidate,
+            candidate_tree=args.candidate_tree,
+        )
+        if args.mode == HISTORICAL_ACCEPTED_RECOVERY:
+            print("HISTORICAL_RECOVERY_MANIFEST_VALID=PASS")
         print(json.dumps({
             "task_id": TASK_ID,
             "evidence_id": EVIDENCE_ID,
             "attempt_number": ATTEMPT_NUMBER,
+            "validation_mode": args.mode,
             "validation_status": "PASS",
             "historical_R2-INT-010": "FAIL",
             "effective_R2-INT-010": "RESOLVED_ADAPTER",
-            "lifecycle_state": "FROZEN_WITH_RECOVERY_EVIDENCE_PENDING_LIFECYCLE_CLOSEOUT",
+            "lifecycle_state": (
+                "FROZEN_WITH_RECOVERY_EVIDENCE_PENDING_LIFECYCLE_CLOSEOUT"
+                if args.mode == CURRENT_RECOVERY_CANDIDATE
+                else "ACCEPTED_WITH_DOWNSTREAM_BLOCKERS"
+            ),
             "candidate_binding_strategy": "EXACT_HEAD_AT_VALIDATION",
             "independent_acceptance": "PASS" if args.candidate else "NOT_RUN",
             "formal_B002": False,

@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import copy
+import hashlib
 import json
 import shutil
 import subprocess
@@ -10,20 +11,38 @@ from pathlib import Path
 from typing import Any, Callable
 
 from validate_m2_b001_recovery_closeout import (
+    _validate_historical_anchor_identity,
     ALLOWED_CHANGED_PATHS,
     ARTIFACT_PATHS,
     ATTEMPT_001_COMMIT,
     BLOCKING_IDS,
+    BRIDGE_TEST_PATH_TEXT,
+    CANDIDATE_B_ALLOWED_CHANGED_PATHS,
+    CURRENT_RECOVERY_CANDIDATE,
     EVIDENCE_PATH_TEXT,
+    EVOLVABLE_HISTORICAL_ARTIFACT_PATHS,
     EXECUTION_PATH_TEXT,
+    HISTORICAL_ACCEPTED_RECOVERY,
     IMMUTABLE_HASHES,
     INDEX_V1_PATH_TEXT,
     INDEX_V2_PATH_TEXT,
     MANIFEST_PATH_TEXT,
+    PLAN_TEST_PATH_TEXT,
+    PLAN_VALIDATOR_PATH_TEXT,
+    PROBE_TEST_PATH_TEXT,
+    RECOVERY_CANDIDATE_COMMIT,
+    RECOVERY_CANDIDATE_TREE,
     RecoveryValidationError,
+    SOURCE_COMMIT,
+    VALIDATOR_PATH_TEXT,
     collect_changed_paths,
+    read_historical_blob,
+    validate_candidate_b_changed_paths,
     validate_candidate_checkout,
     validate_changed_paths,
+    validate_historical_anchor,
+    validate_historical_candidate_checkout,
+    validate_historical_manifest_entries,
     validate_recovery,
 )
 
@@ -71,10 +90,71 @@ class RecoveryCloseoutTests(unittest.TestCase):
     def make_fixture(self, temporary_root: Path) -> None:
         paths = list(IMMUTABLE_HASHES) + ARTIFACT_PATHS + [MANIFEST_PATH_TEXT]
         for relative in dict.fromkeys(paths):
-            source = ROOT / relative
             target = temporary_root / relative
             target.parent.mkdir(parents=True, exist_ok=True)
+            target.write_bytes(read_historical_blob(ROOT, relative))
+
+    def make_a2_checkout(self, temporary_root: Path) -> Path:
+        root = temporary_root / "checkout"
+        subprocess.run(
+            ["git", "clone", "-q", "--shared", str(ROOT), str(root)],
+            check=True,
+        )
+        subprocess.run(
+            ["git", "checkout", "-q", "--detach", RECOVERY_CANDIDATE_COMMIT],
+            cwd=root,
+            check=True,
+        )
+        subprocess.run(["git", "config", "user.name", "Recovery Tests"], cwd=root, check=True)
+        subprocess.run(
+            ["git", "config", "user.email", "recovery-tests@example.invalid"],
+            cwd=root,
+            check=True,
+        )
+        return root
+
+    def commit_paths(self, root: Path, paths: list[str], message: str) -> tuple[str, str]:
+        subprocess.run(["git", "add", "--", *paths], cwd=root, check=True)
+        subprocess.run(
+            ["git", "-c", "commit.gpgsign=false", "commit", "-q", "-m", message],
+            cwd=root,
+            check=True,
+        )
+        commit = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=root, text=True).strip()
+        tree = subprocess.check_output(["git", "rev-parse", "HEAD^{tree}"], cwd=root, text=True).strip()
+        return commit, tree
+
+    def make_lifecycle_checkout(self, temporary_root: Path) -> tuple[Path, str, str]:
+        root = self.make_a2_checkout(temporary_root)
+        for relative in CANDIDATE_B_ALLOWED_CHANGED_PATHS:
+            source = ROOT / relative
+            target = root / relative
+            target.parent.mkdir(parents=True, exist_ok=True)
             shutil.copy2(source, target)
+        changed = subprocess.check_output(
+            ["git", "diff", "--name-only"], cwd=root, text=True
+        ).splitlines()
+        self.assertEqual(set(changed), set(CANDIDATE_B_ALLOWED_CHANGED_PATHS))
+        commit, tree = self.commit_paths(
+            root,
+            CANDIDATE_B_ALLOWED_CHANGED_PATHS,
+            "synthetic Candidate B lifecycle descendant",
+        )
+        return root, commit, tree
+
+    def assert_historical_mutation_rejected(self, relative: str) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root, _, _ = self.make_lifecycle_checkout(Path(temporary))
+            path = root / relative
+            path.write_bytes(path.read_bytes() + b"\n")
+            commit, tree = self.commit_paths(root, [relative], f"tamper {relative}")
+            with self.assertRaises(RecoveryValidationError):
+                validate_recovery(
+                    root,
+                    mode=HISTORICAL_ACCEPTED_RECOVERY,
+                    candidate=commit,
+                    candidate_tree=tree,
+                )
 
     def mutate_fixture(
         self,
@@ -97,13 +177,21 @@ class RecoveryCloseoutTests(unittest.TestCase):
             self.make_fixture(root)
             self.mutate_fixture(root, relative, mutator)
             with self.assertRaises(RecoveryValidationError):
-                validate_recovery(root, check_git=False)
+                validate_recovery(
+                    root,
+                    mode=CURRENT_RECOVERY_CANDIDATE,
+                    check_git=False,
+                )
 
     def test_valid_recovery_fixture_passes(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)
             self.make_fixture(root)
-            validate_recovery(root, check_git=False)
+            validate_recovery(
+                root,
+                mode=CURRENT_RECOVERY_CANDIDATE,
+                check_git=False,
+            )
 
     def test_reject_predecessor_evidence_hash_drift(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
@@ -112,7 +200,11 @@ class RecoveryCloseoutTests(unittest.TestCase):
             path = root / "reports/m2/probes/probe-results.json"
             path.write_bytes(path.read_bytes() + b"\n")
             with self.assertRaises(RecoveryValidationError):
-                validate_recovery(root, check_git=False)
+                validate_recovery(
+                    root,
+                    mode=CURRENT_RECOVERY_CANDIDATE,
+                    check_git=False,
+                )
 
     def test_reject_v1_index_rewrite(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
@@ -121,7 +213,11 @@ class RecoveryCloseoutTests(unittest.TestCase):
             path = root / INDEX_V1_PATH_TEXT
             path.write_bytes(path.read_bytes() + b"\n")
             with self.assertRaises(RecoveryValidationError):
-                validate_recovery(root, check_git=False)
+                validate_recovery(
+                    root,
+                    mode=CURRENT_RECOVERY_CANDIDATE,
+                    check_git=False,
+                )
 
     def test_reject_execution_missing_started_at(self) -> None:
         self.assert_json_attack_rejected(
@@ -204,6 +300,157 @@ class RecoveryCloseoutTests(unittest.TestCase):
     def test_approved_path_set_is_exact(self) -> None:
         self.assertEqual(len(ALLOWED_CHANGED_PATHS), 10)
         validate_changed_paths(ALLOWED_CHANGED_PATHS)
+
+    def test_candidate_a2_current_tree_mode_passes(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = self.make_a2_checkout(Path(temporary))
+            validate_recovery(
+                root,
+                mode=CURRENT_RECOVERY_CANDIDATE,
+                candidate=RECOVERY_CANDIDATE_COMMIT,
+                candidate_tree=RECOVERY_CANDIDATE_TREE,
+            )
+
+    def test_legal_lifecycle_descendant_historical_mode_passes(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root, commit, tree = self.make_lifecycle_checkout(Path(temporary))
+            validate_recovery(
+                root,
+                mode=HISTORICAL_ACCEPTED_RECOVERY,
+                candidate=commit,
+                candidate_tree=tree,
+            )
+
+    def test_every_a2_manifest_hash_recomputes_from_git_show(self) -> None:
+        manifest = _read_json(ROOT / MANIFEST_PATH_TEXT)
+        for group in ("artifacts", "immutable_predecessors"):
+            for item in manifest[group]:
+                actual = hashlib.sha256(
+                    read_historical_blob(ROOT, item["path"])
+                ).hexdigest()
+                self.assertEqual(actual, item["sha256"], item["path"])
+        validate_historical_manifest_entries(ROOT, manifest)
+
+    def test_changed_plan_test_does_not_corrupt_historical_manifest(self) -> None:
+        self.assertNotEqual(
+            (ROOT / PLAN_TEST_PATH_TEXT).read_bytes(),
+            read_historical_blob(ROOT, PLAN_TEST_PATH_TEXT),
+        )
+        with tempfile.TemporaryDirectory() as temporary:
+            root, commit, tree = self.make_lifecycle_checkout(Path(temporary))
+            validate_recovery(
+                root,
+                mode=HISTORICAL_ACCEPTED_RECOVERY,
+                candidate=commit,
+                candidate_tree=tree,
+            )
+
+    def test_reject_current_recovery_evidence_change(self) -> None:
+        self.assert_historical_mutation_rejected(EVIDENCE_PATH_TEXT)
+
+    def test_reject_current_recovery_manifest_change(self) -> None:
+        self.assert_historical_mutation_rejected(MANIFEST_PATH_TEXT)
+
+    def test_reject_current_execution_records_change(self) -> None:
+        self.assert_historical_mutation_rejected(EXECUTION_PATH_TEXT)
+
+    def test_reject_current_external_evidence_index_v2_change(self) -> None:
+        self.assert_historical_mutation_rejected(INDEX_V2_PATH_TEXT)
+
+    def test_reject_forged_a2_commit(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = self.make_a2_checkout(Path(temporary))
+            with self.assertRaises(RecoveryValidationError):
+                _validate_historical_anchor_identity(
+                    root,
+                    "0" * 40,
+                    RECOVERY_CANDIDATE_TREE,
+                )
+
+    def test_reject_forged_a2_tree(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = self.make_a2_checkout(Path(temporary))
+            with self.assertRaises(RecoveryValidationError):
+                _validate_historical_anchor_identity(
+                    root,
+                    RECOVERY_CANDIDATE_COMMIT,
+                    "0" * 40,
+                )
+
+    def test_reject_candidate_that_is_not_a2_descendant(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = self.make_a2_checkout(Path(temporary))
+            subprocess.run(
+                ["git", "checkout", "-q", "--detach", SOURCE_COMMIT],
+                cwd=root,
+                check=True,
+            )
+            commit = subprocess.check_output(
+                ["git", "rev-parse", "HEAD"], cwd=root, text=True
+            ).strip()
+            tree = subprocess.check_output(
+                ["git", "rev-parse", "HEAD^{tree}"], cwd=root, text=True
+            ).strip()
+            with self.assertRaises(RecoveryValidationError):
+                validate_historical_candidate_checkout(root, commit, tree)
+
+    def test_reject_missing_historical_git_object(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            subprocess.run(["git", "init", "-q"], cwd=root, check=True)
+            with self.assertRaises(RecoveryValidationError):
+                validate_historical_anchor(root)
+
+    def test_reject_historical_manifest_hash_mismatch(self) -> None:
+        manifest = _read_json(ROOT / MANIFEST_PATH_TEXT)
+        manifest["artifacts"][0]["sha256"] = "0" * 64
+        with self.assertRaises(RecoveryValidationError):
+            validate_historical_manifest_entries(ROOT, manifest)
+
+    def test_missing_git_object_never_falls_back_to_working_tree(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            subprocess.run(["git", "init", "-q"], cwd=root, check=True)
+            current = root / EVIDENCE_PATH_TEXT
+            current.parent.mkdir(parents=True, exist_ok=True)
+            current.write_bytes(read_historical_blob(ROOT, EVIDENCE_PATH_TEXT))
+            with self.assertRaises(RecoveryValidationError):
+                read_historical_blob(root, EVIDENCE_PATH_TEXT)
+
+    def test_reject_historical_manifest_artifact_outside_candidate_b_allowlist(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root, _, _ = self.make_lifecycle_checkout(Path(temporary))
+            path = root / PLAN_VALIDATOR_PATH_TEXT
+            path.write_bytes(path.read_bytes() + b"\n")
+            commit, tree = self.commit_paths(
+                root,
+                [PLAN_VALIDATOR_PATH_TEXT],
+                "tamper non-evolvable historical validator",
+            )
+            with self.assertRaises(RecoveryValidationError):
+                validate_recovery(
+                    root,
+                    mode=HISTORICAL_ACCEPTED_RECOVERY,
+                    candidate=commit,
+                    candidate_tree=tree,
+                )
+
+    def test_candidate_b_allowlist_and_evolvable_paths_are_exact(self) -> None:
+        self.assertEqual(len(CANDIDATE_B_ALLOWED_CHANGED_PATHS), 11)
+        self.assertEqual(
+            EVOLVABLE_HISTORICAL_ARTIFACT_PATHS,
+            {
+                VALIDATOR_PATH_TEXT,
+                PROBE_TEST_PATH_TEXT,
+                BRIDGE_TEST_PATH_TEXT,
+                PLAN_TEST_PATH_TEXT,
+            },
+        )
+        self.assertTrue(
+            EVOLVABLE_HISTORICAL_ARTIFACT_PATHS
+            <= set(CANDIDATE_B_ALLOWED_CHANGED_PATHS)
+        )
+        validate_candidate_b_changed_paths(CANDIDATE_B_ALLOWED_CHANGED_PATHS)
 
 
 def _set_attack(path: tuple[Any, ...], replacement: Any) -> Callable[[dict[str, Any]], None]:

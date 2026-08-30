@@ -4,6 +4,22 @@
   "state": "FROZEN",
   "state_transition": ["PLANNED", "FROZEN"],
   "implementation_state": "NOT_STARTED",
+  "lifecycle_projection": {
+    "state": "ACCEPTED_WITH_DOWNSTREAM_BLOCKERS",
+    "accepted_batches": ["M2-B001"],
+    "M2-B002": "PLANNED",
+    "M2-B002_implementation": "NOT_STARTED",
+    "M2-B002_READY": "NO",
+    "historical_R2-INT-010": "FAIL",
+    "effective_R2-INT-010": "RESOLVED_ADAPTER",
+    "formal_B002": false,
+    "formal_B009": false,
+    "aggregate_M2_pass": false,
+    "aggregate_external_capability_pass": false,
+    "blocking_ids": ["R2-INT-011", "R2-INT-012", "DEFER-R2-C14-001"],
+    "active_WIP": 0,
+    "next_allowed_action": "PLAN_REMAINING_M2_B002_BLOCKERS_R2_INT_011_R2_INT_012_DEFER_R2_C14_001"
+  },
   "identity": {
     "repository": "/home/zyc14588/rules-residue",
     "branch": "design/r1-story-architecture",
@@ -135,6 +151,6 @@
     "unbound_implementation_package": false,
     "all_31_acceptance_ids_mapped": true,
     "only_first_batch_frozen": true,
-    "next_allowed_action": "IMPLEMENT_M2_B001_CAPABILITY_PROBES_IN_NEW_WORKTREE"
+    "next_allowed_action": "PLAN_REMAINING_M2_B002_BLOCKERS_R2_INT_011_R2_INT_012_DEFER_R2_C14_001"
   }
 }

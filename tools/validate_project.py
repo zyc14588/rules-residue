@@ -745,15 +745,33 @@ def _check_codex_route_infrastructure(errors: list[str]) -> None:
         plan_identity = (plan.get("milestone"), plan.get("batch_id"), plan.get("state"))
         if plan_identity == ("M1", "M1-B001", "ACCEPTED"):
             pass
-        elif plan_identity == ("M2", "M2-B001", "FROZEN"):
-            from tools.validate_m2_plan import collect_errors as collect_m2_plan_errors
+        elif plan_identity in {
+            ("M2", "M2-B001", "FROZEN"),
+            ("M2", "M2-B001", "ACCEPTED"),
+        }:
+            from tools.validate_m2_plan import (
+                ACCEPTED_WITH_BLOCKERS,
+                FROZEN_RECOVERY_PENDING,
+                collect_validation as collect_m2_plan_validation,
+            )
 
-            for error in collect_m2_plan_errors(PROJECT_ROOT):
-                errors.append(f"M2 frozen plan: {error}")
+            plan_errors, lifecycle_state = collect_m2_plan_validation(PROJECT_ROOT)
+            for error in plan_errors:
+                errors.append(f"M2 lifecycle plan: {error}")
+            expected_lifecycle = (
+                FROZEN_RECOVERY_PENDING
+                if plan_identity[2] == "FROZEN"
+                else ACCEPTED_WITH_BLOCKERS
+            )
+            if lifecycle_state != expected_lifecycle:
+                errors.append(
+                    "M2 lifecycle plan state mismatch: "
+                    f"expected {expected_lifecycle}, got {lifecycle_state}"
+                )
         else:
             errors.append(
                 "Codex milestone plan must be either accepted M1/M1-B001 or "
-                "frozen M2/M2-B001"
+                "frozen/accepted M2/M2-B001"
             )
         if plan.get("soft_limit") != SOFT_LIMIT or plan.get("hard_limit") != HARD_LIMIT:
             errors.append("Codex milestone plan context limits must be exactly 0.55 / 0.70")

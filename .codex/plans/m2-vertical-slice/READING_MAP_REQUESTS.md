@@ -3,10 +3,14 @@
 
 Authority: `R2-INTEGRATION-CONFLICTS`, `R2-AUTH-M1-INTEGRATION`, `R2-M2-VALIDATION-MATRIX`, `R2-M2-STOP-CONDITIONS`. Dynamic inputs: frozen B001 envelope, exact probe schemas, and only the target-specific Host/Creator contract. Route IDs end in `-PLAN`, `-IMPLEMENT`, `-ACCEPT`, or `-REPAIR`; every request binds its actual role in `mode`, plus `milestone=M2` and `batch_id=M2-B001`.
 
+Lifecycle projection: `M2-B001=ACCEPTED` with recovery Candidate A2 independently accepted. The frozen envelope and historical `R2-INT-010=FAIL` remain immutable inputs; current effective `R2-INT-010=RESOLVED_ADAPTER` comes only from the accepted post-platform exact pair. No new B001 IMPLEMENT/REPAIR route is allowed.
+
 <!-- SECTION-ID: M2-ROUTE-B002 -->
 # M2-B002 Reading Map Request Blueprint
 
 Authority: `R2-AUTH-RULE-LOOP`, `R2-AUTH-CHARACTER-EQUIPMENT`, `R2-AUTH-CONTINENT-REGIONS`, `R2-AUTH-ENDINGS`, `R2-AUTH-CAMPAIGN-HOSTING`. Dynamic inputs: accepted B001 evidence, frozen B002 envelope, and exact schema paths.
+
+Current B002 projection is `PLANNED / NOT_STARTED / READY=NO`. Before any freeze or IMPLEMENT route, PLAN must resolve or truthfully retain exactly `R2-INT-011`, `R2-INT-012`, and `DEFER-R2-C14-001`. The only allowed next action is `PLAN_REMAINING_M2_B002_BLOCKERS_R2_INT_011_R2_INT_012_DEFER_R2_C14_001`.
 
 <!-- SECTION-ID: M2-ROUTE-B003 -->
 # M2-B003 Reading Map Request Blueprint

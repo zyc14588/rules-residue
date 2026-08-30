@@ -1,8 +1,18 @@
 <!-- SECTION-ID: M2-PLAN-FROZEN -->
 # M2 Vertical Slice Frozen Construction Plan
 
-状态：`FROZEN`（仅 `M2-B001` 已冻结；`M2-B002`—`M2-B016` 为 `PLANNED`）
-实现状态：`NOT_STARTED`
+生命周期状态：`ACCEPTED_WITH_DOWNSTREAM_BLOCKERS`（`M2-B001=ACCEPTED`；`M2-B002`—`M2-B016=PLANNED`）
+下游实现状态：`M2-B002=NOT_STARTED`，`M2-B002_READY=NO`
+
+## M2-B001 生命周期收尾
+
+- 已接受 recovery Candidate A2：`f5964d4c0b02e5969747a628dae64a02f87b8417` / `75ec646592260f764fa1862b20c164e8ecb46f1d`。
+- 正式 M2-B001 身份保持：`fdc1f4c9d8bc565888f33b44684cd6ccbe80c127` / `f37e15cdd65e0a39eebcddb21f56a2c58ae6939e`。
+- 历史 `R2-INT-010=FAIL` 永久保留；当前有效投影为 `RESOLVED_ADAPTER`。
+- `formal_B002=false`、`formal_B009=false`、aggregate M2/external capability 均未通过。
+- 剩余 blocker 精确为 `R2-INT-011`、`R2-INT-012`、`DEFER-R2-C14-001`；`active_WIP=0`。
+
+`batches.json` 中 `M2-B001.state=FROZEN` 与顶层 `frozen_batches` 是冻结施工 envelope 的历史语义，按 repository-native validator 保留；当前生命周期权威由 `.codex/state/MILESTONE_PLAN.yaml` 与各控制面文件的 `lifecycle_projection` 表达，不得把两种 state 语义混写成 `INVALID_MIXED_STATE`。
 
 ## 身份与路由
 
@@ -65,7 +75,7 @@ M2-B001 probes
 
 | Batch | 状态 | 目标 | 主要执行者 |
 |---|---|---|---|
-| `M2-B001` | `FROZEN` | R2-INT-001—012 能力探针与外部门禁包 | Codex |
+| `M2-B001` | `ACCEPTED` | R2-INT-001—012 能力探针、recovery evidence 与 lifecycle closeout | Codex |
 | `M2-B002` | `PLANNED` | 完整机器语义与 Schema | Codex |
 | `M2-B003` | `PLANNED` | seed/state/visibility/audit fixture 与 reference transitions | Codex |
 | `M2-B004` | `PLANNED` | 确定性规则执行与 Typed Effects | Codex + OpenCode |
@@ -86,14 +96,16 @@ M2-B001 probes
 
 ## R2-INT 结论
 
-安装阶段当前分类保持不变：
+安装阶段分类字段作为冻结历史保持不变：
 
 - `PLATFORM_CAPABILITY_PROBE`：001、002、005、006、008、011。
 - `R2_COMPATIBILITY_ADAPTER`：003、004、010、012。
 - `PACKAGE_DECLARABLE`：007、009。
-- 当前状态全部仍为 `DEFERRED_WITH_NON_BLOCKING_PROOF`；M2 probe 未执行，不能写 PASS。
+- `current_status=DEFERRED_WITH_NON_BLOCKING_PROOF` 是安装分类投影，不覆盖后续执行证据。
 
-001、002、003/004、005、008、009、010、011、012 分别在首个依赖批次前设置 blocker。006（真结局谱系级高资源解锁）仅做接口 probe，在 production release 前阻塞，不阻塞 M2 强制成功定义。12 项的目标仓库、证据、成功/失败、平台提案与 adapter 充分性见 `capability-probes.json`。
+M2-B001 已按固定 formal identity 接受。历史 `R2-INT-010=FAIL` 与 M2-B001-EXT-001 根因证据保持 byte-identical；post-platform exact Rules/Platform pair 将当前有效投影推进为 `R2-INT-010=RESOLVED_ADAPTER`。这不解决 `R2-INT-011`、`R2-INT-012` 或 `DEFER-R2-C14-001`，也不使 B002 ready。
+
+001、002、003/004、005、008、009、010、011、012 原有 checkpoint 语义继续保留。006（真结局谱系级高资源解锁）仅做接口 probe，在 production release 前阻塞，不阻塞 M2 强制成功定义。12 项的目标仓库、证据、成功/失败、平台提案与 adapter 充分性见 `capability-probes.json`。
 
 B001 的每项结果必须持久化 `probe_id`、R2 requirement、classification、target system、existing capability、probe procedure、实际执行的 commands/actions、evidence paths、observed/expected result、execution status、root cause、adapter feasibility、platform-change necessity 与 downstream blocked batches。单项 `execution_status` 只允许 `PASS`、`FAIL`、`NOT_RUN`、`BLOCKED_EXTERNAL`、`BLOCKED_ENVIRONMENT`；它与批次最终五态分开。没有实际执行和候选绑定证据时必须是 `NOT_RUN` 或相应 blocker，不能写成 `PASS`。
 
@@ -110,7 +122,7 @@ B001 的每项结果必须持久化 `probe_id`、R2 requirement、classification
 
 TRPG_PLATFORM 必须外部验证：2—6席位、亡者私有视图/动作白名单、长战役保存与版本锁、exact-intent UI/Host 行为、终止事件、AI context isolation、运行时重复过滤。
 
-Creator Tool 必须外部验证：namespaced Schema、Module、脚本、资产、provenance 的标准导入—编辑—导出—重导入无损往返。任何必要外部门禁 `NOT_RUN` 或 FAIL 时，对应 batch 或 M2 acceptance 必须 `BLOCKED_EXTERNAL`；不得靠官方游戏特权格式绕过。
+Creator Tool 必须外部验证：namespaced Schema、Module、脚本、资产、provenance 的标准导入—编辑—导出—重导入无损往返。任何仍必要的外部门禁 `NOT_RUN` 或 FAIL 时，对应 batch 或 M2 acceptance 必须 `BLOCKED_EXTERNAL`；不得靠官方游戏特权格式绕过。`controls.json` 的外部门禁矩阵继续保存冻结计划/aggregate M2 的 `NOT_RUN` 历史，不能用已解决的单项 R2-INT-010 投影冒充 aggregate external capability PASS。
 
 ## Deferred 消耗
 
@@ -118,7 +130,7 @@ Creator Tool 必须外部验证：namespaced Schema、Module、脚本、资产�
 
 ## 验收
 
-`M2-ACC-001—031` 已逐项绑定 batch，当前状态全部为 `PLANNED_NOT_RUN`。B016 必须覆盖严格验收中的 20 个对抗场景与全部 E2E 路线，并同时重跑现有基线。候选有任何修改，全部旧 evidence 失效。
+`M2-ACC-001—031` 的 aggregate M2 矩阵仍为 `PLANNED_NOT_RUN`；这不否定已独立接受的 formal B001 与 recovery Candidate A2，也不得把它们提升为 aggregate M2 PASS。B016 必须覆盖严格验收中的 20 个对抗场景与全部 E2E 路线，并同时重跑现有基线。候选有任何修改，全部旧 evidence 失效。
 
 ## 冻结自审
 
@@ -128,6 +140,8 @@ Creator Tool 必须外部验证：namespaced Schema、Module、脚本、资产�
 - deferred 没有被静默默认。
 - 2—6人、死亡/亡者、永久异常、通用代价、三锚点、代理 Boss、三分支、seed 不可变、秘密隔离、重复安全过滤均有实现批次和验收 ID。
 - 没有无验收绑定的实现包。
-- 只有 `M2-B001` 冻结；不得进入其他 batch，也不得在本轮进入 IMPLEMENTING。
+- `M2-B001` 生命周期已接受；冻结施工 envelope 作为历史保留。
+- `M2-B002` 仍为 `PLANNED / NOT_STARTED / READY=NO`，不得开始实现或冻结 B002。
+- M2 aggregate 与 aggregate external capability 均未通过。
 
-下一允许动作：在新的 IMPLEMENT worktree、全新 Reading Map 下执行 `M2-B001` capability probes。
+下一允许动作：`PLAN_REMAINING_M2_B002_BLOCKERS_R2_INT_011_R2_INT_012_DEFER_R2_C14_001`。

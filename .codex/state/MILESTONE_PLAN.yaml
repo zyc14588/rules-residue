@@ -2,7 +2,7 @@
   "schema_version": "1.0",
   "milestone": "M2",
   "batch_id": "M2-B001",
-  "state": "FROZEN",
+  "state": "ACCEPTED",
   "objective": "Deliver a complete technical vertical slice through 16 independently planned, implemented, accepted, and repairable batches without changing frozen R2 design.",
   "route_policy": {
     "request_format": ".codex/routes/m2-vertical-slice-plan-request.json",
@@ -59,10 +59,11 @@
     "business_milestone": "M2-VERTICAL-SLICE",
     "route_milestone": "M2",
     "batch_id": "M2-B001",
-    "state": "FROZEN",
+    "state": "ACCEPTED",
     "state_transition": [
       "PLANNED",
-      "FROZEN"
+      "FROZEN",
+      "ACCEPTED"
     ],
     "role": "PLAN",
     "objective": "Resolve R2-INT-001 through R2-INT-012 first, then deliver the M2 vertical slice through a specification-first dependency DAG.",
@@ -77,7 +78,8 @@
     "plan_route_request": ".codex/routes/m2-vertical-slice-plan-request.json",
     "plan_route_binding_digest": "099d964a422fbce4f76a4a565d7dcabdcbe09a6afcff8a0c1204be730561e065",
     "plan_context_ratio": 0.5291341145833334,
-    "frozen_batches": [
+    "frozen_batches": [],
+    "accepted_batches": [
       "M2-B001"
     ],
     "planned_batches": [
@@ -97,11 +99,36 @@
       "M2-B015",
       "M2-B016"
     ],
-    "implementation_state": "NOT_STARTED",
+    "implementation_state": "ACCEPTED",
     "external_capability_status": "NOT_RUN",
     "task_packet_status": "PLANNED_NOT_ISSUED",
     "acceptance_context": "NEW_READ_ONLY_WORKTREE_AT_FIXED_CANDIDATE",
     "integration_policy": "FAST_FORWARD_ONLY_AFTER_INDEPENDENT_ACCEPT_PASS",
-    "next_allowed_action": "IMPLEMENT_M2_B001_CAPABILITY_PROBES_IN_NEW_WORKTREE"
+    "lifecycle_projection": {
+      "state": "ACCEPTED_WITH_DOWNSTREAM_BLOCKERS",
+      "accepted_candidate": {
+        "commit": "f5964d4c0b02e5969747a628dae64a02f87b8417",
+        "tree": "75ec646592260f764fa1862b20c164e8ecb46f1d"
+      },
+      "independent_acceptance": "PASS",
+      "historical_R2-INT-010": "FAIL",
+      "effective_R2-INT-010": "RESOLVED_ADAPTER",
+      "formal_B002": false,
+      "formal_B009": false,
+      "aggregate_M2_pass": false,
+      "aggregate_external_capability_pass": false,
+      "M2-B002": {
+        "state": "PLANNED",
+        "implementation_state": "NOT_STARTED",
+        "ready": "NO"
+      },
+      "blocking_ids": [
+        "R2-INT-011",
+        "R2-INT-012",
+        "DEFER-R2-C14-001"
+      ],
+      "global_active_WIP": 0
+    },
+    "next_allowed_action": "PLAN_REMAINING_M2_B002_BLOCKERS_R2_INT_011_R2_INT_012_DEFER_R2_C14_001"
   }
 }
