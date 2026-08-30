@@ -1,0 +1,22 @@
+{
+  "schema_version": "rules-residue.story-construction.authority-overlay/1.0.0",
+  "authority_scope": "CONSTRUCTION_GOVERNANCE_ONLY",
+  "r2_canon_precedence": "HIGHER",
+  "hierarchy": [
+    {"rank":1,"authority":"R2_CANON","source":"governance/r2/decisions.r2.yaml","status":"FROZEN"},
+    {"rank":2,"authority":"EXISTING_GIT_AUTHORING_CANON","source":"authoring/**","status":"R2_SUBORDINATE_AUTHORING_SOURCE"},
+    {"rank":3,"authority":"STORY_CONSTRUCTION_GOVERNANCE","source":"governance/story-construction/**","status":"CANDIDATE_PENDING_OWNER_HASH_APPROVAL"},
+    {"rank":4,"authority":"WORKER_CANDIDATES","source":"workflow/returns/**","status":"NON_AUTHORITATIVE_UNTIL_VALIDATED"}
+  ],
+  "canon_tiers": {"T1":"ROOT_CANON_OWNER_APPROVAL_REQUIRED","T2":"STRUCTURAL_CANON_OWNER_APPROVAL_REQUIRED","T3":"INSTANCE_CANON_WITHIN_APPROVED_ENVELOPE"},
+  "content_authority_classes": {"P0":"PURE_PRESENTATION","P1":"CANON_IMPLEMENTATION","C1":"CANONICAL_CONVEYANCE_REVEAL_OWNER_APPROVAL_REQUIRED","C2":"CANON_CHANGE_BLOCK_AND_ROUTE_TO_CHANGE_CONTROL"},
+  "forbidden_definitions": ["WORLD_TRUTH","RULE_TRUTH","STORY_TRUTH","BOSS_TRUTH","ENDING_TRUTH","FORMAL_REGION_CONTENT"],
+  "roles": {
+    "codex":["PLANNER","FRAMEWORK_BUILDER","FINAL_ASSEMBLY","VERIFIER"],
+    "deepseek_harness":["OFFICIAL_LITERARY_TEXT_WORKER"],
+    "grok":["VISUAL_PRODUCTION_WORKER"],
+    "opencode":["LUA_GAME_SCRIPTING_ONLY"],
+    "owner":["T1_APPROVAL","T2_APPROVAL","C1_REVEAL_APPROVAL","CANDIDATE_HASH_APPROVAL"]
+  },
+  "change_set_id": "CS-R2-SC-GOV-INSTALL-001"
+}

@@ -155,3 +155,8 @@ M2-VERTICAL-SLICE/<ROLE>.md
 ```
 
 不要同时加载两个里程碑的角色正文。
+
+<!-- SECTION-ID: M3-SCG-CODEX-SESSION-START -->
+# M3 Story Construction 会话入口
+
+M3 故事施工必须从 `.codex/prompts/m3/STORY-CONSTRUCTION/README.md` 开始，并按 PLAN / IMPLEMENT / ACCEPT / REPAIR 的固定路由生成新鲜 Reading Map。文学任务只可签发给 DeepSeek Harness，视觉任务只可签发为已验证视觉订单；`.codex/STORY_ARCHITECTURE_BUILD_PROMPT.md` 与 `.codex/STORY_UPDATE_PROMPT.md` 均被排除出可执行候选集。

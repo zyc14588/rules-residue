@@ -1,0 +1,2221 @@
+{
+  "schema_version": "rules-residue.story-construction.decisions/1.0.0",
+  "authority_scope": "CONSTRUCTION_GOVERNANCE_ONLY",
+  "r2_canon_precedence": "HIGHER",
+  "source_package": "RR-SC-GOV-V2-Q001-Q130",
+  "source_status": "FROZEN_BY_OWNER_QA_REPOSITORY_BINDING_CANDIDATE",
+  "change_set_id": "CS-R2-SC-GOV-INSTALL-001",
+  "decision_count": 130,
+  "decisions": [
+    {
+      "source_question_id": "Q001",
+      "owner_answer": {
+        "option": "B",
+        "title": "分级准入",
+        "statement": "普通表现内容经 Codex 验证后可进入候选发布内容；核心正典内容必须同时通过 Codex 验证与所有者明确批准。分类不明时不得自动准入。"
+      },
+      "decision_status": "FROZEN_BY_OWNER_QA",
+      "source_package": "RR-SC-GOV-V2-Q001-Q130",
+      "change_set_id": "CS-R2-SC-GOV-INSTALL-001",
+      "human_source_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q001",
+      "machine_source_ref": "machine/decisions.q001-q130.yaml#/decisions/0",
+      "trace_refs": [
+        "governance/story-construction/traceability.yaml#/entries/0",
+        "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml"
+      ]
+    },
+    {
+      "source_question_id": "Q002",
+      "owner_answer": {
+        "option": "C",
+        "title": "四级内容权威模型",
+        "statement": "采用 P0 纯表现、P1 正典实现、C1 正典承载与揭示、C2 正典变更四级模型。P0/P1 可自动验证，C1 需所有者批准，C2 必须阻断并转为设计变更。"
+      },
+      "decision_status": "FROZEN_BY_OWNER_QA",
+      "source_package": "RR-SC-GOV-V2-Q001-Q130",
+      "change_set_id": "CS-R2-SC-GOV-INSTALL-001",
+      "human_source_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q002",
+      "machine_source_ref": "machine/decisions.q001-q130.yaml#/decisions/1",
+      "trace_refs": [
+        "governance/story-construction/traceability.yaml#/entries/1",
+        "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml"
+      ]
+    },
+    {
+      "source_question_id": "Q003",
+      "owner_answer": {
+        "option": "C",
+        "title": "分层混合分类粒度",
+        "statement": "资产具有默认权威等级；具有独立信息作用的文本语义单元或视觉区域可覆盖父级等级。组合后产生更高语义影响时必须升级分类。"
+      },
+      "decision_status": "FROZEN_BY_OWNER_QA",
+      "source_package": "RR-SC-GOV-V2-Q001-Q130",
+      "change_set_id": "CS-R2-SC-GOV-INSTALL-001",
+      "human_source_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q003",
+      "machine_source_ref": "machine/decisions.q001-q130.yaml#/decisions/2",
+      "trace_refs": [
+        "governance/story-construction/traceability.yaml#/entries/2",
+        "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml"
+      ]
+    },
+    {
+      "source_question_id": "Q004",
+      "owner_answer": {
+        "option": "C",
+        "title": "揭示契约与认知差分",
+        "statement": "先以 C1 Reveal Contract 决定玩家应在何时、以何种可信度和歧义获得什么信息；忠实实现契约的文本或视觉为 P1，超出认知边界则升级为 C1 或 C2。"
+      },
+      "decision_status": "FROZEN_BY_OWNER_QA",
+      "source_package": "RR-SC-GOV-V2-Q001-Q130",
+      "change_set_id": "CS-R2-SC-GOV-INSTALL-001",
+      "human_source_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q004",
+      "machine_source_ref": "machine/decisions.q001-q130.yaml#/decisions/3",
+      "trace_refs": [
+        "governance/story-construction/traceability.yaml#/entries/3",
+        "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml"
+      ]
+    },
+    {
+      "source_question_id": "Q005",
+      "owner_answer": {
+        "option": "D",
+        "title": "T1/T2/T3 分层正典授权",
+        "statement": "T1 根正典逐项由所有者冻结；T2 结构正典由 Codex 形成因果包并由所有者按包审批；T3 实例正典在批准的 Canon Envelope 内由 Codex 实例化。"
+      },
+      "decision_status": "FROZEN_BY_OWNER_QA",
+      "source_package": "RR-SC-GOV-V2-Q001-Q130",
+      "change_set_id": "CS-R2-SC-GOV-INSTALL-001",
+      "human_source_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q005",
+      "machine_source_ref": "machine/decisions.q001-q130.yaml#/decisions/4",
+      "trace_refs": [
+        "governance/story-construction/traceability.yaml#/entries/4",
+        "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml"
+      ]
+    },
+    {
+      "source_question_id": "Q006",
+      "owner_answer": {
+        "option": "C",
+        "title": "单一执行权威与双视图审批",
+        "statement": "Canon Registry 是唯一执行权威；人类审批视图与机器视图由同一 Change Set 生成。正式批准绑定 Change Set ID、基础正典哈希和拟议正典哈希。"
+      },
+      "decision_status": "FROZEN_BY_OWNER_QA",
+      "source_package": "RR-SC-GOV-V2-Q001-Q130",
+      "change_set_id": "CS-R2-SC-GOV-INSTALL-001",
+      "human_source_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q006",
+      "machine_source_ref": "machine/decisions.q001-q130.yaml#/decisions/5",
+      "trace_refs": [
+        "governance/story-construction/traceability.yaml#/entries/5",
+        "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml"
+      ]
+    },
+    {
+      "source_question_id": "Q007",
+      "owner_answer": {
+        "option": "C",
+        "title": "Git 结构化文件权威",
+        "statement": "Git 中的结构化文件为权威源；SQLite、图索引和数据库仅是自动生成缓存，禁止反向写入权威源。"
+      },
+      "decision_status": "FROZEN_BY_OWNER_QA",
+      "source_package": "RR-SC-GOV-V2-Q001-Q130",
+      "change_set_id": "CS-R2-SC-GOV-INSTALL-001",
+      "human_source_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q007",
+      "machine_source_ref": "machine/decisions.q001-q130.yaml#/decisions/6",
+      "trace_refs": [
+        "governance/story-construction/traceability.yaml#/entries/6",
+        "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml"
+      ]
+    },
+    {
+      "source_question_id": "Q008",
+      "owner_answer": {
+        "option": "C",
+        "title": "嵌套式原子 Change Set",
+        "statement": "Change Set 支持内部原子单元的选择性拒绝；拆分后必须产生新的 Change Set、哈希与影响分析。"
+      },
+      "decision_status": "FROZEN_BY_OWNER_QA",
+      "source_package": "RR-SC-GOV-V2-Q001-Q130",
+      "change_set_id": "CS-R2-SC-GOV-INSTALL-001",
+      "human_source_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q008",
+      "machine_source_ref": "machine/decisions.q001-q130.yaml#/decisions/7",
+      "trace_refs": [
+        "governance/story-construction/traceability.yaml#/entries/7",
+        "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml"
+      ]
+    },
+    {
+      "source_question_id": "Q009",
+      "owner_answer": {
+        "option": "D",
+        "title": "审批证据双重绑定",
+        "statement": "审批清单绑定审批人、时间、Change Set 与哈希，并与 Git Commit/Tag 双重绑定；能力允许时附加签名验证。"
+      },
+      "decision_status": "FROZEN_BY_OWNER_QA",
+      "source_package": "RR-SC-GOV-V2-Q001-Q130",
+      "change_set_id": "CS-R2-SC-GOV-INSTALL-001",
+      "human_source_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q009",
+      "machine_source_ref": "machine/decisions.q001-q130.yaml#/decisions/8",
+      "trace_refs": [
+        "governance/story-construction/traceability.yaml#/entries/8",
+        "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml"
+      ]
+    },
+    {
+      "source_question_id": "Q010",
+      "owner_answer": {
+        "option": "B-S",
+        "title": "简化生命周期原则",
+        "statement": "保留正式生命周期治理，但不得将验证、审批、隔离、发布和取代关系交叉展开为状态爆炸；具体采用简化主阶段与正交字段。"
+      },
+      "decision_status": "FROZEN_BY_OWNER_QA",
+      "source_package": "RR-SC-GOV-V2-Q001-Q130",
+      "change_set_id": "CS-R2-SC-GOV-INSTALL-001",
+      "human_source_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q010",
+      "machine_source_ref": "machine/decisions.q001-q130.yaml#/decisions/9",
+      "trace_refs": [
+        "governance/story-construction/traceability.yaml#/entries/9",
+        "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml"
+      ]
+    },
+    {
+      "source_question_id": "Q011",
+      "owner_answer": {
+        "option": "C",
+        "title": "依赖感知语义合并",
+        "statement": "T1/T2/C1 禁止自动语义合并；互不相交的 T3/P0/P1 可在依赖证明成立时自动合并。"
+      },
+      "decision_status": "FROZEN_BY_OWNER_QA",
+      "source_package": "RR-SC-GOV-V2-Q001-Q130",
+      "change_set_id": "CS-R2-SC-GOV-INSTALL-001",
+      "human_source_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q011",
+      "machine_source_ref": "machine/decisions.q001-q130.yaml#/decisions/10",
+      "trace_refs": [
+        "governance/story-construction/traceability.yaml#/entries/10",
+        "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml"
+      ]
+    },
+    {
+      "source_question_id": "Q012",
+      "owner_answer": {
+        "option": "D",
+        "title": "发布后不可变与快速修订",
+        "statement": "已发布正典不得原地静默修改；变更必须通过新 Change Set 取代并提供迁移。纯 P0 排版、错别字和非语义格式问题可走快速修订通道。"
+      },
+      "decision_status": "FROZEN_BY_OWNER_QA",
+      "source_package": "RR-SC-GOV-V2-Q001-Q130",
+      "change_set_id": "CS-R2-SC-GOV-INSTALL-001",
+      "human_source_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q012",
+      "machine_source_ref": "machine/decisions.q001-q130.yaml#/decisions/11",
+      "trace_refs": [
+        "governance/story-construction/traceability.yaml#/entries/11",
+        "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml"
+      ]
+    },
+    {
+      "source_question_id": "Q013",
+      "owner_answer": {
+        "option": "C",
+        "title": "稳定 ID、别名与 Revision",
+        "statement": "每个对象拥有稳定不可变主 ID、可读别名和独立 Revision ID；内容哈希不替代业务身份。"
+      },
+      "decision_status": "FROZEN_BY_OWNER_QA",
+      "source_package": "RR-SC-GOV-V2-Q001-Q130",
+      "change_set_id": "CS-R2-SC-GOV-INSTALL-001",
+      "human_source_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q013",
+      "machine_source_ref": "machine/decisions.q001-q130.yaml#/decisions/12",
+      "trace_refs": [
+        "governance/story-construction/traceability.yaml#/entries/12",
+        "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml"
+      ]
+    },
+    {
+      "source_question_id": "Q014",
+      "owner_answer": {
+        "option": "C",
+        "title": "Change Set 级 Git 隔离",
+        "statement": "每个 Change Set 使用独立短期分支和 Git worktree；Codex 维护验证与合并队列。"
+      },
+      "decision_status": "FROZEN_BY_OWNER_QA",
+      "source_package": "RR-SC-GOV-V2-Q001-Q130",
+      "change_set_id": "CS-R2-SC-GOV-INSTALL-001",
+      "human_source_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q014",
+      "machine_source_ref": "machine/decisions.q001-q130.yaml#/decisions/13",
+      "trace_refs": [
+        "governance/story-construction/traceability.yaml#/entries/13",
+        "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml"
+      ]
+    },
+    {
+      "source_question_id": "Q015",
+      "owner_answer": {
+        "option": "D",
+        "title": "T3 实例生成边界",
+        "statement": "Codex 或确定性模板先生成结构实例；DeepSeek Harness 与 Grok 可在包络内提交候选，但只有 Codex 冻结 ID 后才能进入正式资产。"
+      },
+      "decision_status": "FROZEN_BY_OWNER_QA",
+      "source_package": "RR-SC-GOV-V2-Q001-Q130",
+      "change_set_id": "CS-R2-SC-GOV-INSTALL-001",
+      "human_source_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q015",
+      "machine_source_ref": "machine/decisions.q001-q130.yaml#/decisions/14",
+      "trace_refs": [
+        "governance/story-construction/traceability.yaml#/entries/14",
+        "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml"
+      ]
+    },
+    {
+      "source_question_id": "Q016",
+      "owner_answer": {
+        "option": "C-ROP",
+        "title": "区域文本订单包",
+        "statement": "区域设计完成后，Codex 将所需文本构建任务转换为 Region Text Order Package；DeepSeek Harness 按订单完成语义实现、文学创作、自检和定向返修。订单包可附加不冲突的额外约定。"
+      },
+      "decision_status": "FROZEN_BY_OWNER_QA",
+      "source_package": "RR-SC-GOV-V2-Q001-Q130",
+      "change_set_id": "CS-R2-SC-GOV-INSTALL-001",
+      "human_source_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q016",
+      "machine_source_ref": "machine/decisions.q001-q130.yaml#/decisions/15",
+      "trace_refs": [
+        "governance/story-construction/traceability.yaml#/entries/15",
+        "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml"
+      ]
+    },
+    {
+      "source_question_id": "Q017",
+      "owner_answer": {
+        "option": "B",
+        "title": "视觉分阶段生产",
+        "statement": "Grok 采用概念探索、语义构图证明、草图、最终资产和视觉语义标注的分阶段流程。"
+      },
+      "decision_status": "FROZEN_BY_OWNER_QA",
+      "source_package": "RR-SC-GOV-V2-Q001-Q130",
+      "change_set_id": "CS-R2-SC-GOV-INSTALL-001",
+      "human_source_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q017",
+      "machine_source_ref": "machine/decisions.q001-q130.yaml#/decisions/16",
+      "trace_refs": [
+        "governance/story-construction/traceability.yaml#/entries/16",
+        "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml"
+      ]
+    },
+    {
+      "source_question_id": "Q018",
+      "owner_answer": {
+        "option": "D",
+        "title": "同源并行与跨模态调和",
+        "statement": "文本和视觉从同一冻结契约并行生成草稿；经 Codex 跨模态调和后再分别定稿。"
+      },
+      "decision_status": "FROZEN_BY_OWNER_QA",
+      "source_package": "RR-SC-GOV-V2-Q001-Q130",
+      "change_set_id": "CS-R2-SC-GOV-INSTALL-001",
+      "human_source_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q018",
+      "machine_source_ref": "machine/decisions.q001-q130.yaml#/decisions/17",
+      "trace_refs": [
+        "governance/story-construction/traceability.yaml#/entries/17",
+        "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml"
+      ]
+    },
+    {
+      "source_question_id": "Q019",
+      "owner_answer": {
+        "option": "C",
+        "title": "最小授权上下文",
+        "statement": "生产模型只获得最小相关正典切片、签名化全局不变量、禁止事实清单和受控按需检索能力。"
+      },
+      "decision_status": "FROZEN_BY_OWNER_QA",
+      "source_package": "RR-SC-GOV-V2-Q001-Q130",
+      "change_set_id": "CS-R2-SC-GOV-INSTALL-001",
+      "human_source_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q019",
+      "machine_source_ref": "machine/decisions.q001-q130.yaml#/decisions/18",
+      "trace_refs": [
+        "governance/story-construction/traceability.yaml#/entries/18",
+        "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml"
+      ]
+    },
+    {
+      "source_question_id": "Q020",
+      "owner_answer": {
+        "option": "B",
+        "title": "Codex 自动修复边界",
+        "statement": "Codex 可自动修复 Schema、ID、引用、格式、清单和打包问题；不得直接改写文学语义或视觉语义。"
+      },
+      "decision_status": "FROZEN_BY_OWNER_QA",
+      "source_package": "RR-SC-GOV-V2-Q001-Q130",
+      "change_set_id": "CS-R2-SC-GOV-INSTALL-001",
+      "human_source_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q020",
+      "machine_source_ref": "machine/decisions.q001-q130.yaml#/decisions/19",
+      "trace_refs": [
+        "governance/story-construction/traceability.yaml#/entries/19",
+        "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml"
+      ]
+    },
+    {
+      "source_question_id": "Q021",
+      "owner_answer": {
+        "option": "B-CFG",
+        "title": "可配置生成溯源",
+        "statement": "记录任务包哈希、Canon 版本、模型/供应商、参数、种子、工具调用、输入输出哈希和返修链；记录颗粒度由 DAB 配置且受最低档位约束。"
+      },
+      "decision_status": "FROZEN_BY_OWNER_QA",
+      "source_package": "RR-SC-GOV-V2-Q001-Q130",
+      "change_set_id": "CS-R2-SC-GOV-INSTALL-001",
+      "human_source_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q021",
+      "machine_source_ref": "machine/decisions.q001-q130.yaml#/decisions/20",
+      "trace_refs": [
+        "governance/story-construction/traceability.yaml#/entries/20",
+        "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml"
+      ]
+    },
+    {
+      "source_question_id": "Q022",
+      "owner_answer": {
+        "option": "C",
+        "title": "文本语义定位",
+        "statement": "对话、规则和任务使用结构化节点 ID；散文、档案和描述使用外部 Sidecar 语义跨度映射。"
+      },
+      "decision_status": "FROZEN_BY_OWNER_QA",
+      "source_package": "RR-SC-GOV-V2-Q001-Q130",
+      "change_set_id": "CS-R2-SC-GOV-INSTALL-001",
+      "human_source_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q022",
+      "machine_source_ref": "machine/decisions.q001-q130.yaml#/decisions/21",
+      "trace_refs": [
+        "governance/story-construction/traceability.yaml#/entries/21",
+        "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml"
+      ]
+    },
+    {
+      "source_question_id": "Q023",
+      "owner_answer": {
+        "option": "C",
+        "title": "视觉语义定位",
+        "statement": "视觉使用对象/区域 Manifest，并按需附加图层、遮罩、区域框、语义锚点和空间关系图。"
+      },
+      "decision_status": "FROZEN_BY_OWNER_QA",
+      "source_package": "RR-SC-GOV-V2-Q001-Q130",
+      "change_set_id": "CS-R2-SC-GOV-INSTALL-001",
+      "human_source_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q023",
+      "machine_source_ref": "machine/decisions.q001-q130.yaml#/decisions/22",
+      "trace_refs": [
+        "governance/story-construction/traceability.yaml#/entries/22",
+        "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml"
+      ]
+    },
+    {
+      "source_question_id": "Q024",
+      "owner_answer": {
+        "option": "C",
+        "title": "风险分层验证覆盖",
+        "statement": "所有资产执行全量静态验证；T1/T2/C1 与关键路线执行穷举图和状态验证；低风险 T3/P0/P1 使用风险驱动组合测试。"
+      },
+      "decision_status": "FROZEN_BY_OWNER_QA",
+      "source_package": "RR-SC-GOV-V2-Q001-Q130",
+      "change_set_id": "CS-R2-SC-GOV-INSTALL-001",
+      "human_source_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q024",
+      "machine_source_ref": "machine/decisions.q001-q130.yaml#/decisions/23",
+      "trace_refs": [
+        "governance/story-construction/traceability.yaml#/entries/23",
+        "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml"
+      ]
+    },
+    {
+      "source_question_id": "Q025",
+      "owner_answer": {
+        "option": "C",
+        "title": "Codex 三角色隔离",
+        "statement": "Planner、Framework Builder、Verifier 使用独立会话、worktree 和固定输入；Verifier 不读取生产者的解释性辩护。"
+      },
+      "decision_status": "FROZEN_BY_OWNER_QA",
+      "source_package": "RR-SC-GOV-V2-Q001-Q130",
+      "change_set_id": "CS-R2-SC-GOV-INSTALL-001",
+      "human_source_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q025",
+      "machine_source_ref": "machine/decisions.q001-q130.yaml#/decisions/24",
+      "trace_refs": [
+        "governance/story-construction/traceability.yaml#/entries/24",
+        "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml"
+      ]
+    },
+    {
+      "source_question_id": "Q026",
+      "owner_answer": {
+        "option": "D",
+        "title": "形式预言机与对抗模拟",
+        "statement": "Epistemic Signature、因果图和状态可达性作为硬预言机；多种对抗性玩家模拟用于发现隐性泄漏和不可达路径。"
+      },
+      "decision_status": "FROZEN_BY_OWNER_QA",
+      "source_package": "RR-SC-GOV-V2-Q001-Q130",
+      "change_set_id": "CS-R2-SC-GOV-INSTALL-001",
+      "human_source_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q026",
+      "machine_source_ref": "machine/decisions.q001-q130.yaml#/decisions/25",
+      "trace_refs": [
+        "governance/story-construction/traceability.yaml#/entries/25",
+        "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml"
+      ]
+    },
+    {
+      "source_question_id": "Q027",
+      "owner_answer": {
+        "option": "C",
+        "title": "Reveal Family 审批",
+        "statement": "C1 Reveal Contract 按同一因果问题或 Reveal Family 打包审批，同时允许包内单元逐项接受、拒绝或拆分。"
+      },
+      "decision_status": "FROZEN_BY_OWNER_QA",
+      "source_package": "RR-SC-GOV-V2-Q001-Q130",
+      "change_set_id": "CS-R2-SC-GOV-INSTALL-001",
+      "human_source_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q027",
+      "machine_source_ref": "machine/decisions.q001-q130.yaml#/decisions/26",
+      "trace_refs": [
+        "governance/story-construction/traceability.yaml#/entries/26",
+        "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml"
+      ]
+    },
+    {
+      "source_question_id": "Q028",
+      "owner_answer": {
+        "option": "C",
+        "title": "跨模态冲突处置",
+        "statement": "文本和视觉均无正典优先权；以 Canon Registry 和 Reveal Contract 为准，冲突时相关双方资产均不得发布。"
+      },
+      "decision_status": "FROZEN_BY_OWNER_QA",
+      "source_package": "RR-SC-GOV-V2-Q001-Q130",
+      "change_set_id": "CS-R2-SC-GOV-INSTALL-001",
+      "human_source_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q028",
+      "machine_source_ref": "machine/decisions.q001-q130.yaml#/decisions/27",
+      "trace_refs": [
+        "governance/story-construction/traceability.yaml#/entries/27",
+        "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml"
+      ]
+    },
+    {
+      "source_question_id": "Q029",
+      "owner_answer": {
+        "option": "B",
+        "title": "两轮定向返修上限",
+        "statement": "首次生成后最多执行两轮基于稳定缺陷 ID 的定向返修；仍失败则升级处理。"
+      },
+      "decision_status": "FROZEN_BY_OWNER_QA",
+      "source_package": "RR-SC-GOV-V2-Q001-Q130",
+      "change_set_id": "CS-R2-SC-GOV-INSTALL-001",
+      "human_source_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q029",
+      "machine_source_ref": "machine/decisions.q001-q130.yaml#/decisions/28",
+      "trace_refs": [
+        "governance/story-construction/traceability.yaml#/entries/28",
+        "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml"
+      ]
+    },
+    {
+      "source_question_id": "Q030",
+      "owner_answer": {
+        "option": "B",
+        "title": "有限缺陷豁免",
+        "statement": "仅允许所有者明确豁免非因果性的 P0/P1 表现缺陷；正典、规则、知识泄漏、审批、来源和因果缺陷不得豁免。"
+      },
+      "decision_status": "FROZEN_BY_OWNER_QA",
+      "source_package": "RR-SC-GOV-V2-Q001-Q130",
+      "change_set_id": "CS-R2-SC-GOV-INSTALL-001",
+      "human_source_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q030",
+      "machine_source_ref": "machine/decisions.q001-q130.yaml#/decisions/29",
+      "trace_refs": [
+        "governance/story-construction/traceability.yaml#/entries/29",
+        "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml"
+      ]
+    },
+    {
+      "source_question_id": "Q031",
+      "owner_answer": {
+        "option": "A",
+        "title": "全硬门禁发布",
+        "statement": "所有强制验证通过、必要批准存在、哈希锁定且无未豁免阻断缺陷时才可发布。"
+      },
+      "decision_status": "FROZEN_BY_OWNER_QA",
+      "source_package": "RR-SC-GOV-V2-Q001-Q130",
+      "change_set_id": "CS-R2-SC-GOV-INSTALL-001",
+      "human_source_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q031",
+      "machine_source_ref": "machine/decisions.q001-q130.yaml#/decisions/30",
+      "trace_refs": [
+        "governance/story-construction/traceability.yaml#/entries/30",
+        "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml"
+      ]
+    },
+    {
+      "source_question_id": "Q032",
+      "owner_answer": {
+        "option": "C",
+        "title": "模型升级后的再生成",
+        "statement": "已批准/已发布内容不随模型升级自动替换；再生成必须创建新 Change Set 并执行语义签名和玩家认知差分验证。"
+      },
+      "decision_status": "FROZEN_BY_OWNER_QA",
+      "source_package": "RR-SC-GOV-V2-Q001-Q130",
+      "change_set_id": "CS-R2-SC-GOV-INSTALL-001",
+      "human_source_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q032",
+      "machine_source_ref": "machine/decisions.q001-q130.yaml#/decisions/31",
+      "trace_refs": [
+        "governance/story-construction/traceability.yaml#/entries/31",
+        "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml"
+      ]
+    },
+    {
+      "source_question_id": "Q033",
+      "owner_answer": {
+        "option": "C",
+        "title": "分层冻结节奏",
+        "statement": "按契约、垂直切片、单区、跨区整合和 Release Candidate 分层冻结。"
+      },
+      "decision_status": "FROZEN_BY_OWNER_QA",
+      "source_package": "RR-SC-GOV-V2-Q001-Q130",
+      "change_set_id": "CS-R2-SC-GOV-INSTALL-001",
+      "human_source_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q033",
+      "machine_source_ref": "machine/decisions.q001-q130.yaml#/decisions/32",
+      "trace_refs": [
+        "governance/story-construction/traceability.yaml#/entries/32",
+        "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml"
+      ]
+    },
+    {
+      "source_question_id": "Q034",
+      "owner_answer": {
+        "option": "B",
+        "title": "外部参考与权利溯源",
+        "statement": "所有外部文字、图片、风格参考、输入资产和生成方法登记来源、用途、许可与哈希；权利状态不明时阻断发布。"
+      },
+      "decision_status": "FROZEN_BY_OWNER_QA",
+      "source_package": "RR-SC-GOV-V2-Q001-Q130",
+      "change_set_id": "CS-R2-SC-GOV-INSTALL-001",
+      "human_source_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q034",
+      "machine_source_ref": "machine/decisions.q001-q130.yaml#/decisions/33",
+      "trace_refs": [
+        "governance/story-construction/traceability.yaml#/entries/33",
+        "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml"
+      ]
+    },
+    {
+      "source_question_id": "Q035",
+      "owner_answer": {
+        "option": "A",
+        "title": "DAB 定义",
+        "statement": "DAB 正式定义为 Decision & Audit Bundle（决策与审计包），承载决策、审批、生成、验证、返修、豁免和发布证据。"
+      },
+      "decision_status": "FROZEN_BY_OWNER_QA",
+      "source_package": "RR-SC-GOV-V2-Q001-Q130",
+      "change_set_id": "CS-R2-SC-GOV-INSTALL-001",
+      "human_source_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q035",
+      "machine_source_ref": "machine/decisions.q001-q130.yaml#/decisions/34",
+      "trace_refs": [
+        "governance/story-construction/traceability.yaml#/entries/34",
+        "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml"
+      ]
+    },
+    {
+      "source_question_id": "Q036",
+      "owner_answer": {
+        "option": "A",
+        "title": "四阶段主状态与处置字段",
+        "statement": "主阶段为 DRAFT、CANDIDATE、APPROVED、RELEASED；处置字段为 ACTIVE、QUARANTINED、REJECTED、SUPERSEDED；验证和审批结果独立记录。"
+      },
+      "decision_status": "FROZEN_BY_OWNER_QA",
+      "source_package": "RR-SC-GOV-V2-Q001-Q130",
+      "change_set_id": "CS-R2-SC-GOV-INSTALL-001",
+      "human_source_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q036",
+      "machine_source_ref": "machine/decisions.q001-q130.yaml#/decisions/35",
+      "trace_refs": [
+        "governance/story-construction/traceability.yaml#/entries/35",
+        "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml"
+      ]
+    },
+    {
+      "source_question_id": "Q037",
+      "owner_answer": {
+        "option": "C",
+        "title": "分层生命周期对象",
+        "statement": "Change Set、区域订单包、单项资产和 Release Candidate 拥有完整主状态；Canon Record 与语义单元默认继承父级，仅记录必要的处置、验证、审批和失效标记。"
+      },
+      "decision_status": "FROZEN_BY_OWNER_QA",
+      "source_package": "RR-SC-GOV-V2-Q001-Q130",
+      "change_set_id": "CS-R2-SC-GOV-INSTALL-001",
+      "human_source_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q037",
+      "machine_source_ref": "machine/decisions.q001-q130.yaml#/decisions/36",
+      "trace_refs": [
+        "governance/story-construction/traceability.yaml#/entries/36",
+        "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml"
+      ]
+    },
+    {
+      "source_question_id": "Q038",
+      "owner_answer": {
+        "option": "A",
+        "title": "YAML/JSON Schema/规范 JSON",
+        "statement": "人类维护 YAML，JSON Schema 约束结构，自动生成规范化 JSON；规范 JSON 计算 SHA-256，包级形成 Merkle 根并绑定 Git Commit。"
+      },
+      "decision_status": "FROZEN_BY_OWNER_QA",
+      "source_package": "RR-SC-GOV-V2-Q001-Q130",
+      "change_set_id": "CS-R2-SC-GOV-INSTALL-001",
+      "human_source_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q038",
+      "machine_source_ref": "machine/decisions.q001-q130.yaml#/decisions/37",
+      "trace_refs": [
+        "governance/story-construction/traceability.yaml#/entries/37",
+        "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml"
+      ]
+    },
+    {
+      "source_question_id": "Q039",
+      "owner_answer": {
+        "option": "B",
+        "title": "Schema 语义版本和迁移",
+        "statement": "Schema 使用 SemVer；每次变更提供迁移程序和测试，不兼容变更提升 major，发布记录不得被静默重写。"
+      },
+      "decision_status": "FROZEN_BY_OWNER_QA",
+      "source_package": "RR-SC-GOV-V2-Q001-Q130",
+      "change_set_id": "CS-R2-SC-GOV-INSTALL-001",
+      "human_source_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q039",
+      "machine_source_ref": "machine/decisions.q001-q130.yaml#/decisions/38",
+      "trace_refs": [
+        "governance/story-construction/traceability.yaml#/entries/38",
+        "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml"
+      ]
+    },
+    {
+      "source_question_id": "Q040",
+      "owner_answer": {
+        "option": "C",
+        "title": "证明式审批继承",
+        "statement": "拆分或重组 Change Set 后，只有内容、依赖、上游版本、认知签名和因果影响均相同并生成可验证证明的子树可继承审批。"
+      },
+      "decision_status": "FROZEN_BY_OWNER_QA",
+      "source_package": "RR-SC-GOV-V2-Q001-Q130",
+      "change_set_id": "CS-R2-SC-GOV-INSTALL-001",
+      "human_source_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q040",
+      "machine_source_ref": "machine/decisions.q001-q130.yaml#/decisions/39",
+      "trace_refs": [
+        "governance/story-construction/traceability.yaml#/entries/39",
+        "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml"
+      ]
+    },
+    {
+      "source_question_id": "Q041",
+      "owner_answer": {
+        "option": "B",
+        "title": "强类型因果图",
+        "statement": "Canon Registry 采用 Truth、Event、Rule、Entity、State、Claim、Observation、Evidence、Hypothesis、AgentKnowledge、Scene、Route、RevealContract、CanonEnvelope、Asset、TestOracle 等强类型节点和受控边。"
+      },
+      "decision_status": "FROZEN_BY_OWNER_QA",
+      "source_package": "RR-SC-GOV-V2-Q001-Q130",
+      "change_set_id": "CS-R2-SC-GOV-INSTALL-001",
+      "human_source_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q041",
+      "machine_source_ref": "machine/decisions.q001-q130.yaml#/decisions/40",
+      "trace_refs": [
+        "governance/story-construction/traceability.yaml#/entries/40",
+        "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml"
+      ]
+    },
+    {
+      "source_question_id": "Q042",
+      "owner_answer": {
+        "option": "C",
+        "title": "完整认识论模型",
+        "statement": "严格区分客观事实、观察、证据、假说、知识、信念、公开主张、欺骗意图、来源可靠性和确信程度。"
+      },
+      "decision_status": "FROZEN_BY_OWNER_QA",
+      "source_package": "RR-SC-GOV-V2-Q001-Q130",
+      "change_set_id": "CS-R2-SC-GOV-INSTALL-001",
+      "human_source_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q042",
+      "machine_source_ref": "machine/decisions.q001-q130.yaml#/decisions/41",
+      "trace_refs": [
+        "governance/story-construction/traceability.yaml#/entries/41",
+        "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml"
+      ]
+    },
+    {
+      "source_question_id": "Q043",
+      "owner_answer": {
+        "option": "C",
+        "title": "混合时间模型",
+        "statement": "同时支持全局事件 DAG、区域局部时钟、相对时间、循环编号、分支实例、持续时间、主观/客观时间和跨循环残差。"
+      },
+      "decision_status": "FROZEN_BY_OWNER_QA",
+      "source_package": "RR-SC-GOV-V2-Q001-Q130",
+      "change_set_id": "CS-R2-SC-GOV-INSTALL-001",
+      "human_source_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q043",
+      "machine_source_ref": "machine/decisions.q001-q130.yaml#/decisions/42",
+      "trace_refs": [
+        "governance/story-construction/traceability.yaml#/entries/42",
+        "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml"
+      ]
+    },
+    {
+      "source_question_id": "Q044",
+      "owner_answer": {
+        "option": "D",
+        "title": "声明式语义与 Lua 适配",
+        "statement": "Canon Registry 中的条件、效果和规则覆盖采用类型化声明式 AST；Lua 仅是运行时适配，必须证明与权威语义等价，不能成为隐藏正典。"
+      },
+      "decision_status": "FROZEN_BY_OWNER_QA",
+      "source_package": "RR-SC-GOV-V2-Q001-Q130",
+      "change_set_id": "CS-R2-SC-GOV-INSTALL-001",
+      "human_source_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q044",
+      "machine_source_ref": "machine/decisions.q001-q130.yaml#/decisions/43",
+      "trace_refs": [
+        "governance/story-construction/traceability.yaml#/entries/43",
+        "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml"
+      ]
+    },
+    {
+      "source_question_id": "Q045",
+      "owner_answer": {
+        "option": "B",
+        "title": "显式规则覆盖图",
+        "statement": "规则必须声明适用域、生效条件、对象、效果、上位规则、可/不可覆盖对象、局部例外、例外代价、失效条件和冲突依据。"
+      },
+      "decision_status": "FROZEN_BY_OWNER_QA",
+      "source_package": "RR-SC-GOV-V2-Q001-Q130",
+      "change_set_id": "CS-R2-SC-GOV-INSTALL-001",
+      "human_source_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q045",
+      "machine_source_ref": "machine/decisions.q001-q130.yaml#/decisions/44",
+      "trace_refs": [
+        "governance/story-construction/traceability.yaml#/entries/44",
+        "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml"
+      ]
+    },
+    {
+      "source_question_id": "Q046",
+      "owner_answer": {
+        "option": "C",
+        "title": "完整 NPC 认知状态",
+        "statement": "重要 NPC 必须结构化表达 observed、believes、knows、uncertain、misunderstands、publicly_claims、withholds、lies_about、deception_intent、confidence、source_refs 和有效期。"
+      },
+      "decision_status": "FROZEN_BY_OWNER_QA",
+      "source_package": "RR-SC-GOV-V2-Q001-Q130",
+      "change_set_id": "CS-R2-SC-GOV-INSTALL-001",
+      "human_source_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q046",
+      "machine_source_ref": "machine/decisions.q001-q130.yaml#/decisions/45",
+      "trace_refs": [
+        "governance/story-construction/traceability.yaml#/entries/45",
+        "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml"
+      ]
+    },
+    {
+      "source_question_id": "Q047",
+      "owner_answer": {
+        "option": "B",
+        "title": "区域导入/导出接口",
+        "statement": "跨区内容只能通过显式导出 Truth/State/Reveal/Route Anchor 和导入依赖连接，不得直接绑定另一区域内部实现。"
+      },
+      "decision_status": "FROZEN_BY_OWNER_QA",
+      "source_package": "RR-SC-GOV-V2-Q001-Q130",
+      "change_set_id": "CS-R2-SC-GOV-INSTALL-001",
+      "human_source_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q047",
+      "machine_source_ref": "machine/decisions.q001-q130.yaml#/decisions/46",
+      "trace_refs": [
+        "governance/story-construction/traceability.yaml#/entries/46",
+        "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml"
+      ]
+    },
+    {
+      "source_question_id": "Q048",
+      "owner_answer": {
+        "option": "B",
+        "title": "正式区域订单签发门禁",
+        "statement": "只有区域 T1/T2/T3/C1、规则、时间线、NPC 认知、路线、失败/撤退/补课、可达性、风格和视觉锚点均满足门禁后，才可签发正式区域订单包。"
+      },
+      "decision_status": "FROZEN_BY_OWNER_QA",
+      "source_package": "RR-SC-GOV-V2-Q001-Q130",
+      "change_set_id": "CS-R2-SC-GOV-INSTALL-001",
+      "human_source_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q048",
+      "machine_source_ref": "machine/decisions.q001-q130.yaml#/decisions/47",
+      "trace_refs": [
+        "governance/story-construction/traceability.yaml#/entries/47",
+        "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml"
+      ]
+    },
+    {
+      "source_question_id": "Q049",
+      "owner_answer": {
+        "option": "B",
+        "title": "区域包与原子订单 DAG",
+        "statement": "Region Text Order Package 包含 Manifest、Canon Slice、全局不变量、区域/风格/Reveal 合同、原子订单、依赖 DAG、附加条款、验收矩阵和返回合同。"
+      },
+      "decision_status": "FROZEN_BY_OWNER_QA",
+      "source_package": "RR-SC-GOV-V2-Q001-Q130",
+      "change_set_id": "CS-R2-SC-GOV-INSTALL-001",
+      "human_source_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q049",
+      "machine_source_ref": "machine/decisions.q001-q130.yaml#/decisions/48",
+      "trace_refs": [
+        "governance/story-construction/traceability.yaml#/entries/48",
+        "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml"
+      ]
+    },
+    {
+      "source_question_id": "Q050",
+      "owner_answer": {
+        "option": "C",
+        "title": "独立可验收文本资产粒度",
+        "statement": "订单按场景叙述、结构化对话、世界内文档、规则载体、任务、战斗/异常、失败/撤退、循环变体、结局和可访问性文本等独立可验收资产拆分。"
+      },
+      "decision_status": "FROZEN_BY_OWNER_QA",
+      "source_package": "RR-SC-GOV-V2-Q001-Q130",
+      "change_set_id": "CS-R2-SC-GOV-INSTALL-001",
+      "human_source_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q050",
+      "machine_source_ref": "machine/decisions.q001-q130.yaml#/decisions/49",
+      "trace_refs": [
+        "governance/story-construction/traceability.yaml#/entries/49",
+        "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml"
+      ]
+    },
+    {
+      "source_question_id": "Q051",
+      "owner_answer": {
+        "option": "B",
+        "title": "附加约定优先级",
+        "statement": "优先级依次为 Canon/审批、规则因果与 Reveal、区域基础合同、单项订单、附加约定、Harness 默认规则和模型偏好；附加约定只能收紧或具体化。"
+      },
+      "decision_status": "FROZEN_BY_OWNER_QA",
+      "source_package": "RR-SC-GOV-V2-Q001-Q130",
+      "change_set_id": "CS-R2-SC-GOV-INSTALL-001",
+      "human_source_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q051",
+      "machine_source_ref": "machine/decisions.q001-q130.yaml#/decisions/50",
+      "trace_refs": [
+        "governance/story-construction/traceability.yaml#/entries/50",
+        "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml"
+      ]
+    },
+    {
+      "source_question_id": "Q052",
+      "owner_answer": {
+        "option": "B",
+        "title": "订单包不可变修订",
+        "statement": "签发后的订单包绑定 Package ID、Revision、Canon Hash 和 Manifest Hash；变更必须创建新 Revision、Addendum、Superseding Order 或 Cancellation Record。"
+      },
+      "decision_status": "FROZEN_BY_OWNER_QA",
+      "source_package": "RR-SC-GOV-V2-Q001-Q130",
+      "change_set_id": "CS-R2-SC-GOV-INSTALL-001",
+      "human_source_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q052",
+      "machine_source_ref": "machine/decisions.q001-q130.yaml#/decisions/51",
+      "trace_refs": [
+        "governance/story-construction/traceability.yaml#/entries/51",
+        "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml"
+      ]
+    },
+    {
+      "source_question_id": "Q053",
+      "owner_answer": {
+        "option": "B",
+        "title": "区域文本交付包",
+        "statement": "每项订单返回语义实现稿、文学实现稿、语义单元映射、Canon/Reveal 来源矩阵、自检、已知问题、使用版本和可导入资产。"
+      },
+      "decision_status": "FROZEN_BY_OWNER_QA",
+      "source_package": "RR-SC-GOV-V2-Q001-Q130",
+      "change_set_id": "CS-R2-SC-GOV-INSTALL-001",
+      "human_source_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q053",
+      "machine_source_ref": "machine/decisions.q001-q130.yaml#/decisions/52",
+      "trace_refs": [
+        "governance/story-construction/traceability.yaml#/entries/52",
+        "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml"
+      ]
+    },
+    {
+      "source_question_id": "Q054",
+      "owner_answer": {
+        "option": "C",
+        "title": "Harness 内部分阶段隔离",
+        "statement": "DeepSeek Harness 内部采用 Semantic Implementer、Literary Writer、Independent Checker、Defect Router、Repair Pass；Checker 不直接改稿。"
+      },
+      "decision_status": "FROZEN_BY_OWNER_QA",
+      "source_package": "RR-SC-GOV-V2-Q001-Q130",
+      "change_set_id": "CS-R2-SC-GOV-INSTALL-001",
+      "human_source_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q054",
+      "machine_source_ref": "machine/decisions.q001-q130.yaml#/decisions/53",
+      "trace_refs": [
+        "governance/story-construction/traceability.yaml#/entries/53",
+        "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml"
+      ]
+    },
+    {
+      "source_question_id": "Q055",
+      "owner_answer": {
+        "option": "B",
+        "title": "订单级验收与区域级封包",
+        "statement": "内部订单可独立通过和锁定；缺陷订单及其依赖闭包返修；所有 mandatory 订单通过前区域交付包不得完成。"
+      },
+      "decision_status": "FROZEN_BY_OWNER_QA",
+      "source_package": "RR-SC-GOV-V2-Q001-Q130",
+      "change_set_id": "CS-R2-SC-GOV-INSTALL-001",
+      "human_source_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q055",
+      "machine_source_ref": "machine/decisions.q001-q130.yaml#/decisions/54",
+      "trace_refs": [
+        "governance/story-construction/traceability.yaml#/entries/54",
+        "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml"
+      ]
+    },
+    {
+      "source_question_id": "Q056",
+      "owner_answer": {
+        "option": "C",
+        "title": "分层文本风格合同",
+        "statement": "全局文学风格、区域声部、阵营表达、NPC Voice Profile 和资产级约束分层治理，并控制术语、禁用表达、年代感、叙述距离、恐怖密度、信息显著性、重复和修辞预算。"
+      },
+      "decision_status": "FROZEN_BY_OWNER_QA",
+      "source_package": "RR-SC-GOV-V2-Q001-Q130",
+      "change_set_id": "CS-R2-SC-GOV-INSTALL-001",
+      "human_source_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q056",
+      "machine_source_ref": "machine/decisions.q001-q130.yaml#/decisions/55",
+      "trace_refs": [
+        "governance/story-construction/traceability.yaml#/entries/55",
+        "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml"
+      ]
+    },
+    {
+      "source_question_id": "Q057",
+      "owner_answer": {
+        "option": "B",
+        "title": "可见性、本地化与可访问性分离",
+        "statement": "玩家可见与主持隐藏文本使用不同命名空间和构建输出；稳定语义 ID 从首发即支持后续本地化；关键视听信息必须有等价可访问渠道且不得额外泄漏。"
+      },
+      "decision_status": "FROZEN_BY_OWNER_QA",
+      "source_package": "RR-SC-GOV-V2-Q001-Q130",
+      "change_set_id": "CS-R2-SC-GOV-INSTALL-001",
+      "human_source_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q057",
+      "machine_source_ref": "machine/decisions.q001-q130.yaml#/decisions/56",
+      "trace_refs": [
+        "governance/story-construction/traceability.yaml#/entries/56",
+        "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml"
+      ]
+    },
+    {
+      "source_question_id": "Q058",
+      "owner_answer": {
+        "option": "B",
+        "title": "区域视觉订单包",
+        "statement": "Region Visual Order Package 包含 Manifest、Canon Slice、Visual Bible、语义锚点、构图合同、原子视觉订单、依赖、权利清单、禁止元素、验收矩阵和返回合同。"
+      },
+      "decision_status": "FROZEN_BY_OWNER_QA",
+      "source_package": "RR-SC-GOV-V2-Q001-Q130",
+      "change_set_id": "CS-R2-SC-GOV-INSTALL-001",
+      "human_source_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q058",
+      "machine_source_ref": "machine/decisions.q001-q130.yaml#/decisions/57",
+      "trace_refs": [
+        "governance/story-construction/traceability.yaml#/entries/57",
+        "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml"
+      ]
+    },
+    {
+      "source_question_id": "Q059",
+      "owner_answer": {
+        "option": "B",
+        "title": "强制语义构图证明",
+        "statement": "Grok 在最终绘制前必须提交必须/禁止对象、角色状态、空间关系、信息区域、显著性、遮挡、不应暗示内容及低分辨率布局证明。"
+      },
+      "decision_status": "FROZEN_BY_OWNER_QA",
+      "source_package": "RR-SC-GOV-V2-Q001-Q130",
+      "change_set_id": "CS-R2-SC-GOV-INSTALL-001",
+      "human_source_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q059",
+      "machine_source_ref": "machine/decisions.q001-q130.yaml#/decisions/58",
+      "trace_refs": [
+        "governance/story-construction/traceability.yaml#/entries/58",
+        "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml"
+      ]
+    },
+    {
+      "source_question_id": "Q060",
+      "owner_answer": {
+        "option": "B",
+        "title": "完整视觉交付包",
+        "statement": "在能力允许时交付可编辑/分层源资产、运行时导出、对象区域 Manifest、图层/遮罩/锚点、变体矩阵、模型/任务记录、权利清单、哈希、预览和自检；能力限制必须如实声明。"
+      },
+      "decision_status": "FROZEN_BY_OWNER_QA",
+      "source_package": "RR-SC-GOV-V2-Q001-Q130",
+      "change_set_id": "CS-R2-SC-GOV-INSTALL-001",
+      "human_source_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q060",
+      "machine_source_ref": "machine/decisions.q001-q130.yaml#/decisions/59",
+      "trace_refs": [
+        "governance/story-construction/traceability.yaml#/entries/59",
+        "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml"
+      ]
+    },
+    {
+      "source_question_id": "Q061",
+      "owner_answer": {
+        "option": "B",
+        "title": "地图与状态 Canon 权威",
+        "statement": "地图拓扑、通行、距离、视线、关键对象、场景状态、角色伤势/污染、循环变体和线索出现条件由 Canon Registry 或批准合同决定。"
+      },
+      "decision_status": "FROZEN_BY_OWNER_QA",
+      "source_package": "RR-SC-GOV-V2-Q001-Q130",
+      "change_set_id": "CS-R2-SC-GOV-INSTALL-001",
+      "human_source_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q061",
+      "machine_source_ref": "machine/decisions.q001-q130.yaml#/decisions/60",
+      "trace_refs": [
+        "governance/story-construction/traceability.yaml#/entries/60",
+        "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml"
+      ]
+    },
+    {
+      "source_question_id": "Q062",
+      "owner_answer": {
+        "option": "C",
+        "title": "共享锚点跨模态调和",
+        "statement": "文本和视觉从共享语义锚点并行生成草稿；Codex 比较语义签名，生成调和单并分别返修。"
+      },
+      "decision_status": "FROZEN_BY_OWNER_QA",
+      "source_package": "RR-SC-GOV-V2-Q001-Q130",
+      "change_set_id": "CS-R2-SC-GOV-INSTALL-001",
+      "human_source_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q062",
+      "machine_source_ref": "machine/decisions.q001-q130.yaml#/decisions/61",
+      "trace_refs": [
+        "governance/story-construction/traceability.yaml#/entries/61",
+        "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml"
+      ]
+    },
+    {
+      "source_question_id": "Q063",
+      "owner_answer": {
+        "option": "B",
+        "title": "V0—V6 固定验证层级",
+        "statement": "验证层级为 V0 Schema/格式、V1 ID/引用/版本/来源、V2 正典/规则/因果、V3 知识/Reveal/认知、V4 路线/状态/循环/恢复、V5 跨模态、V6 审批/权利/哈希/发布。"
+      },
+      "decision_status": "FROZEN_BY_OWNER_QA",
+      "source_package": "RR-SC-GOV-V2-Q001-Q130",
+      "change_set_id": "CS-R2-SC-GOV-INSTALL-001",
+      "human_source_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q063",
+      "machine_source_ref": "machine/decisions.q001-q130.yaml#/decisions/62",
+      "trace_refs": [
+        "governance/story-construction/traceability.yaml#/entries/62",
+        "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml"
+      ]
+    },
+    {
+      "source_question_id": "Q064",
+      "owner_answer": {
+        "option": "B",
+        "title": "五级缺陷严重性",
+        "statement": "严重性为 BLOCKER、CRITICAL、MAJOR、MINOR、COSMETIC；豁免仍受 Q030 限制。"
+      },
+      "decision_status": "FROZEN_BY_OWNER_QA",
+      "source_package": "RR-SC-GOV-V2-Q001-Q130",
+      "change_set_id": "CS-R2-SC-GOV-INSTALL-001",
+      "human_source_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q064",
+      "machine_source_ref": "machine/decisions.q001-q130.yaml#/decisions/63",
+      "trace_refs": [
+        "governance/story-construction/traceability.yaml#/entries/63",
+        "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml"
+      ]
+    },
+    {
+      "source_question_id": "Q065",
+      "owner_answer": {
+        "option": "B",
+        "title": "DAB 三级记录档位",
+        "statement": "DAB 采用 MINIMAL、STANDARD、FORENSIC；正式 P0/P1 至少 STANDARD，T1/T2/C1、失败调查和 Release Candidate 至少 FORENSIC。"
+      },
+      "decision_status": "FROZEN_BY_OWNER_QA",
+      "source_package": "RR-SC-GOV-V2-Q001-Q130",
+      "change_set_id": "CS-R2-SC-GOV-INSTALL-001",
+      "human_source_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q065",
+      "machine_source_ref": "machine/decisions.q001-q130.yaml#/decisions/64",
+      "trace_refs": [
+        "governance/story-construction/traceability.yaml#/entries/64",
+        "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml"
+      ]
+    },
+    {
+      "source_question_id": "Q066",
+      "owner_answer": {
+        "option": "C",
+        "title": "全局骨架、垂直切片与分波施工",
+        "statement": "先冻结全局因果骨架与区域接口，再完成一个完整垂直切片，加固流水线后分波施工其余区域，最终进行跨区整合和终局定稿。"
+      },
+      "decision_status": "FROZEN_BY_OWNER_QA",
+      "source_package": "RR-SC-GOV-V2-Q001-Q130",
+      "change_set_id": "CS-R2-SC-GOV-INSTALL-001",
+      "human_source_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q066",
+      "machine_source_ref": "machine/decisions.q001-q130.yaml#/decisions/65",
+      "trace_refs": [
+        "governance/story-construction/traceability.yaml#/entries/65",
+        "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml"
+      ]
+    },
+    {
+      "source_question_id": "Q067",
+      "owner_answer": {
+        "option": "C",
+        "title": "垂直切片覆盖范围",
+        "statement": "首个垂直切片覆盖角色1交付区、第一正式大区、跨区接口、非剧透终局投影、异常区、成功/失败或撤退、团灭/循环和跨模态线索。"
+      },
+      "decision_status": "FROZEN_BY_OWNER_QA",
+      "source_package": "RR-SC-GOV-V2-Q001-Q130",
+      "change_set_id": "CS-R2-SC-GOV-INSTALL-001",
+      "human_source_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q067",
+      "machine_source_ref": "machine/decisions.q001-q130.yaml#/decisions/66",
+      "trace_refs": [
+        "governance/story-construction/traceability.yaml#/entries/66",
+        "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml"
+      ]
+    },
+    {
+      "source_question_id": "Q068",
+      "owner_answer": {
+        "option": "C",
+        "title": "风险加权选择首区",
+        "statement": "Codex 对六区按规则复杂度、状态组合、视觉线索、NPC 认知、路线、跨区、循环和文本量评分，提供排序并由所有者确认。"
+      },
+      "decision_status": "FROZEN_BY_OWNER_QA",
+      "source_package": "RR-SC-GOV-V2-Q001-Q130",
+      "change_set_id": "CS-R2-SC-GOV-INSTALL-001",
+      "human_source_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q068",
+      "machine_source_ref": "machine/decisions.q001-q130.yaml#/decisions/67",
+      "trace_refs": [
+        "governance/story-construction/traceability.yaml#/entries/67",
+        "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml"
+      ]
+    },
+    {
+      "source_question_id": "Q069",
+      "owner_answer": {
+        "option": "B",
+        "title": "每波最多两个正式大区",
+        "statement": "垂直切片通过后，每波最多并行施工两个正式大区，使用独立 Change Set/worktree，并设跨区整合通道。"
+      },
+      "decision_status": "FROZEN_BY_OWNER_QA",
+      "source_package": "RR-SC-GOV-V2-Q001-Q130",
+      "change_set_id": "CS-R2-SC-GOV-INSTALL-001",
+      "human_source_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q069",
+      "machine_source_ref": "machine/decisions.q001-q130.yaml#/decisions/68",
+      "trace_refs": [
+        "governance/story-construction/traceability.yaml#/entries/68",
+        "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml"
+      ]
+    },
+    {
+      "source_question_id": "Q070",
+      "owner_answer": {
+        "option": "C",
+        "title": "终局骨架前置、资产后置",
+        "statement": "早期冻结 Boss T1、结局条件、终局输入、区域贡献、不可逆代价和接口；详细场景、文本、视觉和分支在中后期制作。"
+      },
+      "decision_status": "FROZEN_BY_OWNER_QA",
+      "source_package": "RR-SC-GOV-V2-Q001-Q130",
+      "change_set_id": "CS-R2-SC-GOV-INSTALL-001",
+      "human_source_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q070",
+      "machine_source_ref": "machine/decisions.q001-q130.yaml#/decisions/69",
+      "trace_refs": [
+        "governance/story-construction/traceability.yaml#/entries/69",
+        "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml"
+      ]
+    },
+    {
+      "source_question_id": "Q071",
+      "owner_answer": {
+        "option": "C",
+        "title": "跨区接口前置与分波集成",
+        "statement": "先冻结 Region Import/Export Contract；每完成一波区域生成跨区集成包；全部区域完成后执行全局整合。"
+      },
+      "decision_status": "FROZEN_BY_OWNER_QA",
+      "source_package": "RR-SC-GOV-V2-Q001-Q130",
+      "change_set_id": "CS-R2-SC-GOV-INSTALL-001",
+      "human_source_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q071",
+      "machine_source_ref": "machine/decisions.q001-q130.yaml#/decisions/70",
+      "trace_refs": [
+        "governance/story-construction/traceability.yaml#/entries/70",
+        "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml"
+      ]
+    },
+    {
+      "source_question_id": "Q072",
+      "owner_answer": {
+        "option": "B",
+        "title": "Region Construction Dossier",
+        "statement": "文本和视觉共享从 Canon Registry 生成的只读 Region Construction Dossier，再分别派生文本和视觉订单包。"
+      },
+      "decision_status": "FROZEN_BY_OWNER_QA",
+      "source_package": "RR-SC-GOV-V2-Q001-Q130",
+      "change_set_id": "CS-R2-SC-GOV-INSTALL-001",
+      "human_source_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q072",
+      "machine_source_ref": "machine/decisions.q001-q130.yaml#/decisions/71",
+      "trace_refs": [
+        "governance/story-construction/traceability.yaml#/entries/71",
+        "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml"
+      ]
+    },
+    {
+      "source_question_id": "Q073",
+      "owner_answer": {
+        "option": "C",
+        "title": "区域协调器与隔离订单工作者",
+        "statement": "Package Coordinator 读取完整订单包并制定执行计划；Order Workers 只接收相关订单和最小上下文；共享状态只通过验证后的结构化摘要传递。"
+      },
+      "decision_status": "FROZEN_BY_OWNER_QA",
+      "source_package": "RR-SC-GOV-V2-Q001-Q130",
+      "change_set_id": "CS-R2-SC-GOV-INSTALL-001",
+      "human_source_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q073",
+      "machine_source_ref": "machine/decisions.q001-q130.yaml#/decisions/72",
+      "trace_refs": [
+        "governance/story-construction/traceability.yaml#/entries/72",
+        "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml"
+      ]
+    },
+    {
+      "source_question_id": "Q074",
+      "owner_answer": {
+        "option": "C",
+        "title": "依赖闭包上下文切片",
+        "statement": "每个订单只获得必要正典、直接依赖、禁止事实、全局不变量、Reveal/风格合同、关联摘要、Context Manifest 和 Omission Report；摘要绑定原始记录哈希。"
+      },
+      "decision_status": "FROZEN_BY_OWNER_QA",
+      "source_package": "RR-SC-GOV-V2-Q001-Q130",
+      "change_set_id": "CS-R2-SC-GOV-INSTALL-001",
+      "human_source_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q074",
+      "machine_source_ref": "machine/decisions.q001-q130.yaml#/decisions/73",
+      "trace_refs": [
+        "governance/story-construction/traceability.yaml#/entries/73",
+        "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml"
+      ]
+    },
+    {
+      "source_question_id": "Q075",
+      "owner_answer": {
+        "option": "B",
+        "title": "结构化 Addendum",
+        "statement": "附加约定必须结构化记录 ID、适用范围、Revision、条款类型、约束、优先级检查、失效条件、取代关系、兼容性和哈希。"
+      },
+      "decision_status": "FROZEN_BY_OWNER_QA",
+      "source_package": "RR-SC-GOV-V2-Q001-Q130",
+      "change_set_id": "CS-R2-SC-GOV-INSTALL-001",
+      "human_source_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q075",
+      "machine_source_ref": "machine/decisions.q001-q130.yaml#/decisions/74",
+      "trace_refs": [
+        "governance/story-construction/traceability.yaml#/entries/74",
+        "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml"
+      ]
+    },
+    {
+      "source_question_id": "Q076",
+      "owner_answer": {
+        "option": "C",
+        "title": "运行时文本混合模式",
+        "statement": "规则、关键线索/主张/对话、谜题边界、结局、永久代价、高风险失败和团灭内容必须预写或严格受控；低风险连接叙述和氛围可在批准脚手架内运行时生成。"
+      },
+      "decision_status": "FROZEN_BY_OWNER_QA",
+      "source_package": "RR-SC-GOV-V2-Q001-Q130",
+      "change_set_id": "CS-R2-SC-GOV-INSTALL-001",
+      "human_source_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q076",
+      "machine_source_ref": "machine/decisions.q001-q130.yaml#/decisions/75",
+      "trace_refs": [
+        "governance/story-construction/traceability.yaml#/entries/75",
+        "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml"
+      ]
+    },
+    {
+      "source_question_id": "Q077",
+      "owner_answer": {
+        "option": "C",
+        "title": "固定文本与运行时脚手架双交付",
+        "statement": "DeepSeek 交付 Canonical Text Assets 和 Runtime Narrative Scaffolds；脚手架不得成为隐藏正典。"
+      },
+      "decision_status": "FROZEN_BY_OWNER_QA",
+      "source_package": "RR-SC-GOV-V2-Q001-Q130",
+      "change_set_id": "CS-R2-SC-GOV-INSTALL-001",
+      "human_source_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q077",
+      "machine_source_ref": "machine/decisions.q001-q130.yaml#/decisions/76",
+      "trace_refs": [
+        "governance/story-construction/traceability.yaml#/entries/76",
+        "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml"
+      ]
+    },
+    {
+      "source_question_id": "Q078",
+      "owner_answer": {
+        "option": "C",
+        "title": "NPC 意图/状态图与正典节拍",
+        "statement": "NPC 对话由意图、NPC/知识/关系状态、Reveal 资格、Canonical Beat、允许改写包络、禁止主张和退出条件共同约束。"
+      },
+      "decision_status": "FROZEN_BY_OWNER_QA",
+      "source_package": "RR-SC-GOV-V2-Q001-Q130",
+      "change_set_id": "CS-R2-SC-GOV-INSTALL-001",
+      "human_source_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q078",
+      "machine_source_ref": "machine/decisions.q001-q130.yaml#/decisions/77",
+      "trace_refs": [
+        "governance/story-construction/traceability.yaml#/entries/77",
+        "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml"
+      ]
+    },
+    {
+      "source_question_id": "Q079",
+      "owner_answer": {
+        "option": "C",
+        "title": "字段级文本锁定",
+        "statement": "文本字段分为 EXACT、SEMANTIC_LOCKED、STYLE_VARIABLE、RUNTIME_GENERATIVE。"
+      },
+      "decision_status": "FROZEN_BY_OWNER_QA",
+      "source_package": "RR-SC-GOV-V2-Q001-Q130",
+      "change_set_id": "CS-R2-SC-GOV-INSTALL-001",
+      "human_source_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q079",
+      "machine_source_ref": "machine/decisions.q001-q130.yaml#/decisions/78",
+      "trace_refs": [
+        "governance/story-construction/traceability.yaml#/entries/78",
+        "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml"
+      ]
+    },
+    {
+      "source_question_id": "Q080",
+      "owner_answer": {
+        "option": "C",
+        "title": "因子化状态文本与关键组合专稿",
+        "statement": "普通状态通过基础叙述和伤势、污染、循环、阵营、地点修饰因子组合；关键交互组合单独编写，并用 Pairwise/Covering Array 测试普通组合。"
+      },
+      "decision_status": "FROZEN_BY_OWNER_QA",
+      "source_package": "RR-SC-GOV-V2-Q001-Q130",
+      "change_set_id": "CS-R2-SC-GOV-INSTALL-001",
+      "human_source_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q080",
+      "machine_source_ref": "machine/decisions.q001-q130.yaml#/decisions/79",
+      "trace_refs": [
+        "governance/story-construction/traceability.yaml#/entries/79",
+        "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml"
+      ]
+    },
+    {
+      "source_question_id": "Q081",
+      "owner_answer": {
+        "option": "C",
+        "title": "状态结局覆盖矩阵",
+        "statement": "所有可达检定失败、违规、失能、死亡、撤退、放弃谜题、错误假说、敌对、区域失败、团灭、循环/永久异常和补课启动状态必须有合法文本结果。"
+      },
+      "decision_status": "FROZEN_BY_OWNER_QA",
+      "source_package": "RR-SC-GOV-V2-Q001-Q130",
+      "change_set_id": "CS-R2-SC-GOV-INSTALL-001",
+      "human_source_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q081",
+      "machine_source_ref": "machine/decisions.q001-q130.yaml#/decisions/80",
+      "trace_refs": [
+        "governance/story-construction/traceability.yaml#/entries/80",
+        "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml"
+      ]
+    },
+    {
+      "source_question_id": "Q082",
+      "owner_answer": {
+        "option": "C",
+        "title": "多级文学质量验收",
+        "statement": "DeepSeek 独立检查、Codex 语义/风格/一致性规则、跨资产重复/声部检查、风险驱动人工抽检和 C1 用户审批共同决定质量。"
+      },
+      "decision_status": "FROZEN_BY_OWNER_QA",
+      "source_package": "RR-SC-GOV-V2-Q001-Q130",
+      "change_set_id": "CS-R2-SC-GOV-INSTALL-001",
+      "human_source_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q082",
+      "machine_source_ref": "machine/decisions.q001-q130.yaml#/decisions/81",
+      "trace_refs": [
+        "governance/story-construction/traceability.yaml#/entries/81",
+        "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml"
+      ]
+    },
+    {
+      "source_question_id": "Q083",
+      "owner_answer": {
+        "option": "C",
+        "title": "覆盖与语义完成定义",
+        "statement": "区域文本完成要求 mandatory 订单全过、Canon Claim 合法实现、无未绑定主张/新事实、Reveal 时机正确、路线/状态/可访问性覆盖、风格通过且无未解决 BLOCKER/CRITICAL/MAJOR。"
+      },
+      "decision_status": "FROZEN_BY_OWNER_QA",
+      "source_package": "RR-SC-GOV-V2-Q001-Q130",
+      "change_set_id": "CS-R2-SC-GOV-INSTALL-001",
+      "human_source_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q083",
+      "machine_source_ref": "machine/decisions.q001-q130.yaml#/decisions/82",
+      "trace_refs": [
+        "governance/story-construction/traceability.yaml#/entries/82",
+        "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml"
+      ]
+    },
+    {
+      "source_question_id": "Q084",
+      "owner_answer": {
+        "option": "C",
+        "title": "缺失设计局部阻断",
+        "statement": "遇到缺失正典时受影响订单返回 BLOCKED_NEEDS_CANON，并列出缺失事实、层级、影响和建议问题；不受影响订单继续。"
+      },
+      "decision_status": "FROZEN_BY_OWNER_QA",
+      "source_package": "RR-SC-GOV-V2-Q001-Q130",
+      "change_set_id": "CS-R2-SC-GOV-INSTALL-001",
+      "human_source_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q084",
+      "machine_source_ref": "machine/decisions.q001-q130.yaml#/decisions/83",
+      "trace_refs": [
+        "governance/story-construction/traceability.yaml#/entries/83",
+        "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml"
+      ]
+    },
+    {
+      "source_question_id": "Q085",
+      "owner_answer": {
+        "option": "C",
+        "title": "T3 Candidate Annex",
+        "statement": "DeepSeek 可在独立候选附录提出 T3 细节；只有 Codex 在 Canon Envelope 内冻结 ID 后才可进入正文。"
+      },
+      "decision_status": "FROZEN_BY_OWNER_QA",
+      "source_package": "RR-SC-GOV-V2-Q001-Q130",
+      "change_set_id": "CS-R2-SC-GOV-INSTALL-001",
+      "human_source_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q085",
+      "machine_source_ref": "machine/decisions.q001-q130.yaml#/decisions/84",
+      "trace_refs": [
+        "governance/story-construction/traceability.yaml#/entries/84",
+        "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml"
+      ]
+    },
+    {
+      "source_question_id": "Q086",
+      "owner_answer": {
+        "option": "C",
+        "title": "按风险与频率配置文本变体",
+        "statement": "低频关键文本可固定，高频低风险文本配置变体/模板；刻意重复登记为受控母题，未登记的高频重复由验证器报告。"
+      },
+      "decision_status": "FROZEN_BY_OWNER_QA",
+      "source_package": "RR-SC-GOV-V2-Q001-Q130",
+      "change_set_id": "CS-R2-SC-GOV-INSTALL-001",
+      "human_source_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q086",
+      "machine_source_ref": "machine/decisions.q001-q130.yaml#/decisions/85",
+      "trace_refs": [
+        "governance/story-construction/traceability.yaml#/entries/85",
+        "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml"
+      ]
+    },
+    {
+      "source_question_id": "Q087",
+      "owner_answer": {
+        "option": "C",
+        "title": "语义资产目录驱动视觉范围",
+        "statement": "每区视觉资产由内容图派生，覆盖主视觉、语义地图艺术版、关键地点、NPC/阵营、物件、规则载体、异常、异常区、Boss/终局投影、状态和可访问性描述。"
+      },
+      "decision_status": "FROZEN_BY_OWNER_QA",
+      "source_package": "RR-SC-GOV-V2-Q001-Q130",
+      "change_set_id": "CS-R2-SC-GOV-INSTALL-001",
+      "human_source_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q087",
+      "machine_source_ref": "machine/decisions.q001-q130.yaml#/decisions/86",
+      "trace_refs": [
+        "governance/story-construction/traceability.yaml#/entries/86",
+        "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml"
+      ]
+    },
+    {
+      "source_question_id": "Q088",
+      "owner_answer": {
+        "option": "C",
+        "title": "全局 Art Bible 与区域风格档案",
+        "statement": "Global Art Bible、Region Visual Profile、Faction Profile、Character Continuity Sheet 和 Asset Contract 分层保持统一与差异。"
+      },
+      "decision_status": "FROZEN_BY_OWNER_QA",
+      "source_package": "RR-SC-GOV-V2-Q001-Q130",
+      "change_set_id": "CS-R2-SC-GOV-INSTALL-001",
+      "human_source_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q088",
+      "machine_source_ref": "machine/decisions.q001-q130.yaml#/decisions/87",
+      "trace_refs": [
+        "governance/story-construction/traceability.yaml#/entries/87",
+        "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml"
+      ]
+    },
+    {
+      "source_question_id": "Q089",
+      "owner_answer": {
+        "option": "C",
+        "title": "视觉线索受 Reveal Contract 管理",
+        "statement": "视觉可承载关键线索，但必须标注对象/位置/显著性、提供等价可访问文本、通过裁切缩放测试，并防止文本组合后提前泄漏。"
+      },
+      "decision_status": "FROZEN_BY_OWNER_QA",
+      "source_package": "RR-SC-GOV-V2-Q001-Q130",
+      "change_set_id": "CS-R2-SC-GOV-INSTALL-001",
+      "human_source_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q089",
+      "machine_source_ref": "machine/decisions.q001-q130.yaml#/decisions/88",
+      "trace_refs": [
+        "governance/story-construction/traceability.yaml#/entries/88",
+        "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml"
+      ]
+    },
+    {
+      "source_question_id": "Q090",
+      "owner_answer": {
+        "option": "C",
+        "title": "语义地图与艺术地图双层",
+        "statement": "Authoritative Semantic Map 记录拓扑、通行、距离、视线、状态和规则域；Grok 只渲染 Artistic Map，不得改变空间推理。"
+      },
+      "decision_status": "FROZEN_BY_OWNER_QA",
+      "source_package": "RR-SC-GOV-V2-Q001-Q130",
+      "change_set_id": "CS-R2-SC-GOV-INSTALL-001",
+      "human_source_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q090",
+      "machine_source_ref": "machine/decisions.q001-q130.yaml#/decisions/89",
+      "trace_refs": [
+        "governance/story-construction/traceability.yaml#/entries/89",
+        "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml"
+      ]
+    },
+    {
+      "source_question_id": "Q091",
+      "owner_answer": {
+        "option": "C",
+        "title": "Canon State Matrix 派生视觉变体",
+        "statement": "只生产实际可达且具有视觉价值的正常、受伤、污染、规则影响、循环、阵营、永久异常和终局状态，并验证身份连续性。"
+      },
+      "decision_status": "FROZEN_BY_OWNER_QA",
+      "source_package": "RR-SC-GOV-V2-Q001-Q130",
+      "change_set_id": "CS-R2-SC-GOV-INSTALL-001",
+      "human_source_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q091",
+      "machine_source_ref": "machine/decisions.q001-q130.yaml#/decisions/90",
+      "trace_refs": [
+        "governance/story-construction/traceability.yaml#/entries/90",
+        "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml"
+      ]
+    },
+    {
+      "source_question_id": "Q092",
+      "owner_answer": {
+        "option": "C",
+        "title": "受控模块化视觉复用",
+        "statement": "允许背景模块、角色姿态、表情、状态、道具图层和天气/光照复用，同时执行复用预算、疲劳、线索显著性和状态错误检查。"
+      },
+      "decision_status": "FROZEN_BY_OWNER_QA",
+      "source_package": "RR-SC-GOV-V2-Q001-Q130",
+      "change_set_id": "CS-R2-SC-GOV-INSTALL-001",
+      "human_source_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q092",
+      "machine_source_ref": "machine/decisions.q001-q130.yaml#/decisions/91",
+      "trace_refs": [
+        "governance/story-construction/traceability.yaml#/entries/91",
+        "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml"
+      ]
+    },
+    {
+      "source_question_id": "Q093",
+      "owner_answer": {
+        "option": "C",
+        "title": "统一内容强度合同",
+        "statement": "文本与视觉共用内容强度合同，覆盖血腥、肢体损伤、身体恐怖、心理压迫、自毁表现、性内容、儿童受害、宗教文化敏感、闪烁和惊吓。"
+      },
+      "decision_status": "FROZEN_BY_OWNER_QA",
+      "source_package": "RR-SC-GOV-V2-Q001-Q130",
+      "change_set_id": "CS-R2-SC-GOV-INSTALL-001",
+      "human_source_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q093",
+      "machine_source_ref": "machine/decisions.q001-q130.yaml#/decisions/92",
+      "trace_refs": [
+        "governance/story-construction/traceability.yaml#/entries/92",
+        "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml"
+      ]
+    },
+    {
+      "source_question_id": "Q094",
+      "owner_answer": {
+        "option": "C",
+        "title": "分层真人游玩测试",
+        "statement": "强制在垂直切片、每区 Release Candidate、跨区整合和最终首发候选执行真人测试；反馈必须转为结构化缺陷。"
+      },
+      "decision_status": "FROZEN_BY_OWNER_QA",
+      "source_package": "RR-SC-GOV-V2-Q001-Q130",
+      "change_set_id": "CS-R2-SC-GOV-INSTALL-001",
+      "human_source_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q094",
+      "machine_source_ref": "machine/decisions.q001-q130.yaml#/decisions/93",
+      "trace_refs": [
+        "governance/story-construction/traceability.yaml#/entries/93",
+        "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml"
+      ]
+    },
+    {
+      "source_question_id": "Q095",
+      "owner_answer": {
+        "option": "C",
+        "title": "多画像 AI 对抗测试",
+        "statement": "至少覆盖谨慎、冲动、字面规则、怀疑、过信 NPC、低信息、速通、收集、钻漏洞、协作、不共享和无障碍依赖玩家。"
+      },
+      "decision_status": "FROZEN_BY_OWNER_QA",
+      "source_package": "RR-SC-GOV-V2-Q001-Q130",
+      "change_set_id": "CS-R2-SC-GOV-INSTALL-001",
+      "human_source_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q095",
+      "machine_source_ref": "machine/decisions.q001-q130.yaml#/decisions/94",
+      "trace_refs": [
+        "governance/story-construction/traceability.yaml#/entries/94",
+        "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml"
+      ]
+    },
+    {
+      "source_question_id": "Q096",
+      "owner_answer": {
+        "option": "C",
+        "title": "综合游玩验证指标",
+        "statement": "验证主线/非标准路线、不死人解、撤退/补课、死锁、线索冗余、错误假说恢复、规则一致、谜底泄漏、NPC 知识、团灭循环、时长密度、极端路线代价和跨区顺序。"
+      },
+      "decision_status": "FROZEN_BY_OWNER_QA",
+      "source_package": "RR-SC-GOV-V2-Q001-Q130",
+      "change_set_id": "CS-R2-SC-GOV-INSTALL-001",
+      "human_source_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q096",
+      "machine_source_ref": "machine/decisions.q001-q130.yaml#/decisions/95",
+      "trace_refs": [
+        "governance/story-construction/traceability.yaml#/entries/95",
+        "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml"
+      ]
+    },
+    {
+      "source_question_id": "Q097",
+      "owner_answer": {
+        "option": "C",
+        "title": "垂直切片后冻结量化阈值",
+        "statement": "先用垂直切片收集覆盖率、发现率、死锁、恢复、组合缺陷、重复、视觉语义错误、返修轮数和时长，再由 Codex 提议、所有者批准正式阈值。"
+      },
+      "decision_status": "FROZEN_BY_OWNER_QA",
+      "source_package": "RR-SC-GOV-V2-Q001-Q130",
+      "change_set_id": "CS-R2-SC-GOV-INSTALL-001",
+      "human_source_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q097",
+      "machine_source_ref": "machine/decisions.q001-q130.yaml#/decisions/96",
+      "trace_refs": [
+        "governance/story-construction/traceability.yaml#/entries/96",
+        "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml"
+      ]
+    },
+    {
+      "source_question_id": "Q098",
+      "owner_answer": {
+        "option": "C",
+        "title": "完整 Region Acceptance Bundle",
+        "statement": "区域验收包包含 DAB、Canon/订单版本、资产清单、因果摘要、Reveal/路线/状态覆盖、跨模态报告、AI/真人测试、缺陷、豁免、审批、哈希、命令和发布 Manifest。"
+      },
+      "decision_status": "FROZEN_BY_OWNER_QA",
+      "source_package": "RR-SC-GOV-V2-Q001-Q130",
+      "change_set_id": "CS-R2-SC-GOV-INSTALL-001",
+      "human_source_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q098",
+      "machine_source_ref": "machine/decisions.q001-q130.yaml#/decisions/97",
+      "trace_refs": [
+        "governance/story-construction/traceability.yaml#/entries/97",
+        "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml"
+      ]
+    },
+    {
+      "source_question_id": "Q099",
+      "owner_answer": {
+        "option": "C",
+        "title": "能力适配器与生产认证",
+        "statement": "替换 DeepSeek Harness 或 Grok 必须通过上下文、结构化输出、指令遵循、长订单、越界率、标注、返修、记录、成本和延迟认证。"
+      },
+      "decision_status": "FROZEN_BY_OWNER_QA",
+      "source_package": "RR-SC-GOV-V2-Q001-Q130",
+      "change_set_id": "CS-R2-SC-GOV-INSTALL-001",
+      "human_source_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q099",
+      "machine_source_ref": "machine/decisions.q001-q130.yaml#/decisions/98",
+      "trace_refs": [
+        "governance/story-construction/traceability.yaml#/entries/98",
+        "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml"
+      ]
+    },
+    {
+      "source_question_id": "Q100",
+      "owner_answer": {
+        "option": "C",
+        "title": "最小端到端内容流水线里程碑",
+        "statement": "先实现一个极小但完整的 T1/T2、T3 Envelope、C1 Reveal、Dossier、文本订单、视觉订单、两类交付、跨模态验证、失败/撤退、DAB 和 Release Candidate 闭环。"
+      },
+      "decision_status": "FROZEN_BY_OWNER_QA",
+      "source_package": "RR-SC-GOV-V2-Q001-Q130",
+      "change_set_id": "CS-R2-SC-GOV-INSTALL-001",
+      "human_source_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q100",
+      "machine_source_ref": "machine/decisions.q001-q130.yaml#/decisions/99",
+      "trace_refs": [
+        "governance/story-construction/traceability.yaml#/entries/99",
+        "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml"
+      ]
+    },
+    {
+      "source_question_id": "Q101",
+      "owner_answer": {
+        "option": "C",
+        "title": "M0 非发布技术夹具",
+        "statement": "M0 使用独立 TEST-* 命名空间的《规则残差》机制型技术夹具，不属于正式正典且不得直接发布。"
+      },
+      "decision_status": "FROZEN_BY_OWNER_QA",
+      "source_package": "RR-SC-GOV-V2-Q001-Q130",
+      "change_set_id": "CS-R2-SC-GOV-INSTALL-001",
+      "human_source_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q101",
+      "machine_source_ref": "machine/decisions.q001-q130.yaml#/decisions/100",
+      "trace_refs": [
+        "governance/story-construction/traceability.yaml#/entries/100",
+        "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml"
+      ]
+    },
+    {
+      "source_question_id": "Q102",
+      "owner_answer": {
+        "option": "C",
+        "title": "技术夹具禁止直接晋升",
+        "statement": "M0 夹具永久禁止直接转为正式内容；有价值创意必须通过新的 T1/T2/T3 Change Set 进入正典。"
+      },
+      "decision_status": "FROZEN_BY_OWNER_QA",
+      "source_package": "RR-SC-GOV-V2-Q001-Q130",
+      "change_set_id": "CS-R2-SC-GOV-INSTALL-001",
+      "human_source_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q102",
+      "machine_source_ref": "machine/decisions.q001-q130.yaml#/decisions/101",
+      "trace_refs": [
+        "governance/story-construction/traceability.yaml#/entries/101",
+        "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml"
+      ]
+    },
+    {
+      "source_question_id": "Q103",
+      "owner_answer": {
+        "option": "C",
+        "title": "首区选择由用户最终确认",
+        "statement": "Codex 提供风险评分、依据和候选排序；所有者最终确认首个正式大区。"
+      },
+      "decision_status": "FROZEN_BY_OWNER_QA",
+      "source_package": "RR-SC-GOV-V2-Q001-Q130",
+      "change_set_id": "CS-R2-SC-GOV-INSTALL-001",
+      "human_source_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q103",
+      "machine_source_ref": "machine/decisions.q001-q130.yaml#/decisions/102",
+      "trace_refs": [
+        "governance/story-construction/traceability.yaml#/entries/102",
+        "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml"
+      ]
+    },
+    {
+      "source_question_id": "Q104",
+      "owner_answer": {
+        "option": "C",
+        "title": "评分公式预先冻结",
+        "statement": "评分前冻结指标、权重和缺失数据规则；修改公式必须废弃旧结果并对六区重新评分。"
+      },
+      "decision_status": "FROZEN_BY_OWNER_QA",
+      "source_package": "RR-SC-GOV-V2-Q001-Q130",
+      "change_set_id": "CS-R2-SC-GOV-INSTALL-001",
+      "human_source_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q104",
+      "machine_source_ref": "machine/decisions.q001-q130.yaml#/decisions/103",
+      "trace_refs": [
+        "governance/story-construction/traceability.yaml#/entries/103",
+        "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml"
+      ]
+    },
+    {
+      "source_question_id": "Q105",
+      "owner_answer": {
+        "option": "C",
+        "title": "进入双区波次的严格出口门禁",
+        "statement": "垂直切片必须具备完整验收包、V0—V6 全过、真人测试、批准阈值、无高等级缺陷、流水线回归通过、返修轮数可接受并获用户批准后，才能进入双区并行。"
+      },
+      "decision_status": "FROZEN_BY_OWNER_QA",
+      "source_package": "RR-SC-GOV-V2-Q001-Q130",
+      "change_set_id": "CS-R2-SC-GOV-INSTALL-001",
+      "human_source_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q105",
+      "machine_source_ref": "machine/decisions.q001-q130.yaml#/decisions/104",
+      "trace_refs": [
+        "governance/story-construction/traceability.yaml#/entries/104",
+        "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml"
+      ]
+    },
+    {
+      "source_question_id": "Q106",
+      "owner_answer": {
+        "option": "C",
+        "title": "Dossier Revision 签发前冻结",
+        "statement": "订单签发前冻结 Region Construction Dossier Revision；后续修改必须新 Revision、影响分析、失效订单清单、新订单/Addendum、哈希和审批。"
+      },
+      "decision_status": "FROZEN_BY_OWNER_QA",
+      "source_package": "RR-SC-GOV-V2-Q001-Q130",
+      "change_set_id": "CS-R2-SC-GOV-INSTALL-001",
+      "human_source_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q106",
+      "machine_source_ref": "machine/decisions.q001-q130.yaml#/decisions/105",
+      "trace_refs": [
+        "governance/story-construction/traceability.yaml#/entries/105",
+        "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml"
+      ]
+    },
+    {
+      "source_question_id": "Q107",
+      "owner_answer": {
+        "option": "C",
+        "title": "分层首发 Campaign Package",
+        "statement": "首发包包括角色1交付区、六个正式大区、终局区、跨区整合层、共享 Canon/规则、共享文本视觉资产和发布验收包；交付区不占六区名额。"
+      },
+      "decision_status": "FROZEN_BY_OWNER_QA",
+      "source_package": "RR-SC-GOV-V2-Q001-Q130",
+      "change_set_id": "CS-R2-SC-GOV-INSTALL-001",
+      "human_source_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q107",
+      "machine_source_ref": "machine/decisions.q001-q130.yaml#/decisions/106",
+      "trace_refs": [
+        "governance/story-construction/traceability.yaml#/entries/106",
+        "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml"
+      ]
+    },
+    {
+      "source_question_id": "Q108",
+      "owner_answer": {
+        "option": "C",
+        "title": "区域强制不变量与受控差异",
+        "statement": "所有正式大区遵守最低结构合同，但谜题、规则域、NPC/视觉密度、玩法权重、路线数和时长可在批准范围内变化。"
+      },
+      "decision_status": "FROZEN_BY_OWNER_QA",
+      "source_package": "RR-SC-GOV-V2-Q001-Q130",
+      "change_set_id": "CS-R2-SC-GOV-INSTALL-001",
+      "human_source_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q108",
+      "machine_source_ref": "machine/decisions.q001-q130.yaml#/decisions/107",
+      "trace_refs": [
+        "governance/story-construction/traceability.yaml#/entries/107",
+        "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml"
+      ]
+    },
+    {
+      "source_question_id": "Q109",
+      "owner_answer": {
+        "option": "C",
+        "title": "分层谜题图",
+        "statement": "每区包含一个中心因果问题、2—4 个结构谜题、若干局部问题、可选支线和至少一个受控错误解释，并明确各自结构作用。"
+      },
+      "decision_status": "FROZEN_BY_OWNER_QA",
+      "source_package": "RR-SC-GOV-V2-Q001-Q130",
+      "change_set_id": "CS-R2-SC-GOV-INSTALL-001",
+      "human_source_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q109",
+      "machine_source_ref": "machine/decisions.q001-q130.yaml#/decisions/108",
+      "trace_refs": [
+        "governance/story-construction/traceability.yaml#/entries/108",
+        "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml"
+      ]
+    },
+    {
+      "source_question_id": "Q110",
+      "owner_answer": {
+        "option": "C",
+        "title": "关键结论三角验证",
+        "statement": "mandatory 关键结论原则上至少三条可区分支持路径、两个来源类别、一条非单一 NPC 路径和一条主要失败后的恢复路径；例外必须 T2 批准。"
+      },
+      "decision_status": "FROZEN_BY_OWNER_QA",
+      "source_package": "RR-SC-GOV-V2-Q001-Q130",
+      "change_set_id": "CS-R2-SC-GOV-INSTALL-001",
+      "human_source_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q110",
+      "machine_source_ref": "machine/decisions.q001-q130.yaml#/decisions/109",
+      "trace_refs": [
+        "governance/story-construction/traceability.yaml#/entries/109",
+        "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml"
+      ]
+    },
+    {
+      "source_question_id": "Q111",
+      "owner_answer": {
+        "option": "C",
+        "title": "受控错误假说",
+        "statement": "错误假说必须由真实观察部分支持、具有可获得反证/修正路径、不靠隐瞒必需事实或随机噪声、不永久封死主线，并记录最迟修正状态。"
+      },
+      "decision_status": "FROZEN_BY_OWNER_QA",
+      "source_package": "RR-SC-GOV-V2-Q001-Q130",
+      "change_set_id": "CS-R2-SC-GOV-INSTALL-001",
+      "human_source_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q111",
+      "machine_source_ref": "machine/decisions.q001-q130.yaml#/decisions/110",
+      "trace_refs": [
+        "governance/story-construction/traceability.yaml#/entries/110",
+        "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml"
+      ]
+    },
+    {
+      "source_question_id": "Q112",
+      "owner_answer": {
+        "option": "C",
+        "title": "mandatory Reveal 无单点失败",
+        "statement": "每项 mandatory Reveal 至少两条正常获取路径和一条失败后的补课/恢复路径；恢复可以有代价但不得依赖原路径仍可用。"
+      },
+      "decision_status": "FROZEN_BY_OWNER_QA",
+      "source_package": "RR-SC-GOV-V2-Q001-Q130",
+      "change_set_id": "CS-R2-SC-GOV-INSTALL-001",
+      "human_source_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q112",
+      "machine_source_ref": "machine/decisions.q001-q130.yaml#/decisions/111",
+      "trace_refs": [
+        "governance/story-construction/traceability.yaml#/entries/111",
+        "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml"
+      ]
+    },
+    {
+      "source_question_id": "Q113",
+      "owner_answer": {
+        "option": "C",
+        "title": "正式大区最低路线合同",
+        "statement": "每区至少有详细观测、完整解决、两条真实损失的非标准路线、撤退、失败补课、团灭/循环响应、非完整解谜离区方式和异常区旁路。"
+      },
+      "decision_status": "FROZEN_BY_OWNER_QA",
+      "source_package": "RR-SC-GOV-V2-Q001-Q130",
+      "change_set_id": "CS-R2-SC-GOV-INSTALL-001",
+      "human_source_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q113",
+      "machine_source_ref": "machine/decisions.q001-q130.yaml#/decisions/112",
+      "trace_refs": [
+        "governance/story-construction/traceability.yaml#/entries/112",
+        "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml"
+      ]
+    },
+    {
+      "source_question_id": "Q114",
+      "owner_answer": {
+        "option": "C",
+        "title": "结构化区域结算状态",
+        "statement": "区域结算至少支持 RESOLVED、CONTAINED、ESCAPED、FAILED_SURVIVED、CATASTROPHIC、ABANDONED，并映射到跨区和终局输入。"
+      },
+      "decision_status": "FROZEN_BY_OWNER_QA",
+      "source_package": "RR-SC-GOV-V2-Q001-Q130",
+      "change_set_id": "CS-R2-SC-GOV-INSTALL-001",
+      "human_source_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q114",
+      "machine_source_ref": "machine/decisions.q001-q130.yaml#/decisions/113",
+      "trace_refs": [
+        "governance/story-construction/traceability.yaml#/entries/113",
+        "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml"
+      ]
+    },
+    {
+      "source_question_id": "Q115",
+      "owner_answer": {
+        "option": "C",
+        "title": "稀疏跨区接口依赖",
+        "statement": "禁止未批准的强制循环依赖；关键主线不依赖唯一固定区域顺序；顺序可改变成本、信息和结算但不能破坏底层因果。"
+      },
+      "decision_status": "FROZEN_BY_OWNER_QA",
+      "source_package": "RR-SC-GOV-V2-Q001-Q130",
+      "change_set_id": "CS-R2-SC-GOV-INSTALL-001",
+      "human_source_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q115",
+      "machine_source_ref": "machine/decisions.q001-q130.yaml#/decisions/114",
+      "trace_refs": [
+        "governance/story-construction/traceability.yaml#/entries/114",
+        "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml"
+      ]
+    },
+    {
+      "source_question_id": "Q116",
+      "owner_answer": {
+        "option": "C",
+        "title": "多维终局输入",
+        "statement": "每区提供知识、权限、盟友、资源、规则漏洞、残差校准、Boss 削弱、代价转移或解释能力等结构化贡献；缺区改变方案、代价、风险和结局质量，而非默认阻断。"
+      },
+      "decision_status": "FROZEN_BY_OWNER_QA",
+      "source_package": "RR-SC-GOV-V2-Q001-Q130",
+      "change_set_id": "CS-R2-SC-GOV-INSTALL-001",
+      "human_source_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q116",
+      "machine_source_ref": "machine/decisions.q001-q130.yaml#/decisions/115",
+      "trace_refs": [
+        "governance/story-construction/traceability.yaml#/entries/115",
+        "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml"
+      ]
+    },
+    {
+      "source_question_id": "Q117",
+      "owner_answer": {
+        "option": "C",
+        "title": "NPC/阵营功能与认知负载驱动",
+        "statement": "主要 NPC/阵营必须承担不可替代结构功能；功能与认知图高度重叠者应合并或给出明确区分理由。"
+      },
+      "decision_status": "FROZEN_BY_OWNER_QA",
+      "source_package": "RR-SC-GOV-V2-Q001-Q130",
+      "change_set_id": "CS-R2-SC-GOV-INSTALL-001",
+      "human_source_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q117",
+      "machine_source_ref": "machine/decisions.q001-q130.yaml#/decisions/116",
+      "trace_refs": [
+        "governance/story-construction/traceability.yaml#/entries/116",
+        "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml"
+      ]
+    },
+    {
+      "source_question_id": "Q118",
+      "owner_answer": {
+        "option": "C",
+        "title": "地点和规则域功能预算",
+        "statement": "每个地点/Rule Domain 必须对应独立状态、规则、路线、证据、阵营、资源/风险或明确视听价值；不得只为扩大地图重复。"
+      },
+      "decision_status": "FROZEN_BY_OWNER_QA",
+      "source_package": "RR-SC-GOV-V2-Q001-Q130",
+      "change_set_id": "CS-R2-SC-GOV-INSTALL-001",
+      "human_source_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q118",
+      "machine_source_ref": "machine/decisions.q001-q130.yaml#/decisions/117",
+      "trace_refs": [
+        "governance/story-construction/traceability.yaml#/entries/117",
+        "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml"
+      ]
+    },
+    {
+      "source_question_id": "Q119",
+      "owner_answer": {
+        "option": "C",
+        "title": "逻辑完全异常区合同",
+        "statement": "每个正式大区至少一个异常区，进入前有明显警告、存在不死人解、非主线唯一通道、允许撤退、失败可追踪、解谜高奖励、谜底 T2 冻结且不得被文本/视觉提前泄露。"
+      },
+      "decision_status": "FROZEN_BY_OWNER_QA",
+      "source_package": "RR-SC-GOV-V2-Q001-Q130",
+      "change_set_id": "CS-R2-SC-GOV-INSTALL-001",
+      "human_source_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q119",
+      "machine_source_ref": "machine/decisions.q001-q130.yaml#/decisions/118",
+      "trace_refs": [
+        "governance/story-construction/traceability.yaml#/entries/118",
+        "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml"
+      ]
+    },
+    {
+      "source_question_id": "Q120",
+      "owner_answer": {
+        "option": "C",
+        "title": "可选内容增强但不单点承载",
+        "statement": "支线可提供额外证据、降代价、改阵营、给资源/权限、深化历史和替代路线，但不得成为 mandatory 结论唯一来源。"
+      },
+      "decision_status": "FROZEN_BY_OWNER_QA",
+      "source_package": "RR-SC-GOV-V2-Q001-Q130",
+      "change_set_id": "CS-R2-SC-GOV-INSTALL-001",
+      "human_source_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q120",
+      "machine_source_ref": "machine/decisions.q001-q130.yaml#/decisions/119",
+      "trace_refs": [
+        "governance/story-construction/traceability.yaml#/entries/119",
+        "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml"
+      ]
+    },
+    {
+      "source_question_id": "Q121",
+      "owner_answer": {
+        "option": "C",
+        "title": "运行时模型无正典创设权",
+        "statement": "运行时模型只能在批准 Narrative Scaffold 内实例化表达，不得新增正典、Reveal、知识、规则例外、因果、路线或永久事实；输出默认仅会话级表现。"
+      },
+      "decision_status": "FROZEN_BY_OWNER_QA",
+      "source_package": "RR-SC-GOV-V2-Q001-Q130",
+      "change_set_id": "CS-R2-SC-GOV-INSTALL-001",
+      "human_source_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q121",
+      "machine_source_ref": "machine/decisions.q001-q130.yaml#/decisions/120",
+      "trace_refs": [
+        "governance/story-construction/traceability.yaml#/entries/120",
+        "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml"
+      ]
+    },
+    {
+      "source_question_id": "Q122",
+      "owner_answer": {
+        "option": "C",
+        "title": "运行时文本风险分级持久化",
+        "statement": "关键语义输出使用固定 Beat/槽位和会话种子并可重放或语义等价；低风险氛围允许变化；影响后续引用的输出保存结构化语义和必要表面文本。"
+      },
+      "decision_status": "FROZEN_BY_OWNER_QA",
+      "source_package": "RR-SC-GOV-V2-Q001-Q130",
+      "change_set_id": "CS-R2-SC-GOV-INSTALL-001",
+      "human_source_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q122",
+      "machine_source_ref": "machine/decisions.q001-q130.yaml#/decisions/121",
+      "trace_refs": [
+        "governance/story-construction/traceability.yaml#/entries/121",
+        "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml"
+      ]
+    },
+    {
+      "source_question_id": "Q123",
+      "owner_answer": {
+        "option": "C",
+        "title": "预写安全降级",
+        "statement": "超时、结构无效、越权、上下文不足、过滤或模型不可用时使用预先验证的 fallback 文本/模板，不以临时自由生成补救。"
+      },
+      "decision_status": "FROZEN_BY_OWNER_QA",
+      "source_package": "RR-SC-GOV-V2-Q001-Q130",
+      "change_set_id": "CS-R2-SC-GOV-INSTALL-001",
+      "human_source_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q123",
+      "machine_source_ref": "machine/decisions.q001-q130.yaml#/decisions/122",
+      "trace_refs": [
+        "governance/story-construction/traceability.yaml#/entries/122",
+        "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml"
+      ]
+    },
+    {
+      "source_question_id": "Q124",
+      "owner_answer": {
+        "option": "C",
+        "title": "受控 NPC 对话状态与输出检查",
+        "statement": "每轮向 NPC 模型提供当前可知、信念、误解、允许公开、隐瞒、谎言意图、Reveal 资格、关系、情绪、禁提内容和 Canonical Beats；输出后提取主张并检查越界。"
+      },
+      "decision_status": "FROZEN_BY_OWNER_QA",
+      "source_package": "RR-SC-GOV-V2-Q001-Q130",
+      "change_set_id": "CS-R2-SC-GOV-INSTALL-001",
+      "human_source_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q124",
+      "machine_source_ref": "machine/decisions.q001-q130.yaml#/decisions/123",
+      "trace_refs": [
+        "governance/story-construction/traceability.yaml#/entries/123",
+        "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml"
+      ]
+    },
+    {
+      "source_question_id": "Q125",
+      "owner_answer": {
+        "option": "C",
+        "title": "运行时优秀内容与正典隔离",
+        "statement": "有保留价值的会话输出必须提取为候选、分类、创建 Change Set、验证和审批后才能进入后续版本；禁止从日志反向写入 Canon Registry。"
+      },
+      "decision_status": "FROZEN_BY_OWNER_QA",
+      "source_package": "RR-SC-GOV-V2-Q001-Q130",
+      "change_set_id": "CS-R2-SC-GOV-INSTALL-001",
+      "human_source_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q125",
+      "machine_source_ref": "machine/decisions.q001-q130.yaml#/decisions/124",
+      "trace_refs": [
+        "governance/story-construction/traceability.yaml#/entries/124",
+        "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml"
+      ]
+    },
+    {
+      "source_question_id": "Q126",
+      "owner_answer": {
+        "option": "C",
+        "title": "时长与文本量目标区间",
+        "statement": "先设教程、单区主路径/全探索、终局、场景密度和高频变体目标；垂直切片后根据 AI/真人数据冻结范围，字数仅作容量指标。"
+      },
+      "decision_status": "FROZEN_BY_OWNER_QA",
+      "source_package": "RR-SC-GOV-V2-Q001-Q130",
+      "change_set_id": "CS-R2-SC-GOV-INSTALL-001",
+      "human_source_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q126",
+      "machine_source_ref": "machine/decisions.q001-q130.yaml#/decisions/125",
+      "trace_refs": [
+        "governance/story-construction/traceability.yaml#/entries/125",
+        "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml"
+      ]
+    },
+    {
+      "source_question_id": "Q127",
+      "owner_answer": {
+        "option": "C",
+        "title": "视觉语义目录与 VP0—VP3 优先级",
+        "statement": "视觉预算按语义目录和 VP0 必需、VP1 高价值、VP2 重玩/状态增强、VP3 宣传/收藏分层；优先级命名不得与内容权威 P0/P1/C1/C2 混用。"
+      },
+      "decision_status": "FROZEN_BY_OWNER_QA",
+      "source_package": "RR-SC-GOV-V2-Q001-Q130",
+      "change_set_id": "CS-R2-SC-GOV-INSTALL-001",
+      "human_source_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q127",
+      "machine_source_ref": "machine/decisions.q001-q130.yaml#/decisions/126",
+      "trace_refs": [
+        "governance/story-construction/traceability.yaml#/entries/126",
+        "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml"
+      ]
+    },
+    {
+      "source_question_id": "Q128",
+      "owner_answer": {
+        "option": "C",
+        "title": "分层真人测试组",
+        "statement": "测试者至少包括知情逻辑测试、盲测、目标玩家、新手、不同风险偏好、可访问性用户及多人信息共享/不共享组；同一人不得承担全部角色。"
+      },
+      "decision_status": "FROZEN_BY_OWNER_QA",
+      "source_package": "RR-SC-GOV-V2-Q001-Q130",
+      "change_set_id": "CS-R2-SC-GOV-INSTALL-001",
+      "human_source_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q128",
+      "machine_source_ref": "machine/decisions.q001-q130.yaml#/decisions/127",
+      "trace_refs": [
+        "governance/story-construction/traceability.yaml#/entries/127",
+        "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml"
+      ]
+    },
+    {
+      "source_question_id": "Q129",
+      "owner_answer": {
+        "option": "C",
+        "title": "所有者冻结内容强度基线",
+        "statement": "所有者冻结全局内容强度合同，区域例外单独审批；DeepSeek、Grok 和 Codex 使用同一合同。"
+      },
+      "decision_status": "FROZEN_BY_OWNER_QA",
+      "source_package": "RR-SC-GOV-V2-Q001-Q130",
+      "change_set_id": "CS-R2-SC-GOV-INSTALL-001",
+      "human_source_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q129",
+      "machine_source_ref": "machine/decisions.q001-q130.yaml#/decisions/128",
+      "trace_refs": [
+        "governance/story-construction/traceability.yaml#/entries/128",
+        "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml"
+      ]
+    },
+    {
+      "source_question_id": "Q130",
+      "owner_answer": {
+        "option": "C",
+        "title": "两次文档化冻结",
+        "statement": "Q001—Q130 后生成施工治理、数据模型、订单体系和验证框架设计；首个垂直切片具体 T1/T2/T3/C1 问答后，再生成正式区域施工包和可执行生产提示词。"
+      },
+      "decision_status": "FROZEN_BY_OWNER_QA",
+      "source_package": "RR-SC-GOV-V2-Q001-Q130",
+      "change_set_id": "CS-R2-SC-GOV-INSTALL-001",
+      "human_source_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q130",
+      "machine_source_ref": "machine/decisions.q001-q130.yaml#/decisions/129",
+      "trace_refs": [
+        "governance/story-construction/traceability.yaml#/entries/129",
+        "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml"
+      ]
+    }
+  ]
+}

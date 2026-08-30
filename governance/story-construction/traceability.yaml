@@ -1,0 +1,1310 @@
+{
+  "schema_version": "rules-residue.story-construction.traceability/1.0.0",
+  "authority_scope": "CONSTRUCTION_GOVERNANCE_ONLY",
+  "source_package": "RR-SC-GOV-V2-Q001-Q130",
+  "change_set_id": "CS-R2-SC-GOV-INSTALL-001",
+  "directionality": "BIDIRECTIONAL_QA_SOURCE_INSTALLED_CANONICAL_CHANGE_SET",
+  "entry_count": 130,
+  "entries": [
+    {
+      "source_question_id": "Q001",
+      "owner_answer_sha256": "d9df098a3b4b4fec6eccaacb02032c98868b2bb02cf919b05d5e9b6e2d24bbb7",
+      "source_human_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q001",
+      "source_machine_ref": "machine/decisions.q001-q130.yaml#/decisions/0",
+      "installed_record_ref": "governance/story-construction/decisions.q001-q130.yaml#/decisions/0",
+      "canonical_record_ref": "governance/story-construction/generated/decisions.q001-q130.canonical.json#/decisions/0",
+      "change_set_ref": "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml",
+      "reverse_lookup_key": "Q001"
+    },
+    {
+      "source_question_id": "Q002",
+      "owner_answer_sha256": "6b07e9fd1dfc63aa291b35e498d77d73dc8b0f8f04a8e92c849e87808162c73c",
+      "source_human_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q002",
+      "source_machine_ref": "machine/decisions.q001-q130.yaml#/decisions/1",
+      "installed_record_ref": "governance/story-construction/decisions.q001-q130.yaml#/decisions/1",
+      "canonical_record_ref": "governance/story-construction/generated/decisions.q001-q130.canonical.json#/decisions/1",
+      "change_set_ref": "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml",
+      "reverse_lookup_key": "Q002"
+    },
+    {
+      "source_question_id": "Q003",
+      "owner_answer_sha256": "17a9e9289fc3d01886f4c82c1488926cc19ab00fe0c95e17fc237141ec288ce2",
+      "source_human_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q003",
+      "source_machine_ref": "machine/decisions.q001-q130.yaml#/decisions/2",
+      "installed_record_ref": "governance/story-construction/decisions.q001-q130.yaml#/decisions/2",
+      "canonical_record_ref": "governance/story-construction/generated/decisions.q001-q130.canonical.json#/decisions/2",
+      "change_set_ref": "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml",
+      "reverse_lookup_key": "Q003"
+    },
+    {
+      "source_question_id": "Q004",
+      "owner_answer_sha256": "43a2572bc073163957ca7f1c6885861d39884e18acd3689a7b79a21db1e1c353",
+      "source_human_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q004",
+      "source_machine_ref": "machine/decisions.q001-q130.yaml#/decisions/3",
+      "installed_record_ref": "governance/story-construction/decisions.q001-q130.yaml#/decisions/3",
+      "canonical_record_ref": "governance/story-construction/generated/decisions.q001-q130.canonical.json#/decisions/3",
+      "change_set_ref": "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml",
+      "reverse_lookup_key": "Q004"
+    },
+    {
+      "source_question_id": "Q005",
+      "owner_answer_sha256": "b713579004a2b23152fffb4647e9d7d0bfd753061c89758a1121850a50f607c6",
+      "source_human_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q005",
+      "source_machine_ref": "machine/decisions.q001-q130.yaml#/decisions/4",
+      "installed_record_ref": "governance/story-construction/decisions.q001-q130.yaml#/decisions/4",
+      "canonical_record_ref": "governance/story-construction/generated/decisions.q001-q130.canonical.json#/decisions/4",
+      "change_set_ref": "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml",
+      "reverse_lookup_key": "Q005"
+    },
+    {
+      "source_question_id": "Q006",
+      "owner_answer_sha256": "44bfc5baf1e8630ca896af5d003fb40a5c4254cb946a89083431a8495b48e8af",
+      "source_human_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q006",
+      "source_machine_ref": "machine/decisions.q001-q130.yaml#/decisions/5",
+      "installed_record_ref": "governance/story-construction/decisions.q001-q130.yaml#/decisions/5",
+      "canonical_record_ref": "governance/story-construction/generated/decisions.q001-q130.canonical.json#/decisions/5",
+      "change_set_ref": "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml",
+      "reverse_lookup_key": "Q006"
+    },
+    {
+      "source_question_id": "Q007",
+      "owner_answer_sha256": "9114af97aec607b38d89eb49b24e7420af8034bff605d14df2e12b580ecb48c8",
+      "source_human_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q007",
+      "source_machine_ref": "machine/decisions.q001-q130.yaml#/decisions/6",
+      "installed_record_ref": "governance/story-construction/decisions.q001-q130.yaml#/decisions/6",
+      "canonical_record_ref": "governance/story-construction/generated/decisions.q001-q130.canonical.json#/decisions/6",
+      "change_set_ref": "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml",
+      "reverse_lookup_key": "Q007"
+    },
+    {
+      "source_question_id": "Q008",
+      "owner_answer_sha256": "52c6048d8cfe4d4716348777ceceac6e8907b910fb26baeb49cccc0f43c2d3af",
+      "source_human_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q008",
+      "source_machine_ref": "machine/decisions.q001-q130.yaml#/decisions/7",
+      "installed_record_ref": "governance/story-construction/decisions.q001-q130.yaml#/decisions/7",
+      "canonical_record_ref": "governance/story-construction/generated/decisions.q001-q130.canonical.json#/decisions/7",
+      "change_set_ref": "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml",
+      "reverse_lookup_key": "Q008"
+    },
+    {
+      "source_question_id": "Q009",
+      "owner_answer_sha256": "b339756d9cd21c113a9800c5a7acac9594f97403071e2db65d75fd248ccedeb1",
+      "source_human_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q009",
+      "source_machine_ref": "machine/decisions.q001-q130.yaml#/decisions/8",
+      "installed_record_ref": "governance/story-construction/decisions.q001-q130.yaml#/decisions/8",
+      "canonical_record_ref": "governance/story-construction/generated/decisions.q001-q130.canonical.json#/decisions/8",
+      "change_set_ref": "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml",
+      "reverse_lookup_key": "Q009"
+    },
+    {
+      "source_question_id": "Q010",
+      "owner_answer_sha256": "43625668a90e0b4c86ed8c4eefe3b04fc8756c1dd5d46fe525db9218899e0da2",
+      "source_human_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q010",
+      "source_machine_ref": "machine/decisions.q001-q130.yaml#/decisions/9",
+      "installed_record_ref": "governance/story-construction/decisions.q001-q130.yaml#/decisions/9",
+      "canonical_record_ref": "governance/story-construction/generated/decisions.q001-q130.canonical.json#/decisions/9",
+      "change_set_ref": "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml",
+      "reverse_lookup_key": "Q010"
+    },
+    {
+      "source_question_id": "Q011",
+      "owner_answer_sha256": "86d6712107b00d215194bf0dfe90dd55e00efc685c19d37957ac480e87bbd3a4",
+      "source_human_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q011",
+      "source_machine_ref": "machine/decisions.q001-q130.yaml#/decisions/10",
+      "installed_record_ref": "governance/story-construction/decisions.q001-q130.yaml#/decisions/10",
+      "canonical_record_ref": "governance/story-construction/generated/decisions.q001-q130.canonical.json#/decisions/10",
+      "change_set_ref": "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml",
+      "reverse_lookup_key": "Q011"
+    },
+    {
+      "source_question_id": "Q012",
+      "owner_answer_sha256": "f142d20d661239b73069bdd0672cf1ef79032ea4d554ae8920d6ee23dcdecb4b",
+      "source_human_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q012",
+      "source_machine_ref": "machine/decisions.q001-q130.yaml#/decisions/11",
+      "installed_record_ref": "governance/story-construction/decisions.q001-q130.yaml#/decisions/11",
+      "canonical_record_ref": "governance/story-construction/generated/decisions.q001-q130.canonical.json#/decisions/11",
+      "change_set_ref": "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml",
+      "reverse_lookup_key": "Q012"
+    },
+    {
+      "source_question_id": "Q013",
+      "owner_answer_sha256": "2fb2df422104b4e8f1aa57797e878b85c3de24392ff6af3dc9517ad10cb7a8b8",
+      "source_human_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q013",
+      "source_machine_ref": "machine/decisions.q001-q130.yaml#/decisions/12",
+      "installed_record_ref": "governance/story-construction/decisions.q001-q130.yaml#/decisions/12",
+      "canonical_record_ref": "governance/story-construction/generated/decisions.q001-q130.canonical.json#/decisions/12",
+      "change_set_ref": "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml",
+      "reverse_lookup_key": "Q013"
+    },
+    {
+      "source_question_id": "Q014",
+      "owner_answer_sha256": "fd78a1948cfb4f8922b0c1621f260d18e16af3d67d0b45aa3600b05b8f39b53f",
+      "source_human_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q014",
+      "source_machine_ref": "machine/decisions.q001-q130.yaml#/decisions/13",
+      "installed_record_ref": "governance/story-construction/decisions.q001-q130.yaml#/decisions/13",
+      "canonical_record_ref": "governance/story-construction/generated/decisions.q001-q130.canonical.json#/decisions/13",
+      "change_set_ref": "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml",
+      "reverse_lookup_key": "Q014"
+    },
+    {
+      "source_question_id": "Q015",
+      "owner_answer_sha256": "cacea137760c9ec02d948a40138998eb344f5cf0eb16d26cc16bf6ecbd5c2c3b",
+      "source_human_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q015",
+      "source_machine_ref": "machine/decisions.q001-q130.yaml#/decisions/14",
+      "installed_record_ref": "governance/story-construction/decisions.q001-q130.yaml#/decisions/14",
+      "canonical_record_ref": "governance/story-construction/generated/decisions.q001-q130.canonical.json#/decisions/14",
+      "change_set_ref": "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml",
+      "reverse_lookup_key": "Q015"
+    },
+    {
+      "source_question_id": "Q016",
+      "owner_answer_sha256": "0c0c6ef977e485780fd1ff0cc24a054e04fdafd7d8abdaadf5b5c3b7896c5440",
+      "source_human_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q016",
+      "source_machine_ref": "machine/decisions.q001-q130.yaml#/decisions/15",
+      "installed_record_ref": "governance/story-construction/decisions.q001-q130.yaml#/decisions/15",
+      "canonical_record_ref": "governance/story-construction/generated/decisions.q001-q130.canonical.json#/decisions/15",
+      "change_set_ref": "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml",
+      "reverse_lookup_key": "Q016"
+    },
+    {
+      "source_question_id": "Q017",
+      "owner_answer_sha256": "c6758378f566bfbe55f8e891e5393117db38a1d543476755385432b2e4ea968c",
+      "source_human_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q017",
+      "source_machine_ref": "machine/decisions.q001-q130.yaml#/decisions/16",
+      "installed_record_ref": "governance/story-construction/decisions.q001-q130.yaml#/decisions/16",
+      "canonical_record_ref": "governance/story-construction/generated/decisions.q001-q130.canonical.json#/decisions/16",
+      "change_set_ref": "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml",
+      "reverse_lookup_key": "Q017"
+    },
+    {
+      "source_question_id": "Q018",
+      "owner_answer_sha256": "a216b4c7e3d7a5875699bf3035b89363ed755550746e3b7b7ffad20a369f843a",
+      "source_human_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q018",
+      "source_machine_ref": "machine/decisions.q001-q130.yaml#/decisions/17",
+      "installed_record_ref": "governance/story-construction/decisions.q001-q130.yaml#/decisions/17",
+      "canonical_record_ref": "governance/story-construction/generated/decisions.q001-q130.canonical.json#/decisions/17",
+      "change_set_ref": "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml",
+      "reverse_lookup_key": "Q018"
+    },
+    {
+      "source_question_id": "Q019",
+      "owner_answer_sha256": "891c4ef9b8291f962e20a689bc7fdb4fdd547a448c31346a1d9ec7192cbaeec1",
+      "source_human_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q019",
+      "source_machine_ref": "machine/decisions.q001-q130.yaml#/decisions/18",
+      "installed_record_ref": "governance/story-construction/decisions.q001-q130.yaml#/decisions/18",
+      "canonical_record_ref": "governance/story-construction/generated/decisions.q001-q130.canonical.json#/decisions/18",
+      "change_set_ref": "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml",
+      "reverse_lookup_key": "Q019"
+    },
+    {
+      "source_question_id": "Q020",
+      "owner_answer_sha256": "8dac08cc71e154c85cb44a3037dc33e513d4ef7810020a09ef8b1124b9e44bab",
+      "source_human_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q020",
+      "source_machine_ref": "machine/decisions.q001-q130.yaml#/decisions/19",
+      "installed_record_ref": "governance/story-construction/decisions.q001-q130.yaml#/decisions/19",
+      "canonical_record_ref": "governance/story-construction/generated/decisions.q001-q130.canonical.json#/decisions/19",
+      "change_set_ref": "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml",
+      "reverse_lookup_key": "Q020"
+    },
+    {
+      "source_question_id": "Q021",
+      "owner_answer_sha256": "b4f42dce83e542ad5bf7be497e796f6af59763f3247cecb5094e2645682a1264",
+      "source_human_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q021",
+      "source_machine_ref": "machine/decisions.q001-q130.yaml#/decisions/20",
+      "installed_record_ref": "governance/story-construction/decisions.q001-q130.yaml#/decisions/20",
+      "canonical_record_ref": "governance/story-construction/generated/decisions.q001-q130.canonical.json#/decisions/20",
+      "change_set_ref": "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml",
+      "reverse_lookup_key": "Q021"
+    },
+    {
+      "source_question_id": "Q022",
+      "owner_answer_sha256": "f9780c1c5670c9f4a9afbccc6d9a0d7970d2f8bdbb310ced914467dc987f6680",
+      "source_human_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q022",
+      "source_machine_ref": "machine/decisions.q001-q130.yaml#/decisions/21",
+      "installed_record_ref": "governance/story-construction/decisions.q001-q130.yaml#/decisions/21",
+      "canonical_record_ref": "governance/story-construction/generated/decisions.q001-q130.canonical.json#/decisions/21",
+      "change_set_ref": "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml",
+      "reverse_lookup_key": "Q022"
+    },
+    {
+      "source_question_id": "Q023",
+      "owner_answer_sha256": "9112962b599d9071356d9307a23a6cbe7b507cb7c01619b6ac80c3f35f31932d",
+      "source_human_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q023",
+      "source_machine_ref": "machine/decisions.q001-q130.yaml#/decisions/22",
+      "installed_record_ref": "governance/story-construction/decisions.q001-q130.yaml#/decisions/22",
+      "canonical_record_ref": "governance/story-construction/generated/decisions.q001-q130.canonical.json#/decisions/22",
+      "change_set_ref": "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml",
+      "reverse_lookup_key": "Q023"
+    },
+    {
+      "source_question_id": "Q024",
+      "owner_answer_sha256": "35e78de6d88074bbbbfa0f70a673534a45deb96e6c04df9b10876a26296e76d8",
+      "source_human_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q024",
+      "source_machine_ref": "machine/decisions.q001-q130.yaml#/decisions/23",
+      "installed_record_ref": "governance/story-construction/decisions.q001-q130.yaml#/decisions/23",
+      "canonical_record_ref": "governance/story-construction/generated/decisions.q001-q130.canonical.json#/decisions/23",
+      "change_set_ref": "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml",
+      "reverse_lookup_key": "Q024"
+    },
+    {
+      "source_question_id": "Q025",
+      "owner_answer_sha256": "c6b14a56567139f40297dd8c76dd24279d03d95b1ec8208486b5c38e3d0a5ea3",
+      "source_human_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q025",
+      "source_machine_ref": "machine/decisions.q001-q130.yaml#/decisions/24",
+      "installed_record_ref": "governance/story-construction/decisions.q001-q130.yaml#/decisions/24",
+      "canonical_record_ref": "governance/story-construction/generated/decisions.q001-q130.canonical.json#/decisions/24",
+      "change_set_ref": "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml",
+      "reverse_lookup_key": "Q025"
+    },
+    {
+      "source_question_id": "Q026",
+      "owner_answer_sha256": "b1682d611d32d3fd9490c945bf311b47431c259fdfb301cb0d2796ca45ac2bc4",
+      "source_human_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q026",
+      "source_machine_ref": "machine/decisions.q001-q130.yaml#/decisions/25",
+      "installed_record_ref": "governance/story-construction/decisions.q001-q130.yaml#/decisions/25",
+      "canonical_record_ref": "governance/story-construction/generated/decisions.q001-q130.canonical.json#/decisions/25",
+      "change_set_ref": "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml",
+      "reverse_lookup_key": "Q026"
+    },
+    {
+      "source_question_id": "Q027",
+      "owner_answer_sha256": "b570c2ebe915fa30573d99861a60c7c1a6f3db946ac073726d640b59e664dbc8",
+      "source_human_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q027",
+      "source_machine_ref": "machine/decisions.q001-q130.yaml#/decisions/26",
+      "installed_record_ref": "governance/story-construction/decisions.q001-q130.yaml#/decisions/26",
+      "canonical_record_ref": "governance/story-construction/generated/decisions.q001-q130.canonical.json#/decisions/26",
+      "change_set_ref": "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml",
+      "reverse_lookup_key": "Q027"
+    },
+    {
+      "source_question_id": "Q028",
+      "owner_answer_sha256": "f2dcda5b39ae0bd36bbfb6a16ae3eb5b5353b1f17bf1b571bfdb4525382656d9",
+      "source_human_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q028",
+      "source_machine_ref": "machine/decisions.q001-q130.yaml#/decisions/27",
+      "installed_record_ref": "governance/story-construction/decisions.q001-q130.yaml#/decisions/27",
+      "canonical_record_ref": "governance/story-construction/generated/decisions.q001-q130.canonical.json#/decisions/27",
+      "change_set_ref": "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml",
+      "reverse_lookup_key": "Q028"
+    },
+    {
+      "source_question_id": "Q029",
+      "owner_answer_sha256": "4cfd3eabb34fbbb1c0f15483ba8b58b5e53444158afc4663e3f534ba2cfaa36c",
+      "source_human_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q029",
+      "source_machine_ref": "machine/decisions.q001-q130.yaml#/decisions/28",
+      "installed_record_ref": "governance/story-construction/decisions.q001-q130.yaml#/decisions/28",
+      "canonical_record_ref": "governance/story-construction/generated/decisions.q001-q130.canonical.json#/decisions/28",
+      "change_set_ref": "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml",
+      "reverse_lookup_key": "Q029"
+    },
+    {
+      "source_question_id": "Q030",
+      "owner_answer_sha256": "d74bde8cdc1d3518adced4118fd7097c3f6ecbd3b12f45cff391a3b988610684",
+      "source_human_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q030",
+      "source_machine_ref": "machine/decisions.q001-q130.yaml#/decisions/29",
+      "installed_record_ref": "governance/story-construction/decisions.q001-q130.yaml#/decisions/29",
+      "canonical_record_ref": "governance/story-construction/generated/decisions.q001-q130.canonical.json#/decisions/29",
+      "change_set_ref": "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml",
+      "reverse_lookup_key": "Q030"
+    },
+    {
+      "source_question_id": "Q031",
+      "owner_answer_sha256": "2f845158ad665a2e3b3fba5294927ee80e155922581ef9964b69c7543c077d46",
+      "source_human_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q031",
+      "source_machine_ref": "machine/decisions.q001-q130.yaml#/decisions/30",
+      "installed_record_ref": "governance/story-construction/decisions.q001-q130.yaml#/decisions/30",
+      "canonical_record_ref": "governance/story-construction/generated/decisions.q001-q130.canonical.json#/decisions/30",
+      "change_set_ref": "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml",
+      "reverse_lookup_key": "Q031"
+    },
+    {
+      "source_question_id": "Q032",
+      "owner_answer_sha256": "d4d447608a074c8d64cdbba4f5c92b20f9833f7cf1273ef6be6a605a954d941c",
+      "source_human_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q032",
+      "source_machine_ref": "machine/decisions.q001-q130.yaml#/decisions/31",
+      "installed_record_ref": "governance/story-construction/decisions.q001-q130.yaml#/decisions/31",
+      "canonical_record_ref": "governance/story-construction/generated/decisions.q001-q130.canonical.json#/decisions/31",
+      "change_set_ref": "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml",
+      "reverse_lookup_key": "Q032"
+    },
+    {
+      "source_question_id": "Q033",
+      "owner_answer_sha256": "085beafa8e637185296888436c4397e102c7ede7accad7fb82f6d8acaa065b2c",
+      "source_human_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q033",
+      "source_machine_ref": "machine/decisions.q001-q130.yaml#/decisions/32",
+      "installed_record_ref": "governance/story-construction/decisions.q001-q130.yaml#/decisions/32",
+      "canonical_record_ref": "governance/story-construction/generated/decisions.q001-q130.canonical.json#/decisions/32",
+      "change_set_ref": "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml",
+      "reverse_lookup_key": "Q033"
+    },
+    {
+      "source_question_id": "Q034",
+      "owner_answer_sha256": "274f39d79450251b46ef199edf54a835dcc10150d2f9c58137062b057ba14303",
+      "source_human_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q034",
+      "source_machine_ref": "machine/decisions.q001-q130.yaml#/decisions/33",
+      "installed_record_ref": "governance/story-construction/decisions.q001-q130.yaml#/decisions/33",
+      "canonical_record_ref": "governance/story-construction/generated/decisions.q001-q130.canonical.json#/decisions/33",
+      "change_set_ref": "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml",
+      "reverse_lookup_key": "Q034"
+    },
+    {
+      "source_question_id": "Q035",
+      "owner_answer_sha256": "b7b5e9460fcb1f1e2043f16576a1ee10e0ef7c16fbbb6139923d2cee19d684b1",
+      "source_human_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q035",
+      "source_machine_ref": "machine/decisions.q001-q130.yaml#/decisions/34",
+      "installed_record_ref": "governance/story-construction/decisions.q001-q130.yaml#/decisions/34",
+      "canonical_record_ref": "governance/story-construction/generated/decisions.q001-q130.canonical.json#/decisions/34",
+      "change_set_ref": "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml",
+      "reverse_lookup_key": "Q035"
+    },
+    {
+      "source_question_id": "Q036",
+      "owner_answer_sha256": "4a56356538c3e6e8d7739fafa9ee73980653aad4eb3ebcdb710a8c68ca208ff4",
+      "source_human_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q036",
+      "source_machine_ref": "machine/decisions.q001-q130.yaml#/decisions/35",
+      "installed_record_ref": "governance/story-construction/decisions.q001-q130.yaml#/decisions/35",
+      "canonical_record_ref": "governance/story-construction/generated/decisions.q001-q130.canonical.json#/decisions/35",
+      "change_set_ref": "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml",
+      "reverse_lookup_key": "Q036"
+    },
+    {
+      "source_question_id": "Q037",
+      "owner_answer_sha256": "20b5f18e6ae51082cabf804acd08d27605a6aa95f04a062046f925de5068dce8",
+      "source_human_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q037",
+      "source_machine_ref": "machine/decisions.q001-q130.yaml#/decisions/36",
+      "installed_record_ref": "governance/story-construction/decisions.q001-q130.yaml#/decisions/36",
+      "canonical_record_ref": "governance/story-construction/generated/decisions.q001-q130.canonical.json#/decisions/36",
+      "change_set_ref": "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml",
+      "reverse_lookup_key": "Q037"
+    },
+    {
+      "source_question_id": "Q038",
+      "owner_answer_sha256": "ec06a6b0ae02cc259a7e68d4b5cc11b1c1a14bc1f2bdebe88e1787e34e7cb036",
+      "source_human_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q038",
+      "source_machine_ref": "machine/decisions.q001-q130.yaml#/decisions/37",
+      "installed_record_ref": "governance/story-construction/decisions.q001-q130.yaml#/decisions/37",
+      "canonical_record_ref": "governance/story-construction/generated/decisions.q001-q130.canonical.json#/decisions/37",
+      "change_set_ref": "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml",
+      "reverse_lookup_key": "Q038"
+    },
+    {
+      "source_question_id": "Q039",
+      "owner_answer_sha256": "b059ea764cbc440a36a23ff665c2394def31eb46fd74a1e3a0388eb044024345",
+      "source_human_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q039",
+      "source_machine_ref": "machine/decisions.q001-q130.yaml#/decisions/38",
+      "installed_record_ref": "governance/story-construction/decisions.q001-q130.yaml#/decisions/38",
+      "canonical_record_ref": "governance/story-construction/generated/decisions.q001-q130.canonical.json#/decisions/38",
+      "change_set_ref": "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml",
+      "reverse_lookup_key": "Q039"
+    },
+    {
+      "source_question_id": "Q040",
+      "owner_answer_sha256": "e27efcea15f1e6ee8c33da9386cb092970ad1ed050586074063d51d4ed8717fb",
+      "source_human_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q040",
+      "source_machine_ref": "machine/decisions.q001-q130.yaml#/decisions/39",
+      "installed_record_ref": "governance/story-construction/decisions.q001-q130.yaml#/decisions/39",
+      "canonical_record_ref": "governance/story-construction/generated/decisions.q001-q130.canonical.json#/decisions/39",
+      "change_set_ref": "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml",
+      "reverse_lookup_key": "Q040"
+    },
+    {
+      "source_question_id": "Q041",
+      "owner_answer_sha256": "1e2d54b9c47a79270d0a4a3f7d64830a8bc0b32e43ccf780d8451f1925519af0",
+      "source_human_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q041",
+      "source_machine_ref": "machine/decisions.q001-q130.yaml#/decisions/40",
+      "installed_record_ref": "governance/story-construction/decisions.q001-q130.yaml#/decisions/40",
+      "canonical_record_ref": "governance/story-construction/generated/decisions.q001-q130.canonical.json#/decisions/40",
+      "change_set_ref": "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml",
+      "reverse_lookup_key": "Q041"
+    },
+    {
+      "source_question_id": "Q042",
+      "owner_answer_sha256": "8f00c8975f2d127be8f2dce252e7c5c53d47e5f0163a95b44ba1bced572723e6",
+      "source_human_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q042",
+      "source_machine_ref": "machine/decisions.q001-q130.yaml#/decisions/41",
+      "installed_record_ref": "governance/story-construction/decisions.q001-q130.yaml#/decisions/41",
+      "canonical_record_ref": "governance/story-construction/generated/decisions.q001-q130.canonical.json#/decisions/41",
+      "change_set_ref": "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml",
+      "reverse_lookup_key": "Q042"
+    },
+    {
+      "source_question_id": "Q043",
+      "owner_answer_sha256": "a00aa6014c23851d61cc134bbcff38cc1126e67ed63217dc133b6046b6f380d1",
+      "source_human_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q043",
+      "source_machine_ref": "machine/decisions.q001-q130.yaml#/decisions/42",
+      "installed_record_ref": "governance/story-construction/decisions.q001-q130.yaml#/decisions/42",
+      "canonical_record_ref": "governance/story-construction/generated/decisions.q001-q130.canonical.json#/decisions/42",
+      "change_set_ref": "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml",
+      "reverse_lookup_key": "Q043"
+    },
+    {
+      "source_question_id": "Q044",
+      "owner_answer_sha256": "ab6df143dd18723d6b358772f90d9254e4c424706b6ad71376426a84bc659557",
+      "source_human_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q044",
+      "source_machine_ref": "machine/decisions.q001-q130.yaml#/decisions/43",
+      "installed_record_ref": "governance/story-construction/decisions.q001-q130.yaml#/decisions/43",
+      "canonical_record_ref": "governance/story-construction/generated/decisions.q001-q130.canonical.json#/decisions/43",
+      "change_set_ref": "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml",
+      "reverse_lookup_key": "Q044"
+    },
+    {
+      "source_question_id": "Q045",
+      "owner_answer_sha256": "c5bc55e90b2ee2b99d4b596d279a2311db8b26feb8df42ffe196416156b5d9e0",
+      "source_human_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q045",
+      "source_machine_ref": "machine/decisions.q001-q130.yaml#/decisions/44",
+      "installed_record_ref": "governance/story-construction/decisions.q001-q130.yaml#/decisions/44",
+      "canonical_record_ref": "governance/story-construction/generated/decisions.q001-q130.canonical.json#/decisions/44",
+      "change_set_ref": "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml",
+      "reverse_lookup_key": "Q045"
+    },
+    {
+      "source_question_id": "Q046",
+      "owner_answer_sha256": "ac1ba1980797edd107c3622e79dcc1a93cc542cb07597a97824c47bad82ecaba",
+      "source_human_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q046",
+      "source_machine_ref": "machine/decisions.q001-q130.yaml#/decisions/45",
+      "installed_record_ref": "governance/story-construction/decisions.q001-q130.yaml#/decisions/45",
+      "canonical_record_ref": "governance/story-construction/generated/decisions.q001-q130.canonical.json#/decisions/45",
+      "change_set_ref": "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml",
+      "reverse_lookup_key": "Q046"
+    },
+    {
+      "source_question_id": "Q047",
+      "owner_answer_sha256": "6d0f1d0c9106ccee0c262d335e4a622922262a986b5e1a3c635e20a871a009b6",
+      "source_human_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q047",
+      "source_machine_ref": "machine/decisions.q001-q130.yaml#/decisions/46",
+      "installed_record_ref": "governance/story-construction/decisions.q001-q130.yaml#/decisions/46",
+      "canonical_record_ref": "governance/story-construction/generated/decisions.q001-q130.canonical.json#/decisions/46",
+      "change_set_ref": "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml",
+      "reverse_lookup_key": "Q047"
+    },
+    {
+      "source_question_id": "Q048",
+      "owner_answer_sha256": "2ab09250db51ab33865ae2f6d80d2a15d4d193d5511b32ad74278565fd652f60",
+      "source_human_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q048",
+      "source_machine_ref": "machine/decisions.q001-q130.yaml#/decisions/47",
+      "installed_record_ref": "governance/story-construction/decisions.q001-q130.yaml#/decisions/47",
+      "canonical_record_ref": "governance/story-construction/generated/decisions.q001-q130.canonical.json#/decisions/47",
+      "change_set_ref": "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml",
+      "reverse_lookup_key": "Q048"
+    },
+    {
+      "source_question_id": "Q049",
+      "owner_answer_sha256": "ea2819956d4f077c680773792ac06692df5a961a6913ca1b2857e916dc935dae",
+      "source_human_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q049",
+      "source_machine_ref": "machine/decisions.q001-q130.yaml#/decisions/48",
+      "installed_record_ref": "governance/story-construction/decisions.q001-q130.yaml#/decisions/48",
+      "canonical_record_ref": "governance/story-construction/generated/decisions.q001-q130.canonical.json#/decisions/48",
+      "change_set_ref": "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml",
+      "reverse_lookup_key": "Q049"
+    },
+    {
+      "source_question_id": "Q050",
+      "owner_answer_sha256": "9b7e0b65b674931625e284f9d7235d2950fe3a40016f61e1cc213672b828cc37",
+      "source_human_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q050",
+      "source_machine_ref": "machine/decisions.q001-q130.yaml#/decisions/49",
+      "installed_record_ref": "governance/story-construction/decisions.q001-q130.yaml#/decisions/49",
+      "canonical_record_ref": "governance/story-construction/generated/decisions.q001-q130.canonical.json#/decisions/49",
+      "change_set_ref": "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml",
+      "reverse_lookup_key": "Q050"
+    },
+    {
+      "source_question_id": "Q051",
+      "owner_answer_sha256": "fe84ef25382a34da7039b21727b17494c77237b94dcb3c05955e741321256efc",
+      "source_human_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q051",
+      "source_machine_ref": "machine/decisions.q001-q130.yaml#/decisions/50",
+      "installed_record_ref": "governance/story-construction/decisions.q001-q130.yaml#/decisions/50",
+      "canonical_record_ref": "governance/story-construction/generated/decisions.q001-q130.canonical.json#/decisions/50",
+      "change_set_ref": "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml",
+      "reverse_lookup_key": "Q051"
+    },
+    {
+      "source_question_id": "Q052",
+      "owner_answer_sha256": "76d3f3121312510c61aece166368bb71a548d58e6c4cbe0d236cae66bd85d683",
+      "source_human_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q052",
+      "source_machine_ref": "machine/decisions.q001-q130.yaml#/decisions/51",
+      "installed_record_ref": "governance/story-construction/decisions.q001-q130.yaml#/decisions/51",
+      "canonical_record_ref": "governance/story-construction/generated/decisions.q001-q130.canonical.json#/decisions/51",
+      "change_set_ref": "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml",
+      "reverse_lookup_key": "Q052"
+    },
+    {
+      "source_question_id": "Q053",
+      "owner_answer_sha256": "cb474a536a115f7e6b59acbe1b282cfb23394c55becbb609c59760f5c0b1d6d0",
+      "source_human_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q053",
+      "source_machine_ref": "machine/decisions.q001-q130.yaml#/decisions/52",
+      "installed_record_ref": "governance/story-construction/decisions.q001-q130.yaml#/decisions/52",
+      "canonical_record_ref": "governance/story-construction/generated/decisions.q001-q130.canonical.json#/decisions/52",
+      "change_set_ref": "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml",
+      "reverse_lookup_key": "Q053"
+    },
+    {
+      "source_question_id": "Q054",
+      "owner_answer_sha256": "99d6b616ccd76cb4e72ec406711509b197f6ca98e04a2cdac4f601b658aa4d16",
+      "source_human_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q054",
+      "source_machine_ref": "machine/decisions.q001-q130.yaml#/decisions/53",
+      "installed_record_ref": "governance/story-construction/decisions.q001-q130.yaml#/decisions/53",
+      "canonical_record_ref": "governance/story-construction/generated/decisions.q001-q130.canonical.json#/decisions/53",
+      "change_set_ref": "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml",
+      "reverse_lookup_key": "Q054"
+    },
+    {
+      "source_question_id": "Q055",
+      "owner_answer_sha256": "ced2bfbdc0d7ffbe3dd5785a13f90646d973cceb309682cb044be99231ff0228",
+      "source_human_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q055",
+      "source_machine_ref": "machine/decisions.q001-q130.yaml#/decisions/54",
+      "installed_record_ref": "governance/story-construction/decisions.q001-q130.yaml#/decisions/54",
+      "canonical_record_ref": "governance/story-construction/generated/decisions.q001-q130.canonical.json#/decisions/54",
+      "change_set_ref": "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml",
+      "reverse_lookup_key": "Q055"
+    },
+    {
+      "source_question_id": "Q056",
+      "owner_answer_sha256": "92fc89739fbb795a10c9bf33c0fd93124682d1fb02acba523cf8b7f68e51def4",
+      "source_human_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q056",
+      "source_machine_ref": "machine/decisions.q001-q130.yaml#/decisions/55",
+      "installed_record_ref": "governance/story-construction/decisions.q001-q130.yaml#/decisions/55",
+      "canonical_record_ref": "governance/story-construction/generated/decisions.q001-q130.canonical.json#/decisions/55",
+      "change_set_ref": "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml",
+      "reverse_lookup_key": "Q056"
+    },
+    {
+      "source_question_id": "Q057",
+      "owner_answer_sha256": "58723885661c8d6230e90bceebcd0d27438833d43bb6d4019bf9c5b5efa55a2d",
+      "source_human_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q057",
+      "source_machine_ref": "machine/decisions.q001-q130.yaml#/decisions/56",
+      "installed_record_ref": "governance/story-construction/decisions.q001-q130.yaml#/decisions/56",
+      "canonical_record_ref": "governance/story-construction/generated/decisions.q001-q130.canonical.json#/decisions/56",
+      "change_set_ref": "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml",
+      "reverse_lookup_key": "Q057"
+    },
+    {
+      "source_question_id": "Q058",
+      "owner_answer_sha256": "f40cedbea6f6a37f57e43d10535b91cc29799d34a27857d932c725475a802a9f",
+      "source_human_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q058",
+      "source_machine_ref": "machine/decisions.q001-q130.yaml#/decisions/57",
+      "installed_record_ref": "governance/story-construction/decisions.q001-q130.yaml#/decisions/57",
+      "canonical_record_ref": "governance/story-construction/generated/decisions.q001-q130.canonical.json#/decisions/57",
+      "change_set_ref": "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml",
+      "reverse_lookup_key": "Q058"
+    },
+    {
+      "source_question_id": "Q059",
+      "owner_answer_sha256": "27b8463e7fb3aae65d6a5ba89a71509216b8a8be50bba149119c7bd353521df1",
+      "source_human_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q059",
+      "source_machine_ref": "machine/decisions.q001-q130.yaml#/decisions/58",
+      "installed_record_ref": "governance/story-construction/decisions.q001-q130.yaml#/decisions/58",
+      "canonical_record_ref": "governance/story-construction/generated/decisions.q001-q130.canonical.json#/decisions/58",
+      "change_set_ref": "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml",
+      "reverse_lookup_key": "Q059"
+    },
+    {
+      "source_question_id": "Q060",
+      "owner_answer_sha256": "601337840abcd176462e03250ec8b4228a215501c84d87f7a224240a91273fd1",
+      "source_human_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q060",
+      "source_machine_ref": "machine/decisions.q001-q130.yaml#/decisions/59",
+      "installed_record_ref": "governance/story-construction/decisions.q001-q130.yaml#/decisions/59",
+      "canonical_record_ref": "governance/story-construction/generated/decisions.q001-q130.canonical.json#/decisions/59",
+      "change_set_ref": "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml",
+      "reverse_lookup_key": "Q060"
+    },
+    {
+      "source_question_id": "Q061",
+      "owner_answer_sha256": "df8a538d311d86f8c51388d1803f32da0cefde5ad1e38e75098d03f22e3e487b",
+      "source_human_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q061",
+      "source_machine_ref": "machine/decisions.q001-q130.yaml#/decisions/60",
+      "installed_record_ref": "governance/story-construction/decisions.q001-q130.yaml#/decisions/60",
+      "canonical_record_ref": "governance/story-construction/generated/decisions.q001-q130.canonical.json#/decisions/60",
+      "change_set_ref": "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml",
+      "reverse_lookup_key": "Q061"
+    },
+    {
+      "source_question_id": "Q062",
+      "owner_answer_sha256": "12c2e2a53f866091981dd84d131a11b999a86eded0bcf6e1cf1d7d098f0d2473",
+      "source_human_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q062",
+      "source_machine_ref": "machine/decisions.q001-q130.yaml#/decisions/61",
+      "installed_record_ref": "governance/story-construction/decisions.q001-q130.yaml#/decisions/61",
+      "canonical_record_ref": "governance/story-construction/generated/decisions.q001-q130.canonical.json#/decisions/61",
+      "change_set_ref": "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml",
+      "reverse_lookup_key": "Q062"
+    },
+    {
+      "source_question_id": "Q063",
+      "owner_answer_sha256": "220f00825659df91cb62b3bfc209fb16b26e3b7a1f6f2d501be9f5f35aa45a3e",
+      "source_human_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q063",
+      "source_machine_ref": "machine/decisions.q001-q130.yaml#/decisions/62",
+      "installed_record_ref": "governance/story-construction/decisions.q001-q130.yaml#/decisions/62",
+      "canonical_record_ref": "governance/story-construction/generated/decisions.q001-q130.canonical.json#/decisions/62",
+      "change_set_ref": "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml",
+      "reverse_lookup_key": "Q063"
+    },
+    {
+      "source_question_id": "Q064",
+      "owner_answer_sha256": "40a974becd5e291c00461b3a11351586ea322c25937d0514d3b8cdf4fa6cc52b",
+      "source_human_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q064",
+      "source_machine_ref": "machine/decisions.q001-q130.yaml#/decisions/63",
+      "installed_record_ref": "governance/story-construction/decisions.q001-q130.yaml#/decisions/63",
+      "canonical_record_ref": "governance/story-construction/generated/decisions.q001-q130.canonical.json#/decisions/63",
+      "change_set_ref": "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml",
+      "reverse_lookup_key": "Q064"
+    },
+    {
+      "source_question_id": "Q065",
+      "owner_answer_sha256": "0ca8b011c16f8a514a80953a5d8aa5fd927a3a24708936589ae117860b5ac072",
+      "source_human_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q065",
+      "source_machine_ref": "machine/decisions.q001-q130.yaml#/decisions/64",
+      "installed_record_ref": "governance/story-construction/decisions.q001-q130.yaml#/decisions/64",
+      "canonical_record_ref": "governance/story-construction/generated/decisions.q001-q130.canonical.json#/decisions/64",
+      "change_set_ref": "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml",
+      "reverse_lookup_key": "Q065"
+    },
+    {
+      "source_question_id": "Q066",
+      "owner_answer_sha256": "29d6e6eb4eb2aa57a49156b1ddd00ce9b170a6612efe51c12928b202a90dff37",
+      "source_human_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q066",
+      "source_machine_ref": "machine/decisions.q001-q130.yaml#/decisions/65",
+      "installed_record_ref": "governance/story-construction/decisions.q001-q130.yaml#/decisions/65",
+      "canonical_record_ref": "governance/story-construction/generated/decisions.q001-q130.canonical.json#/decisions/65",
+      "change_set_ref": "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml",
+      "reverse_lookup_key": "Q066"
+    },
+    {
+      "source_question_id": "Q067",
+      "owner_answer_sha256": "e54740cb2294123b3597512156961eb416d5777f09c3d2ebf11b34cf6c5cce7a",
+      "source_human_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q067",
+      "source_machine_ref": "machine/decisions.q001-q130.yaml#/decisions/66",
+      "installed_record_ref": "governance/story-construction/decisions.q001-q130.yaml#/decisions/66",
+      "canonical_record_ref": "governance/story-construction/generated/decisions.q001-q130.canonical.json#/decisions/66",
+      "change_set_ref": "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml",
+      "reverse_lookup_key": "Q067"
+    },
+    {
+      "source_question_id": "Q068",
+      "owner_answer_sha256": "1d0d49ccfd82b7fd218cdfbf8bfd1e4f915ee66716fae5f93457b7e1dc5a2eeb",
+      "source_human_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q068",
+      "source_machine_ref": "machine/decisions.q001-q130.yaml#/decisions/67",
+      "installed_record_ref": "governance/story-construction/decisions.q001-q130.yaml#/decisions/67",
+      "canonical_record_ref": "governance/story-construction/generated/decisions.q001-q130.canonical.json#/decisions/67",
+      "change_set_ref": "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml",
+      "reverse_lookup_key": "Q068"
+    },
+    {
+      "source_question_id": "Q069",
+      "owner_answer_sha256": "38b2abbf1070ab1d41883a208e03a6276d3c945f9341dc38db255e1c3f0d9193",
+      "source_human_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q069",
+      "source_machine_ref": "machine/decisions.q001-q130.yaml#/decisions/68",
+      "installed_record_ref": "governance/story-construction/decisions.q001-q130.yaml#/decisions/68",
+      "canonical_record_ref": "governance/story-construction/generated/decisions.q001-q130.canonical.json#/decisions/68",
+      "change_set_ref": "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml",
+      "reverse_lookup_key": "Q069"
+    },
+    {
+      "source_question_id": "Q070",
+      "owner_answer_sha256": "c3076b3a4bc5aede4d7ecef4596ea4981f7a4c5f5684f3562853bfc41d19e7e1",
+      "source_human_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q070",
+      "source_machine_ref": "machine/decisions.q001-q130.yaml#/decisions/69",
+      "installed_record_ref": "governance/story-construction/decisions.q001-q130.yaml#/decisions/69",
+      "canonical_record_ref": "governance/story-construction/generated/decisions.q001-q130.canonical.json#/decisions/69",
+      "change_set_ref": "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml",
+      "reverse_lookup_key": "Q070"
+    },
+    {
+      "source_question_id": "Q071",
+      "owner_answer_sha256": "b9061e008117b0b46f45256ed1611efeeca8ddb512da7b937aad4a44f1199bc6",
+      "source_human_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q071",
+      "source_machine_ref": "machine/decisions.q001-q130.yaml#/decisions/70",
+      "installed_record_ref": "governance/story-construction/decisions.q001-q130.yaml#/decisions/70",
+      "canonical_record_ref": "governance/story-construction/generated/decisions.q001-q130.canonical.json#/decisions/70",
+      "change_set_ref": "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml",
+      "reverse_lookup_key": "Q071"
+    },
+    {
+      "source_question_id": "Q072",
+      "owner_answer_sha256": "7428d2f0b09d365c857a46c68ba278db45474f63f38907a3fc9d3c7a0504395e",
+      "source_human_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q072",
+      "source_machine_ref": "machine/decisions.q001-q130.yaml#/decisions/71",
+      "installed_record_ref": "governance/story-construction/decisions.q001-q130.yaml#/decisions/71",
+      "canonical_record_ref": "governance/story-construction/generated/decisions.q001-q130.canonical.json#/decisions/71",
+      "change_set_ref": "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml",
+      "reverse_lookup_key": "Q072"
+    },
+    {
+      "source_question_id": "Q073",
+      "owner_answer_sha256": "0eb9b3a99c538db790bfc419638dc5557b19cd75afdd3cfca25ab141f8d4b299",
+      "source_human_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q073",
+      "source_machine_ref": "machine/decisions.q001-q130.yaml#/decisions/72",
+      "installed_record_ref": "governance/story-construction/decisions.q001-q130.yaml#/decisions/72",
+      "canonical_record_ref": "governance/story-construction/generated/decisions.q001-q130.canonical.json#/decisions/72",
+      "change_set_ref": "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml",
+      "reverse_lookup_key": "Q073"
+    },
+    {
+      "source_question_id": "Q074",
+      "owner_answer_sha256": "e9f4752070065cc946b42e88b5582e46af7d46dbb821241805ea22d4c1d419c1",
+      "source_human_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q074",
+      "source_machine_ref": "machine/decisions.q001-q130.yaml#/decisions/73",
+      "installed_record_ref": "governance/story-construction/decisions.q001-q130.yaml#/decisions/73",
+      "canonical_record_ref": "governance/story-construction/generated/decisions.q001-q130.canonical.json#/decisions/73",
+      "change_set_ref": "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml",
+      "reverse_lookup_key": "Q074"
+    },
+    {
+      "source_question_id": "Q075",
+      "owner_answer_sha256": "e4fc85a3cb3fc25e08d670bbb8c2423d301421128be47a02267838bc29b1bda8",
+      "source_human_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q075",
+      "source_machine_ref": "machine/decisions.q001-q130.yaml#/decisions/74",
+      "installed_record_ref": "governance/story-construction/decisions.q001-q130.yaml#/decisions/74",
+      "canonical_record_ref": "governance/story-construction/generated/decisions.q001-q130.canonical.json#/decisions/74",
+      "change_set_ref": "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml",
+      "reverse_lookup_key": "Q075"
+    },
+    {
+      "source_question_id": "Q076",
+      "owner_answer_sha256": "c8d3253023595db840f1c40b71959a19cbb05a53a8ddcb62a32652f388e0378b",
+      "source_human_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q076",
+      "source_machine_ref": "machine/decisions.q001-q130.yaml#/decisions/75",
+      "installed_record_ref": "governance/story-construction/decisions.q001-q130.yaml#/decisions/75",
+      "canonical_record_ref": "governance/story-construction/generated/decisions.q001-q130.canonical.json#/decisions/75",
+      "change_set_ref": "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml",
+      "reverse_lookup_key": "Q076"
+    },
+    {
+      "source_question_id": "Q077",
+      "owner_answer_sha256": "0e84923377fe4090714cb8c4df23b8a5d1d0d7aac0b653a299debff32588757d",
+      "source_human_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q077",
+      "source_machine_ref": "machine/decisions.q001-q130.yaml#/decisions/76",
+      "installed_record_ref": "governance/story-construction/decisions.q001-q130.yaml#/decisions/76",
+      "canonical_record_ref": "governance/story-construction/generated/decisions.q001-q130.canonical.json#/decisions/76",
+      "change_set_ref": "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml",
+      "reverse_lookup_key": "Q077"
+    },
+    {
+      "source_question_id": "Q078",
+      "owner_answer_sha256": "3b9a06a72e498c8852e3362088beaa8dd7f1e92cd352f978c4dabf349df0c6e4",
+      "source_human_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q078",
+      "source_machine_ref": "machine/decisions.q001-q130.yaml#/decisions/77",
+      "installed_record_ref": "governance/story-construction/decisions.q001-q130.yaml#/decisions/77",
+      "canonical_record_ref": "governance/story-construction/generated/decisions.q001-q130.canonical.json#/decisions/77",
+      "change_set_ref": "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml",
+      "reverse_lookup_key": "Q078"
+    },
+    {
+      "source_question_id": "Q079",
+      "owner_answer_sha256": "07f6a052f6b76cd58459188184345041cf670edd2f66c925eef8ef5a7423115a",
+      "source_human_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q079",
+      "source_machine_ref": "machine/decisions.q001-q130.yaml#/decisions/78",
+      "installed_record_ref": "governance/story-construction/decisions.q001-q130.yaml#/decisions/78",
+      "canonical_record_ref": "governance/story-construction/generated/decisions.q001-q130.canonical.json#/decisions/78",
+      "change_set_ref": "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml",
+      "reverse_lookup_key": "Q079"
+    },
+    {
+      "source_question_id": "Q080",
+      "owner_answer_sha256": "f5127c4b2f550bce5a2d50e5d89a3dea2cd56295de1a67fb7d9251131827ae17",
+      "source_human_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q080",
+      "source_machine_ref": "machine/decisions.q001-q130.yaml#/decisions/79",
+      "installed_record_ref": "governance/story-construction/decisions.q001-q130.yaml#/decisions/79",
+      "canonical_record_ref": "governance/story-construction/generated/decisions.q001-q130.canonical.json#/decisions/79",
+      "change_set_ref": "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml",
+      "reverse_lookup_key": "Q080"
+    },
+    {
+      "source_question_id": "Q081",
+      "owner_answer_sha256": "9fd700a69b915ca64c6dd68cf876033b7844640edaa9b8a57920b1754318e161",
+      "source_human_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q081",
+      "source_machine_ref": "machine/decisions.q001-q130.yaml#/decisions/80",
+      "installed_record_ref": "governance/story-construction/decisions.q001-q130.yaml#/decisions/80",
+      "canonical_record_ref": "governance/story-construction/generated/decisions.q001-q130.canonical.json#/decisions/80",
+      "change_set_ref": "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml",
+      "reverse_lookup_key": "Q081"
+    },
+    {
+      "source_question_id": "Q082",
+      "owner_answer_sha256": "fc369afcb3813a4483872688487cbbfd45c4a4a2c314a950d827fd0a717ac3c0",
+      "source_human_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q082",
+      "source_machine_ref": "machine/decisions.q001-q130.yaml#/decisions/81",
+      "installed_record_ref": "governance/story-construction/decisions.q001-q130.yaml#/decisions/81",
+      "canonical_record_ref": "governance/story-construction/generated/decisions.q001-q130.canonical.json#/decisions/81",
+      "change_set_ref": "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml",
+      "reverse_lookup_key": "Q082"
+    },
+    {
+      "source_question_id": "Q083",
+      "owner_answer_sha256": "555a847386891b424b0822b513c87e8fb2ea71626e88094d8cca5acf27425ba2",
+      "source_human_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q083",
+      "source_machine_ref": "machine/decisions.q001-q130.yaml#/decisions/82",
+      "installed_record_ref": "governance/story-construction/decisions.q001-q130.yaml#/decisions/82",
+      "canonical_record_ref": "governance/story-construction/generated/decisions.q001-q130.canonical.json#/decisions/82",
+      "change_set_ref": "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml",
+      "reverse_lookup_key": "Q083"
+    },
+    {
+      "source_question_id": "Q084",
+      "owner_answer_sha256": "92f77d2ac995344639133a6668f6223012c459b89ee86ee6efdff810ab080cef",
+      "source_human_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q084",
+      "source_machine_ref": "machine/decisions.q001-q130.yaml#/decisions/83",
+      "installed_record_ref": "governance/story-construction/decisions.q001-q130.yaml#/decisions/83",
+      "canonical_record_ref": "governance/story-construction/generated/decisions.q001-q130.canonical.json#/decisions/83",
+      "change_set_ref": "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml",
+      "reverse_lookup_key": "Q084"
+    },
+    {
+      "source_question_id": "Q085",
+      "owner_answer_sha256": "72278f91860d8ded7cd595378bc13e39c28e2598281eba61cad39b4684f61101",
+      "source_human_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q085",
+      "source_machine_ref": "machine/decisions.q001-q130.yaml#/decisions/84",
+      "installed_record_ref": "governance/story-construction/decisions.q001-q130.yaml#/decisions/84",
+      "canonical_record_ref": "governance/story-construction/generated/decisions.q001-q130.canonical.json#/decisions/84",
+      "change_set_ref": "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml",
+      "reverse_lookup_key": "Q085"
+    },
+    {
+      "source_question_id": "Q086",
+      "owner_answer_sha256": "92fb5c2d09536d23692c9da03f7f0cd88065d46fabc7209a22d3ef8d228db68b",
+      "source_human_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q086",
+      "source_machine_ref": "machine/decisions.q001-q130.yaml#/decisions/85",
+      "installed_record_ref": "governance/story-construction/decisions.q001-q130.yaml#/decisions/85",
+      "canonical_record_ref": "governance/story-construction/generated/decisions.q001-q130.canonical.json#/decisions/85",
+      "change_set_ref": "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml",
+      "reverse_lookup_key": "Q086"
+    },
+    {
+      "source_question_id": "Q087",
+      "owner_answer_sha256": "a47bb1b17303e5d91b2f10d52035a0ba7b4fee619a037538bab678a9a7107825",
+      "source_human_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q087",
+      "source_machine_ref": "machine/decisions.q001-q130.yaml#/decisions/86",
+      "installed_record_ref": "governance/story-construction/decisions.q001-q130.yaml#/decisions/86",
+      "canonical_record_ref": "governance/story-construction/generated/decisions.q001-q130.canonical.json#/decisions/86",
+      "change_set_ref": "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml",
+      "reverse_lookup_key": "Q087"
+    },
+    {
+      "source_question_id": "Q088",
+      "owner_answer_sha256": "9cd1f03539f84b9882ea66ba0b1c541ea0e4039c96693ce065fea999c133900d",
+      "source_human_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q088",
+      "source_machine_ref": "machine/decisions.q001-q130.yaml#/decisions/87",
+      "installed_record_ref": "governance/story-construction/decisions.q001-q130.yaml#/decisions/87",
+      "canonical_record_ref": "governance/story-construction/generated/decisions.q001-q130.canonical.json#/decisions/87",
+      "change_set_ref": "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml",
+      "reverse_lookup_key": "Q088"
+    },
+    {
+      "source_question_id": "Q089",
+      "owner_answer_sha256": "a5016f0ee73394bed4f11624d9b91b51f795da09518dc21a3f6d6589e55c22a8",
+      "source_human_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q089",
+      "source_machine_ref": "machine/decisions.q001-q130.yaml#/decisions/88",
+      "installed_record_ref": "governance/story-construction/decisions.q001-q130.yaml#/decisions/88",
+      "canonical_record_ref": "governance/story-construction/generated/decisions.q001-q130.canonical.json#/decisions/88",
+      "change_set_ref": "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml",
+      "reverse_lookup_key": "Q089"
+    },
+    {
+      "source_question_id": "Q090",
+      "owner_answer_sha256": "f031f665d5fa5bb4654b4149dd4cc5d5a1d6dcef8a6aa68240c02ac48ce644a0",
+      "source_human_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q090",
+      "source_machine_ref": "machine/decisions.q001-q130.yaml#/decisions/89",
+      "installed_record_ref": "governance/story-construction/decisions.q001-q130.yaml#/decisions/89",
+      "canonical_record_ref": "governance/story-construction/generated/decisions.q001-q130.canonical.json#/decisions/89",
+      "change_set_ref": "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml",
+      "reverse_lookup_key": "Q090"
+    },
+    {
+      "source_question_id": "Q091",
+      "owner_answer_sha256": "83f0394a6ae2c56e542c10d3990b62db34172af9b64181685aadd8b121d5bb55",
+      "source_human_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q091",
+      "source_machine_ref": "machine/decisions.q001-q130.yaml#/decisions/90",
+      "installed_record_ref": "governance/story-construction/decisions.q001-q130.yaml#/decisions/90",
+      "canonical_record_ref": "governance/story-construction/generated/decisions.q001-q130.canonical.json#/decisions/90",
+      "change_set_ref": "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml",
+      "reverse_lookup_key": "Q091"
+    },
+    {
+      "source_question_id": "Q092",
+      "owner_answer_sha256": "4e102267e0b4786e77eb08f7bfcb07b87c0f3c3e8ee545dfb5d7363c2f6c23a7",
+      "source_human_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q092",
+      "source_machine_ref": "machine/decisions.q001-q130.yaml#/decisions/91",
+      "installed_record_ref": "governance/story-construction/decisions.q001-q130.yaml#/decisions/91",
+      "canonical_record_ref": "governance/story-construction/generated/decisions.q001-q130.canonical.json#/decisions/91",
+      "change_set_ref": "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml",
+      "reverse_lookup_key": "Q092"
+    },
+    {
+      "source_question_id": "Q093",
+      "owner_answer_sha256": "f8713ce08aaf495a824a0aee86f6e54f074e12cf453b176a343fe82d173f0899",
+      "source_human_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q093",
+      "source_machine_ref": "machine/decisions.q001-q130.yaml#/decisions/92",
+      "installed_record_ref": "governance/story-construction/decisions.q001-q130.yaml#/decisions/92",
+      "canonical_record_ref": "governance/story-construction/generated/decisions.q001-q130.canonical.json#/decisions/92",
+      "change_set_ref": "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml",
+      "reverse_lookup_key": "Q093"
+    },
+    {
+      "source_question_id": "Q094",
+      "owner_answer_sha256": "791f05497308466dfe01c1a2d7ffd43b7247204bbd8c98b337b2aabc2c48604a",
+      "source_human_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q094",
+      "source_machine_ref": "machine/decisions.q001-q130.yaml#/decisions/93",
+      "installed_record_ref": "governance/story-construction/decisions.q001-q130.yaml#/decisions/93",
+      "canonical_record_ref": "governance/story-construction/generated/decisions.q001-q130.canonical.json#/decisions/93",
+      "change_set_ref": "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml",
+      "reverse_lookup_key": "Q094"
+    },
+    {
+      "source_question_id": "Q095",
+      "owner_answer_sha256": "cb915ccb1e620274d68bb81708765cf759ef96b7214812bc78562ca31c14fa1c",
+      "source_human_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q095",
+      "source_machine_ref": "machine/decisions.q001-q130.yaml#/decisions/94",
+      "installed_record_ref": "governance/story-construction/decisions.q001-q130.yaml#/decisions/94",
+      "canonical_record_ref": "governance/story-construction/generated/decisions.q001-q130.canonical.json#/decisions/94",
+      "change_set_ref": "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml",
+      "reverse_lookup_key": "Q095"
+    },
+    {
+      "source_question_id": "Q096",
+      "owner_answer_sha256": "fff8fdb9019354eb67525bdcf0c91eefc614e6d57585082703a959242ab5dede",
+      "source_human_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q096",
+      "source_machine_ref": "machine/decisions.q001-q130.yaml#/decisions/95",
+      "installed_record_ref": "governance/story-construction/decisions.q001-q130.yaml#/decisions/95",
+      "canonical_record_ref": "governance/story-construction/generated/decisions.q001-q130.canonical.json#/decisions/95",
+      "change_set_ref": "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml",
+      "reverse_lookup_key": "Q096"
+    },
+    {
+      "source_question_id": "Q097",
+      "owner_answer_sha256": "5aa2ee67c49e3a1d26cf98ac7d8e41f7c6b36161d1e66ef4e0085aaf27fb9961",
+      "source_human_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q097",
+      "source_machine_ref": "machine/decisions.q001-q130.yaml#/decisions/96",
+      "installed_record_ref": "governance/story-construction/decisions.q001-q130.yaml#/decisions/96",
+      "canonical_record_ref": "governance/story-construction/generated/decisions.q001-q130.canonical.json#/decisions/96",
+      "change_set_ref": "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml",
+      "reverse_lookup_key": "Q097"
+    },
+    {
+      "source_question_id": "Q098",
+      "owner_answer_sha256": "fdc452057f3770280bd0330b7e0d12a24d5ad1dbc27b4e7861713fbc323b4bef",
+      "source_human_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q098",
+      "source_machine_ref": "machine/decisions.q001-q130.yaml#/decisions/97",
+      "installed_record_ref": "governance/story-construction/decisions.q001-q130.yaml#/decisions/97",
+      "canonical_record_ref": "governance/story-construction/generated/decisions.q001-q130.canonical.json#/decisions/97",
+      "change_set_ref": "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml",
+      "reverse_lookup_key": "Q098"
+    },
+    {
+      "source_question_id": "Q099",
+      "owner_answer_sha256": "21532c1f825eac1d48a63b324b27a7f4008b448c5dd38a137cb00ef83b4dd26a",
+      "source_human_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q099",
+      "source_machine_ref": "machine/decisions.q001-q130.yaml#/decisions/98",
+      "installed_record_ref": "governance/story-construction/decisions.q001-q130.yaml#/decisions/98",
+      "canonical_record_ref": "governance/story-construction/generated/decisions.q001-q130.canonical.json#/decisions/98",
+      "change_set_ref": "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml",
+      "reverse_lookup_key": "Q099"
+    },
+    {
+      "source_question_id": "Q100",
+      "owner_answer_sha256": "8baaa231a19108325aa735156db3d7590302f5f794557d3f8a44535d83ff49d8",
+      "source_human_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q100",
+      "source_machine_ref": "machine/decisions.q001-q130.yaml#/decisions/99",
+      "installed_record_ref": "governance/story-construction/decisions.q001-q130.yaml#/decisions/99",
+      "canonical_record_ref": "governance/story-construction/generated/decisions.q001-q130.canonical.json#/decisions/99",
+      "change_set_ref": "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml",
+      "reverse_lookup_key": "Q100"
+    },
+    {
+      "source_question_id": "Q101",
+      "owner_answer_sha256": "9ea9da3f7251941fd84f8528c80a4655aaefe93d5da8b8d10b424ba4f83b2187",
+      "source_human_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q101",
+      "source_machine_ref": "machine/decisions.q001-q130.yaml#/decisions/100",
+      "installed_record_ref": "governance/story-construction/decisions.q001-q130.yaml#/decisions/100",
+      "canonical_record_ref": "governance/story-construction/generated/decisions.q001-q130.canonical.json#/decisions/100",
+      "change_set_ref": "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml",
+      "reverse_lookup_key": "Q101"
+    },
+    {
+      "source_question_id": "Q102",
+      "owner_answer_sha256": "21e7f62c27533b19e95243e3bb39dba9822760a7f84aa820d9f73dbe2bfeaaa3",
+      "source_human_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q102",
+      "source_machine_ref": "machine/decisions.q001-q130.yaml#/decisions/101",
+      "installed_record_ref": "governance/story-construction/decisions.q001-q130.yaml#/decisions/101",
+      "canonical_record_ref": "governance/story-construction/generated/decisions.q001-q130.canonical.json#/decisions/101",
+      "change_set_ref": "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml",
+      "reverse_lookup_key": "Q102"
+    },
+    {
+      "source_question_id": "Q103",
+      "owner_answer_sha256": "8feaee224630815fdeeed922241c5fd5a5b71678cd25cc45577852afcb37e823",
+      "source_human_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q103",
+      "source_machine_ref": "machine/decisions.q001-q130.yaml#/decisions/102",
+      "installed_record_ref": "governance/story-construction/decisions.q001-q130.yaml#/decisions/102",
+      "canonical_record_ref": "governance/story-construction/generated/decisions.q001-q130.canonical.json#/decisions/102",
+      "change_set_ref": "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml",
+      "reverse_lookup_key": "Q103"
+    },
+    {
+      "source_question_id": "Q104",
+      "owner_answer_sha256": "987f23e8c08cd3c5f3dafdc655788a1e7e97be6f86748f491fa7875a4839207d",
+      "source_human_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q104",
+      "source_machine_ref": "machine/decisions.q001-q130.yaml#/decisions/103",
+      "installed_record_ref": "governance/story-construction/decisions.q001-q130.yaml#/decisions/103",
+      "canonical_record_ref": "governance/story-construction/generated/decisions.q001-q130.canonical.json#/decisions/103",
+      "change_set_ref": "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml",
+      "reverse_lookup_key": "Q104"
+    },
+    {
+      "source_question_id": "Q105",
+      "owner_answer_sha256": "52ee434c955c27d535369cd44530052a3c7097e6dca642cbb5b8522e91c821de",
+      "source_human_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q105",
+      "source_machine_ref": "machine/decisions.q001-q130.yaml#/decisions/104",
+      "installed_record_ref": "governance/story-construction/decisions.q001-q130.yaml#/decisions/104",
+      "canonical_record_ref": "governance/story-construction/generated/decisions.q001-q130.canonical.json#/decisions/104",
+      "change_set_ref": "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml",
+      "reverse_lookup_key": "Q105"
+    },
+    {
+      "source_question_id": "Q106",
+      "owner_answer_sha256": "ddaed74830cbc9d7adec35e5b82d00f1d4d6bbf188ab76764ecfe907338b3edb",
+      "source_human_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q106",
+      "source_machine_ref": "machine/decisions.q001-q130.yaml#/decisions/105",
+      "installed_record_ref": "governance/story-construction/decisions.q001-q130.yaml#/decisions/105",
+      "canonical_record_ref": "governance/story-construction/generated/decisions.q001-q130.canonical.json#/decisions/105",
+      "change_set_ref": "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml",
+      "reverse_lookup_key": "Q106"
+    },
+    {
+      "source_question_id": "Q107",
+      "owner_answer_sha256": "57bbe376245fd2618d92035c756ddf54fce15d2fa18c44f54378abd85442e8a7",
+      "source_human_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q107",
+      "source_machine_ref": "machine/decisions.q001-q130.yaml#/decisions/106",
+      "installed_record_ref": "governance/story-construction/decisions.q001-q130.yaml#/decisions/106",
+      "canonical_record_ref": "governance/story-construction/generated/decisions.q001-q130.canonical.json#/decisions/106",
+      "change_set_ref": "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml",
+      "reverse_lookup_key": "Q107"
+    },
+    {
+      "source_question_id": "Q108",
+      "owner_answer_sha256": "b02c6363321d9d83527232558e85be68d787ba8c80c5660a18f94a2b9c30cbda",
+      "source_human_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q108",
+      "source_machine_ref": "machine/decisions.q001-q130.yaml#/decisions/107",
+      "installed_record_ref": "governance/story-construction/decisions.q001-q130.yaml#/decisions/107",
+      "canonical_record_ref": "governance/story-construction/generated/decisions.q001-q130.canonical.json#/decisions/107",
+      "change_set_ref": "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml",
+      "reverse_lookup_key": "Q108"
+    },
+    {
+      "source_question_id": "Q109",
+      "owner_answer_sha256": "e498ecf758c62666b65aad70c5b9c7131ec51e4122642d1cb7a3bde74a8c4a84",
+      "source_human_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q109",
+      "source_machine_ref": "machine/decisions.q001-q130.yaml#/decisions/108",
+      "installed_record_ref": "governance/story-construction/decisions.q001-q130.yaml#/decisions/108",
+      "canonical_record_ref": "governance/story-construction/generated/decisions.q001-q130.canonical.json#/decisions/108",
+      "change_set_ref": "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml",
+      "reverse_lookup_key": "Q109"
+    },
+    {
+      "source_question_id": "Q110",
+      "owner_answer_sha256": "5643a37089c4bb0bf5af0005db85e61deb404436f87da56b2973a64edab44ad8",
+      "source_human_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q110",
+      "source_machine_ref": "machine/decisions.q001-q130.yaml#/decisions/109",
+      "installed_record_ref": "governance/story-construction/decisions.q001-q130.yaml#/decisions/109",
+      "canonical_record_ref": "governance/story-construction/generated/decisions.q001-q130.canonical.json#/decisions/109",
+      "change_set_ref": "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml",
+      "reverse_lookup_key": "Q110"
+    },
+    {
+      "source_question_id": "Q111",
+      "owner_answer_sha256": "cedcdace64144a583659b2db91f17d33e6faee3904f5957d822c388b70b192e9",
+      "source_human_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q111",
+      "source_machine_ref": "machine/decisions.q001-q130.yaml#/decisions/110",
+      "installed_record_ref": "governance/story-construction/decisions.q001-q130.yaml#/decisions/110",
+      "canonical_record_ref": "governance/story-construction/generated/decisions.q001-q130.canonical.json#/decisions/110",
+      "change_set_ref": "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml",
+      "reverse_lookup_key": "Q111"
+    },
+    {
+      "source_question_id": "Q112",
+      "owner_answer_sha256": "7ee79a72beff8c3d1cd34a5b6141245dccca830c4da540a79c8434b27a40ee13",
+      "source_human_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q112",
+      "source_machine_ref": "machine/decisions.q001-q130.yaml#/decisions/111",
+      "installed_record_ref": "governance/story-construction/decisions.q001-q130.yaml#/decisions/111",
+      "canonical_record_ref": "governance/story-construction/generated/decisions.q001-q130.canonical.json#/decisions/111",
+      "change_set_ref": "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml",
+      "reverse_lookup_key": "Q112"
+    },
+    {
+      "source_question_id": "Q113",
+      "owner_answer_sha256": "1fd7fd6a6832a01c22b7401a9d06a0b78f77935fa2c7df4f9b6b99acd791fdd8",
+      "source_human_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q113",
+      "source_machine_ref": "machine/decisions.q001-q130.yaml#/decisions/112",
+      "installed_record_ref": "governance/story-construction/decisions.q001-q130.yaml#/decisions/112",
+      "canonical_record_ref": "governance/story-construction/generated/decisions.q001-q130.canonical.json#/decisions/112",
+      "change_set_ref": "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml",
+      "reverse_lookup_key": "Q113"
+    },
+    {
+      "source_question_id": "Q114",
+      "owner_answer_sha256": "be2c6ad607f8f6bdabf538c1e8bbfce03dfa251035f1d6c68cd62353bc4e4bf2",
+      "source_human_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q114",
+      "source_machine_ref": "machine/decisions.q001-q130.yaml#/decisions/113",
+      "installed_record_ref": "governance/story-construction/decisions.q001-q130.yaml#/decisions/113",
+      "canonical_record_ref": "governance/story-construction/generated/decisions.q001-q130.canonical.json#/decisions/113",
+      "change_set_ref": "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml",
+      "reverse_lookup_key": "Q114"
+    },
+    {
+      "source_question_id": "Q115",
+      "owner_answer_sha256": "01219ff265d5f8d881ab114b218dd3fa8014db4280c47fa0d5ffaa04334d751c",
+      "source_human_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q115",
+      "source_machine_ref": "machine/decisions.q001-q130.yaml#/decisions/114",
+      "installed_record_ref": "governance/story-construction/decisions.q001-q130.yaml#/decisions/114",
+      "canonical_record_ref": "governance/story-construction/generated/decisions.q001-q130.canonical.json#/decisions/114",
+      "change_set_ref": "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml",
+      "reverse_lookup_key": "Q115"
+    },
+    {
+      "source_question_id": "Q116",
+      "owner_answer_sha256": "bf753dff8bfba027929ea489e9427befd7f5ef63eddcc189b896b43db6db2f3b",
+      "source_human_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q116",
+      "source_machine_ref": "machine/decisions.q001-q130.yaml#/decisions/115",
+      "installed_record_ref": "governance/story-construction/decisions.q001-q130.yaml#/decisions/115",
+      "canonical_record_ref": "governance/story-construction/generated/decisions.q001-q130.canonical.json#/decisions/115",
+      "change_set_ref": "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml",
+      "reverse_lookup_key": "Q116"
+    },
+    {
+      "source_question_id": "Q117",
+      "owner_answer_sha256": "ac2192c8c4334702194c06d8505509a5e0f4337700165a9f6eae43a527ab7310",
+      "source_human_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q117",
+      "source_machine_ref": "machine/decisions.q001-q130.yaml#/decisions/116",
+      "installed_record_ref": "governance/story-construction/decisions.q001-q130.yaml#/decisions/116",
+      "canonical_record_ref": "governance/story-construction/generated/decisions.q001-q130.canonical.json#/decisions/116",
+      "change_set_ref": "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml",
+      "reverse_lookup_key": "Q117"
+    },
+    {
+      "source_question_id": "Q118",
+      "owner_answer_sha256": "1333608b6c16e65c1ab153b19694534dc51cb17f506f5cc3561e49f27ca43b42",
+      "source_human_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q118",
+      "source_machine_ref": "machine/decisions.q001-q130.yaml#/decisions/117",
+      "installed_record_ref": "governance/story-construction/decisions.q001-q130.yaml#/decisions/117",
+      "canonical_record_ref": "governance/story-construction/generated/decisions.q001-q130.canonical.json#/decisions/117",
+      "change_set_ref": "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml",
+      "reverse_lookup_key": "Q118"
+    },
+    {
+      "source_question_id": "Q119",
+      "owner_answer_sha256": "332eff2a27be186020d50fdbc406d034a523aba53c8f30105453c1d9fe775f8a",
+      "source_human_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q119",
+      "source_machine_ref": "machine/decisions.q001-q130.yaml#/decisions/118",
+      "installed_record_ref": "governance/story-construction/decisions.q001-q130.yaml#/decisions/118",
+      "canonical_record_ref": "governance/story-construction/generated/decisions.q001-q130.canonical.json#/decisions/118",
+      "change_set_ref": "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml",
+      "reverse_lookup_key": "Q119"
+    },
+    {
+      "source_question_id": "Q120",
+      "owner_answer_sha256": "70cf26777891f7cb745865f4854308577d3a3b7342d21a6545e11ce3732ef83a",
+      "source_human_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q120",
+      "source_machine_ref": "machine/decisions.q001-q130.yaml#/decisions/119",
+      "installed_record_ref": "governance/story-construction/decisions.q001-q130.yaml#/decisions/119",
+      "canonical_record_ref": "governance/story-construction/generated/decisions.q001-q130.canonical.json#/decisions/119",
+      "change_set_ref": "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml",
+      "reverse_lookup_key": "Q120"
+    },
+    {
+      "source_question_id": "Q121",
+      "owner_answer_sha256": "ffc1e8ed4d164d43e6030da1ea52cad565b2166a47ca97c78b1cfd1961ba0a18",
+      "source_human_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q121",
+      "source_machine_ref": "machine/decisions.q001-q130.yaml#/decisions/120",
+      "installed_record_ref": "governance/story-construction/decisions.q001-q130.yaml#/decisions/120",
+      "canonical_record_ref": "governance/story-construction/generated/decisions.q001-q130.canonical.json#/decisions/120",
+      "change_set_ref": "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml",
+      "reverse_lookup_key": "Q121"
+    },
+    {
+      "source_question_id": "Q122",
+      "owner_answer_sha256": "c442ee486c80d0444ca6e0c21e3574830572216d32a72c8edd7a4eec5923762c",
+      "source_human_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q122",
+      "source_machine_ref": "machine/decisions.q001-q130.yaml#/decisions/121",
+      "installed_record_ref": "governance/story-construction/decisions.q001-q130.yaml#/decisions/121",
+      "canonical_record_ref": "governance/story-construction/generated/decisions.q001-q130.canonical.json#/decisions/121",
+      "change_set_ref": "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml",
+      "reverse_lookup_key": "Q122"
+    },
+    {
+      "source_question_id": "Q123",
+      "owner_answer_sha256": "306273df646958a9e1d898348dc8f5f1dd0dc43fe046a452c9df3d04bf4658c8",
+      "source_human_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q123",
+      "source_machine_ref": "machine/decisions.q001-q130.yaml#/decisions/122",
+      "installed_record_ref": "governance/story-construction/decisions.q001-q130.yaml#/decisions/122",
+      "canonical_record_ref": "governance/story-construction/generated/decisions.q001-q130.canonical.json#/decisions/122",
+      "change_set_ref": "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml",
+      "reverse_lookup_key": "Q123"
+    },
+    {
+      "source_question_id": "Q124",
+      "owner_answer_sha256": "024783d7a9c4b4048ec063214897bcf0d1d5c219cb605481892629bd3504e9dd",
+      "source_human_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q124",
+      "source_machine_ref": "machine/decisions.q001-q130.yaml#/decisions/123",
+      "installed_record_ref": "governance/story-construction/decisions.q001-q130.yaml#/decisions/123",
+      "canonical_record_ref": "governance/story-construction/generated/decisions.q001-q130.canonical.json#/decisions/123",
+      "change_set_ref": "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml",
+      "reverse_lookup_key": "Q124"
+    },
+    {
+      "source_question_id": "Q125",
+      "owner_answer_sha256": "1e6986a3f975c9d710d3b977bb508f5de7b4fe95f182f62df5e1ff5400980500",
+      "source_human_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q125",
+      "source_machine_ref": "machine/decisions.q001-q130.yaml#/decisions/124",
+      "installed_record_ref": "governance/story-construction/decisions.q001-q130.yaml#/decisions/124",
+      "canonical_record_ref": "governance/story-construction/generated/decisions.q001-q130.canonical.json#/decisions/124",
+      "change_set_ref": "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml",
+      "reverse_lookup_key": "Q125"
+    },
+    {
+      "source_question_id": "Q126",
+      "owner_answer_sha256": "79918ec8c913286fe9b74f4566d8c324175f75a13e7f0891ebcd4a07f3393390",
+      "source_human_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q126",
+      "source_machine_ref": "machine/decisions.q001-q130.yaml#/decisions/125",
+      "installed_record_ref": "governance/story-construction/decisions.q001-q130.yaml#/decisions/125",
+      "canonical_record_ref": "governance/story-construction/generated/decisions.q001-q130.canonical.json#/decisions/125",
+      "change_set_ref": "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml",
+      "reverse_lookup_key": "Q126"
+    },
+    {
+      "source_question_id": "Q127",
+      "owner_answer_sha256": "a5fc575861fc6f16849c4ff8d0a51357eee5a1e9a4f26997087445bb8da91582",
+      "source_human_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q127",
+      "source_machine_ref": "machine/decisions.q001-q130.yaml#/decisions/126",
+      "installed_record_ref": "governance/story-construction/decisions.q001-q130.yaml#/decisions/126",
+      "canonical_record_ref": "governance/story-construction/generated/decisions.q001-q130.canonical.json#/decisions/126",
+      "change_set_ref": "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml",
+      "reverse_lookup_key": "Q127"
+    },
+    {
+      "source_question_id": "Q128",
+      "owner_answer_sha256": "7e063a60aa20a5e8944844e0aa2fffc1279af6d63d3016031e69003f7c923ae5",
+      "source_human_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q128",
+      "source_machine_ref": "machine/decisions.q001-q130.yaml#/decisions/127",
+      "installed_record_ref": "governance/story-construction/decisions.q001-q130.yaml#/decisions/127",
+      "canonical_record_ref": "governance/story-construction/generated/decisions.q001-q130.canonical.json#/decisions/127",
+      "change_set_ref": "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml",
+      "reverse_lookup_key": "Q128"
+    },
+    {
+      "source_question_id": "Q129",
+      "owner_answer_sha256": "6c9e4111b6e77ffaa4d57b533a8e2503819024d3cbe8521fd842cb09cc7982a5",
+      "source_human_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q129",
+      "source_machine_ref": "machine/decisions.q001-q130.yaml#/decisions/128",
+      "installed_record_ref": "governance/story-construction/decisions.q001-q130.yaml#/decisions/128",
+      "canonical_record_ref": "governance/story-construction/generated/decisions.q001-q130.canonical.json#/decisions/128",
+      "change_set_ref": "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml",
+      "reverse_lookup_key": "Q129"
+    },
+    {
+      "source_question_id": "Q130",
+      "owner_answer_sha256": "f182d53a6e36f2874d7b12350b4a2f9e1c8be9e8ad2565e856b3578cb15814a0",
+      "source_human_ref": "02_QA_DECISION_REGISTER_Q001_Q130.md#Q130",
+      "source_machine_ref": "machine/decisions.q001-q130.yaml#/decisions/129",
+      "installed_record_ref": "governance/story-construction/decisions.q001-q130.yaml#/decisions/129",
+      "canonical_record_ref": "governance/story-construction/generated/decisions.q001-q130.canonical.json#/decisions/129",
+      "change_set_ref": "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml",
+      "reverse_lookup_key": "Q130"
+    }
+  ]
+}

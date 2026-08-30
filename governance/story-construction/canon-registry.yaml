@@ -1,0 +1,26 @@
+{
+  "schema_version": "rules-residue.story-construction.canon-registry/1.0.0",
+  "registry_kind": "INDEX_GOVERNANCE_VALIDATION_LAYER",
+  "authority_scope": "CONSTRUCTION_GOVERNANCE_ONLY",
+  "r2_canon_precedence": "HIGHER",
+  "write_policy": "NO_REVERSE_WRITE_TO_AUTHORITATIVE_SOURCES",
+  "parallel_authoring_root": false,
+  "authoritative_source_paths": [
+    "authoring/characters/ENTANGLED_CAUSALITY_CONTRACT.md",
+    "authoring/characters/FINAL_BOSS_CONTRACT.md",
+    "authoring/characters/ROLE1_CONTRACT.md",
+    "authoring/equipment/R2_EQUIPMENT_RULE_CONTRACT.md",
+    "authoring/mysteries/R2_CAUSAL_CALIBRATION_GRAPH.md",
+    "authoring/story/00_STORY_BIBLE.md",
+    "authoring/story/01_TRUTH_BIBLE.md",
+    "authoring/story/02_MAIN_MYSTERY_GRAPH.md",
+    "authoring/story/03_RETURN_HOME_ARC.md",
+    "authoring/story/04_REVEAL_POLICY.md",
+    "authoring/world/00_CONTINENT_CONTRACT.md",
+    "authoring/world/regions/R2_REGION_INDEX.md",
+    "governance/r2/decisions.r2.yaml"
+  ],
+  "canonicalization": {"version":"1.0.0","encoding":"UTF-8","unicode":"NFC","key_order":"LEXICAL","number_normalization":"FINITE_JSON_INTEGER_WHEN_EXACT","reference_order":"EXPLICIT_SEMANTIC_OR_LEXICAL","hash":"SHA-256"},
+  "records": [],
+  "change_set_id": "CS-R2-SC-GOV-INSTALL-001"
+}

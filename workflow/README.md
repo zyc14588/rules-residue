@@ -6,8 +6,10 @@
 - `queue/`：待执行任务；
 - `returns/`：执行者返回机器摘要；
 - `examples/`：格式示例，不代表真实 backlog；
-- `task-packet.schema.json`：任务包唯一 Schema。
+- `task-packet.schema.json`：任务包唯一 Schema；1.1 以兼容 minor 扩展表达 `deepseek_harness` / `literary`，仍接受现有 1.0 包。
 
 Task Packet 不取代 Git diff、测试或验收证据，只负责使不同模型之间的职责和输入输出可审计。
 
 R2 概念候选已无损转换为符合本仓库唯一 `task-packet.schema.json` 的 JSON 示例：`examples/r2-script-task-packet.json` 与 `examples/r2-art-task-packet.json`。示例只是未签发输入，不表示 M2 已开始。
+
+M3 示例 `examples/m3-literary-task-packet.json` 与 `examples/m3-visual-order-task-packet.json` 只演示合法角色配对，不是已签发任务，不表示 Story Governance 已激活、M0 已开始或 worker 已被调用。文学/视觉实际执行还必须分别通过 Literary/Visual Order Package 验证；worker 返回和自审不能形成最终 PASS。

@@ -1,0 +1,15 @@
+{
+  "schema_version":"1.0","route_id":"M3-STORY-CONSTRUCTION-IMPLEMENT","mode":"IMPLEMENT","milestone":"M3","batch_id":"M3-B001","capacity_bytes":196608,
+  "documents":[
+    {"path":"AGENTS.md","required_sections":["M1-AGENTS-CONTRACT"],"optional_sections":[],"reason":"Bind repository boundaries."},
+    {"path":"README.md","required_sections":["M1-README-ENTRY"],"optional_sections":[],"reason":"Bind repository authority entry."},
+    {"path":".codex/SESSION_START.md","required_sections":["M1-CODEX-SESSION-START","R2-CODEX-SESSION-START","M3-SCG-CODEX-SESSION-START"],"optional_sections":[],"reason":"Bind progressive disclosure."},
+    {"path":".codex/prompts/m3/STORY-CONSTRUCTION/README.md","required_sections":["M3-CODEX-STORY-CONSTRUCTION-README"],"optional_sections":[],"reason":"Bind M3 role entry."},
+    {"path":".codex/prompts/m3/STORY-CONSTRUCTION/IMPLEMENT.md","required_sections":["M3-CODEX-STORY-CONSTRUCTION-IMPLEMENT"],"optional_sections":[],"reason":"Bind IMPLEMENT role."},
+    {"path":"docs/governance/story-construction/00_AUTHORITY_AND_PRECEDENCE.md","required_sections":["M3-SCG-AUTHORITY-PRECEDENCE"],"optional_sections":[],"reason":"Bind R2 precedence."},
+    {"path":"docs/governance/story-construction/02_CHANGE_SET_AND_LIFECYCLE.md","required_sections":["M3-SCG-CHANGESET-LIFECYCLE"],"optional_sections":[],"reason":"Bind candidate lifecycle."},
+    {"path":"docs/governance/story-construction/06_TEXT_ORDER_SYSTEM.md","required_sections":["M3-SCG-TEXT-ORDER"],"optional_sections":[],"reason":"Bind literary order contract."},
+    {"path":"docs/governance/story-construction/07_VISUAL_ORDER_SYSTEM.md","required_sections":["M3-SCG-VISUAL-ORDER"],"optional_sections":[],"reason":"Bind visual order contract."}
+  ],
+  "forbidden_bulk_reads":["docs/**","authoring/**","governance/**","schemas/**","workflow/**","game-package/**","*","git_history_all","prior_chat_transcripts"]
+}

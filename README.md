@@ -7,7 +7,7 @@
 
 ## 当前状态
 
-- **项目阶段**：M1 基线 + R2 权威已安装；M2 尚未实施
+- **项目阶段**：M1 基线 + R2 权威已安装；M2-B001 已验收但后续仍受阻；M3 Story Construction Governance 仅有待 Owner 哈希批准的安装候选
 - **版本**：`0.1.0-dev.1`
 - **发行通道**：仅内部开发与集成验证
 - **机器标识**：`org.trpgplatform.rules-residue`
@@ -63,16 +63,20 @@ TRPG_PLATFORM 拥有并维护：
 
 ## 混合开发模型
 
-Game Package 采用三角色混合开发：
+仓库采用四角色施工平面与独立 Owner 批准平面：
 
 - **Codex**：任务规划、拆解、依赖排序、代码/数据变更规划、最终验证与验收；
 - **OpenCode**：领取由 Codex 签发的 `script` Task Packet，负责 Lua/游戏脚本编码及脚本侧自测；
-- **Grok**：领取由 Codex 签发的 `art` Task Packet，负责原创美术素材创作及素材交付信息；
-- **Codex 最终验收**：任何 OpenCode/Grok 产物都必须重新进入 Codex 验收，不得直接成为受信任运行输入。
+- **DeepSeek Harness**：只领取 `owner=deepseek_harness`、`task_type=literary` 的已验证文学订单并返回文学候选稿；
+- **Grok**：只领取由 Codex 签发且通过验证的 Visual Order Package，负责原创美术候选物及素材交付信息；
+- **Owner**：独占 T1、T2、C1 Reveal 与候选精确哈希批准；
+- **Codex 最终验收**：任何 worker 产物都必须重新进入独立验收，不得直接成为受信任运行输入，worker 自审不构成 PASS。
 
 权威合同见 `docs/authority/12_HYBRID_DEVELOPMENT_WORKFLOW.md`；机器任务格式见 `workflow/task-packet.schema.json`。
 
 R2 的 Codex / OpenCode / Grok / portable-agent 渐进式披露合同分别从 `.codex/prompts/r2/README.md`、`.opencode/r2/README.md`、`.grok/r2/README.md` 和 `docs/operations/agents/r2/portable-agent/README.md` 发现。
+
+M3 Story Construction 的候选入口位于 `.codex/prompts/m3/STORY-CONSTRUCTION/README.md`；其治理作用域仅为 `CONSTRUCTION_GOVERNANCE_ONLY`，且在 Owner 批准候选精确 commit/tree 与治理哈希前不处于 ACTIVE 状态。
 
 ## 最快使用方式
 
@@ -106,7 +110,7 @@ docs/design/          尚处于草案状态的详细游戏设计
 docs/architecture/    运行流、状态投影、安全和 Creator 兼容
 docs/operations/      施工、素材、打包与发行流程
 governance/           机器决策、范围、发布门禁和追溯矩阵
-workflow/             Codex → OpenCode/Grok → Codex 的 Task Packet 与交付队列
+workflow/             Codex → worker → Codex 的 Task Packet、订单示例与交付队列
 authoring/            剧情创作源、真相图、世界对象模板与美术 brief；不进入运行包
 game-package/         平台可装载的标准游戏包源码
 tools/                零依赖验证、锁文件和确定性构建工具

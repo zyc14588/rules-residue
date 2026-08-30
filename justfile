@@ -22,6 +22,9 @@ codex-check:
 r2-validate:
     python3 tools/validate_r2_install.py
 
+story-governance-validate:
+    python3 tools/validate_story_construction_governance.py
+
 lock:
     python3 tools/update_lock.py
 

@@ -1,0 +1,130 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://rules-residue.invalid/schemas/story-construction/reveal-contract-v1.schema.json",
+  "title": "Story Construction Reveal Contract",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "reveal_id",
+    "family_id",
+    "authority_class",
+    "canon_refs",
+    "truth_refs",
+    "channels",
+    "eligibility",
+    "timing",
+    "confidence",
+    "ambiguity",
+    "forbidden_disclosures",
+    "accessibility_equivalent",
+    "owner_c1_approval"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "1.0.0"
+    },
+    "reveal_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "family_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "authority_class": {
+      "const": "C1"
+    },
+    "canon_refs": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "uniqueItems": true
+    },
+    "truth_refs": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "uniqueItems": true
+    },
+    "channels": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "enum": [
+          "TEXT",
+          "VISUAL",
+          "SHARED_INFORMATION",
+          "REPEAT_LOOP",
+          "ACCESSIBILITY_EQUIVALENT"
+        ]
+      },
+      "uniqueItems": true
+    },
+    "eligibility": {
+      "type": "string",
+      "minLength": 1
+    },
+    "timing": {
+      "type": "string",
+      "minLength": 1
+    },
+    "confidence": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "ambiguity": {
+      "type": "string",
+      "minLength": 1
+    },
+    "forbidden_disclosures": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "uniqueItems": true
+    },
+    "accessibility_equivalent": {
+      "type": "string",
+      "minLength": 1
+    },
+    "owner_c1_approval": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status",
+        "approval_ref",
+        "approved_hash"
+      ],
+      "properties": {
+        "status": {
+          "enum": [
+            "PENDING",
+            "APPROVED",
+            "REJECTED",
+            "REVOKED"
+          ]
+        },
+        "approval_ref": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "approved_hash": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^[0-9a-f]{64}$"
+        }
+      }
+    }
+  }
+}

@@ -2,7 +2,9 @@
 
 > 用途：对一个已经明确目标的施工批次进行任务规划、跨模型委派、集成、构建与本地验证。
 > 
-> 角色约束：Codex 是规划者、规格/数据整合者和最终验证协调者；Lua/游戏脚本默认交由 OpenCode；美术默认交由 Grok。不得让执行者批准自身产物。
+> 角色约束：Codex 是规划者、规格/数据整合者和最终验证协调者；Lua/游戏脚本默认交由 OpenCode；文学正文默认交由 DeepSeek Harness；美术默认交由 Grok。不得让执行者批准自身产物。
+
+> M3 Story Construction：所有文学与视觉工作必须从 `.codex/prompts/m3/STORY-CONSTRUCTION/README.md` 进入，并通过对应结构化订单和输入哈希门禁。
 
 ---
 
@@ -59,12 +61,13 @@ python3 tools/run_acceptance.py
 - 存档兼容性影响；
 - 可见性和 GM-only 信息影响；
 - 测试与验收向量；
-- 是否需要 OpenCode / Grok。
+- 是否需要 OpenCode / DeepSeek Harness / Grok。
 
 严格路由：
 
 - Lua、游戏脚本、脚本侧 fixture/test → `owner=opencode`、`task_type=script`；
-- 原创角色、环境、物件、地图、UI 等美术 → `owner=grok`、`task_type=art`；
+- 文学正文 → `owner=deepseek_harness`、`task_type=literary`，且必须携带经过验证的文学订单；
+- 原创角色、环境、物件、地图、UI 等美术 → `owner=grok`、`task_type=art`，且必须携带经过验证的视觉订单；
 - 规格、Schema、内容数据结构、索引、Task Packet、集成和验收 → Codex；
 - 不得把同一文件交给两个并行任务；
 - 不得为了“充分利用模型”拆分没有独立输入输出边界的小任务。
@@ -79,8 +82,9 @@ python3 tools/run_acceptance.py
 2. Schema 或数据契约；
 3. fixture / acceptance vector；
 4. OpenCode 脚本任务；
-5. Grok 美术任务；
-6. Codex 集成。
+5. DeepSeek Harness 文学任务；
+6. Grok 美术任务；
+7. Codex 集成。
 
 不可违反：
 
@@ -93,7 +97,7 @@ python3 tools/run_acceptance.py
 - `game-package/` 是可执行输入；运行内容变化必须有 Schema/测试/锁文件同步；
 - 不加入第三方受保护规则、设定、模组文本、商标或素材。
 
-## Phase 3 — 接收 OpenCode / Grok 返回物
+## Phase 3 — 接收 OpenCode / DeepSeek Harness / Grok 返回物
 
 对于每个 `RETURNED` 任务：
 
@@ -105,6 +109,10 @@ python3 tools/run_acceptance.py
 - 是否擅改规则语义、Schema 或治理文件；
 - 是否引入随机、网络、文件系统、时钟、环境变量、进程、动态库或 debug API；
 - 自测结果只作为线索，Codex 必须重跑。
+
+### DeepSeek Harness
+
+独立检查文学订单、权威输入哈希、双层审读（T1/T2）与约束审读（C1）证据；DeepSeek Harness 只能返回文学候选稿，不能写权威、Schema、治理或运行时路径，也不能批准自身产物。
 
 ### Grok
 
@@ -148,7 +156,7 @@ python3 tools/run_acceptance.py
 
 若本次涉及内容架构或 Module：额外确认 manifest 注册、Schema、引用、visibility、关键线索 fallback、规则域引用和自动验证不存在盲区。
 
-若本次涉及剧情：使用 `.codex/STORY_UPDATE_PROMPT.md` 的传播规则进行交叉检查。
+若本次涉及剧情：必须使用 `.codex/prompts/m3/STORY-CONSTRUCTION/README.md` 的 M3 Story Construction 路由进行交叉检查，must not invoke `.codex/STORY_UPDATE_PROMPT.md`；旧文件仅是被 superseded 的历史证据。
 
 ## Phase 5 — 最终报告
 
@@ -170,6 +178,7 @@ python3 tools/run_acceptance.py
 ### Task graph
 - Codex：
 - OpenCode：
+- DeepSeek Harness：
 - Grok：
 
 ### Changed files

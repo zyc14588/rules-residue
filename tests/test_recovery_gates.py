@@ -178,6 +178,14 @@ class OpenCodeTaskPacketRecoveryGateTests(unittest.TestCase):
         )
         self.assert_refused(errors, 'task_type must equal "script"')
 
+    def test_literary_task_and_authoring_target_remain_refused(self) -> None:
+        packet = copy.deepcopy(self.packet)
+        packet["task_type"] = "literary"
+        packet["allowed_paths"] = ["authoring/story/draft.md"]
+        errors = validate_opencode_task_packet(packet, ["authoring/story/draft.md"])
+        self.assert_refused(errors, 'task_type must equal "script"')
+        self.assertTrue(any("forbidden" in error or "positive authority" in error for error in errors), errors)
+
     def test_target_outside_allowed_paths_is_refused(self) -> None:
         errors = validate_opencode_task_packet(
             self.packet,

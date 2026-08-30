@@ -44,9 +44,25 @@ ATTEMPT_001_TREE = "411565bc632e24806f67e39d9c6100d0cdb321f9"
 
 RECOVERY_CANDIDATE_COMMIT = "f5964d4c0b02e5969747a628dae64a02f87b8417"
 RECOVERY_CANDIDATE_TREE = "75ec646592260f764fa1862b20c164e8ecb46f1d"
+LIFECYCLE_CLOSEOUT_COMMIT = "e90a717d3863e4fb0e5e1a0fcc01661f24d2157d"
+LIFECYCLE_CLOSEOUT_TREE = "7a1ce74ad0b82c7c288b94c47c966028e916137d"
+
+RECOVERY_CANDIDATE = "RECOVERY_CANDIDATE"
+LIFECYCLE_CLOSEOUT_ANCHOR = "LIFECYCLE_CLOSEOUT_ANCHOR"
+POST_ACCEPTED_NON_M2_DESCENDANT = "POST_ACCEPTED_NON_M2_DESCENDANT"
+
+# Compatibility names are retained because the repository-level bridge predates
+# the three-way historical classification. They dispatch to the strict modes
+# above; neither name is a bypass.
 CURRENT_RECOVERY_CANDIDATE = "CURRENT_RECOVERY_CANDIDATE"
 HISTORICAL_ACCEPTED_RECOVERY = "HISTORICAL_ACCEPTED_RECOVERY"
-VALIDATION_MODES = {CURRENT_RECOVERY_CANDIDATE, HISTORICAL_ACCEPTED_RECOVERY}
+VALIDATION_MODES = {
+    RECOVERY_CANDIDATE,
+    LIFECYCLE_CLOSEOUT_ANCHOR,
+    POST_ACCEPTED_NON_M2_DESCENDANT,
+    CURRENT_RECOVERY_CANDIDATE,
+    HISTORICAL_ACCEPTED_RECOVERY,
+}
 
 SCHEMA_PATH_TEXT = "docs/implementation/m2/probes/m2-b001-recovery-closeout-v1.schema.json"
 CLOSEOUT_DIR = "reports/m2/probes/closeouts/m2-b001-recovery-closeout-001"
@@ -114,6 +130,28 @@ CANDIDATE_B_ALLOWED_CHANGED_PATHS = [
     BRIDGE_TEST_PATH_TEXT,
 ]
 
+LIFECYCLE_STATE_PATHS = [
+    ".codex/state/MILESTONE_PLAN.yaml",
+    ".codex/plans/m2-vertical-slice/M2_VERTICAL_SLICE_PLAN.md",
+    ".codex/plans/m2-vertical-slice/batches.json",
+    ".codex/plans/m2-vertical-slice/capability-probes.json",
+    ".codex/plans/m2-vertical-slice/controls.json",
+    ".codex/plans/m2-vertical-slice/READING_MAP_REQUESTS.md",
+]
+
+# These paths are preservation evidence, not a scope allowlist for later
+# batches. The two recovery validator paths authorized by the Owner amendment
+# are intentionally absent; their historical A2 bytes are still read from the
+# fixed A2 object.
+DESCENDANT_PROTECTED_PATHS = [
+    *LIFECYCLE_STATE_PATHS,
+    "tests/test_m2_b001_recovery_closeout.py",
+    "tests/test_m2_plan.py",
+    PLAN_VALIDATOR_PATH_TEXT,
+    "docs/implementation/m2/probes",
+    "reports/m2/probes",
+]
+
 EVOLVABLE_HISTORICAL_ARTIFACT_PATHS = {
     VALIDATOR_PATH_TEXT,
     PROBE_TEST_PATH_TEXT,
@@ -129,6 +167,10 @@ CURRENTLY_IMMUTABLE_RECOVERY_ARTIFACT_PATHS = [
 ]
 
 BLOCKING_IDS = ["R2-INT-011", "R2-INT-012", "DEFER-R2-C14-001"]
+NEXT_ALLOWED_ACTION = (
+    "PLAN_REMAINING_M2_B002_BLOCKERS_"
+    "R2_INT_011_R2_INT_012_DEFER_R2_C14_001"
+)
 
 EXPECTED_SOURCE_BINDING = {"commit": SOURCE_COMMIT, "tree": SOURCE_TREE}
 EXPECTED_ROUTE_BINDING = {
@@ -287,6 +329,42 @@ def load_json(path: Path) -> dict[str, Any]:
         raise RecoveryValidationError(f"cannot load JSON evidence {path}: {exc}") from exc
 
 
+ArtifactReader = Callable[[str], bytes]
+
+
+def _filesystem_reader(root: Path) -> ArtifactReader:
+    return lambda path_text: (root / path_text).read_bytes()
+
+
+def _artifact_bytes(
+    root: Path,
+    path_text: str,
+    artifact_reader: ArtifactReader | None = None,
+) -> bytes:
+    reader = artifact_reader or _filesystem_reader(root)
+    try:
+        return reader(path_text)
+    except (OSError, UnicodeError) as exc:
+        raise RecoveryValidationError(
+            f"cannot read validation artifact {path_text}: {exc}"
+        ) from exc
+
+
+def _artifact_json(
+    root: Path,
+    path_text: str,
+    artifact_reader: ArtifactReader | None = None,
+) -> dict[str, Any]:
+    raw = _artifact_bytes(root, path_text, artifact_reader)
+    try:
+        text = raw.decode("utf-8")
+    except UnicodeDecodeError as exc:
+        raise RecoveryValidationError(
+            f"cannot decode validation artifact {path_text}: {exc}"
+        ) from exc
+    return load_json_text(text, path_text)
+
+
 def sha256_path(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
@@ -302,10 +380,22 @@ def _schema_objects_are_closed(value: Any, context: str = "schema") -> None:
             _schema_objects_are_closed(child, f"{context}[{index}]")
 
 
-def validate_schema(root: Path, schema: dict[str, Any]) -> None:
+def validate_schema(
+    root: Path,
+    schema: dict[str, Any],
+    *,
+    artifact_reader: ArtifactReader | None = None,
+) -> None:
     path = root / SCHEMA_PATH_TEXT
-    require(path.is_file(), f"recovery Schema missing: {SCHEMA_PATH_TEXT}")
-    require(sha256_path(path) == SCHEMA_SHA256, "recovery Schema bytes changed")
+    if artifact_reader is None:
+        require(path.is_file(), f"recovery Schema missing: {SCHEMA_PATH_TEXT}")
+    require(
+        hashlib.sha256(
+            _artifact_bytes(root, SCHEMA_PATH_TEXT, artifact_reader)
+        ).hexdigest()
+        == SCHEMA_SHA256,
+        "recovery Schema bytes changed",
+    )
     require(schema.get("$schema") == "https://json-schema.org/draft/2020-12/schema", "recovery Schema draft changed")
     require(schema.get("$id") == "https://rules-residue.invalid/schemas/m2-b001-recovery-closeout-v1.schema.json", "recovery Schema identity changed")
     require(schema.get("additionalProperties") is False, "recovery Schema permits unknown top-level fields")
@@ -353,7 +443,12 @@ def _reject_manifest_digest_cycle(value: Any, context: str = "evidence") -> None
             _reject_manifest_digest_cycle(child, f"{context}[{index}]")
 
 
-def validate_evidence(root: Path, data: dict[str, Any]) -> None:
+def validate_evidence(
+    root: Path,
+    data: dict[str, Any],
+    *,
+    artifact_reader: ArtifactReader | None = None,
+) -> None:
     _reject_manifest_digest_cycle(data)
     require_exact_keys(
         data,
@@ -456,27 +551,56 @@ def validate_evidence(root: Path, data: dict[str, Any]) -> None:
         "evidence_manifest": MANIFEST_PATH_TEXT,
         "external_evidence_index_v2": INDEX_V2_PATH_TEXT,
     }, "recovery evidence links changed")
-    require(sha256_path(root / EVIDENCE_PATH_TEXT) == EVIDENCE_SHA256, "recovery evidence bytes changed")
+    require(
+        hashlib.sha256(
+            _artifact_bytes(root, EVIDENCE_PATH_TEXT, artifact_reader)
+        ).hexdigest()
+        == EVIDENCE_SHA256,
+        "recovery evidence bytes changed",
+    )
 
 
-def validate_immutable_predecessors(root: Path) -> None:
+def validate_immutable_predecessors(
+    root: Path,
+    *,
+    artifact_reader: ArtifactReader | None = None,
+) -> None:
     for path_text, digest in IMMUTABLE_HASHES.items():
         path = root / path_text
-        require(path.is_file(), f"immutable predecessor missing: {path_text}")
-        require(sha256_path(path) == digest, f"immutable predecessor evidence hash drift: {path_text}")
+        if artifact_reader is None:
+            require(path.is_file(), f"immutable predecessor missing: {path_text}")
+        require(
+            hashlib.sha256(
+                _artifact_bytes(root, path_text, artifact_reader)
+            ).hexdigest()
+            == digest,
+            f"immutable predecessor evidence hash drift: {path_text}",
+        )
 
-    probe_results = load_json(root / "reports/m2/probes/probe-results.json")
+    probe_results = _artifact_json(
+        root,
+        "reports/m2/probes/probe-results.json",
+        artifact_reader,
+    )
     probe = next((item for item in probe_results.get("probes", []) if item.get("probe_id") == "R2-INT-010"), None)
     require(isinstance(probe, dict), "historical R2-INT-010 record missing")
     require(probe.get("execution_status") == "FAIL", "historical R2-INT-010 FAIL was rewritten")
 
-    transition = load_json(root / "reports/m2/probes/remediations/r2-int-010-post-platform-transition/evidence.json")
+    transition = _artifact_json(
+        root,
+        "reports/m2/probes/remediations/r2-int-010-post-platform-transition/evidence.json",
+        artifact_reader,
+    )
     require(transition.get("previous_status") == "FAIL", "post-platform transition lost historical FAIL")
     require(transition.get("new_status") == "RESOLVED_ADAPTER", "post-platform effective transition changed")
     require(transition.get("execution_authority", {}).get("sha256") == EXACT_PAIR_SHA256, "exact-pair verdict digest changed")
     require(transition.get("readiness_projection", {}).get("blocking_ids") == BLOCKING_IDS, "post-platform blockers changed")
 
-    early = load_json(root / "reports/m2/probes/remediations/r2-int-010-rem-001/evidence.json")
+    early = _artifact_json(
+        root,
+        "reports/m2/probes/remediations/r2-int-010-rem-001/evidence.json",
+        artifact_reader,
+    )
     require(early.get("route_binding", {}).get("source_commit") == "c6a840b10db46dc475cd9af9e6a1a13f1e68abd4", "early provisional identity changed")
     require(early.get("antecedents", {}).get("platform_change_proposal", {}).get("disposition") == "ANTECEDENT_ONLY_NOT_EXECUTION_EVIDENCE", "proposal was promoted to execution evidence")
 
@@ -534,7 +658,12 @@ def validate_execution_records(data: dict[str, Any]) -> None:
             require(isinstance(record[field], str) and HEX_64.fullmatch(record[field]) is not None, f"{record['command_id']}.{field} is not SHA-256")
 
 
-def validate_index(root: Path, data: dict[str, Any]) -> None:
+def validate_index(
+    root: Path,
+    data: dict[str, Any],
+    *,
+    artifact_reader: ArtifactReader | None = None,
+) -> None:
     _reject_manifest_digest_cycle(data, "index v2")
     require_exact_keys(
         data,
@@ -570,7 +699,13 @@ def validate_index(root: Path, data: dict[str, Any]) -> None:
         "last_evidence_ordinal": 1,
         "disposition": "IMMUTABLE_ORDINAL_PREDECESSOR",
     }, "ordinal predecessor hash or identity changed")
-    require(sha256_path(root / INDEX_V1_PATH_TEXT) == INDEX_V1_SHA256, "v1 external evidence index was rewritten")
+    require(
+        hashlib.sha256(
+            _artifact_bytes(root, INDEX_V1_PATH_TEXT, artifact_reader)
+        ).hexdigest()
+        == INDEX_V1_SHA256,
+        "v1 external evidence index was rewritten",
+    )
     require(data["formal_batch"] == {
         "status": "ACCEPTED_UNCHANGED",
         "commit": FORMAL_COMMIT,
@@ -785,24 +920,37 @@ def validate_historical_anchor(root: Path) -> None:
     )
 
 
-def read_historical_blob(root: Path, path_text: str) -> bytes:
+def read_git_blob(root: Path, commit: str, path_text: str) -> bytes:
     path = PurePosixPath(path_text)
     require(
         not path.is_absolute() and ".." not in path.parts,
         f"invalid historical manifest path: {path_text}",
     )
-    # `git show <commit>:<path>` is the sole source for historical bytes. There
-    # is intentionally no filesystem or working-tree fallback.
+    require(
+        re.fullmatch(r"[0-9a-f]{40}", commit) is not None,
+        "historical blob commit must be full SHA-1",
+    )
+    # `git show <commit>:<path>` is the sole source for historical bytes.
+    # There is intentionally no filesystem or working-tree fallback.
     return _git_bytes(
         root,
-        ["show", f"{RECOVERY_CANDIDATE_COMMIT}:{path.as_posix()}"],
+        ["show", f"{commit}:{path.as_posix()}"],
     )
+
+
+def read_historical_blob(root: Path, path_text: str) -> bytes:
+    return read_git_blob(root, RECOVERY_CANDIDATE_COMMIT, path_text)
 
 
 def validate_historical_manifest_entries(
     root: Path,
     manifest: dict[str, Any],
+    *,
+    artifact_reader: ArtifactReader | None = None,
 ) -> None:
+    reader = artifact_reader or (
+        lambda path_text: read_historical_blob(root, path_text)
+    )
     seen: set[str] = set()
     for group in ("artifacts", "immutable_predecessors"):
         entries = manifest.get(group)
@@ -815,9 +963,7 @@ def validate_historical_manifest_entries(
             require(isinstance(digest, str) and HEX_64.fullmatch(digest) is not None, f"recovery manifest {group}[{index}].sha256 is invalid")
             require(path_text not in seen, f"recovery manifest tracked path is duplicated: {path_text}")
             seen.add(path_text)
-            actual = hashlib.sha256(
-                read_historical_blob(root, path_text)
-            ).hexdigest()
+            actual = hashlib.sha256(reader(path_text)).hexdigest()
             require(actual == digest, f"historical recovery manifest hash mismatch: {path_text}")
 
 
@@ -878,6 +1024,318 @@ def validate_candidate_b_changed_paths(
         require(not missing, f"Candidate B approved lifecycle path missing from diff: {missing}")
 
 
+def _validate_lifecycle_anchor_structure(
+    *,
+    parent: str,
+    commit_count: int,
+    changed_paths: Iterable[str],
+) -> None:
+    require(
+        parent == RECOVERY_CANDIDATE_COMMIT,
+        "accepted lifecycle anchor parent is not fixed Candidate A2",
+    )
+    require(commit_count == 1, "A2 to lifecycle anchor must be exactly one commit")
+    validate_candidate_b_changed_paths(changed_paths)
+
+
+def _git_object_reader(root: Path, commit: str) -> ArtifactReader:
+    return lambda path_text: read_git_blob(root, commit, path_text)
+
+
+def validate_a2_historical_recovery(root: Path) -> None:
+    """Revalidate A2 exclusively from its fixed Git object graph."""
+
+    validate_historical_anchor(root)
+    reader = _git_object_reader(root, RECOVERY_CANDIDATE_COMMIT)
+    schema = _artifact_json(root, SCHEMA_PATH_TEXT, reader)
+    evidence = _artifact_json(root, EVIDENCE_PATH_TEXT, reader)
+    execution = _artifact_json(root, EXECUTION_PATH_TEXT, reader)
+    index = _artifact_json(root, INDEX_V2_PATH_TEXT, reader)
+    manifest = _artifact_json(root, MANIFEST_PATH_TEXT, reader)
+
+    validate_schema(root, schema, artifact_reader=reader)
+    validate_evidence(root, evidence, artifact_reader=reader)
+    validate_immutable_predecessors(root, artifact_reader=reader)
+    validate_execution_records(execution)
+    validate_index(root, index, artifact_reader=reader)
+    validate_manifest(root, manifest, artifact_reader=reader)
+    validate_historical_manifest_entries(
+        root,
+        manifest,
+        artifact_reader=reader,
+    )
+
+
+def _require_fields(
+    value: Any,
+    expected: dict[str, Any],
+    context: str,
+) -> None:
+    require(isinstance(value, dict), f"{context} must be an object")
+    for key, expected_value in expected.items():
+        require(
+            value.get(key) == expected_value,
+            f"{context}.{key} preservation drift",
+        )
+
+
+def validate_lifecycle_preservation_state(
+    root: Path,
+    *,
+    artifact_reader: ArtifactReader,
+) -> None:
+    """Validate the accepted M2 projection without trusting summaries."""
+
+    milestone = _artifact_json(
+        root,
+        ".codex/state/MILESTONE_PLAN.yaml",
+        artifact_reader,
+    )
+    require(milestone.get("state") == "ACCEPTED", "M2 plan state is not ACCEPTED")
+    active_plan = milestone.get("active_plan")
+    _require_fields(
+        active_plan,
+        {
+            "batch_id": "M2-B001",
+            "state": "ACCEPTED",
+            "implementation_state": "ACCEPTED",
+            "next_allowed_action": NEXT_ALLOWED_ACTION,
+        },
+        "M2 milestone active_plan",
+    )
+    _require_fields(
+        active_plan.get("lifecycle_projection") if isinstance(active_plan, dict) else None,
+        {
+            "state": "ACCEPTED_WITH_DOWNSTREAM_BLOCKERS",
+            "accepted_candidate": {
+                "commit": RECOVERY_CANDIDATE_COMMIT,
+                "tree": RECOVERY_CANDIDATE_TREE,
+            },
+            "independent_acceptance": "PASS",
+            "historical_R2-INT-010": "FAIL",
+            "effective_R2-INT-010": "RESOLVED_ADAPTER",
+            "formal_B002": False,
+            "formal_B009": False,
+            "aggregate_M2_pass": False,
+            "aggregate_external_capability_pass": False,
+            "M2-B002": {
+                "state": "PLANNED",
+                "implementation_state": "NOT_STARTED",
+                "ready": "NO",
+            },
+            "blocking_ids": BLOCKING_IDS,
+            "global_active_WIP": 0,
+        },
+        "M2 milestone lifecycle_projection",
+    )
+
+    batches = _artifact_json(
+        root,
+        ".codex/plans/m2-vertical-slice/batches.json",
+        artifact_reader,
+    )
+    _require_fields(
+        batches.get("lifecycle_projection"),
+        {
+            "state": "ACCEPTED_WITH_DOWNSTREAM_BLOCKERS",
+            "M2-B001": "ACCEPTED",
+            "M2-B002": "PLANNED",
+            "M2-B002_implementation": "NOT_STARTED",
+            "M2-B002_READY": "NO",
+            "formal_B002": False,
+            "formal_B009": False,
+            "aggregate_M2_pass": False,
+            "aggregate_external_capability_pass": False,
+            "effective_R2-INT-010": "RESOLVED_ADAPTER",
+            "blocking_ids": BLOCKING_IDS,
+            "active_WIP": 0,
+            "next_allowed_action": NEXT_ALLOWED_ACTION,
+        },
+        "M2 batches lifecycle_projection",
+    )
+    batch_items = batches.get("batches")
+    require(isinstance(batch_items, list), "M2 batches registry is not an array")
+    b001 = next(
+        (item for item in batch_items if isinstance(item, dict) and item.get("id") == "M2-B001"),
+        None,
+    )
+    b002 = next(
+        (item for item in batch_items if isinstance(item, dict) and item.get("id") == "M2-B002"),
+        None,
+    )
+    _require_fields(
+        b001,
+        {
+            "state": "FROZEN",
+            "lifecycle_state": "ACCEPTED",
+            "accepted_candidate": {
+                "commit": RECOVERY_CANDIDATE_COMMIT,
+                "tree": RECOVERY_CANDIDATE_TREE,
+            },
+        },
+        "M2-B001 batch",
+    )
+    _require_fields(
+        b002,
+        {
+            "state": "PLANNED",
+            "implementation_state": "NOT_STARTED",
+            "ready": "NO",
+            "blocking_ids": BLOCKING_IDS,
+        },
+        "M2-B002 batch",
+    )
+
+    controls = _artifact_json(
+        root,
+        ".codex/plans/m2-vertical-slice/controls.json",
+        artifact_reader,
+    )
+    _require_fields(
+        controls.get("lifecycle_projection"),
+        {
+            "state": "ACCEPTED_WITH_DOWNSTREAM_BLOCKERS",
+            "accepted_batches": ["M2-B001"],
+            "M2-B002": "PLANNED",
+            "M2-B002_implementation": "NOT_STARTED",
+            "M2-B002_READY": "NO",
+            "historical_R2-INT-010": "FAIL",
+            "effective_R2-INT-010": "RESOLVED_ADAPTER",
+            "formal_B002": False,
+            "formal_B009": False,
+            "aggregate_M2_pass": False,
+            "aggregate_external_capability_pass": False,
+            "blocking_ids": BLOCKING_IDS,
+            "active_WIP": 0,
+            "next_allowed_action": NEXT_ALLOWED_ACTION,
+        },
+        "M2 controls lifecycle_projection",
+    )
+
+    probes = _artifact_json(
+        root,
+        ".codex/plans/m2-vertical-slice/capability-probes.json",
+        artifact_reader,
+    )
+    _require_fields(
+        probes.get("lifecycle_projection"),
+        {
+            "M2-B001": "ACCEPTED",
+            "M2-B002": "PLANNED",
+            "M2-B002_implementation": "NOT_STARTED",
+            "M2-B002_READY": "NO",
+            "historical_R2-INT-010": "FAIL",
+            "effective_R2-INT-010": "RESOLVED_ADAPTER",
+            "formal_B002": False,
+            "formal_B009": False,
+            "aggregate_M2_pass": False,
+            "aggregate_external_capability_pass": False,
+            "blocking_ids": BLOCKING_IDS,
+            "next_allowed_action": NEXT_ALLOWED_ACTION,
+        },
+        "M2 capability lifecycle_projection",
+    )
+
+
+def validate_lifecycle_closeout_anchor(root: Path) -> None:
+    """Validate the accepted lifecycle boundary only at A2 -> e90."""
+
+    validate_a2_historical_recovery(root)
+    _validate_historical_anchor_identity(
+        root,
+        LIFECYCLE_CLOSEOUT_COMMIT,
+        LIFECYCLE_CLOSEOUT_TREE,
+    )
+    parent = _git(root, ["rev-parse", f"{LIFECYCLE_CLOSEOUT_COMMIT}^"])
+    commit_count_text = _git(
+        root,
+        [
+            "rev-list",
+            "--count",
+            f"{RECOVERY_CANDIDATE_COMMIT}..{LIFECYCLE_CLOSEOUT_COMMIT}",
+        ],
+    )
+    require(commit_count_text.isdigit(), "lifecycle commit count is not numeric")
+    changed_paths = _git(
+        root,
+        [
+            "diff",
+            "--name-only",
+            RECOVERY_CANDIDATE_COMMIT,
+            LIFECYCLE_CLOSEOUT_COMMIT,
+            "--",
+        ],
+    ).splitlines()
+    _validate_lifecycle_anchor_structure(
+        parent=parent,
+        commit_count=int(commit_count_text),
+        changed_paths=changed_paths,
+    )
+    validate_lifecycle_preservation_state(
+        root,
+        artifact_reader=_git_object_reader(root, LIFECYCLE_CLOSEOUT_COMMIT),
+    )
+
+
+def _is_ancestor(root: Path, ancestor: str, descendant: str) -> bool:
+    result = subprocess.run(
+        ["git", "merge-base", "--is-ancestor", ancestor, descendant],
+        cwd=root,
+        capture_output=True,
+        text=True,
+        check=False,
+        env={**os.environ, "GIT_NO_REPLACE_OBJECTS": "1"},
+    )
+    return result.returncode == 0
+
+
+def collect_descendant_protected_changes(
+    root: Path,
+    target: str,
+    *,
+    include_worktree: bool,
+) -> list[str]:
+    changes = set(
+        _git(
+            root,
+            [
+                "diff",
+                "--name-only",
+                LIFECYCLE_CLOSEOUT_COMMIT,
+                target,
+                "--",
+                *DESCENDANT_PROTECTED_PATHS,
+            ],
+        ).splitlines()
+    )
+    if include_worktree:
+        changes.update(
+            _git(
+                root,
+                [
+                    "diff",
+                    "--name-only",
+                    target,
+                    "--",
+                    *DESCENDANT_PROTECTED_PATHS,
+                ],
+            ).splitlines()
+        )
+        changes.update(
+            _git(
+                root,
+                [
+                    "ls-files",
+                    "--others",
+                    "--exclude-standard",
+                    "--",
+                    *DESCENDANT_PROTECTED_PATHS,
+                ],
+            ).splitlines()
+        )
+    return sorted(path for path in changes if path)
+
+
 def validate_candidate_checkout(
     root: Path,
     candidate: str,
@@ -888,15 +1346,64 @@ def validate_candidate_checkout(
     require(re.fullmatch(r"[0-9a-f]{40}", candidate_tree) is not None, "candidate tree must be full SHA-1")
     require(_git(root, ["rev-parse", "HEAD"]) == candidate, "candidate validation wrong commit")
     require(_git(root, ["rev-parse", "HEAD^{tree}"]) == candidate_tree, "candidate validation wrong tree")
-    ancestry = subprocess.run(
-        ["git", "merge-base", "--is-ancestor", source_commit, candidate],
-        cwd=root,
-        capture_output=True,
-        text=True,
-        check=False,
+    require(
+        _is_ancestor(root, source_commit, candidate),
+        "candidate does not descend from fixed source",
     )
-    require(ancestry.returncode == 0, "candidate does not descend from fixed source")
     require(_git(root, ["status", "--porcelain", "--untracked-files=all"]) == "", "dirty candidate worktree")
+
+
+def validate_post_accepted_descendant(
+    root: Path,
+    candidate: str | None = None,
+    candidate_tree: str | None = None,
+) -> None:
+    require(
+        (candidate is None) == (candidate_tree is None),
+        "candidate commit and tree must be supplied together",
+    )
+    include_worktree = candidate is None
+    if candidate is not None and candidate_tree is not None:
+        validate_candidate_checkout(
+            root,
+            candidate,
+            candidate_tree,
+            source_commit=LIFECYCLE_CLOSEOUT_COMMIT,
+        )
+        target = candidate
+        reader = _git_object_reader(root, target)
+    else:
+        target = _git(root, ["rev-parse", "HEAD"])
+        target_tree = _git(root, ["rev-parse", "HEAD^{tree}"])
+        require(
+            re.fullmatch(r"[0-9a-f]{40}", target) is not None,
+            "current descendant commit must be full SHA-1",
+        )
+        require(
+            re.fullmatch(r"[0-9a-f]{40}", target_tree) is not None,
+            "current descendant tree must be full SHA-1",
+        )
+        reader = _filesystem_reader(root)
+
+    require(
+        _is_ancestor(root, LIFECYCLE_CLOSEOUT_COMMIT, target),
+        "current target is not a descendant of the accepted lifecycle anchor",
+    )
+    dirty = _git(root, ["status", "--porcelain", "--untracked-files=all"]) != ""
+    require(
+        target != LIFECYCLE_CLOSEOUT_COMMIT or (include_worktree and dirty),
+        "post-accepted descendant mode cannot classify a clean lifecycle anchor",
+    )
+    protected_changes = collect_descendant_protected_changes(
+        root,
+        target,
+        include_worktree=include_worktree,
+    )
+    require(
+        not protected_changes,
+        f"post-accepted descendant changed protected M2 state/evidence: {protected_changes}",
+    )
+    validate_lifecycle_preservation_state(root, artifact_reader=reader)
 
 
 def validate_historical_candidate_checkout(
@@ -904,28 +1411,25 @@ def validate_historical_candidate_checkout(
     candidate: str | None = None,
     candidate_tree: str | None = None,
 ) -> None:
-    require((candidate is None) == (candidate_tree is None), "candidate commit and tree must be supplied together")
-    if candidate is not None and candidate_tree is not None:
-        validate_candidate_checkout(
-            root,
-            candidate,
-            candidate_tree,
-            source_commit=RECOVERY_CANDIDATE_COMMIT,
-        )
-    else:
-        current_commit = _git(root, ["rev-parse", "HEAD"])
-        ancestry = subprocess.run(
-            ["git", "merge-base", "--is-ancestor", RECOVERY_CANDIDATE_COMMIT, current_commit],
-            cwd=root,
-            capture_output=True,
-            text=True,
-            check=False,
-            env={**os.environ, "GIT_NO_REPLACE_OBJECTS": "1"},
-        )
-        require(ancestry.returncode == 0, "current checkout does not descend from accepted Candidate A2")
-    validate_candidate_b_changed_paths(
-        collect_changed_paths(root, source_ref=RECOVERY_CANDIDATE_COMMIT)
-    )
+    validate_lifecycle_closeout_anchor(root)
+    validate_post_accepted_descendant(root, candidate, candidate_tree)
+
+
+def _resolve_semantic_mode(
+    root: Path,
+    mode: str,
+    candidate: str | None,
+) -> str:
+    if mode == CURRENT_RECOVERY_CANDIDATE:
+        return RECOVERY_CANDIDATE
+    if mode != HISTORICAL_ACCEPTED_RECOVERY:
+        return mode
+
+    target = candidate or _git(root, ["rev-parse", "HEAD"])
+    clean = _git(root, ["status", "--porcelain", "--untracked-files=all"]) == ""
+    if target == LIFECYCLE_CLOSEOUT_COMMIT and clean:
+        return LIFECYCLE_CLOSEOUT_ANCHOR
+    return POST_ACCEPTED_NON_M2_DESCENDANT
 
 
 def validate_recovery(
@@ -935,27 +1439,27 @@ def validate_recovery(
     candidate: str | None = None,
     candidate_tree: str | None = None,
     check_git: bool = True,
-) -> None:
+) -> str:
     root = project_root.resolve()
     require(mode in VALIDATION_MODES, f"unknown recovery validation mode: {mode}")
     require((candidate is None) == (candidate_tree is None), "candidate commit and tree must be supplied together")
+    semantic_mode = _resolve_semantic_mode(root, mode, candidate)
+    require(
+        check_git or semantic_mode == RECOVERY_CANDIDATE,
+        "historical and descendant modes cannot disable Git-object validation",
+    )
 
-    if mode == HISTORICAL_ACCEPTED_RECOVERY:
-        validate_historical_anchor(root)
-        validate_current_recovery_artifacts_are_historical(root)
-
-    schema = load_json(root / SCHEMA_PATH_TEXT)
-    evidence = load_json(root / EVIDENCE_PATH_TEXT)
-    execution = load_json(root / EXECUTION_PATH_TEXT)
-    index = load_json(root / INDEX_V2_PATH_TEXT)
-    manifest = load_json(root / MANIFEST_PATH_TEXT)
-
-    validate_schema(root, schema)
-    validate_evidence(root, evidence)
-    validate_immutable_predecessors(root)
-    validate_execution_records(execution)
-    validate_index(root, index)
-    if mode == CURRENT_RECOVERY_CANDIDATE:
+    if semantic_mode == RECOVERY_CANDIDATE:
+        schema = load_json(root / SCHEMA_PATH_TEXT)
+        evidence = load_json(root / EVIDENCE_PATH_TEXT)
+        execution = load_json(root / EXECUTION_PATH_TEXT)
+        index = load_json(root / INDEX_V2_PATH_TEXT)
+        manifest = load_json(root / MANIFEST_PATH_TEXT)
+        validate_schema(root, schema)
+        validate_evidence(root, evidence)
+        validate_immutable_predecessors(root)
+        validate_execution_records(execution)
+        validate_index(root, index)
         validate_manifest(root, manifest)
         if check_git:
             require(candidate is not None and candidate_tree is not None, "current recovery mode requires exact Candidate A2 commit/tree")
@@ -968,15 +1472,47 @@ def validate_recovery(
                 source_commit=SOURCE_COMMIT,
             )
             validate_changed_paths(collect_changed_paths(root))
-    else:
-        validate_manifest(
-            root,
-            manifest,
-            artifact_reader=lambda path_text: read_historical_blob(root, path_text),
-        )
-        validate_historical_manifest_entries(root, manifest)
+        return semantic_mode
+
+    if semantic_mode == LIFECYCLE_CLOSEOUT_ANCHOR:
+        validate_lifecycle_closeout_anchor(root)
         if check_git:
-            validate_historical_candidate_checkout(root, candidate, candidate_tree)
+            if candidate is not None and candidate_tree is not None:
+                require(
+                    candidate == LIFECYCLE_CLOSEOUT_COMMIT,
+                    "lifecycle anchor mode target is not fixed e90",
+                )
+                require(
+                    candidate_tree == LIFECYCLE_CLOSEOUT_TREE,
+                    "lifecycle anchor mode tree is not fixed e90 tree",
+                )
+                validate_candidate_checkout(
+                    root,
+                    candidate,
+                    candidate_tree,
+                    source_commit=RECOVERY_CANDIDATE_COMMIT,
+                )
+            else:
+                require(
+                    _git(root, ["rev-parse", "HEAD"])
+                    == LIFECYCLE_CLOSEOUT_COMMIT,
+                    "lifecycle anchor mode checkout is not fixed e90",
+                )
+                require(
+                    _git(root, ["rev-parse", "HEAD^{tree}"])
+                    == LIFECYCLE_CLOSEOUT_TREE,
+                    "lifecycle anchor mode checkout tree is not fixed e90 tree",
+                )
+        return semantic_mode
+
+    require(
+        semantic_mode == POST_ACCEPTED_NON_M2_DESCENDANT,
+        f"unimplemented recovery validation mode: {semantic_mode}",
+    )
+    validate_lifecycle_closeout_anchor(root)
+    if check_git:
+        validate_post_accepted_descendant(root, candidate, candidate_tree)
+    return semantic_mode
 
 
 def parse_args(argv: list[str]) -> argparse.Namespace:
@@ -992,24 +1528,25 @@ def main(argv: list[str] | None = None) -> int:
     args = parse_args(argv or sys.argv[1:])
     try:
         require(args.validate, "select --validate")
-        validate_recovery(
+        semantic_mode = validate_recovery(
             mode=args.mode,
             candidate=args.candidate,
             candidate_tree=args.candidate_tree,
         )
-        if args.mode == HISTORICAL_ACCEPTED_RECOVERY:
+        if semantic_mode != RECOVERY_CANDIDATE:
             print("HISTORICAL_RECOVERY_MANIFEST_VALID=PASS")
         print(json.dumps({
             "task_id": TASK_ID,
             "evidence_id": EVIDENCE_ID,
             "attempt_number": ATTEMPT_NUMBER,
-            "validation_mode": args.mode,
+            "requested_validation_mode": args.mode,
+            "validation_mode": semantic_mode,
             "validation_status": "PASS",
             "historical_R2-INT-010": "FAIL",
             "effective_R2-INT-010": "RESOLVED_ADAPTER",
             "lifecycle_state": (
                 "FROZEN_WITH_RECOVERY_EVIDENCE_PENDING_LIFECYCLE_CLOSEOUT"
-                if args.mode == CURRENT_RECOVERY_CANDIDATE
+                if semantic_mode == RECOVERY_CANDIDATE
                 else "ACCEPTED_WITH_DOWNSTREAM_BLOCKERS"
             ),
             "candidate_binding_strategy": "EXACT_HEAD_AT_VALIDATION",

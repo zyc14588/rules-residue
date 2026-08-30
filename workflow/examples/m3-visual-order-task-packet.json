@@ -1,0 +1,34 @@
+{
+  "schema_version": "rules-residue.task-packet/1.1",
+  "task_id": "RR-TASK-1002",
+  "status": "PLANNED",
+  "owner": "grok",
+  "task_type": "art",
+  "objective": "Demonstrate Visual Order Package routing without authorizing production.",
+  "authority": [
+    "docs/governance/story-construction/07_VISUAL_ORDER_SYSTEM.md",
+    "schemas/story-construction/visual-order-v1.schema.json"
+  ],
+  "inputs": [
+    "VALIDATED_VISUAL_ORDER_PACKAGE_REQUIRED"
+  ],
+  "allowed_paths": [
+    "workflow/returns/visual/**"
+  ],
+  "forbidden_paths": [
+    "authoring/**",
+    "governance/**",
+    "schemas/**",
+    "game-package/**",
+    "docs/authority/**"
+  ],
+  "open_decisions": [],
+  "acceptance": [
+    "python3 tools/validate_visual_order.py --help",
+    "Raw art request is rejected as production authority"
+  ],
+  "expected_outputs": [
+    "Visual candidate with semantic composition and provenance return"
+  ],
+  "notes": "Example only; no Visual Order Package is issued and Grok is not invoked."
+}

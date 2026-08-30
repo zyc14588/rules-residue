@@ -1,0 +1,174 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://rules-residue.invalid/schemas/story-construction/canonical-manifest-v1.schema.json",
+  "title": "Story Construction Canonical Manifest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "canonicalization_version",
+    "manifest_id",
+    "authority_scope",
+    "r2_canon_precedence",
+    "change_set_id",
+    "base_commit",
+    "base_tree",
+    "source_package",
+    "canon",
+    "records",
+    "merkle",
+    "candidate_binding"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "1.0.0"
+    },
+    "canonicalization_version": {
+      "const": "1.0.0"
+    },
+    "manifest_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "authority_scope": {
+      "const": "CONSTRUCTION_GOVERNANCE_ONLY"
+    },
+    "r2_canon_precedence": {
+      "const": "HIGHER"
+    },
+    "change_set_id": {
+      "const": "CS-R2-SC-GOV-INSTALL-001"
+    },
+    "base_commit": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{40}$"
+    },
+    "base_tree": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{40}$"
+    },
+    "source_package": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "package_id",
+        "zip_sha256",
+        "source_manifest_file_sha256",
+        "metadata_declared_manifest_sha256",
+        "integrity_defect"
+      ],
+      "properties": {
+        "package_id": {
+          "const": "RR-SC-GOV-V2-Q001-Q130"
+        },
+        "zip_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "source_manifest_file_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "metadata_declared_manifest_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "integrity_defect": {
+          "const": "CIRCULAR_MANIFEST_METADATA_BINDING"
+        }
+      }
+    },
+    "canon": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "source_index_sha256",
+        "base_canon_hash",
+        "proposed_canon_hash",
+        "change_kind"
+      ],
+      "properties": {
+        "source_index_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "base_canon_hash": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "proposed_canon_hash": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "change_kind": {
+          "const": "NONE_CONSTRUCTION_GOVERNANCE_ONLY"
+        }
+      }
+    },
+    "records": {
+      "type": "array",
+      "minItems": 135,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "record_id",
+          "record_type",
+          "source_path",
+          "canonical_sha256"
+        ],
+        "properties": {
+          "record_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "record_type": {
+            "type": "string",
+            "minLength": 1
+          },
+          "source_path": {
+            "type": "string",
+            "minLength": 1
+          },
+          "canonical_sha256": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          }
+        }
+      }
+    },
+    "merkle": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "algorithm",
+        "leaf_order",
+        "root"
+      ],
+      "properties": {
+        "algorithm": {
+          "const": "SHA-256-BINARY-PAIR-DUPLICATE-ODD-V1"
+        },
+        "leaf_order": {
+          "const": "record_id_lexical"
+        },
+        "root": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        }
+      }
+    },
+    "candidate_binding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "strategy"
+      ],
+      "properties": {
+        "strategy": {
+          "const": "EXACT_HEAD_AT_VALIDATION"
+        }
+      }
+    }
+  }
+}

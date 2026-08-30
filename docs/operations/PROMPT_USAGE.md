@@ -1,5 +1,9 @@
 # 《规则残差》持久化提示词包使用说明
 
+> 当前执行入口：`M3-STORY-CONSTRUCTION`，发现页为 `.codex/prompts/m3/STORY-CONSTRUCTION/README.md`。
+>
+> `.codex/STORY_ARCHITECTURE_BUILD_PROMPT.md` is historical only；`.codex/STORY_UPDATE_PROMPT.md` is historical and superseded，二者均不得签发新的正式文学任务。下方旧文件清单只保留 predecessor 追溯用途。
+
 ## 文件放置
 
 将本包内容覆盖/复制到《规则残差》仓库根目录：
@@ -27,21 +31,19 @@ docs/operations/
 
 新文件作为更严格的长期入口；旧模板仍可用于小任务。
 
-## 推荐执行顺序
+## 当前推荐执行顺序
 
-### 第一次：建立正式剧情架构
+### Story Construction 治理与施工
 
-开启一个新的 Codex 会话，提供仓库，并把：
+从以下发现页选择 PLAN / IMPLEMENT / ACCEPT / REPAIR，并生成绑定当前 commit/tree、route identity 与 Section-ID 的新鲜 Reading Map：
 
 ```text
-.codex/STORY_ARCHITECTURE_BUILD_PROMPT.md
+.codex/prompts/m3/STORY-CONSTRUCTION/README.md
 ```
 
-完整粘贴给 Codex 执行。
+文学正文只通过 validated Literary Order Package 交给 DeepSeek Harness；视觉候选物只通过 validated Visual Order Package 交给 Grok；Lua/游戏脚本继续只交给 OpenCode。任何 worker 返回后都必须由独立 Codex 会话验收。
 
-目标是先完成 M1-CONTENT-ARCHITECTURE，不开始大规模写正式主线。
-
-完成后，**另开一个独立 Codex 会话**，使用：
+验收入口仍可使用：
 
 ```text
 .codex/STRICT_ACCEPTANCE_PROMPT.md
@@ -63,26 +65,20 @@ docs/operations/
 
 ### 每次剧情新增/重写
 
-使用：
-
-```text
-.codex/STORY_UPDATE_PROMPT.md
-```
-
-把你的剧情决定粘贴到“本次剧情变更”。Codex 先更新 `authoring/`，再判断哪些内容需要转为 runtime、OpenCode 脚本任务或 Grok 美术任务。
+不得回调旧 Story Update。使用 M3 PLAN 路由形成 Change Set 与订单，再由 IMPLEMENT 执行；涉及 T1/T2/C1 或候选哈希时必须取得 Owner 对精确身份的显式批准。
 
 ## 推荐纪律
 
 1. **一次剧情更新只处理一个逻辑主题。** 例如“一座 Region + 其基础规则域”，不要一次同时重写终局真相、角色系统和 30 个 Module。
 2. 剧情源先落 `authoring/`，成熟后再结构化到 `game-package/`。
-3. OpenCode 不负责决定剧情；Grok 不负责决定规则；Codex 不应替项目所有者决定仍为 OPEN 的终极真相。
-4. OpenCode/Grok 返回后必须进入独立 Codex 验收链。
+3. OpenCode 不负责文学或剧情决定；DeepSeek Harness 不批准 Canon；Grok 不负责规则/真相/机械值；Codex 不应替 Owner 决定仍为 OPEN 的终极真相。
+4. 所有 worker 返回后必须进入独立 Codex 验收链，worker 自审不能形成最终 PASS。
 5. 对会改变既有 Campaign 世界事实的剧情修改，优先按 RETCON/存档兼容流程处理。
 6. 每个施工批次结束都保留真实命令、退出码、Task Packet、产物哈希和 blocker。
 
-## 推荐的第一批剧情工作
+## 历史建议（非执行授权）
 
-完成 M1-CONTENT-ARCHITECTURE 后，建议第一批只设计：
+以下内容仅保留为旧建议，不表示 M0、正式 Region 或内容生产已经获准：
 
 ```text
 第一片正式 Region

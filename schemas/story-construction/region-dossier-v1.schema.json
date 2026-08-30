@@ -1,0 +1,157 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://rules-residue.invalid/schemas/story-construction/region-dossier-v1.schema.json",
+  "title": "Story Construction Region Dossier",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "dossier_id",
+    "revision",
+    "namespace",
+    "release_class",
+    "canon_refs",
+    "reveal_family_refs",
+    "approvals",
+    "design_complete_gate"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "1.0.0"
+    },
+    "dossier_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "revision": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "namespace": {
+      "type": "string",
+      "pattern": "^(TEST-[A-Z0-9-]+|REGION-[A-Z0-9-]+)$"
+    },
+    "release_class": {
+      "enum": [
+        "NON_RELEASE_NON_CANON_FIXTURE",
+        "FORMAL_REGION_CANDIDATE"
+      ]
+    },
+    "canon_refs": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "uniqueItems": true
+    },
+    "reveal_family_refs": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "uniqueItems": true
+    },
+    "approvals": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "T1",
+        "T2",
+        "T3_ENVELOPE",
+        "C1_REVEAL_FAMILY"
+      ],
+      "properties": {
+        "T1": {
+          "enum": [
+            "PENDING",
+            "APPROVED",
+            "REJECTED",
+            "REVOKED"
+          ]
+        },
+        "T2": {
+          "enum": [
+            "PENDING",
+            "APPROVED",
+            "REJECTED",
+            "REVOKED"
+          ]
+        },
+        "T3_ENVELOPE": {
+          "enum": [
+            "PENDING",
+            "APPROVED",
+            "REJECTED",
+            "REVOKED"
+          ]
+        },
+        "C1_REVEAL_FAMILY": {
+          "enum": [
+            "PENDING",
+            "APPROVED",
+            "REJECTED",
+            "REVOKED"
+          ]
+        }
+      }
+    },
+    "design_complete_gate": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "rules_exceptions_frozen",
+        "timeline_verified",
+        "npc_epistemic_verified",
+        "routes_closed",
+        "failure_covered",
+        "retreat_covered",
+        "remediation_covered",
+        "tpk_covered",
+        "reachability_verified",
+        "style_frozen",
+        "visual_anchors_frozen",
+        "no_blocker"
+      ],
+      "properties": {
+        "rules_exceptions_frozen": {
+          "type": "boolean"
+        },
+        "timeline_verified": {
+          "type": "boolean"
+        },
+        "npc_epistemic_verified": {
+          "type": "boolean"
+        },
+        "routes_closed": {
+          "type": "boolean"
+        },
+        "failure_covered": {
+          "type": "boolean"
+        },
+        "retreat_covered": {
+          "type": "boolean"
+        },
+        "remediation_covered": {
+          "type": "boolean"
+        },
+        "tpk_covered": {
+          "type": "boolean"
+        },
+        "reachability_verified": {
+          "type": "boolean"
+        },
+        "style_frozen": {
+          "type": "boolean"
+        },
+        "visual_anchors_frozen": {
+          "type": "boolean"
+        },
+        "no_blocker": {
+          "type": "boolean"
+        }
+      }
+    }
+  }
+}

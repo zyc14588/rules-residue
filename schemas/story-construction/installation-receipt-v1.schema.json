@@ -1,0 +1,117 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://rules-residue.invalid/schemas/story-construction/installation-receipt-v1.schema.json",
+  "title": "Story Construction Installation Receipt",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "payload",
+    "payload_hash",
+    "owner_approval"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "1.0.0"
+    },
+    "payload": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schema_version",
+        "receipt_id",
+        "change_set_id",
+        "base_commit",
+        "base_tree",
+        "base_canon_hash",
+        "proposed_canon_hash",
+        "merkle_root",
+        "source_package_id",
+        "source_package_sha256",
+        "candidate_binding",
+        "approval_status"
+      ],
+      "properties": {
+        "schema_version": {
+          "const": "1.0.0"
+        },
+        "receipt_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "change_set_id": {
+          "const": "CS-R2-SC-GOV-INSTALL-001"
+        },
+        "base_commit": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{40}$"
+        },
+        "base_tree": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{40}$"
+        },
+        "base_canon_hash": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "proposed_canon_hash": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "merkle_root": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "source_package_id": {
+          "const": "RR-SC-GOV-V2-Q001-Q130"
+        },
+        "source_package_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "candidate_binding": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "strategy",
+            "candidate_commit",
+            "candidate_tree"
+          ],
+          "properties": {
+            "strategy": {
+              "const": "EXACT_HEAD_AT_VALIDATION"
+            },
+            "candidate_commit": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "pattern": "^[0-9a-f]{40}$"
+            },
+            "candidate_tree": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "pattern": "^[0-9a-f]{40}$"
+            }
+          }
+        },
+        "approval_status": {
+          "const": "PENDING_OWNER_HASH_APPROVAL"
+        }
+      }
+    },
+    "payload_hash": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "owner_approval": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "additionalProperties": false
+    }
+  }
+}

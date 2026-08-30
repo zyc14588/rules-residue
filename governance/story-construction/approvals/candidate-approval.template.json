@@ -1,0 +1,3 @@
+{
+  "schema_version":"1.0.0","approval_id":"OWNER-SUPPLIED-SINGLE-USE-ID","change_set_id":"CS-R2-SC-GOV-INSTALL-001","base_commit":null,"base_tree":null,"base_canon_hash":null,"candidate_commit":null,"candidate_tree":null,"proposed_canon_hash":null,"merkle_root":null,"receipt_payload_hash":null,"approval_status":"PENDING","single_use":true,"transferable":false,"consumed":false,"revoked":false,"owner_id":null,"approved_at":null
+}

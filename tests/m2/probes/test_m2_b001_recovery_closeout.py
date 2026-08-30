@@ -12,9 +12,9 @@ from typing import Any, Callable
 
 from validate_m2_b001_recovery_closeout import (
     _validate_historical_anchor_identity,
+    _validate_lifecycle_anchor_structure,
     ALLOWED_CHANGED_PATHS,
     ARTIFACT_PATHS,
-    ATTEMPT_001_COMMIT,
     BLOCKING_IDS,
     BRIDGE_TEST_PATH_TEXT,
     CANDIDATE_B_ALLOWED_CHANGED_PATHS,
@@ -26,23 +26,27 @@ from validate_m2_b001_recovery_closeout import (
     IMMUTABLE_HASHES,
     INDEX_V1_PATH_TEXT,
     INDEX_V2_PATH_TEXT,
+    LIFECYCLE_CLOSEOUT_ANCHOR,
+    LIFECYCLE_CLOSEOUT_COMMIT,
+    LIFECYCLE_CLOSEOUT_TREE,
     MANIFEST_PATH_TEXT,
+    POST_ACCEPTED_NON_M2_DESCENDANT,
     PLAN_TEST_PATH_TEXT,
     PLAN_VALIDATOR_PATH_TEXT,
     PROBE_TEST_PATH_TEXT,
     RECOVERY_CANDIDATE_COMMIT,
     RECOVERY_CANDIDATE_TREE,
     RecoveryValidationError,
-    SOURCE_COMMIT,
     VALIDATOR_PATH_TEXT,
     collect_changed_paths,
+    read_git_blob,
     read_historical_blob,
     validate_candidate_b_changed_paths,
     validate_candidate_checkout,
     validate_changed_paths,
     validate_historical_anchor,
-    validate_historical_candidate_checkout,
     validate_historical_manifest_entries,
+    validate_lifecycle_preservation_state,
     validate_recovery,
 )
 
@@ -94,14 +98,14 @@ class RecoveryCloseoutTests(unittest.TestCase):
             target.parent.mkdir(parents=True, exist_ok=True)
             target.write_bytes(read_historical_blob(ROOT, relative))
 
-    def make_a2_checkout(self, temporary_root: Path) -> Path:
+    def make_checkout(self, temporary_root: Path, commit: str) -> Path:
         root = temporary_root / "checkout"
         subprocess.run(
             ["git", "clone", "-q", "--shared", str(ROOT), str(root)],
             check=True,
         )
         subprocess.run(
-            ["git", "checkout", "-q", "--detach", RECOVERY_CANDIDATE_COMMIT],
+            ["git", "checkout", "-q", "--detach", commit],
             cwd=root,
             check=True,
         )
@@ -112,6 +116,9 @@ class RecoveryCloseoutTests(unittest.TestCase):
             check=True,
         )
         return root
+
+    def make_a2_checkout(self, temporary_root: Path) -> Path:
+        return self.make_checkout(temporary_root, RECOVERY_CANDIDATE_COMMIT)
 
     def commit_paths(self, root: Path, paths: list[str], message: str) -> tuple[str, str]:
         subprocess.run(["git", "add", "--", *paths], cwd=root, check=True)
@@ -125,22 +132,18 @@ class RecoveryCloseoutTests(unittest.TestCase):
         return commit, tree
 
     def make_lifecycle_checkout(self, temporary_root: Path) -> tuple[Path, str, str]:
-        root = self.make_a2_checkout(temporary_root)
-        for relative in CANDIDATE_B_ALLOWED_CHANGED_PATHS:
-            source = ROOT / relative
-            target = root / relative
-            target.parent.mkdir(parents=True, exist_ok=True)
-            shutil.copy2(source, target)
-        changed = subprocess.check_output(
-            ["git", "diff", "--name-only"], cwd=root, text=True
-        ).splitlines()
-        self.assertEqual(set(changed), set(CANDIDATE_B_ALLOWED_CHANGED_PATHS))
-        commit, tree = self.commit_paths(
-            root,
-            CANDIDATE_B_ALLOWED_CHANGED_PATHS,
-            "synthetic Candidate B lifecycle descendant",
-        )
-        return root, commit, tree
+        root = self.make_checkout(temporary_root, LIFECYCLE_CLOSEOUT_COMMIT)
+        return root, LIFECYCLE_CLOSEOUT_COMMIT, LIFECYCLE_CLOSEOUT_TREE
+
+    def commit_non_m2_descendant(
+        self,
+        root: Path,
+        relative: str = "docs/story-governance-descendant.md",
+    ) -> tuple[str, str]:
+        path = root / relative
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text("later non-M2 batch\n", encoding="utf-8")
+        return self.commit_paths(root, [relative], "later non-M2 descendant")
 
     def assert_historical_mutation_rejected(self, relative: str) -> None:
         with tempfile.TemporaryDirectory() as temporary:
@@ -151,7 +154,24 @@ class RecoveryCloseoutTests(unittest.TestCase):
             with self.assertRaises(RecoveryValidationError):
                 validate_recovery(
                     root,
-                    mode=HISTORICAL_ACCEPTED_RECOVERY,
+                    mode=POST_ACCEPTED_NON_M2_DESCENDANT,
+                    candidate=commit,
+                    candidate_tree=tree,
+                )
+
+    def assert_descendant_json_mutation_rejected(
+        self,
+        relative: str,
+        mutator: Callable[[dict[str, Any]], None],
+    ) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root, _, _ = self.make_lifecycle_checkout(Path(temporary))
+            self.mutate_fixture(root, relative, mutator)
+            commit, tree = self.commit_paths(root, [relative], f"tamper {relative}")
+            with self.assertRaises(RecoveryValidationError):
+                validate_recovery(
+                    root,
+                    mode=POST_ACCEPTED_NON_M2_DESCENDANT,
                     candidate=commit,
                     candidate_tree=tree,
                 )
@@ -311,12 +331,77 @@ class RecoveryCloseoutTests(unittest.TestCase):
                 candidate_tree=RECOVERY_CANDIDATE_TREE,
             )
 
-    def test_legal_lifecycle_descendant_historical_mode_passes(self) -> None:
+    def test_exact_lifecycle_anchor_mode_passes(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
             root, commit, tree = self.make_lifecycle_checkout(Path(temporary))
             validate_recovery(
                 root,
+                mode=LIFECYCLE_CLOSEOUT_ANCHOR,
+                candidate=commit,
+                candidate_tree=tree,
+            )
+
+    def test_later_non_m2_descendant_passes(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root, _, _ = self.make_lifecycle_checkout(Path(temporary))
+            commit, tree = self.commit_non_m2_descendant(root)
+            validate_recovery(
+                root,
+                mode=POST_ACCEPTED_NON_M2_DESCENDANT,
+                candidate=commit,
+                candidate_tree=tree,
+            )
+
+    def test_story_governance_style_descendant_is_not_given_m2_scope(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root, _, _ = self.make_lifecycle_checkout(Path(temporary))
+            paths = [
+                "docs/governance/story-construction/example.md",
+                "governance/story-construction/example.json",
+                "schemas/story-construction/example.schema.json",
+            ]
+            for relative in paths:
+                path = root / relative
+                path.parent.mkdir(parents=True, exist_ok=True)
+                path.write_text("{}\n" if relative.endswith(".json") else "later batch\n", encoding="utf-8")
+            commit, tree = self.commit_paths(
+                root,
+                paths,
+                "Story Governance style descendant",
+            )
+            validate_recovery(
+                root,
+                mode=POST_ACCEPTED_NON_M2_DESCENDANT,
+                candidate=commit,
+                candidate_tree=tree,
+            )
+
+    def test_dirty_non_m2_worktree_at_anchor_uses_descendant_semantics(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root, _, _ = self.make_lifecycle_checkout(Path(temporary))
+            marker = root / "docs/story-governance-draft.md"
+            marker.parent.mkdir(parents=True, exist_ok=True)
+            marker.write_text("uncommitted later batch\n", encoding="utf-8")
+            semantic_mode = validate_recovery(
+                root,
                 mode=HISTORICAL_ACCEPTED_RECOVERY,
+            )
+            self.assertEqual(semantic_mode, POST_ACCEPTED_NON_M2_DESCENDANT)
+
+    def test_owner_amended_validator_and_test_descendant_passes(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root, _, _ = self.make_lifecycle_checkout(Path(temporary))
+            for relative in (VALIDATOR_PATH_TEXT, PROBE_TEST_PATH_TEXT):
+                target = root / relative
+                shutil.copy2(ROOT / relative, target)
+            commit, tree = self.commit_paths(
+                root,
+                [VALIDATOR_PATH_TEXT, PROBE_TEST_PATH_TEXT],
+                "owner-amended historical validator compatibility",
+            )
+            validate_recovery(
+                root,
+                mode=POST_ACCEPTED_NON_M2_DESCENDANT,
                 candidate=commit,
                 candidate_tree=tree,
             )
@@ -357,6 +442,78 @@ class RecoveryCloseoutTests(unittest.TestCase):
     def test_reject_current_external_evidence_index_v2_change(self) -> None:
         self.assert_historical_mutation_rejected(INDEX_V2_PATH_TEXT)
 
+    def test_reject_descendant_changes_m2_b001_state(self) -> None:
+        self.assert_descendant_json_mutation_rejected(
+            ".codex/plans/m2-vertical-slice/batches.json",
+            lambda value: value["lifecycle_projection"].__setitem__(
+                "M2-B001", "IMPLEMENTING"
+            ),
+        )
+
+    def test_reject_descendant_starts_m2_b002(self) -> None:
+        def mutate(value: dict[str, Any]) -> None:
+            batch = next(item for item in value["batches"] if item["id"] == "M2-B002")
+            batch["state"] = "FROZEN"
+            batch["implementation_state"] = "IMPLEMENTING"
+
+        self.assert_descendant_json_mutation_rejected(
+            ".codex/plans/m2-vertical-slice/batches.json",
+            mutate,
+        )
+
+    def test_reject_descendant_changes_m2_b002_ready(self) -> None:
+        self.assert_descendant_json_mutation_rejected(
+            ".codex/plans/m2-vertical-slice/batches.json",
+            lambda value: value["lifecycle_projection"].__setitem__(
+                "M2-B002_READY", "YES"
+            ),
+        )
+
+    def test_reject_descendant_changes_formal_b002(self) -> None:
+        self.assert_descendant_json_mutation_rejected(
+            ".codex/plans/m2-vertical-slice/batches.json",
+            lambda value: value["lifecycle_projection"].__setitem__(
+                "formal_B002", True
+            ),
+        )
+
+    def test_reject_descendant_changes_formal_b009(self) -> None:
+        self.assert_descendant_json_mutation_rejected(
+            ".codex/plans/m2-vertical-slice/batches.json",
+            lambda value: value["lifecycle_projection"].__setitem__(
+                "formal_B009", True
+            ),
+        )
+
+    def test_reject_descendant_removes_blocker(self) -> None:
+        self.assert_descendant_json_mutation_rejected(
+            ".codex/plans/m2-vertical-slice/batches.json",
+            lambda value: value["lifecycle_projection"]["blocking_ids"].pop(),
+        )
+
+    def test_reject_descendant_reorders_blockers(self) -> None:
+        self.assert_descendant_json_mutation_rejected(
+            ".codex/plans/m2-vertical-slice/batches.json",
+            lambda value: value["lifecycle_projection"].__setitem__(
+                "blocking_ids", list(reversed(BLOCKING_IDS))
+            ),
+        )
+
+    def test_reject_descendant_modifies_lifecycle_evidence(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root, _, _ = self.make_lifecycle_checkout(Path(temporary))
+            relative = ".codex/plans/m2-vertical-slice/M2_VERTICAL_SLICE_PLAN.md"
+            path = root / relative
+            path.write_bytes(path.read_bytes() + b"\n")
+            commit, tree = self.commit_paths(root, [relative], "tamper lifecycle evidence")
+            with self.assertRaises(RecoveryValidationError):
+                validate_recovery(
+                    root,
+                    mode=POST_ACCEPTED_NON_M2_DESCENDANT,
+                    candidate=commit,
+                    candidate_tree=tree,
+                )
+
     def test_reject_forged_a2_commit(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
             root = self.make_a2_checkout(Path(temporary))
@@ -377,14 +534,82 @@ class RecoveryCloseoutTests(unittest.TestCase):
                     "0" * 40,
                 )
 
-    def test_reject_candidate_that_is_not_a2_descendant(self) -> None:
+    def test_reject_wrong_lifecycle_anchor_commit(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
             root = self.make_a2_checkout(Path(temporary))
-            subprocess.run(
-                ["git", "checkout", "-q", "--detach", SOURCE_COMMIT],
-                cwd=root,
-                check=True,
+            with self.assertRaises(RecoveryValidationError):
+                validate_recovery(
+                    root,
+                    mode=LIFECYCLE_CLOSEOUT_ANCHOR,
+                    candidate=RECOVERY_CANDIDATE_COMMIT,
+                    candidate_tree=RECOVERY_CANDIDATE_TREE,
+                )
+
+    def test_reject_wrong_lifecycle_anchor_tree(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root, commit, _ = self.make_lifecycle_checkout(Path(temporary))
+            with self.assertRaises(RecoveryValidationError):
+                validate_recovery(
+                    root,
+                    mode=LIFECYCLE_CLOSEOUT_ANCHOR,
+                    candidate=commit,
+                    candidate_tree="0" * 40,
+                )
+
+    def test_reject_lifecycle_anchor_wrong_parent(self) -> None:
+        with self.assertRaises(RecoveryValidationError):
+            _validate_lifecycle_anchor_structure(
+                parent="0" * 40,
+                commit_count=1,
+                changed_paths=CANDIDATE_B_ALLOWED_CHANGED_PATHS,
             )
+
+    def test_reject_lifecycle_anchor_extra_path(self) -> None:
+        with self.assertRaises(RecoveryValidationError):
+            _validate_lifecycle_anchor_structure(
+                parent=RECOVERY_CANDIDATE_COMMIT,
+                commit_count=1,
+                changed_paths=[
+                    *CANDIDATE_B_ALLOWED_CHANGED_PATHS,
+                    "outside-lifecycle.txt",
+                ],
+            )
+
+    def test_reject_lifecycle_anchor_missing_path(self) -> None:
+        with self.assertRaises(RecoveryValidationError):
+            _validate_lifecycle_anchor_structure(
+                parent=RECOVERY_CANDIDATE_COMMIT,
+                commit_count=1,
+                changed_paths=CANDIDATE_B_ALLOWED_CHANGED_PATHS[:-1],
+            )
+
+    def test_reject_lifecycle_anchor_more_than_one_commit(self) -> None:
+        with self.assertRaises(RecoveryValidationError):
+            _validate_lifecycle_anchor_structure(
+                parent=RECOVERY_CANDIDATE_COMMIT,
+                commit_count=2,
+                changed_paths=CANDIDATE_B_ALLOWED_CHANGED_PATHS,
+            )
+
+    def test_reject_mixed_lifecycle_state_semantics(self) -> None:
+        relative = ".codex/plans/m2-vertical-slice/batches.json"
+        value = json.loads(
+            read_git_blob(ROOT, LIFECYCLE_CLOSEOUT_COMMIT, relative).decode("utf-8")
+        )
+        value["lifecycle_projection"]["state"] = "FROZEN"
+        mutated = (json.dumps(value) + "\n").encode("utf-8")
+
+        def reader(path_text: str) -> bytes:
+            if path_text == relative:
+                return mutated
+            return read_git_blob(ROOT, LIFECYCLE_CLOSEOUT_COMMIT, path_text)
+
+        with self.assertRaises(RecoveryValidationError):
+            validate_lifecycle_preservation_state(ROOT, artifact_reader=reader)
+
+    def test_reject_candidate_that_is_not_e90_descendant(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = self.make_a2_checkout(Path(temporary))
             commit = subprocess.check_output(
                 ["git", "rev-parse", "HEAD"], cwd=root, text=True
             ).strip()
@@ -392,7 +617,12 @@ class RecoveryCloseoutTests(unittest.TestCase):
                 ["git", "rev-parse", "HEAD^{tree}"], cwd=root, text=True
             ).strip()
             with self.assertRaises(RecoveryValidationError):
-                validate_historical_candidate_checkout(root, commit, tree)
+                validate_recovery(
+                    root,
+                    mode=POST_ACCEPTED_NON_M2_DESCENDANT,
+                    candidate=commit,
+                    candidate_tree=tree,
+                )
 
     def test_reject_missing_historical_git_object(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
@@ -430,7 +660,7 @@ class RecoveryCloseoutTests(unittest.TestCase):
             with self.assertRaises(RecoveryValidationError):
                 validate_recovery(
                     root,
-                    mode=HISTORICAL_ACCEPTED_RECOVERY,
+                    mode=POST_ACCEPTED_NON_M2_DESCENDANT,
                     candidate=commit,
                     candidate_tree=tree,
                 )

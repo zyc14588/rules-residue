@@ -499,6 +499,29 @@
       "verification": [
         "GATE-WORKFLOW-001"
       ]
+    },
+    {
+      "id": "RR-D024",
+      "status": "ACCEPTED",
+      "title": "M3 故事施工职责与订单门禁",
+      "statement": "Codex 负责任务规划、结构化订单、集成与独立验收；DeepSeek Harness 只生产文学候选稿；OpenCode 只承担脚本；Grok 只接受已验证视觉订单并生产原创视觉候选物。任何执行者均不得自批，候选安装须由 Owner 对精确 commit/tree 与治理哈希作显式批准。",
+      "authority": "owner-authorization-R2-SC-GOV-INSTALL-001",
+      "supersedes": [
+        "RR-D023"
+      ],
+      "tags": [
+        "workflow",
+        "story-construction",
+        "codex",
+        "deepseek-harness",
+        "opencode",
+        "grok"
+      ],
+      "change_control": "required",
+      "verification": [
+        "GATE-WORKFLOW-001",
+        "GATE-STORY-CONSTRUCTION-001"
+      ]
     }
   ]
 }

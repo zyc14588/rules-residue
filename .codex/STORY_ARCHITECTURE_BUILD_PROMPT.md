@@ -1,3 +1,7 @@
+> HISTORICAL_ONLY — EXECUTION_AUTHORITY=NONE
+>
+> 当前入口：`.codex/prompts/m3/STORY-CONSTRUCTION/README.md`。本文件只保留历史证据，不得用于签发新任务。
+
 # 《规则残差》M1-CONTENT-ARCHITECTURE 剧情架构构建提示词
 
 > 用途：正式大量写剧情前执行一次。目标是建立 `authoring/` 创作源层、开放世界内容边界和任意 Module 自动验收，不负责替项目所有者编写最终世界真相。

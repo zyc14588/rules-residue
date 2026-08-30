@@ -1,0 +1,173 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://rules-residue.invalid/schemas/story-construction/text-order-v1.schema.json",
+  "title": "Story Construction Text Order",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "order_id",
+    "order_authority",
+    "owner_token",
+    "task_type",
+    "dossier_ref",
+    "canon_refs",
+    "reveal_refs",
+    "input_components",
+    "input_hash",
+    "workflow_stages",
+    "max_targeted_repairs",
+    "forbidden_capabilities",
+    "return_contract",
+    "order_hash"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "1.0.0"
+    },
+    "order_id": {
+      "type": "string",
+      "pattern": "^TEXT-ORDER-[A-Z0-9-]+$"
+    },
+    "order_authority": {
+      "const": "VALIDATED_TEXT_ORDER_PACKAGE"
+    },
+    "owner_token": {
+      "const": "deepseek_harness"
+    },
+    "task_type": {
+      "const": "literary"
+    },
+    "dossier_ref": {
+      "type": "string",
+      "minLength": 1
+    },
+    "canon_refs": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "uniqueItems": true
+    },
+    "reveal_refs": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "uniqueItems": true
+    },
+    "input_components": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "canon_slice_hash",
+        "dossier_hash",
+        "reveal_contract_hash",
+        "style_contract_hash",
+        "source_matrix_hash"
+      ],
+      "properties": {
+        "canon_slice_hash": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "dossier_hash": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "reveal_contract_hash": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "style_contract_hash": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "source_matrix_hash": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        }
+      }
+    },
+    "input_hash": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "workflow_stages": {
+      "type": "array",
+      "items": {
+        "enum": [
+          "COORDINATOR",
+          "SEMANTIC_IMPLEMENTER",
+          "LITERARY_WRITER",
+          "INDEPENDENT_CHECKER",
+          "DEFECT_ROUTER",
+          "TARGETED_REPAIR"
+        ]
+      },
+      "minItems": 5,
+      "uniqueItems": true
+    },
+    "max_targeted_repairs": {
+      "const": 2
+    },
+    "forbidden_capabilities": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "uniqueItems": true
+    },
+    "return_contract": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "semantic_draft",
+        "literary_draft",
+        "semantic_mapping",
+        "source_matrix",
+        "self_check",
+        "issues",
+        "version_usage",
+        "return_hashes",
+        "blocked_status"
+      ],
+      "properties": {
+        "semantic_draft": {
+          "const": true
+        },
+        "literary_draft": {
+          "const": true
+        },
+        "semantic_mapping": {
+          "const": true
+        },
+        "source_matrix": {
+          "const": true
+        },
+        "self_check": {
+          "const": true
+        },
+        "issues": {
+          "const": true
+        },
+        "version_usage": {
+          "const": true
+        },
+        "return_hashes": {
+          "const": true
+        },
+        "blocked_status": {
+          "const": "BLOCKED_NEEDS_CANON"
+        }
+      }
+    },
+    "order_hash": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    }
+  }
+}

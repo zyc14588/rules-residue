@@ -26,6 +26,8 @@ from tools.lib.reference_rules import expected_effect_types, plan_kind
 from tools.lib.schema_subset import validate
 from tools.codex_route import HARD_LIMIT, SOFT_LIMIT, RouteError, validate_request
 from tools.validate_r2_install import validate_r2_install
+from tools.validate_story_construction_governance import collect_errors as validate_story_construction_install
+from tools.story_construction import validate_task_packet_pairing
 
 REQUIRED_ROOT_FILES = [
     "README.md",
@@ -50,6 +52,7 @@ REQUIRED_ROOT_FILES = [
     "tools/codex_route.py",
     "tests/test_codex_route.py",
     "reports/M1_CODEX_ROUTE_COMPATIBILITY.md",
+    "tools/validate_story_construction_governance.py",
 ]
 
 REQUIRED_AUTHORING_FILES = [
@@ -694,10 +697,8 @@ def _check_hybrid_workflow(errors: list[str]) -> None:
         seen_ids.append(task_id)
         owner = packet.get("owner")
         task_type = packet.get("task_type")
-        if owner == "opencode" and task_type != "script":
-            errors.append(f"{path.relative_to(PROJECT_ROOT)}: OpenCode task must be script")
-        if owner == "grok" and task_type != "art":
-            errors.append(f"{path.relative_to(PROJECT_ROOT)}: Grok task must be art")
+        for issue in validate_task_packet_pairing(packet):
+            errors.append(f"{path.relative_to(PROJECT_ROOT)}: {issue}")
         if packet.get("status") != "PLANNED":
             errors.append(f"{path.relative_to(PROJECT_ROOT)}: example task must remain PLANNED")
         if not packet.get("authority"):
@@ -971,6 +972,10 @@ def collect_errors() -> list[str]:
     _check_hybrid_workflow(errors)
     _check_codex_route_infrastructure(errors)
     errors.extend(f"R2 installation: {error}" for error in validate_r2_install())
+    errors.extend(
+        f"Story Construction Governance: {error}"
+        for error in validate_story_construction_install(PROJECT_ROOT)
+    )
     _check_originality(errors)
     _check_lock(errors)
     return errors
@@ -990,9 +995,10 @@ def main() -> int:
     print("- registered Modules, scenarios, and golden vectors: PASS")
     print("- visibility/memory fixtures: PASS")
     print("- Lua static policy and available syntax check: PASS")
-    print("- hybrid Codex/OpenCode/Grok workflow: PASS")
+    print("- hybrid Codex/OpenCode/DeepSeek Harness/Grok workflow: PASS")
     print("- Codex progressive-disclosure route infrastructure: PASS")
     print("- R2 authority installation and progressive-delivery registry: PASS")
+    print("- Story Construction Governance candidate gates: PASS")
     print("- originality and release block: PASS")
     print("- package lock: PASS")
     return 0

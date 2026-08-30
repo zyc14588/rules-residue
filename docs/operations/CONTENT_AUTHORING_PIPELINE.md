@@ -12,7 +12,8 @@ Codex consistency/spec pass
 structured runtime data / Schema / fixture
       ↓
 OpenCode script（需要时）
-Grok art（需要时）
+DeepSeek literary candidate（需要时，先进入受控 return）
+Grok visual candidate（需要时，先进入受控 return）
       ↓
 Codex integration
       ↓
@@ -38,7 +39,8 @@ acceptance
 | Authoring Module | `game-package/modules/<name>/` | 生成合法 Module manifest、Scenario、expected path 及必要关联文件 |
 | NPC/Faction/Entity | Scenario/状态/可见性数据 | 分离公开事实、真实事实、角色认知和错误认知 |
 | Clue/Hypothesis/Revelation | Fact、Event、投影与记忆来源 | 假设不能自动升级为 truth；关键线索提供失败推进 |
-| Art brief | 已审核素材与 provenance | 通过 Grok Task Packet 和 Codex 独立检查后才可进入 assets |
+| Literary order | 已审核文学候选稿 | 通过 DeepSeek Harness 文学订单、T1/T2/C1 与 Codex 独立检查后才可投影；候选稿不能直接进入 runtime |
+| Art brief | 已审核素材与 provenance | 通过 validated Visual Order Package、Grok 返回与 Codex 独立检查后才可进入 assets |
 
 当前 Scenario Schema 仍是 P0 草案承载格式；无法无损表达的新语义必须先走决策/Schema/fixture 变更，不能塞进未声明字段或只留在 AI 叙事中。
 
@@ -73,10 +75,11 @@ Tutorial 与 Golden 仍保留专用回归要求；它们不替代其他已注册
 
 - Codex：维护 authoring、数据规格、Schema/fixture、Task Packet、集成与最终验收；
 - OpenCode：只在合法 `script` Task Packet 允许路径内实现 Lua/脚本；
-- Grok：只在合法 `art` Task Packet 允许路径内产出原创素材与 provenance 草稿；
-- OpenCode/Grok 的返回状态不是最终 PASS，Codex 必须独立检查 diff、来源、lock 与 acceptance。
+- DeepSeek Harness：只在合法 `literary` Task Packet 与 validated Literary Order Package 下产出受控文学候选返回；
+- Grok：只在合法 `art` Task Packet 与 validated Visual Order Package 下产出原创视觉候选物与 provenance 草稿；
+- worker 的返回状态不是最终 PASS，Codex 必须独立检查 diff、订单/输入哈希、来源、lock 与 acceptance。
 
-不需要脚本或美术时不得制造虚假 Task Packet 或虚假工作量。
+不需要脚本、文学或美术时不得制造虚假 Task Packet 或虚假工作量。
 
 ## 提升与验收清单
 

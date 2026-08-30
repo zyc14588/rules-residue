@@ -15,7 +15,7 @@
 ## 硬性规则
 
 1. **不得修改任何文件。**
-2. 不相信施工会话、OpenCode、Grok 的 PASS、自测文本或总结。
+2. 不相信施工会话、OpenCode、DeepSeek Harness、Grok 的 PASS、自测文本或总结；worker 自审不能形成最终 PASS。
 3. 不通过删除/跳过测试、放宽 Schema、改忽略规则、重新生成期待结果来制造 PASS。
 4. `OPEN` 决策没有项目所有者明确决定时，任何静默固化都算问题。
 5. 没执行真实外部门禁时，不能把本地 PASS 描述成平台认证或正式发布通过。
@@ -62,6 +62,7 @@ git log -1 --oneline --decorate
 - `PROVISIONAL` 是否被错误写成不可迁移永久语义；
 - `OPEN` 是否被实现者擅自关闭；
 - 用户明确给出的新剧情事实是否被准确传播；
+- 候选批准中的 commit/tree、canonical manifest、Merkle root、receipt payload 哈希是否与 Owner 明示批准完全相同；
 - 文档、机器登记、Schema、运行数据、测试是否互相矛盾。
 
 ### B3. 剧情分层与开放世界结构

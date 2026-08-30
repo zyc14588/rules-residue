@@ -1,0 +1,35 @@
+{
+  "schema_version": "rules-residue.task-packet/1.1",
+  "task_id": "RR-TASK-1001",
+  "status": "PLANNED",
+  "owner": "deepseek_harness",
+  "task_type": "literary",
+  "objective": "Demonstrate the controlled literary-order routing contract without executing a worker.",
+  "authority": [
+    "docs/governance/story-construction/06_TEXT_ORDER_SYSTEM.md",
+    "schemas/story-construction/text-order-v1.schema.json"
+  ],
+  "inputs": [
+    "VALIDATED_TEXT_ORDER_PACKAGE_REQUIRED",
+    "EXACT_INPUT_AND_ORDER_HASHES_REQUIRED"
+  ],
+  "allowed_paths": [
+    "workflow/returns/literary/**"
+  ],
+  "forbidden_paths": [
+    "authoring/**",
+    "governance/**",
+    "schemas/**",
+    "game-package/**",
+    "docs/authority/**"
+  ],
+  "open_decisions": [],
+  "acceptance": [
+    "python3 tools/validate_deepseek_literary_task.py --help",
+    "Worker self-check cannot form final PASS"
+  ],
+  "expected_outputs": [
+    "Semantic Draft and Literary Draft candidate return contract"
+  ],
+  "notes": "Example only; no Text Order Package is issued and DeepSeek is not invoked."
+}

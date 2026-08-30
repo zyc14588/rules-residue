@@ -1,0 +1,53 @@
+{
+  "schema_version": "rules-residue.story-construction.source-intake/1.0.0",
+  "source_package": {
+    "package_id": "RR-SC-GOV-V2-Q001-Q130",
+    "evidence_class": "IMMUTABLE_OWNER_SIDE_SOURCE_EVIDENCE",
+    "repository_copy": "FORBIDDEN",
+    "zip_filename": "rules_residue_story_construction_governance_v2_q001_q130.zip",
+    "zip_sha256": "158e6e82e50ae4a411b780e718f16353dd668b6f94320c685a95d20d766d0e36",
+    "source_manifest_file_sha256": "721ef281e1a25cbd85d4979264498e207582e1d8f43e01845ca7b8e9bbd1bc88",
+    "metadata_declared_manifest_sha256": "d705f9c4b650831ad5af8eac05549609e6e033dc6e435c1226885683eef694f4",
+    "manifest_check": "26_OF_26_PASS",
+    "integrity_defect": "CIRCULAR_MANIFEST_METADATA_BINDING",
+    "defect_disposition": "PRESERVED_NOT_REPAIRED"
+  },
+  "decision_gate": {
+    "human_count": 130,
+    "machine_count": 130,
+    "identity_range": "Q001-Q130",
+    "missing": 0,
+    "duplicates": 0,
+    "owner_answer_fields": ["option", "title", "statement"],
+    "decision_status": "FROZEN_BY_OWNER_QA"
+  },
+  "source_files": [
+    {"path":"00_README.md","sha256":"7dfb01893522d47d67603f7d8eec02c5d823ebcd29267eb324c34823b981054c"},
+    {"path":"01_SUPERSESSION_AND_AUTHORITY.md","sha256":"a8c22126c4451bb69d788d139ff35c5e64cd713c8355d6daf0527b720da22d8c"},
+    {"path":"02_QA_DECISION_REGISTER_Q001_Q130.md","sha256":"94a0d8fa7c200a31c4354089d0820b33fe6c20f387dc8ce414714a78cc8ae93e"},
+    {"path":"03_GOVERNANCE_MODEL.md","sha256":"375828a6c43d1178c007eb35e87a5710b9f52b5f2bc70965148b5885be6d2410"},
+    {"path":"04_CANON_REGISTRY_ARCHITECTURE.md","sha256":"e6c51bb4248f74e64e1d93019ac8973592c2d90feb27b979963c9c691bd12dcd"},
+    {"path":"05_CHANGESET_APPROVAL_AND_LIFECYCLE.md","sha256":"65d719eca3146cad973e9500ca3b2a31643aa3ec3175fc8e1e3dff785959147f"},
+    {"path":"06_REGION_CONSTRUCTION_DOSSIER.md","sha256":"89f61c14e7abfcec20a3bc31a09357ba627ea4b87e041069ac750996ba27931d"},
+    {"path":"07_DEEPSEEK_HARNESS_TEXT_ORDER_SYSTEM.md","sha256":"6cff91a62ae13033e4c9e8025f64bb4968fbbfcdabdc23e4ff433fce141834fa"},
+    {"path":"08_GROK_VISUAL_ORDER_SYSTEM.md","sha256":"4165a63f86f9a1856a6d172bed19d996a75fdfe815c0e3a18c2f46c6ae3ecd87"},
+    {"path":"09_CODEX_OPERATING_MODEL.md","sha256":"600b31c9472ae7ba340cfe5a7025e6450d869d5ba10a472a143ed4470b79fd4c"},
+    {"path":"10_VALIDATION_V0_V6_AND_PLAYTEST.md","sha256":"4848f2064ac18aa82b02d326ab502ba7fe1d7144462d6d5ad850786366cb5a87"},
+    {"path":"11_DAB_DECISION_AND_AUDIT_BUNDLE.md","sha256":"802c5ba9574d4dfd6130dbce9346e79fa1d68d063924ffbcab05a9d691288c59"},
+    {"path":"12_IMPLEMENTATION_ROADMAP.md","sha256":"27e0e937937391fc924aea4a1551390526856d25d6a764d8d054a42788d9a805"},
+    {"path":"ALL_IN_ONE.md","sha256":"5f91c0693b36693e06db1361a20ace6462b9263acf05384ff55ad59e9b10a4e0"},
+    {"path":"PACKAGE_METADATA.json","sha256":"4e4acbb3b6c1519b33f4ffe608fca2ca47622a75e261d135e56508a810313bee"},
+    {"path":"machine/13_SCHEMA_BLUEPRINTS.yaml","sha256":"6e5bbce30f4dd7b9552a0e30eb021cf50d775546ffb31bf5adcb67a896ebd077"},
+    {"path":"machine/14_TEXT_ORDER_PACKAGE_TEMPLATE.yaml","sha256":"92f65f231628c76949552689565a5f5241d9435cdd45fb4dc93d908422ee81e0"},
+    {"path":"machine/15_VISUAL_ORDER_PACKAGE_TEMPLATE.yaml","sha256":"39e0025387910c3617e7c45cafa0987e12a8b8a54cb1936afcc919764740119d"},
+    {"path":"machine/16_REGION_CONSTRUCTION_DOSSIER_TEMPLATE.yaml","sha256":"4156bbe9db54a981e51b573fcdb71a19175da1ef5b5cbe0f9b0cd9f6fbc01fa3"},
+    {"path":"machine/17_REVEAL_CONTRACT_TEMPLATE.yaml","sha256":"8665e608d9867dd404c7824bdc3673b04f036c6cbd5130c180c25c5b225937e1"},
+    {"path":"machine/18_CANON_ENVELOPE_TEMPLATE.yaml","sha256":"95180985ae46f926423e0d9fce38422de1e2cd56ac740952e2be665c11db4ceb"},
+    {"path":"machine/19_CHANGE_SET_TEMPLATE.yaml","sha256":"1eda0ccddc7758e360632f798e124367a129ab922860e13d84cde5f74629b26e"},
+    {"path":"machine/20_DAB_TEMPLATE.yaml","sha256":"a3f5cb153270489565044377625fddbe2b3444ca42b8d06d5f7cf8b9cc2c17d3"},
+    {"path":"machine/21_REGION_ACCEPTANCE_BUNDLE_TEMPLATE.yaml","sha256":"5644cd9956d3ee8a60754c5cac14443123ecd2010fc1771030474d259b2b14ff"},
+    {"path":"machine/22_APPROVAL_STUB.yaml","sha256":"8d9449f63104d0c7b6680d6ce4ac253d42b2a06f37f408592fe4ff101f51281c"},
+    {"path":"machine/decisions.q001-q130.yaml","sha256":"743e0cbb573bb001ac67e03bc0b1bcc2210ef8f04e476ccb6d96c6111e7c2626"}
+  ],
+  "change_set_id": "CS-R2-SC-GOV-INSTALL-001"
+}

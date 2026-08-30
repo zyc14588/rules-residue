@@ -1,0 +1,9 @@
+{
+  "schema_version":"rules-residue.deepseek-harness.reading-map-profile/1.0.0",
+  "owner":"deepseek_harness",
+  "task_type":"literary",
+  "context_policy":"MINIMUM_AUTHORIZED_SLICE",
+  "required_inputs":["TASK_PACKET","VALIDATED_TEXT_ORDER_PACKAGE","CANON_SLICE","DOSSIER_SLICE","REVEAL_CONTRACTS","STYLE_CONTRACT","RETURN_CONTRACT"],
+  "forbidden_inputs":["FULL_CANON_CORPUS","UNRELATED_TRUTH","PRIVATE_CHAIN_OF_THOUGHT","RUNTIME_SECRETS"],
+  "missing_canon_status":"BLOCKED_NEEDS_CANON"
+}

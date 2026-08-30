@@ -1,6 +1,7 @@
 import unittest
 from tools.lib.common import PROJECT_ROOT, read_json
 from tools.lib.schema_subset import validate
+from tools.story_construction import validate_task_packet_pairing
 
 
 class HybridWorkflowTests(unittest.TestCase):
@@ -16,13 +17,24 @@ class HybridWorkflowTests(unittest.TestCase):
         by_owner = {packet["owner"]: packet["task_type"] for packet in packets}
         self.assertEqual(by_owner["opencode"], "script")
         self.assertEqual(by_owner["grok"], "art")
+        self.assertEqual(by_owner["deepseek_harness"], "literary")
         self.assertEqual(by_owner["codex"], "acceptance")
+
+    def test_all_example_role_pairings_are_valid(self) -> None:
+        for path in sorted((PROJECT_ROOT / "workflow/examples").glob("*.json")):
+            self.assertEqual(validate_task_packet_pairing(read_json(path)), [], path.name)
 
     def test_core_genre_decisions_are_accepted(self) -> None:
         data = read_json(PROJECT_ROOT / "governance/decisions.json")
         status = {item["id"]: item["status"] for item in data["decisions"]}
-        for decision_id in ["RR-D019", "RR-D020", "RR-D021", "RR-D022", "RR-D023"]:
+        for decision_id in ["RR-D019", "RR-D020", "RR-D021", "RR-D022", "RR-D023", "RR-D024"]:
             self.assertEqual(status.get(decision_id), "ACCEPTED")
+
+    def test_rr_d024_supersedes_without_rewriting_rr_d023(self) -> None:
+        data = read_json(PROJECT_ROOT / "governance/decisions.json")
+        decisions = {item["id"]: item for item in data["decisions"]}
+        self.assertEqual(decisions["RR-D024"]["supersedes"], ["RR-D023"])
+        self.assertNotIn("supersedes", decisions["RR-D023"])
 
 
 if __name__ == "__main__":
