@@ -20,6 +20,45 @@ SOURCE_INTEGRITY_DEFECT = "CIRCULAR_MANIFEST_METADATA_BINDING"
 BASE_COMMIT = "e90a717d3863e4fb0e5e1a0fcc01661f24d2157d"
 BASE_TREE = "7a1ce74ad0b82c7c288b94c47c966028e916137d"
 CANONICALIZATION_VERSION = "1.0.0"
+IMPLEMENTATION_CANDIDATE_COMMIT = "7305a9decacf4a6361692fe9359a1afa96801722"
+IMPLEMENTATION_CANDIDATE_TREE = "e5969a0464a7e73d7d1da546da83afea9015fdba"
+IMPLEMENTATION_CANDIDATE_PARENT = BASE_COMMIT
+IMPLEMENTATION_OWNER_APPROVAL_ID = (
+    "OWNER-APPROVAL-R2-SC-GOV-INSTALL-001-CANDIDATE-7305A9DE-R1"
+)
+IMPLEMENTATION_OWNER_APPROVAL_TRANSPORT_SHA256 = (
+    "87bc960d75b1fd38106ee4e545d4960c0e0d8751141ccfcaa126b30142236ed9"
+)
+IMPLEMENTATION_ACCEPT_TASK_ID = "R2-SC-GOV-INSTALL-001-ACCEPT-001"
+IMPLEMENTATION_ACCEPT_RESULT = "PASS_FIXED_CANDIDATE_ACCEPTED"
+IMPLEMENTATION_ACCEPT_ROUTE_DIGEST = (
+    "706cd9195ef483ddc47a76774780059d46b24b813e948ab28b532a613e9f1cd6"
+)
+ACTIVATION_CLOSEOUT_TASK_ID = (
+    "R2-SC-GOV-INSTALL-ACTIVATION-CLOSEOUT-IMPLEMENT-001"
+)
+BASE_CANON_HASH = "d7ceea75615b57970f3b9712b73ed4c9f65a9c4406c877e9013470cb53a6141a"
+CANONICAL_DECISIONS_SHA256 = (
+    "01fdebbd338a8abdbc0226d0290b1bc2b02366cb615a22182f0df0a5f75fa7b2"
+)
+PREVIOUS_GOVERNANCE_MERKLE_ROOT = (
+    "5b9e417209beab3dc88ed305a79b8945512d4c0e842397e5494885ac4dd3a23e"
+)
+IMPLEMENTATION_RECEIPT_PAYLOAD_HASH = (
+    "5d348a937de063ba66922258c54a8bfc4a83fc3539d559916afb7f6a9bb2fb9e"
+)
+PACKAGE_SHA256 = "29ea1e0278e37d183d4c0ff396437088b4873c58c5e9a9c857093f6c552a6314"
+ACTIVATION_BINDING_STRATEGY = "DETACHED_ANNOTATED_TAG_EXACT_COMMIT_TREE"
+ACTIVATION_CHANGED_LEAF_IDS = (
+    "SCG-AUTHORITY-OVERLAY",
+    "SCG-CANON-REGISTRY",
+    "SCG-SUPERSESSION",
+)
+ACTIVATION_OLD_LEAF_HASHES = {
+    "SCG-AUTHORITY-OVERLAY": "710f0f9a331158a6aca604385f0dd60d35e8d04e50c758933414e76cee3e6a26",
+    "SCG-CANON-REGISTRY": "15fc4a3c2bc1a0e85f15070fdfa4c116e97360e08fb415ad3867bd577ee2130f",
+    "SCG-SUPERSESSION": "61f4865b106bae72b3945e17234eb2d6ec0da6fc55527038c3ea9137d030d054",
+}
 
 DECISIONS_PATH = Path("governance/story-construction/decisions.q001-q130.yaml")
 TRACEABILITY_PATH = Path("governance/story-construction/traceability.yaml")
@@ -40,6 +79,13 @@ CANONICAL_MANIFEST_PATH = Path(
 )
 RECEIPT_PATH = Path(
     "governance/story-construction/receipts/installation-receipt.pending.json"
+)
+FINAL_RECEIPT_PATH = Path(
+    "governance/story-construction/receipts/installation-receipt.final.json"
+)
+APPROVAL_CONSUMPTION_PATH = Path(
+    "governance/story-construction/approvals/"
+    "OWNER-APPROVAL-R2-SC-GOV-INSTALL-001-CANDIDATE-7305A9DE-R1.consumption.json"
 )
 
 SEMVER_PATTERN = re.compile(r"^[0-9]+\.[0-9]+\.[0-9]+$")
@@ -145,6 +191,22 @@ def file_sha256(path: Path) -> str:
         for chunk in iter(lambda: handle.read(1024 * 1024), b""):
             digest.update(chunk)
     return digest.hexdigest()
+
+
+def validate_canon_hash_invariants(
+    *,
+    base_canon_hash: str,
+    proposed_canon_hash: str,
+    canonical_decisions_hash: str,
+) -> list[str]:
+    errors: list[str] = []
+    if base_canon_hash != BASE_CANON_HASH:
+        errors.append("base Canon hash drift")
+    if proposed_canon_hash != BASE_CANON_HASH:
+        errors.append("proposed Canon hash drift")
+    if canonical_decisions_hash != CANONICAL_DECISIONS_SHA256:
+        errors.append("canonical Q001-Q130 decisions hash drift")
+    return errors
 
 
 def expected_question_ids() -> list[str]:
@@ -255,6 +317,129 @@ def _governance_records(project_root: Path) -> list[dict[str, str]]:
     return sorted(records, key=lambda item: item["record_id"])
 
 
+def tracked_target_state_active(project_root: Path = PROJECT_ROOT) -> bool:
+    try:
+        change_set = read_json_document(project_root / CHANGE_SET_PATH)
+    except (OSError, UnicodeError, json.JSONDecodeError):
+        return False
+    return (
+        isinstance(change_set, dict)
+        and change_set.get("schema_version") == "2.0.0"
+        and change_set.get("lifecycle_stage") == "APPROVED"
+        and change_set.get("disposition") == "ACTIVE"
+        and change_set.get("approval_status")
+        == "PENDING_OWNER_ACTIVATION_HASH_APPROVAL"
+        and change_set.get("release") == "NOT_RELEASED"
+    )
+
+
+def activation_merkle_transition(
+    records: list[dict[str, str]], new_root: str
+) -> dict[str, Any]:
+    current = {record["record_id"]: record["canonical_sha256"] for record in records}
+    changed = [
+        {
+            "record_id": record_id,
+            "old_canonical_sha256": ACTIVATION_OLD_LEAF_HASHES[record_id],
+            "new_canonical_sha256": current[record_id],
+        }
+        for record_id in ACTIVATION_CHANGED_LEAF_IDS
+    ]
+    return {
+        "algorithm": "SHA-256-BINARY-PAIR-DUPLICATE-ODD-V1",
+        "leaf_count": len(records),
+        "previous_root": PREVIOUS_GOVERNANCE_MERKLE_ROOT,
+        "new_root": new_root,
+        "changed_leaves": changed,
+        "unchanged_groups": {
+            "owner_qa_decisions": "Q001-Q130",
+            "source_intake": "SCG-SOURCE-INTAKE",
+            "traceability": "SCG-TRACEABILITY",
+        },
+        "excluded_from_merkle": [
+            "IMPLEMENTATION_APPROVAL_CONSUMPTION",
+            "IMPLEMENTATION_ACCEPT",
+            "FINAL_INNER_RECEIPT",
+            "ACTIVATION_OWNER_APPROVAL",
+            "ACTIVATION_ACCEPT",
+            "ACTIVATION_OUTER_ENVELOPE",
+        ],
+    }
+
+
+def _pending_receipt(canon_hash: str, root_hash: str) -> dict[str, Any]:
+    payload = {
+        "schema_version": "1.0.0",
+        "receipt_id": "RR-SC-GOV-INSTALL-RECEIPT-001",
+        "change_set_id": CHANGE_SET_ID,
+        "base_commit": BASE_COMMIT,
+        "base_tree": BASE_TREE,
+        "base_canon_hash": canon_hash,
+        "proposed_canon_hash": canon_hash,
+        "merkle_root": root_hash,
+        "source_package_id": SOURCE_PACKAGE_ID,
+        "source_package_sha256": SOURCE_ZIP_SHA256,
+        "candidate_binding": {
+            "strategy": "EXACT_HEAD_AT_VALIDATION",
+            "candidate_commit": None,
+            "candidate_tree": None,
+        },
+        "approval_status": "PENDING_OWNER_HASH_APPROVAL",
+    }
+    return {
+        "schema_version": "1.0.0",
+        "payload": payload,
+        "payload_hash": canonical_sha256(payload),
+        "owner_approval": None,
+    }
+
+
+def _final_inner_receipt(
+    project_root: Path, canon_hash: str, root_hash: str
+) -> dict[str, Any]:
+    consumption_path = project_root / APPROVAL_CONSUMPTION_PATH
+    if not consumption_path.is_file():
+        raise StoryConstructionError(
+            f"approval consumption record is missing: {APPROVAL_CONSUMPTION_PATH.as_posix()}"
+        )
+    payload = {
+        "schema_version": "2.0.0",
+        "receipt_id": "RR-SC-GOV-INSTALL-RECEIPT-FINAL-001",
+        "source_package_id": SOURCE_PACKAGE_ID,
+        "source_zip_sha256": SOURCE_ZIP_SHA256,
+        "source_manifest_file_sha256": SOURCE_MANIFEST_FILE_SHA256,
+        "source_integrity_defect": SOURCE_INTEGRITY_DEFECT,
+        "change_set_id": CHANGE_SET_ID,
+        "base_commit": BASE_COMMIT,
+        "base_tree": BASE_TREE,
+        "base_canon_hash": canon_hash,
+        "implementation_candidate_commit": IMPLEMENTATION_CANDIDATE_COMMIT,
+        "implementation_candidate_tree": IMPLEMENTATION_CANDIDATE_TREE,
+        "implementation_owner_approval_id": IMPLEMENTATION_OWNER_APPROVAL_ID,
+        "implementation_accept_task_id": IMPLEMENTATION_ACCEPT_TASK_ID,
+        "implementation_accept_result": IMPLEMENTATION_ACCEPT_RESULT,
+        "implementation_accept_route_digest": IMPLEMENTATION_ACCEPT_ROUTE_DIGEST,
+        "proposed_canon_hash": canon_hash,
+        "previous_governance_merkle_root": PREVIOUS_GOVERNANCE_MERKLE_ROOT,
+        "new_activation_merkle_root": root_hash,
+        "approval_consumption_record_path": APPROVAL_CONSUMPTION_PATH.as_posix(),
+        "approval_consumption_record_sha256": file_sha256(consumption_path),
+        "activation_binding": {
+            "strategy": ACTIVATION_BINDING_STRATEGY,
+            "authoritative_effect_requires_external_proof": True,
+        },
+    }
+    return {
+        "schema_version": "2.0.0",
+        "receipt_kind": "TRACKED_INNER_ACTIVATION_RECEIPT",
+        "outer_envelope_schema": (
+            "schemas/story-construction/activation-closeout-envelope-v1.schema.json"
+        ),
+        "payload": payload,
+        "payload_hash": canonical_sha256(payload),
+    }
+
+
 def derive_installation(project_root: Path = PROJECT_ROOT) -> dict[str, Any]:
     source_index, canon_hash = _canonical_source_index(project_root)
     records = _governance_records(project_root)
@@ -291,38 +476,25 @@ def derive_installation(project_root: Path = PROJECT_ROOT) -> dict[str, Any]:
         },
         "candidate_binding": {"strategy": "EXACT_HEAD_AT_VALIDATION"},
     }
-    receipt_payload = {
-        "schema_version": "1.0.0",
-        "receipt_id": "RR-SC-GOV-INSTALL-RECEIPT-001",
-        "change_set_id": CHANGE_SET_ID,
-        "base_commit": BASE_COMMIT,
-        "base_tree": BASE_TREE,
-        "base_canon_hash": canon_hash,
-        "proposed_canon_hash": canon_hash,
-        "merkle_root": root_hash,
-        "source_package_id": SOURCE_PACKAGE_ID,
-        "source_package_sha256": SOURCE_ZIP_SHA256,
-        "candidate_binding": {
-            "strategy": "EXACT_HEAD_AT_VALIDATION",
-            "candidate_commit": None,
-            "candidate_tree": None,
-        },
-        "approval_status": "PENDING_OWNER_HASH_APPROVAL",
-    }
-    receipt = {
-        "schema_version": "1.0.0",
-        "payload": receipt_payload,
-        "payload_hash": canonical_sha256(receipt_payload),
-        "owner_approval": None,
-    }
+    active = tracked_target_state_active(project_root)
+    receipt = (
+        _final_inner_receipt(project_root, canon_hash, root_hash)
+        if active
+        else _pending_receipt(canon_hash, root_hash)
+    )
     return {
         "canonical_decisions": canonical_decision_document(project_root),
         "canonical_manifest": canonical_manifest,
         "receipt": receipt,
+        "receipt_path": FINAL_RECEIPT_PATH if active else RECEIPT_PATH,
+        "tracked_target_state_active": active,
         "base_canon_hash": canon_hash,
         "proposed_canon_hash": canon_hash,
         "merkle_root": root_hash,
         "receipt_payload_hash": receipt["payload_hash"],
+        "merkle_transition": activation_merkle_transition(records, root_hash)
+        if active
+        else None,
     }
 
 
@@ -331,7 +503,7 @@ def write_derived_installation(project_root: Path = PROJECT_ROOT) -> dict[str, A
     outputs = {
         CANONICAL_DECISIONS_PATH: derived["canonical_decisions"],
         CANONICAL_MANIFEST_PATH: derived["canonical_manifest"],
-        RECEIPT_PATH: derived["receipt"],
+        derived["receipt_path"]: derived["receipt"],
     }
     for relative, value in outputs.items():
         path = project_root / relative
@@ -343,7 +515,21 @@ def write_derived_installation(project_root: Path = PROJECT_ROOT) -> dict[str, A
     change_set["base_canon_hash"] = derived["base_canon_hash"]
     change_set["proposed_canon_hash"] = derived["proposed_canon_hash"]
     change_set["merkle_root"] = derived["merkle_root"]
-    change_set["receipt_candidate_payload_hash"] = derived["receipt_payload_hash"]
+    if derived["tracked_target_state_active"]:
+        change_set["previous_governance_merkle_root"] = (
+            PREVIOUS_GOVERNANCE_MERKLE_ROOT
+        )
+        change_set["final_inner_receipt_payload_hash"] = derived[
+            "receipt_payload_hash"
+        ]
+        change_set["approval_consumption_record_sha256"] = file_sha256(
+            project_root / APPROVAL_CONSUMPTION_PATH
+        )
+        change_set["merkle_transition"] = derived["merkle_transition"]
+    else:
+        change_set["receipt_candidate_payload_hash"] = derived[
+            "receipt_payload_hash"
+        ]
     change_set_path.write_bytes(canonical_json_bytes(change_set))
     return derived
 
@@ -600,6 +786,337 @@ def validate_pending_receipt_binding(receipt: Any) -> list[str]:
     if receipt.get("owner_approval") is not None:
         errors.append("pending receipt fabricated owner approval")
     return errors
+
+
+def validate_lifecycle_state(change_set: Any) -> list[str]:
+    if not isinstance(change_set, dict):
+        return ["Change Set must be an object"]
+    version = change_set.get("schema_version")
+    if version == "1.0.0":
+        expected = {
+            "lifecycle_stage": "CANDIDATE",
+            "disposition": "CANDIDATE_NOT_ACTIVE",
+            "approval_status": "PENDING_OWNER_HASH_APPROVAL",
+        }
+    elif version == "2.0.0":
+        expected = {
+            "lifecycle_stage": "APPROVED",
+            "disposition": "ACTIVE",
+            "approval_status": "PENDING_OWNER_ACTIVATION_HASH_APPROVAL",
+            "release": "NOT_RELEASED",
+        }
+    else:
+        return [f"unsupported Change Set state schema: {version!r}"]
+    errors = [
+        f"Change Set {field} is invalid for schema {version}"
+        for field, value in expected.items()
+        if change_set.get(field) != value
+    ]
+    if version == "2.0.0":
+        activation = change_set.get("activation_state")
+        if activation != {
+            "tracked_target_state": "TRACKED_TARGET_STATE_ACTIVE",
+            "authoritative_activation_effective": False,
+            "required_external_proofs": [
+                "ACTIVATION_SPECIFIC_OWNER_FULL_HASH_APPROVAL",
+                "PASS_FIXED_ACTIVATION_CANDIDATE_ACCEPTED",
+                "VALID_DETACHED_ACCEPTED_ACTIVATION_ENVELOPE_TAG",
+                "FINAL_FAST_FORWARD_INTEGRATION",
+            ],
+        }:
+            errors.append("Change Set active-state proof separation drift")
+        if change_set.get("lifecycle_stage") == "RELEASED":
+            errors.append("RELEASED cannot impersonate activation")
+    return errors
+
+
+def validate_implementation_approval_consumption(record: Any) -> list[str]:
+    if not isinstance(record, dict):
+        return ["implementation approval consumption record must be an object"]
+    expected: dict[str, Any] = {
+        "schema_version": "1.0.0",
+        "approval_id": IMPLEMENTATION_OWNER_APPROVAL_ID,
+        "change_set_id": CHANGE_SET_ID,
+        "base_commit": BASE_COMMIT,
+        "base_tree": BASE_TREE,
+        "base_canon_hash": BASE_CANON_HASH,
+        "candidate_commit": IMPLEMENTATION_CANDIDATE_COMMIT,
+        "candidate_tree": IMPLEMENTATION_CANDIDATE_TREE,
+        "proposed_canon_hash": BASE_CANON_HASH,
+        "implementation_merkle_root": PREVIOUS_GOVERNANCE_MERKLE_ROOT,
+        "receipt_candidate_payload_hash": IMPLEMENTATION_RECEIPT_PAYLOAD_HASH,
+        "approval": "OWNER_HASH_APPROVED_FOR_INDEPENDENT_ACCEPT",
+        "single_use": True,
+        "transferable": False,
+        "revoked": False,
+        "consumption_count": 1,
+        "consumption_event": IMPLEMENTATION_ACCEPT_TASK_ID,
+        "consumption_result": IMPLEMENTATION_ACCEPT_RESULT,
+        "accepted_candidate_commit": IMPLEMENTATION_CANDIDATE_COMMIT,
+        "accepted_candidate_tree": IMPLEMENTATION_CANDIDATE_TREE,
+        "accept_route_digest": IMPLEMENTATION_ACCEPT_ROUTE_DIGEST,
+        "owner_approval_transport_sha256": (
+            IMPLEMENTATION_OWNER_APPROVAL_TRANSPORT_SHA256
+        ),
+        "consumed": True,
+    }
+    return [
+        f"implementation approval consumption {field} mismatch"
+        for field, value in expected.items()
+        if record.get(field) != value
+    ]
+
+
+def validate_final_receipt_binding(
+    receipt: Any,
+    *,
+    expected_new_merkle_root: str,
+    expected_consumption_sha256: str,
+) -> list[str]:
+    if not isinstance(receipt, dict):
+        return ["final inner receipt must be an object"]
+    payload = receipt.get("payload")
+    if not isinstance(payload, dict):
+        return ["final inner receipt payload must be an object"]
+    errors: list[str] = []
+    if receipt.get("schema_version") != "2.0.0":
+        errors.append("final inner receipt schema version drift")
+    if receipt.get("receipt_kind") != "TRACKED_INNER_ACTIVATION_RECEIPT":
+        errors.append("final receipt is not the tracked inner receipt")
+    if receipt.get("payload_hash") != canonical_sha256(payload):
+        errors.append("final inner receipt payload hash mismatch")
+    forbidden_payload_fields = {
+        "payload_hash",
+        "receipt_payload_hash",
+        "activation_candidate_commit",
+        "activation_candidate_tree",
+        "activation_owner_approval",
+        "activation_owner_approval_id",
+        "activation_accept_task_id",
+        "activation_accept_result",
+        "activation_accept_route_digest",
+        "outer_envelope_sha256",
+        "tag_object_id",
+    }
+    present = sorted(forbidden_payload_fields & set(payload))
+    if present:
+        errors.append(f"final inner receipt contains forbidden self/external binding: {present}")
+    expected: dict[str, Any] = {
+        "schema_version": "2.0.0",
+        "receipt_id": "RR-SC-GOV-INSTALL-RECEIPT-FINAL-001",
+        "source_package_id": SOURCE_PACKAGE_ID,
+        "source_zip_sha256": SOURCE_ZIP_SHA256,
+        "source_manifest_file_sha256": SOURCE_MANIFEST_FILE_SHA256,
+        "source_integrity_defect": SOURCE_INTEGRITY_DEFECT,
+        "change_set_id": CHANGE_SET_ID,
+        "base_commit": BASE_COMMIT,
+        "base_tree": BASE_TREE,
+        "base_canon_hash": BASE_CANON_HASH,
+        "implementation_candidate_commit": IMPLEMENTATION_CANDIDATE_COMMIT,
+        "implementation_candidate_tree": IMPLEMENTATION_CANDIDATE_TREE,
+        "implementation_owner_approval_id": IMPLEMENTATION_OWNER_APPROVAL_ID,
+        "implementation_accept_task_id": IMPLEMENTATION_ACCEPT_TASK_ID,
+        "implementation_accept_result": IMPLEMENTATION_ACCEPT_RESULT,
+        "implementation_accept_route_digest": IMPLEMENTATION_ACCEPT_ROUTE_DIGEST,
+        "proposed_canon_hash": BASE_CANON_HASH,
+        "previous_governance_merkle_root": PREVIOUS_GOVERNANCE_MERKLE_ROOT,
+        "new_activation_merkle_root": expected_new_merkle_root,
+        "approval_consumption_record_path": APPROVAL_CONSUMPTION_PATH.as_posix(),
+        "approval_consumption_record_sha256": expected_consumption_sha256,
+        "activation_binding": {
+            "strategy": ACTIVATION_BINDING_STRATEGY,
+            "authoritative_effect_requires_external_proof": True,
+        },
+    }
+    for field, value in expected.items():
+        if payload.get(field) != value:
+            errors.append(f"final inner receipt {field} mismatch")
+    return errors
+
+
+def validate_merkle_transition(
+    previous_manifest: Any,
+    current_manifest: Any,
+    transition: Any,
+) -> list[str]:
+    if not all(isinstance(value, dict) for value in (previous_manifest, current_manifest, transition)):
+        return ["Merkle transition inputs must be objects"]
+    errors: list[str] = []
+    previous_records = previous_manifest.get("records", [])
+    current_records = current_manifest.get("records", [])
+    if not isinstance(previous_records, list) or not isinstance(current_records, list):
+        return ["Merkle manifests must contain record arrays"]
+    previous = {
+        item.get("record_id"): item
+        for item in previous_records
+        if isinstance(item, dict)
+    }
+    current = {
+        item.get("record_id"): item
+        for item in current_records
+        if isinstance(item, dict)
+    }
+    if len(previous_records) != 135 or len(current_records) != 135:
+        errors.append("governance Merkle leaf count must remain exactly 135")
+    if set(previous) != set(current):
+        errors.append("governance Merkle record identity set drift")
+    changed_ids = sorted(
+        record_id
+        for record_id in set(previous) & set(current)
+        if previous[record_id].get("canonical_sha256")
+        != current[record_id].get("canonical_sha256")
+    )
+    if changed_ids != list(ACTIVATION_CHANGED_LEAF_IDS):
+        errors.append(f"unapproved Merkle semantic leaf transition: {changed_ids}")
+    previous_root = previous_manifest.get("merkle", {}).get("root")
+    current_root = current_manifest.get("merkle", {}).get("root")
+    if previous_root != PREVIOUS_GOVERNANCE_MERKLE_ROOT:
+        errors.append("previous governance Merkle root mismatch")
+    if transition.get("leaf_count") != 135:
+        errors.append("Merkle transition leaf_count drift")
+    if transition.get("previous_root") != previous_root:
+        errors.append("Merkle transition previous root mismatch")
+    if transition.get("new_root") != current_root:
+        errors.append("Merkle transition new root mismatch")
+    expected_diff = [
+        {
+            "record_id": record_id,
+            "old_canonical_sha256": previous[record_id]["canonical_sha256"],
+            "new_canonical_sha256": current[record_id]["canonical_sha256"],
+        }
+        for record_id in ACTIVATION_CHANGED_LEAF_IDS
+    ]
+    if transition.get("changed_leaves") != expected_diff:
+        errors.append("Merkle transition old/new leaf diff mismatch")
+    forbidden_types = {
+        "IMPLEMENTATION_APPROVAL_CONSUMPTION",
+        "IMPLEMENTATION_ACCEPT",
+        "FINAL_INNER_RECEIPT",
+        "ACTIVATION_OWNER_APPROVAL",
+        "ACTIVATION_ACCEPT",
+        "ACTIVATION_OUTER_ENVELOPE",
+    }
+    leaked = sorted(
+        item.get("record_id")
+        for item in current_records
+        if isinstance(item, dict)
+        and (
+            item.get("record_id") in forbidden_types
+            or item.get("record_type") in forbidden_types
+            or any(
+                token in str(item.get("source_path", "")).lower()
+                for token in ("approval", "receipt", "accept")
+            )
+        )
+    )
+    if leaked:
+        errors.append(f"approval/receipt/ACCEPT entered governance Merkle: {leaked}")
+    return errors
+
+
+def validate_activation_owner_approval(
+    approval: Any, expected: dict[str, Any]
+) -> list[str]:
+    if not isinstance(approval, dict):
+        return ["activation Owner approval must be an object"]
+    errors: list[str] = []
+    for field, value in expected.items():
+        if approval.get(field) != value:
+            errors.append(f"activation Owner approval {field} mismatch")
+    if approval.get("approval_id") == IMPLEMENTATION_OWNER_APPROVAL_ID:
+        errors.append("implementation approval ID cannot serve as activation approval")
+    if approval.get("approval_model") != "FULL_ACTIVATION_HASH_SET_REAPPROVAL_REQUIRED":
+        errors.append("activation Owner approval model mismatch")
+    if approval.get("approval_status") != "APPROVED":
+        errors.append("activation Owner approval status is not APPROVED")
+    if approval.get("single_use") is not True:
+        errors.append("activation Owner approval must be single-use")
+    if approval.get("transferable") is not False:
+        errors.append("activation Owner approval must be non-transferable")
+    if approval.get("consumed") is not False:
+        errors.append("activation Owner approval is already consumed")
+    if approval.get("revoked") is not False:
+        errors.append("activation Owner approval is revoked")
+    return errors
+
+
+def validate_activation_closeout_envelope(
+    envelope: Any, expected: dict[str, Any]
+) -> list[str]:
+    if not isinstance(envelope, dict):
+        return ["activation closeout envelope must be an object"]
+    payload = envelope.get("payload")
+    if not isinstance(payload, dict):
+        return ["activation closeout envelope payload must be an object"]
+    errors: list[str] = []
+    if envelope.get("payload_hash") != canonical_sha256(payload):
+        errors.append("activation closeout envelope payload hash mismatch")
+    for field, value in expected.items():
+        if payload.get(field) != value:
+            errors.append(f"activation closeout envelope {field} mismatch")
+    if payload.get("binding_strategy") != ACTIVATION_BINDING_STRATEGY:
+        errors.append("activation closeout envelope binding strategy mismatch")
+    if payload.get("tag_target_commit") != payload.get("activation_candidate_commit"):
+        errors.append("activation closeout envelope tag target commit mismatch")
+    if payload.get("tag_target_tree") != payload.get("activation_candidate_tree"):
+        errors.append("activation closeout envelope tag target tree mismatch")
+    if payload.get("activation_accept_result") != "PASS_FIXED_ACTIVATION_CANDIDATE_ACCEPTED":
+        errors.append("activation closeout envelope ACCEPT result mismatch")
+    if payload.get("accepted_candidate_commit") != payload.get("activation_candidate_commit"):
+        errors.append("activation ACCEPT candidate commit mismatch")
+    if payload.get("accepted_candidate_tree") != payload.get("activation_candidate_tree"):
+        errors.append("activation ACCEPT candidate tree mismatch")
+    if payload.get("producer_id") == payload.get("verifier_id"):
+        errors.append("builder self-accept is forbidden")
+    if payload.get("verifier_worktree_state") != "CLEAN":
+        errors.append("dirty verifier assumption is forbidden")
+    if payload.get("activation_candidate_parent") != IMPLEMENTATION_CANDIDATE_COMMIT:
+        errors.append("activation candidate lineage parent mismatch")
+    if payload.get("lineage_commit_count") != 1:
+        errors.append("activation candidate lineage must contain exactly one commit")
+    if payload.get("integration_mode") != "FAST_FORWARD_ONLY":
+        errors.append("activation integration must remain fast-forward-only")
+    return errors
+
+
+def authoritative_activation_status(
+    *,
+    tracked_target_state_active: bool,
+    activation_approval: Any | None,
+    expected_activation_approval: dict[str, Any],
+    envelope: Any | None,
+    expected_envelope: dict[str, Any],
+    integration: Any | None,
+) -> tuple[bool, list[str]]:
+    errors: list[str] = []
+    if not tracked_target_state_active:
+        errors.append("tracked target state is not ACTIVE")
+    if activation_approval is None:
+        errors.append("activation-specific Owner approval is missing")
+    else:
+        errors.extend(
+            validate_activation_owner_approval(
+                activation_approval, expected_activation_approval
+            )
+        )
+    if envelope is None:
+        errors.append("detached accepted activation envelope/tag is missing")
+    else:
+        errors.extend(validate_activation_closeout_envelope(envelope, expected_envelope))
+    if not isinstance(integration, dict):
+        errors.append("final fast-forward integration proof is missing")
+    else:
+        if integration.get("integrated") is not True:
+            errors.append("activation candidate is not integrated")
+        if integration.get("mode") != "FAST_FORWARD_ONLY":
+            errors.append("activation integration proof is not fast-forward-only")
+        expected_commit = expected_envelope.get("activation_candidate_commit")
+        expected_tree = expected_envelope.get("activation_candidate_tree")
+        if integration.get("commit") != expected_commit:
+            errors.append("integrated activation commit mismatch")
+        if integration.get("tree") != expected_tree:
+            errors.append("integrated activation tree mismatch")
+    return not errors, errors
 
 
 def validate_m3_route_request(

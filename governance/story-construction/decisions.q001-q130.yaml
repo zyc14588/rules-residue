@@ -3,7 +3,7 @@
   "authority_scope": "CONSTRUCTION_GOVERNANCE_ONLY",
   "r2_canon_precedence": "HIGHER",
   "source_package": "RR-SC-GOV-V2-Q001-Q130",
-  "source_status": "FROZEN_BY_OWNER_QA_REPOSITORY_BINDING_CANDIDATE",
+  "source_status": "FROZEN_BY_OWNER_QA_BOUND_TO_REPOSITORY",
   "change_set_id": "CS-R2-SC-GOV-INSTALL-001",
   "decision_count": 130,
   "decisions": [

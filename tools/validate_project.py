@@ -998,7 +998,7 @@ def main() -> int:
     print("- hybrid Codex/OpenCode/DeepSeek Harness/Grok workflow: PASS")
     print("- Codex progressive-disclosure route infrastructure: PASS")
     print("- R2 authority installation and progressive-delivery registry: PASS")
-    print("- Story Construction Governance candidate gates: PASS")
+    print("- Story Construction Governance tracked-active/fail-closed gates: PASS")
     print("- originality and release block: PASS")
     print("- package lock: PASS")
     return 0

@@ -1,0 +1,53 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://rules-residue.invalid/schemas/story-construction/activation-closeout-envelope-v1.schema.json",
+  "title": "Story Construction Detached Accepted Activation Envelope",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "envelope_kind", "payload", "payload_hash"],
+  "properties": {
+    "schema_version": {"const": "1.0.0"},
+    "envelope_kind": {"const": "DETACHED_ACCEPTED_ACTIVATION_ENVELOPE"},
+    "payload": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "envelope_id", "change_set_id", "binding_strategy", "activation_candidate_commit",
+        "activation_candidate_tree", "activation_candidate_parent", "tag_name",
+        "tag_target_commit", "tag_target_tree", "final_inner_receipt_path",
+        "final_inner_receipt_file_sha256", "final_inner_receipt_payload_hash",
+        "activation_owner_approval_id", "activation_owner_approval_sha256",
+        "activation_accept_task_id", "activation_accept_result", "activation_accept_route_digest",
+        "accepted_candidate_commit", "accepted_candidate_tree", "producer_id", "verifier_id",
+        "verifier_worktree_state", "lineage_commit_count", "integration_mode"
+      ],
+      "properties": {
+        "envelope_id": {"type": "string", "minLength": 1},
+        "change_set_id": {"const": "CS-R2-SC-GOV-INSTALL-001"},
+        "binding_strategy": {"const": "DETACHED_ANNOTATED_TAG_EXACT_COMMIT_TREE"},
+        "activation_candidate_commit": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+        "activation_candidate_tree": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+        "activation_candidate_parent": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+        "tag_name": {"type": "string", "minLength": 1},
+        "tag_target_commit": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+        "tag_target_tree": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+        "final_inner_receipt_path": {"const": "governance/story-construction/receipts/installation-receipt.final.json"},
+        "final_inner_receipt_file_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "final_inner_receipt_payload_hash": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "activation_owner_approval_id": {"type": "string", "minLength": 1},
+        "activation_owner_approval_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "activation_accept_task_id": {"type": "string", "minLength": 1},
+        "activation_accept_result": {"const": "PASS_FIXED_ACTIVATION_CANDIDATE_ACCEPTED"},
+        "activation_accept_route_digest": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "accepted_candidate_commit": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+        "accepted_candidate_tree": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+        "producer_id": {"type": "string", "minLength": 1},
+        "verifier_id": {"type": "string", "minLength": 1},
+        "verifier_worktree_state": {"const": "CLEAN"},
+        "lineage_commit_count": {"const": 1},
+        "integration_mode": {"const": "FAST_FORWARD_ONLY"}
+      }
+    },
+    "payload_hash": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+  }
+}

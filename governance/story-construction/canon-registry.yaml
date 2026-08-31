@@ -1,6 +1,7 @@
 {
   "schema_version": "rules-residue.story-construction.canon-registry/1.0.0",
   "registry_kind": "INDEX_GOVERNANCE_VALIDATION_LAYER",
+  "framework_status": "ACTIVE",
   "authority_scope": "CONSTRUCTION_GOVERNANCE_ONLY",
   "r2_canon_precedence": "HIGHER",
   "write_policy": "NO_REVERSE_WRITE_TO_AUTHORITATIVE_SOURCES",

@@ -1,6 +1,10 @@
 {
   "schema_version": "rules-residue.story-construction.supersession/1.0.0",
   "manifest_id": "R2-SC-GOV-SUPERSESSION-001",
+  "effective_candidate_commit": "7305a9decacf4a6361692fe9359a1afa96801722",
+  "effective_candidate_tree": "e5969a0464a7e73d7d1da546da83afea9015fdba",
+  "effective_state": "ACTIVE",
+  "release": "NOT_RELEASED",
   "source_commit": "e90a717d3863e4fb0e5e1a0fcc01661f24d2157d",
   "source_tree": "7a1ce74ad0b82c7c288b94c47c966028e916137d",
   "discovery_binding": {"result":"PASS_SUPERSESSION_TARGET_RESOLVED","reading_map_digest":"95a9774e317b5aebcc8bad50849c66b2d7cf7882c7c0446dc67738937645cb5e","evidence_set_digest":"9a112d9e805c58f3766b559c3a8122fe3cee80264e3399ad58c845427c11f6ef"},

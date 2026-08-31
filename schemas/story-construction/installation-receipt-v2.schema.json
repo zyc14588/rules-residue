@@ -1,0 +1,60 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://rules-residue.invalid/schemas/story-construction/installation-receipt-v2.schema.json",
+  "title": "Story Construction Tracked Inner Activation Receipt",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "receipt_kind", "outer_envelope_schema", "payload", "payload_hash"],
+  "properties": {
+    "schema_version": {"const": "2.0.0"},
+    "receipt_kind": {"const": "TRACKED_INNER_ACTIVATION_RECEIPT"},
+    "outer_envelope_schema": {"const": "schemas/story-construction/activation-closeout-envelope-v1.schema.json"},
+    "payload": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schema_version", "receipt_id", "source_package_id", "source_zip_sha256",
+        "source_manifest_file_sha256", "source_integrity_defect", "change_set_id",
+        "base_commit", "base_tree", "base_canon_hash", "implementation_candidate_commit",
+        "implementation_candidate_tree", "implementation_owner_approval_id",
+        "implementation_accept_task_id", "implementation_accept_result",
+        "implementation_accept_route_digest", "proposed_canon_hash",
+        "previous_governance_merkle_root", "new_activation_merkle_root",
+        "approval_consumption_record_path", "approval_consumption_record_sha256",
+        "activation_binding"
+      ],
+      "properties": {
+        "schema_version": {"const": "2.0.0"},
+        "receipt_id": {"const": "RR-SC-GOV-INSTALL-RECEIPT-FINAL-001"},
+        "source_package_id": {"const": "RR-SC-GOV-V2-Q001-Q130"},
+        "source_zip_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "source_manifest_file_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "source_integrity_defect": {"const": "CIRCULAR_MANIFEST_METADATA_BINDING"},
+        "change_set_id": {"const": "CS-R2-SC-GOV-INSTALL-001"},
+        "base_commit": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+        "base_tree": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+        "base_canon_hash": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "implementation_candidate_commit": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+        "implementation_candidate_tree": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+        "implementation_owner_approval_id": {"type": "string", "minLength": 1},
+        "implementation_accept_task_id": {"const": "R2-SC-GOV-INSTALL-001-ACCEPT-001"},
+        "implementation_accept_result": {"const": "PASS_FIXED_CANDIDATE_ACCEPTED"},
+        "implementation_accept_route_digest": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "proposed_canon_hash": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "previous_governance_merkle_root": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "new_activation_merkle_root": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "approval_consumption_record_path": {"const": "governance/story-construction/approvals/OWNER-APPROVAL-R2-SC-GOV-INSTALL-001-CANDIDATE-7305A9DE-R1.consumption.json"},
+        "approval_consumption_record_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "activation_binding": {
+          "type": "object", "additionalProperties": false,
+          "required": ["strategy", "authoritative_effect_requires_external_proof"],
+          "properties": {
+            "strategy": {"const": "DETACHED_ANNOTATED_TAG_EXACT_COMMIT_TREE"},
+            "authoritative_effect_requires_external_proof": {"const": true}
+          }
+        }
+      }
+    },
+    "payload_hash": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+  }
+}

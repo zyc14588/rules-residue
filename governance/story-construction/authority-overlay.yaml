@@ -2,10 +2,21 @@
   "schema_version": "rules-residue.story-construction.authority-overlay/1.0.0",
   "authority_scope": "CONSTRUCTION_GOVERNANCE_ONLY",
   "r2_canon_precedence": "HIGHER",
+  "story_construction_governance_status": "ACTIVE",
+  "activation_state": {
+    "tracked_target_state": "TRACKED_TARGET_STATE_ACTIVE",
+    "authoritative_activation_effective": false,
+    "required_external_proofs": [
+      "ACTIVATION_SPECIFIC_OWNER_FULL_HASH_APPROVAL",
+      "PASS_FIXED_ACTIVATION_CANDIDATE_ACCEPTED",
+      "VALID_DETACHED_ACCEPTED_ACTIVATION_ENVELOPE_TAG",
+      "FINAL_FAST_FORWARD_INTEGRATION"
+    ]
+  },
   "hierarchy": [
     {"rank":1,"authority":"R2_CANON","source":"governance/r2/decisions.r2.yaml","status":"FROZEN"},
     {"rank":2,"authority":"EXISTING_GIT_AUTHORING_CANON","source":"authoring/**","status":"R2_SUBORDINATE_AUTHORING_SOURCE"},
-    {"rank":3,"authority":"STORY_CONSTRUCTION_GOVERNANCE","source":"governance/story-construction/**","status":"CANDIDATE_PENDING_OWNER_HASH_APPROVAL"},
+    {"rank":3,"authority":"STORY_CONSTRUCTION_GOVERNANCE","source":"governance/story-construction/**","status":"ACTIVE"},
     {"rank":4,"authority":"WORKER_CANDIDATES","source":"workflow/returns/**","status":"NON_AUTHORITATIVE_UNTIL_VALIDATED"}
   ],
   "canon_tiers": {"T1":"ROOT_CANON_OWNER_APPROVAL_REQUIRED","T2":"STRUCTURAL_CANON_OWNER_APPROVAL_REQUIRED","T3":"INSTANCE_CANON_WITHIN_APPROVED_ENVELOPE"},

@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://rules-residue.invalid/schemas/story-construction/owner-approval-consumption-v1.schema.json",
+  "title": "Story Construction Owner Approval Consumption",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version", "approval_id", "change_set_id", "base_commit", "base_tree",
+    "base_canon_hash", "candidate_commit", "candidate_tree", "proposed_canon_hash",
+    "implementation_merkle_root", "receipt_candidate_payload_hash", "approval",
+    "single_use", "transferable", "revoked", "consumption_count", "consumption_event",
+    "consumption_result", "accepted_candidate_commit", "accepted_candidate_tree",
+    "accept_route_digest", "owner_approval_transport_sha256", "consumed"
+  ],
+  "properties": {
+    "schema_version": {"const": "1.0.0"},
+    "approval_id": {"const": "OWNER-APPROVAL-R2-SC-GOV-INSTALL-001-CANDIDATE-7305A9DE-R1"},
+    "change_set_id": {"const": "CS-R2-SC-GOV-INSTALL-001"},
+    "base_commit": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+    "base_tree": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+    "base_canon_hash": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "candidate_commit": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+    "candidate_tree": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+    "proposed_canon_hash": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "implementation_merkle_root": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "receipt_candidate_payload_hash": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "approval": {"const": "OWNER_HASH_APPROVED_FOR_INDEPENDENT_ACCEPT"},
+    "single_use": {"const": true},
+    "transferable": {"const": false},
+    "revoked": {"const": false},
+    "consumption_count": {"const": 1},
+    "consumption_event": {"const": "R2-SC-GOV-INSTALL-001-ACCEPT-001"},
+    "consumption_result": {"const": "PASS_FIXED_CANDIDATE_ACCEPTED"},
+    "accepted_candidate_commit": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+    "accepted_candidate_tree": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+    "accept_route_digest": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "owner_approval_transport_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "consumed": {"const": true}
+  }
+}

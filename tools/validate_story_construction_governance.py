@@ -1,8 +1,10 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import re
+import subprocess
 import sys
 from pathlib import Path
 from typing import Any
@@ -14,15 +16,24 @@ from tools.codex_route import RouteError, generate_reading_map, validate_request
 from tools.lib.common import PROJECT_ROOT, read_json, runtime_relative_paths
 from tools.lib.schema_subset import validate
 from tools.story_construction import (
+    ACTIVATION_CHANGED_LEAF_IDS,
+    APPROVAL_CONSUMPTION_PATH,
     AUTHORITY_OVERLAY_PATH,
+    BASE_CANON_HASH,
     BASE_COMMIT,
     BASE_TREE,
+    CANONICAL_DECISIONS_SHA256,
     CANONICAL_DECISIONS_PATH,
     CANONICAL_MANIFEST_PATH,
     CANON_REGISTRY_PATH,
     CHANGE_SET_ID,
     CHANGE_SET_PATH,
     DECISIONS_PATH,
+    FINAL_RECEIPT_PATH,
+    IMPLEMENTATION_CANDIDATE_COMMIT,
+    IMPLEMENTATION_CANDIDATE_PARENT,
+    IMPLEMENTATION_CANDIDATE_TREE,
+    PREVIOUS_GOVERNANCE_MERKLE_ROOT,
     RECEIPT_PATH,
     SOURCE_INTAKE_PATH,
     SOURCE_INTEGRITY_DEFECT,
@@ -32,11 +43,19 @@ from tools.story_construction import (
     SOURCE_ZIP_SHA256,
     SUPERSESSION_PATH,
     TRACEABILITY_PATH,
+    authoritative_activation_status,
     canonical_decision_document,
     canonical_sha256,
     derive_installation,
     expected_question_ids,
+    file_sha256,
     read_json_document,
+    tracked_target_state_active,
+    validate_canon_hash_invariants,
+    validate_final_receipt_binding,
+    validate_implementation_approval_consumption,
+    validate_lifecycle_state,
+    validate_merkle_transition,
     validate_task_packet_pairing,
     validate_m3_route_request,
     validate_canonical_manifest_binding,
@@ -47,10 +66,13 @@ from tools.story_construction import (
 
 SCHEMA_ROOT = Path("schemas/story-construction")
 SCHEMA_FILES = {
+    "activation-closeout-envelope-v1.schema.json",
+    "activation-owner-approval-v1.schema.json",
     "canon-record-v1.schema.json",
     "reveal-contract-v1.schema.json",
     "canon-envelope-v1.schema.json",
     "change-set-v1.schema.json",
+    "change-set-v2.schema.json",
     "region-dossier-v1.schema.json",
     "text-order-v1.schema.json",
     "visual-order-v1.schema.json",
@@ -58,6 +80,8 @@ SCHEMA_FILES = {
     "region-acceptance-v1.schema.json",
     "canonical-manifest-v1.schema.json",
     "installation-receipt-v1.schema.json",
+    "installation-receipt-v2.schema.json",
+    "owner-approval-consumption-v1.schema.json",
     "candidate-approval-v1.schema.json",
 }
 
@@ -101,6 +125,10 @@ ROUTE_IDENTITIES = {
         "M3-STORY-CONSTRUCTION-REPAIR",
         "REPAIR",
     ),
+    ".codex/routes/m3-story-construction-activation-closeout-accept-request.json": (
+        "R2-SC-GOV-INSTALL-ACTIVATION-CLOSEOUT-ACCEPT",
+        "ACCEPT",
+    ),
 }
 
 AGENT_FILES = [
@@ -131,7 +159,10 @@ REQUIRED_FILES = (
         CANONICAL_DECISIONS_PATH.as_posix(),
         CANONICAL_MANIFEST_PATH.as_posix(),
         RECEIPT_PATH.as_posix(),
+        FINAL_RECEIPT_PATH.as_posix(),
+        APPROVAL_CONSUMPTION_PATH.as_posix(),
         "governance/story-construction/approvals/candidate-approval.template.json",
+        "tests/fixtures/story-construction/lifecycle-state-v1.json",
         "workflow/examples/m3-literary-task-packet.json",
         "workflow/examples/m3-visual-order-task-packet.json",
         "tools/story_construction.py",
@@ -168,10 +199,41 @@ EXPECTED_SUPERSESSION_DISPOSITIONS = {
 }
 
 EXPECTED_M2_BLOCKERS = ["R2-INT-011", "R2-INT-012", "DEFER-R2-C14-001"]
+V1_SCHEMA_SHA256 = {
+    "candidate-approval-v1.schema.json": "f317758d3eee1518b1921436643deb84b573d89aa28808617f7b487dc3885ab7",
+    "change-set-v1.schema.json": "e0aa88c72e9b6b792740acfadbaf61f458fcee102bf5955c442fba1ad1b42dd0",
+    "installation-receipt-v1.schema.json": "2273e43d9e4a6876c4deccd24f91f119eb11cbfce536320e6f42084ab53e727e",
+}
 OLD_PREDECESSORS = {
     ".codex/STORY_ARCHITECTURE_BUILD_PROMPT.md",
     ".codex/STORY_UPDATE_PROMPT.md",
     "docs/operations/PROMPT_USAGE.md",
+}
+APPROVED_ACTIVATION_PATHS = {
+    "README.md",
+    "docs/governance/story-construction/00_AUTHORITY_AND_PRECEDENCE.md",
+    "docs/governance/story-construction/02_CHANGE_SET_AND_LIFECYCLE.md",
+    "docs/governance/story-construction/03_CANON_REGISTRY.md",
+    "docs/governance/story-construction/09_DAB_AND_ACCEPTANCE.md",
+    AUTHORITY_OVERLAY_PATH.as_posix(),
+    CANON_REGISTRY_PATH.as_posix(),
+    DECISIONS_PATH.as_posix(),
+    SUPERSESSION_PATH.as_posix(),
+    CHANGE_SET_PATH.as_posix(),
+    CANONICAL_MANIFEST_PATH.as_posix(),
+    "tools/story_construction.py",
+    "tools/validate_story_construction_governance.py",
+    "tools/validate_project.py",
+    "tests/test_story_construction_governance.py",
+    APPROVAL_CONSUMPTION_PATH.as_posix(),
+    FINAL_RECEIPT_PATH.as_posix(),
+    "schemas/story-construction/change-set-v2.schema.json",
+    "schemas/story-construction/installation-receipt-v2.schema.json",
+    "schemas/story-construction/owner-approval-consumption-v1.schema.json",
+    "schemas/story-construction/activation-owner-approval-v1.schema.json",
+    "schemas/story-construction/activation-closeout-envelope-v1.schema.json",
+    "tests/fixtures/story-construction/lifecycle-state-v1.json",
+    ".codex/routes/m3-story-construction-activation-closeout-accept-request.json",
 }
 
 
@@ -210,6 +272,9 @@ def _check_schemas(root: Path, errors: list[str]) -> dict[str, dict[str, Any]]:
         )
     for name in sorted(SCHEMA_FILES):
         path = root / SCHEMA_ROOT / name
+        frozen_digest = V1_SCHEMA_SHA256.get(name)
+        if frozen_digest is not None and file_sha256(path) != frozen_digest:
+            errors.append(f"{name}: frozen v1 schema bytes changed")
         try:
             schema = read_json(path)
         except (OSError, json.JSONDecodeError) as exc:
@@ -277,6 +342,8 @@ def _check_decisions_and_traceability(root: Path, errors: list[str]) -> None:
     trace = _load(root / TRACEABILITY_PATH, errors, "Q001-Q130 traceability")
     if not isinstance(decisions, dict) or not isinstance(trace, dict):
         return
+    if decisions.get("source_status") != "FROZEN_BY_OWNER_QA_BOUND_TO_REPOSITORY":
+        errors.append("Q001-Q130 repository binding is not active/bound")
     records = decisions.get("decisions")
     entries = trace.get("entries")
     if not isinstance(records, list) or not isinstance(entries, list):
@@ -338,6 +405,29 @@ def _check_authority_and_supersession(root: Path, errors: list[str]) -> None:
             errors.append("OpenCode script-only role was not preserved")
         if roles.get("deepseek_harness") != ["OFFICIAL_LITERARY_TEXT_WORKER"]:
             errors.append("DeepSeek literary worker role drift")
+        hierarchy = overlay.get("hierarchy", [])
+        story_layer = next(
+            (
+                item
+                for item in hierarchy
+                if isinstance(item, dict)
+                and item.get("authority") == "STORY_CONSTRUCTION_GOVERNANCE"
+            ),
+            {},
+        )
+        if overlay.get("story_construction_governance_status") != "ACTIVE" or story_layer.get("status") != "ACTIVE":
+            errors.append("active authority overlay still represents pending governance")
+        if overlay.get("activation_state") != {
+            "tracked_target_state": "TRACKED_TARGET_STATE_ACTIVE",
+            "authoritative_activation_effective": False,
+            "required_external_proofs": [
+                "ACTIVATION_SPECIFIC_OWNER_FULL_HASH_APPROVAL",
+                "PASS_FIXED_ACTIVATION_CANDIDATE_ACCEPTED",
+                "VALID_DETACHED_ACCEPTED_ACTIVATION_ENVELOPE_TAG",
+                "FINAL_FAST_FORWARD_INTEGRATION",
+            ],
+        }:
+            errors.append("authority overlay activation proof separation drift")
     if isinstance(registry, dict):
         if registry.get("registry_kind") != "INDEX_GOVERNANCE_VALIDATION_LAYER" or registry.get("parallel_authoring_root") is not False:
             errors.append("Canon Registry must be an index layer, not a parallel root")
@@ -346,7 +436,18 @@ def _check_authority_and_supersession(root: Path, errors: list[str]) -> None:
             errors.append("Canon Registry sources must be explicit and lexically ordered")
         elif any(not (path.startswith("authoring/") or path == "governance/r2/decisions.r2.yaml") for path in paths):
             errors.append("Canon Registry points outside existing R2/authoring authority")
+        if registry.get("framework_status") != "ACTIVE":
+            errors.append("active Canon Registry still represents candidate framework")
     if isinstance(supersession, dict):
+        expected_effective = {
+            "effective_candidate_commit": IMPLEMENTATION_CANDIDATE_COMMIT,
+            "effective_candidate_tree": IMPLEMENTATION_CANDIDATE_TREE,
+            "effective_state": "ACTIVE",
+            "release": "NOT_RELEASED",
+        }
+        for field, value in expected_effective.items():
+            if supersession.get(field) != value:
+                errors.append(f"supersession active binding drift: {field}")
         discovery = supersession.get("discovery_binding", {})
         if discovery.get("reading_map_digest") != "95a9774e317b5aebcc8bad50849c66b2d7cf7882c7c0446dc67738937645cb5e" or discovery.get("evidence_set_digest") != "9a112d9e805c58f3766b559c3a8122fe3cee80264e3399ad58c845427c11f6ef":
             errors.append("supersession discovery binding drift")
@@ -383,6 +484,147 @@ def _check_authority_and_supersession(root: Path, errors: list[str]) -> None:
             errors.append("historical external alias path/hash was fabricated or drifted")
 
 
+def _git_output(root: Path, args: list[str], errors: list[str], label: str) -> str | None:
+    result = subprocess.run(
+        ["git", "-C", str(root), *args],
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    if result.returncode != 0:
+        errors.append(f"{label}: git command failed: {result.stderr.strip()}")
+        return None
+    return result.stdout.strip()
+
+
+def _git_show_bytes(
+    root: Path, revision: str, relative: Path, errors: list[str], label: str
+) -> bytes | None:
+    result = subprocess.run(
+        ["git", "-C", str(root), "show", f"{revision}:{relative.as_posix()}"],
+        capture_output=True,
+        check=False,
+    )
+    if result.returncode != 0:
+        errors.append(f"{label}: cannot read fixed Git object")
+        return None
+    return result.stdout
+
+
+def _git_show_json(
+    root: Path, revision: str, relative: Path, errors: list[str], label: str
+) -> Any | None:
+    data = _git_show_bytes(root, revision, relative, errors, label)
+    if data is None:
+        return None
+    try:
+        return json.loads(data.decode("utf-8"))
+    except (UnicodeError, json.JSONDecodeError) as exc:
+        errors.append(f"{label}: fixed Git object is invalid JSON: {exc}")
+        return None
+
+
+def _check_implementation_candidate_identity(root: Path, errors: list[str]) -> None:
+    tree = _git_output(
+        root,
+        ["rev-parse", f"{IMPLEMENTATION_CANDIDATE_COMMIT}^{{tree}}"],
+        errors,
+        "implementation candidate tree",
+    )
+    parent = _git_output(
+        root,
+        ["rev-parse", f"{IMPLEMENTATION_CANDIDATE_COMMIT}^"],
+        errors,
+        "implementation candidate parent",
+    )
+    count = _git_output(
+        root,
+        [
+            "rev-list",
+            "--count",
+            f"{IMPLEMENTATION_CANDIDATE_PARENT}..{IMPLEMENTATION_CANDIDATE_COMMIT}",
+        ],
+        errors,
+        "implementation candidate lineage",
+    )
+    if tree is not None and tree != IMPLEMENTATION_CANDIDATE_TREE:
+        errors.append("accepted implementation candidate tree identity mismatch")
+    if parent is not None and parent != IMPLEMENTATION_CANDIDATE_PARENT:
+        errors.append("accepted implementation candidate parent identity mismatch")
+    if count is not None and count != "1":
+        errors.append("accepted implementation candidate lineage is not exactly one commit")
+
+
+def validate_activation_changed_paths(changed: set[str]) -> list[str]:
+    errors: list[str] = []
+    outside = sorted(changed - APPROVED_ACTIVATION_PATHS)
+    if outside:
+        errors.append(f"activation changed paths exceed approved scope: {outside}")
+    forbidden_prefixes = (
+        "game-package/",
+        "authoring/",
+        "governance/r2/",
+        "schemas/r2/",
+        ".codex/state/",
+        ".codex/plans/m2-vertical-slice/",
+        "docs/implementation/m2/",
+        "reports/m2/",
+        "tests/m2/probes/",
+        "TRPG_PLATFORM/",
+    )
+    forbidden_exact = {
+        "governance/decisions.json",
+        SOURCE_INTAKE_PATH.as_posix(),
+        TRACEABILITY_PATH.as_posix(),
+        CANONICAL_DECISIONS_PATH.as_posix(),
+        RECEIPT_PATH.as_posix(),
+        "governance/story-construction/approvals/candidate-approval.template.json",
+        "schemas/story-construction/change-set-v1.schema.json",
+        "schemas/story-construction/installation-receipt-v1.schema.json",
+        "schemas/story-construction/candidate-approval-v1.schema.json",
+    }
+    forbidden = sorted(
+        path
+        for path in changed
+        if path in forbidden_exact or path.startswith(forbidden_prefixes)
+    )
+    if forbidden:
+        errors.append(f"activation modified forbidden preservation paths: {forbidden}")
+    return errors
+
+
+def _check_activation_git_scope(root: Path, errors: list[str]) -> None:
+    changed_output = _git_output(
+        root,
+        ["diff", "--name-only", IMPLEMENTATION_CANDIDATE_COMMIT, "--"],
+        errors,
+        "activation changed paths",
+    )
+    status_output = _git_output(
+        root,
+        ["status", "--porcelain", "--untracked-files=all"],
+        errors,
+        "activation worktree status",
+    )
+    changed = set(changed_output.splitlines()) if changed_output else set()
+    if status_output:
+        for line in status_output.splitlines():
+            if line.startswith("?? "):
+                changed.add(line[3:])
+    errors.extend(validate_activation_changed_paths(changed))
+    head = _git_output(root, ["rev-parse", "HEAD"], errors, "activation HEAD")
+    if head is not None and head != IMPLEMENTATION_CANDIDATE_COMMIT:
+        parent = _git_output(root, ["rev-parse", "HEAD^"], errors, "activation parent")
+        count = _git_output(
+            root,
+            ["rev-list", "--count", f"{IMPLEMENTATION_CANDIDATE_COMMIT}..HEAD"],
+            errors,
+            "activation lineage count",
+        )
+        if parent != IMPLEMENTATION_CANDIDATE_COMMIT or count != "1":
+            errors.append("activation lineage is non-FF, rebased, amended, or multi-commit")
+
+
 def _check_derived_and_instances(
     root: Path,
     schemas: dict[str, dict[str, Any]],
@@ -393,44 +635,179 @@ def _check_derived_and_instances(
     except (OSError, UnicodeError, json.JSONDecodeError, ValueError) as exc:
         errors.append(f"cannot derive deterministic Story Construction installation: {exc}")
         return
+    if expected.get("tracked_target_state_active") is not True:
+        errors.append("repository does not express TRACKED_TARGET_STATE_ACTIVE")
     pairs = (
         (CANONICAL_DECISIONS_PATH, expected["canonical_decisions"]),
         (CANONICAL_MANIFEST_PATH, expected["canonical_manifest"]),
-        (RECEIPT_PATH, expected["receipt"]),
+        (FINAL_RECEIPT_PATH, expected["receipt"]),
     )
     for relative, value in pairs:
         actual = _load(root / relative, errors, relative.as_posix())
         if actual is not None and actual != value:
             errors.append(f"derived artifact is stale or non-deterministic: {relative.as_posix()}")
     manifest = _load(root / CANONICAL_MANIFEST_PATH, errors, "canonical manifest")
-    receipt = _load(root / RECEIPT_PATH, errors, "installation receipt")
+    pending_receipt = _load(root / RECEIPT_PATH, errors, "pending installation receipt")
+    receipt = _load(root / FINAL_RECEIPT_PATH, errors, "final inner receipt")
     change_set = _load(root / CHANGE_SET_PATH, errors, "change set")
+    consumption = _load(root / APPROVAL_CONSUMPTION_PATH, errors, "implementation approval consumption")
     approval = _load(root / "governance/story-construction/approvals/candidate-approval.template.json", errors, "candidate approval template")
+    fixture = _load(
+        root / "tests/fixtures/story-construction/lifecycle-state-v1.json",
+        errors,
+        "lifecycle state fixture",
+    )
     if isinstance(manifest, dict):
         _schema_instance(manifest, schemas.get("canonical-manifest-v1.schema.json"), "canonical manifest", errors)
         errors.extend(validate_canonical_manifest_binding(manifest))
+        if manifest.get("canon", {}).get("base_canon_hash") != BASE_CANON_HASH or manifest.get("canon", {}).get("proposed_canon_hash") != BASE_CANON_HASH:
+            errors.append("Canon hash invariant drift during activation")
+        if len(manifest.get("records", [])) != 135:
+            errors.append("active canonical manifest must contain exactly 135 Merkle leaves")
+    if isinstance(pending_receipt, dict):
+        _schema_instance(
+            pending_receipt,
+            schemas.get("installation-receipt-v1.schema.json"),
+            "immutable pending installation receipt",
+            errors,
+        )
+        errors.extend(validate_pending_receipt_binding(pending_receipt))
+        if pending_receipt.get("payload_hash") != "5d348a937de063ba66922258c54a8bfc4a83fc3539d559916afb7f6a9bb2fb9e":
+            errors.append("immutable implementation pending receipt payload hash drift")
     if isinstance(receipt, dict):
-        _schema_instance(receipt, schemas.get("installation-receipt-v1.schema.json"), "installation receipt", errors)
-        errors.extend(validate_pending_receipt_binding(receipt))
+        _schema_instance(
+            receipt,
+            schemas.get("installation-receipt-v2.schema.json"),
+            "final inner receipt",
+            errors,
+        )
+        errors.extend(
+            validate_final_receipt_binding(
+                receipt,
+                expected_new_merkle_root=expected["merkle_root"],
+                expected_consumption_sha256=file_sha256(root / APPROVAL_CONSUMPTION_PATH),
+            )
+        )
+    if isinstance(consumption, dict):
+        _schema_instance(
+            consumption,
+            schemas.get("owner-approval-consumption-v1.schema.json"),
+            "implementation approval consumption",
+            errors,
+        )
+        errors.extend(validate_implementation_approval_consumption(consumption))
     if isinstance(change_set, dict):
-        _schema_instance(change_set, schemas.get("change-set-v1.schema.json"), "change set", errors)
+        _schema_instance(change_set, schemas.get("change-set-v2.schema.json"), "active change set", errors)
+        errors.extend(validate_lifecycle_state(change_set))
         expected_hashes = {
             "base_canon_hash": expected["base_canon_hash"],
             "proposed_canon_hash": expected["proposed_canon_hash"],
             "merkle_root": expected["merkle_root"],
-            "receipt_candidate_payload_hash": expected["receipt_payload_hash"],
+            "previous_governance_merkle_root": PREVIOUS_GOVERNANCE_MERKLE_ROOT,
+            "final_inner_receipt_payload_hash": expected["receipt_payload_hash"],
+            "approval_consumption_record_sha256": file_sha256(
+                root / APPROVAL_CONSUMPTION_PATH
+            ),
         }
         for field, value in expected_hashes.items():
             if change_set.get(field) != value:
                 errors.append(f"change set {field} is stale")
-        if change_set.get("candidate_binding") != {"strategy":"EXACT_HEAD_AT_VALIDATION","candidate_commit":None,"candidate_tree":None}:
-            errors.append("tracked Change Set self-references/fabricates candidate identity")
-        if change_set.get("approval_status") != "PENDING_OWNER_HASH_APPROVAL":
-            errors.append("installation candidate approval must remain pending")
-        if change_set.get("lifecycle_stage") != "CANDIDATE" or change_set.get("disposition") != "CANDIDATE_NOT_ACTIVE":
-            errors.append("installation candidate was represented as active or outside CANDIDATE lifecycle")
+        if change_set.get("implementation_candidate_binding") != {
+            "strategy": "EXACT_ACCEPTED_IMPLEMENTATION_CANDIDATE",
+            "candidate_commit": IMPLEMENTATION_CANDIDATE_COMMIT,
+            "candidate_tree": IMPLEMENTATION_CANDIDATE_TREE,
+        }:
+            errors.append("active Change Set implementation candidate binding drift")
+        if change_set.get("merkle_transition") != expected.get("merkle_transition"):
+            errors.append("active Change Set Merkle transition is stale")
     if isinstance(approval, dict):
         _schema_instance(approval, schemas.get("candidate-approval-v1.schema.json"), "candidate approval template", errors)
+    if isinstance(fixture, dict):
+        candidate = fixture.get("candidate_change_set")
+        _schema_instance(
+            candidate,
+            schemas.get("change-set-v1.schema.json"),
+            "v1 Candidate fixture",
+            errors,
+        )
+        errors.extend(f"v1 Candidate fixture: {item}" for item in validate_lifecycle_state(candidate))
+        active_fixture_path = fixture.get("active_change_set_fixture_path")
+        if active_fixture_path != CHANGE_SET_PATH.as_posix():
+            errors.append("v2 Active fixture path drift")
+        else:
+            _schema_instance(
+                change_set,
+                schemas.get("change-set-v2.schema.json"),
+                "v2 Active fixture",
+                errors,
+            )
+            errors.extend(
+                f"v2 Active fixture: {item}"
+                for item in validate_lifecycle_state(change_set)
+            )
+        mixed = fixture.get("invalid_mixed_states", [])
+        if not isinstance(mixed, list) or len(mixed) < 3:
+            errors.append("lifecycle fixture must contain Candidate/Active/RELEASED mixed attacks")
+        else:
+            for index, state in enumerate(mixed):
+                if not validate_lifecycle_state(state):
+                    errors.append(f"mixed lifecycle fixture unexpectedly accepted: {index}")
+
+    previous_manifest = _git_show_json(
+        root,
+        IMPLEMENTATION_CANDIDATE_COMMIT,
+        CANONICAL_MANIFEST_PATH,
+        errors,
+        "implementation canonical manifest",
+    )
+    if isinstance(previous_manifest, dict) and isinstance(manifest, dict) and isinstance(change_set, dict):
+        errors.extend(
+            validate_merkle_transition(
+                previous_manifest,
+                manifest,
+                change_set.get("merkle_transition"),
+            )
+        )
+
+    candidate_decision_bytes = _git_show_bytes(
+        root,
+        IMPLEMENTATION_CANDIDATE_COMMIT,
+        CANONICAL_DECISIONS_PATH,
+        errors,
+        "implementation canonical decisions",
+    )
+    if candidate_decision_bytes is not None:
+        current_bytes = (root / CANONICAL_DECISIONS_PATH).read_bytes()
+        if current_bytes != candidate_decision_bytes:
+            errors.append("canonical Q001-Q130 decision bytes changed during activation")
+        errors.extend(
+            validate_canon_hash_invariants(
+                base_canon_hash=expected["base_canon_hash"],
+                proposed_canon_hash=expected["proposed_canon_hash"],
+                canonical_decisions_hash=hashlib.sha256(current_bytes).hexdigest(),
+            )
+        )
+    for immutable in (SOURCE_INTAKE_PATH, TRACEABILITY_PATH, RECEIPT_PATH):
+        original = _git_show_bytes(
+            root,
+            IMPLEMENTATION_CANDIDATE_COMMIT,
+            immutable,
+            errors,
+            f"immutable activation input {immutable.as_posix()}",
+        )
+        if original is not None and (root / immutable).read_bytes() != original:
+            errors.append(f"immutable activation input drift: {immutable.as_posix()}")
+
+    effective, _proof_errors = authoritative_activation_status(
+        tracked_target_state_active=tracked_target_state_active(root),
+        activation_approval=None,
+        expected_activation_approval={},
+        envelope=None,
+        expected_envelope={},
+        integration=None,
+    )
+    if effective:
+        errors.append("tracked ACTIVE became authoritative without external activation proof")
 
 
 def _check_routes_and_predecessors(root: Path, errors: list[str]) -> None:
@@ -534,6 +911,8 @@ def collect_errors(project_root: Path = PROJECT_ROOT) -> list[str]:
     _check_required_files(root, errors)
     if errors:
         return errors
+    _check_implementation_candidate_identity(root, errors)
+    _check_activation_git_scope(root, errors)
     _check_human_docs(root, errors)
     schemas = _check_schemas(root, errors)
     _check_source_intake(root, errors)
@@ -571,7 +950,9 @@ def main(argv: list[str] | None = None) -> int:
     print("- authority precedence and construction-only scope: PASS")
     print("- Q001-Q130 source/traceability and source defect preservation: PASS")
     print("- schemas, role/order gates, supersession, routes, and M2 preservation: PASS")
-    print("- canonical manifest, detached receipt, and package boundary: PASS")
+    print("- canonical manifest, approval consumption, inner receipt, and package boundary: PASS")
+    print("- TRACKED_TARGET_STATE_ACTIVE=true")
+    print("- AUTHORITATIVE_ACTIVATION_EFFECTIVE=false (external activation proof absent)")
     if args.print_hashes and derived is not None:
         for field in ("base_canon_hash","proposed_canon_hash","merkle_root","receipt_payload_hash"):
             print(f"{field}={derived[field]}")

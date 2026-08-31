@@ -1,0 +1,134 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://rules-residue.invalid/schemas/story-construction/change-set-v2.schema.json",
+  "title": "Story Construction Active Change Set",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version", "change_set_id", "lifecycle_stage", "disposition", "release",
+    "authority_scope", "base_commit", "base_tree", "base_canon_hash", "source_package",
+    "records", "dependencies", "authority_classes", "canon_tier_impact",
+    "content_class_impact", "migration", "tests", "implementation_candidate_binding",
+    "implementation_acceptance", "activation_state", "proposed_canon_hash",
+    "previous_governance_merkle_root", "merkle_root", "merkle_transition",
+    "approval_consumption_record_path", "approval_consumption_record_sha256",
+    "final_inner_receipt_path", "final_inner_receipt_payload_hash", "approval_status"
+  ],
+  "properties": {
+    "schema_version": {"const": "2.0.0"},
+    "change_set_id": {"const": "CS-R2-SC-GOV-INSTALL-001"},
+    "lifecycle_stage": {"const": "APPROVED"},
+    "disposition": {"const": "ACTIVE"},
+    "release": {"const": "NOT_RELEASED"},
+    "authority_scope": {"const": "CONSTRUCTION_GOVERNANCE_ONLY"},
+    "base_commit": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+    "base_tree": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+    "base_canon_hash": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "source_package": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["package_id", "zip_sha256", "source_manifest_file_sha256", "integrity_defect"],
+      "properties": {
+        "package_id": {"const": "RR-SC-GOV-V2-Q001-Q130"},
+        "zip_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "source_manifest_file_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "integrity_defect": {"const": "CIRCULAR_MANIFEST_METADATA_BINDING"}
+      }
+    },
+    "records": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
+    "dependencies": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
+    "authority_classes": {"type": "array", "minItems": 4, "maxItems": 4, "uniqueItems": true, "items": {"enum": ["P0", "P1", "C1", "C2"]}},
+    "canon_tier_impact": {
+      "type": "object", "additionalProperties": false, "required": ["T1", "T2", "T3"],
+      "properties": {"T1": {"const": "NONE"}, "T2": {"const": "NONE"}, "T3": {"const": "NONE"}}
+    },
+    "content_class_impact": {
+      "type": "object", "additionalProperties": false, "required": ["P0", "P1", "C1", "C2"],
+      "properties": {
+        "P0": {"const": "GOVERNED"}, "P1": {"const": "GOVERNED"},
+        "C1": {"const": "OWNER_APPROVAL_GATE_ACTIVE"}, "C2": {"const": "BLOCK_AND_CHANGE_CONTROL"}
+      }
+    },
+    "migration": {
+      "type": "object", "additionalProperties": false,
+      "required": ["task_packet_schema", "legacy_packets", "runtime_migration"],
+      "properties": {
+        "task_packet_schema": {"const": "BACKWARD_COMPATIBLE_MINOR_1.0_TO_1.1"},
+        "legacy_packets": {"const": "ACCEPTED_WITH_COMPAT_ADAPTER"},
+        "runtime_migration": {"const": "NONE"}
+      }
+    },
+    "tests": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
+    "implementation_candidate_binding": {
+      "type": "object", "additionalProperties": false,
+      "required": ["strategy", "candidate_commit", "candidate_tree"],
+      "properties": {
+        "strategy": {"const": "EXACT_ACCEPTED_IMPLEMENTATION_CANDIDATE"},
+        "candidate_commit": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+        "candidate_tree": {"type": "string", "pattern": "^[0-9a-f]{40}$"}
+      }
+    },
+    "implementation_acceptance": {
+      "type": "object", "additionalProperties": false,
+      "required": ["owner_approval_id", "task_id", "result", "route_digest"],
+      "properties": {
+        "owner_approval_id": {"type": "string", "minLength": 1},
+        "task_id": {"const": "R2-SC-GOV-INSTALL-001-ACCEPT-001"},
+        "result": {"const": "PASS_FIXED_CANDIDATE_ACCEPTED"},
+        "route_digest": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+      }
+    },
+    "activation_state": {
+      "type": "object", "additionalProperties": false,
+      "required": ["tracked_target_state", "authoritative_activation_effective", "required_external_proofs"],
+      "properties": {
+        "tracked_target_state": {"const": "TRACKED_TARGET_STATE_ACTIVE"},
+        "authoritative_activation_effective": {"const": false},
+        "required_external_proofs": {
+          "type": "array", "minItems": 4, "maxItems": 4, "uniqueItems": true,
+          "items": {"enum": ["ACTIVATION_SPECIFIC_OWNER_FULL_HASH_APPROVAL", "PASS_FIXED_ACTIVATION_CANDIDATE_ACCEPTED", "VALID_DETACHED_ACCEPTED_ACTIVATION_ENVELOPE_TAG", "FINAL_FAST_FORWARD_INTEGRATION"]}
+        }
+      }
+    },
+    "proposed_canon_hash": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "previous_governance_merkle_root": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "merkle_root": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "merkle_transition": {
+      "type": "object", "additionalProperties": false,
+      "required": ["algorithm", "leaf_count", "previous_root", "new_root", "changed_leaves", "unchanged_groups", "excluded_from_merkle"],
+      "properties": {
+        "algorithm": {"const": "SHA-256-BINARY-PAIR-DUPLICATE-ODD-V1"},
+        "leaf_count": {"const": 135},
+        "previous_root": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "new_root": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "changed_leaves": {
+          "type": "array", "minItems": 3, "maxItems": 3,
+          "items": {
+            "type": "object", "additionalProperties": false,
+            "required": ["record_id", "old_canonical_sha256", "new_canonical_sha256"],
+            "properties": {
+              "record_id": {"enum": ["SCG-AUTHORITY-OVERLAY", "SCG-CANON-REGISTRY", "SCG-SUPERSESSION"]},
+              "old_canonical_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+              "new_canonical_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+            }
+          }
+        },
+        "unchanged_groups": {
+          "type": "object", "additionalProperties": false,
+          "required": ["owner_qa_decisions", "source_intake", "traceability"],
+          "properties": {
+            "owner_qa_decisions": {"const": "Q001-Q130"},
+            "source_intake": {"const": "SCG-SOURCE-INTAKE"},
+            "traceability": {"const": "SCG-TRACEABILITY"}
+          }
+        },
+        "excluded_from_merkle": {"type": "array", "minItems": 6, "maxItems": 6, "uniqueItems": true, "items": {"type": "string", "minLength": 1}}
+      }
+    },
+    "approval_consumption_record_path": {"const": "governance/story-construction/approvals/OWNER-APPROVAL-R2-SC-GOV-INSTALL-001-CANDIDATE-7305A9DE-R1.consumption.json"},
+    "approval_consumption_record_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "final_inner_receipt_path": {"const": "governance/story-construction/receipts/installation-receipt.final.json"},
+    "final_inner_receipt_payload_hash": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "approval_status": {"const": "PENDING_OWNER_ACTIVATION_HASH_APPROVAL"}
+  }
+}

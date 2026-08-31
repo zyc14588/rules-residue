@@ -7,7 +7,7 @@
 
 ## 当前状态
 
-- **项目阶段**：M1 基线 + R2 权威已安装；M2-B001 已验收但后续仍受阻；M3 Story Construction Governance 仅有待 Owner 哈希批准的安装候选
+- **项目阶段**：M1 基线 + R2 权威已安装；M2-B001 已验收但后续仍受阻；M3 Story Construction Governance 的 tracked activation candidate 已表达 `APPROVED + ACTIVE`，但 authoritative activation 仍等待 activation-specific Owner full-hash approval、第二次独立 ACCEPT、detached accepted envelope/tag 与最终 fast-forward integration
 - **版本**：`0.1.0-dev.1`
 - **发行通道**：仅内部开发与集成验证
 - **机器标识**：`org.trpgplatform.rules-residue`
@@ -76,7 +76,7 @@ TRPG_PLATFORM 拥有并维护：
 
 R2 的 Codex / OpenCode / Grok / portable-agent 渐进式披露合同分别从 `.codex/prompts/r2/README.md`、`.opencode/r2/README.md`、`.grok/r2/README.md` 和 `docs/operations/agents/r2/portable-agent/README.md` 发现。
 
-M3 Story Construction 的候选入口位于 `.codex/prompts/m3/STORY-CONSTRUCTION/README.md`；其治理作用域仅为 `CONSTRUCTION_GOVERNANCE_ONLY`，且在 Owner 批准候选精确 commit/tree 与治理哈希前不处于 ACTIVE 状态。
+M3 Story Construction 的入口位于 `.codex/prompts/m3/STORY-CONSTRUCTION/README.md`；其治理作用域仅为 `CONSTRUCTION_GOVERNANCE_ONLY`。Tracked files 当前表达目标态 `ACTIVE`，但这不等于 authoritative activation；缺少 activation-specific external proof 的任意 checkout（包括 cherry-pick）必须 fail closed 为 `AUTHORITATIVE_ACTIVATION_EFFECTIVE=false`。
 
 ## 最快使用方式
 
