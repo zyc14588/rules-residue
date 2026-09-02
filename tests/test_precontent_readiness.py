@@ -16,21 +16,40 @@ from tools.lib.common import runtime_relative_paths
 from tools.lib.schema_subset import validate
 from tools.story_construction import canonical_sha256, validate_literary_execution, validate_visual_execution
 from tools.validate_precontent_readiness import (
+    ACTIVATION_ALLOWLIST,
+    ACTIVATION_PROOF_TAG,
     ALLOWLIST,
     APPROVAL_STATUS,
     BASE_CANON_HASH,
     BASE_COMMIT,
     BASE_TREE,
+    CANDIDATE_APPROVAL_STATUS,
+    CHANGED_OLD_PATHS,
     CHANGE_SET_ID,
     EXPECTED_DECISIONS,
     FIXTURE_ROOT,
+    NEW_SEMANTIC_PATHS,
+    R1_MANIFEST_FILE_SHA256,
+    R1_MERKLE_ROOT,
+    activation_allowlist_hash,
+    activation_path_records,
+    activation_path_set_hash,
     allowlist_hash,
+    authoritative_precontent_activation_status,
     collect_errors,
     compute_region_score,
+    derive_activation_documents,
     derive_framework_documents,
+    expected_approval_consumption,
     validate_b003_authorization,
+    validate_activation_closeout_envelope,
+    validate_activation_owner_approval,
+    validate_final_receipt_binding,
+    validate_framework_manifest_transition,
+    validate_implementation_approval_consumption,
     validate_intensity_revision,
     validate_m2_dependency_classification,
+    validate_precontent_lifecycle_state,
     validate_precontent_owner_approval,
     validate_readiness_bundle,
     validate_test_boundary,
@@ -48,6 +67,14 @@ class PreContentReadinessTests(unittest.TestCase):
     def test_exact_allowlist_is_frozen(self):
         self.assertEqual(len(ALLOWLIST), 70)
         self.assertEqual(allowlist_hash(), "5865bf9d1e6473b0c839b9a9395e96eb5bcaeea3f1b5df0d6bd2679310a9b0bd")
+        self.assertEqual(len(ACTIVATION_ALLOWLIST), 18)
+        self.assertEqual(len(set(ACTIVATION_ALLOWLIST)), 18)
+        self.assertEqual(set(CHANGED_OLD_PATHS) | set(NEW_SEMANTIC_PATHS), set(ACTIVATION_ALLOWLIST) - {
+            "governance/story-construction/precontent/manifests/framework-manifest.r2.json",
+            "governance/story-construction/approvals/OWNER-APPROVAL-SCG-PRECONTENT-M3-B002-CANDIDATE-74FECBE6-R1.consumption.json",
+            "governance/story-construction/receipts/scg-precontent-readiness-r1.final.json",
+        })
+        self.assertEqual(len(activation_allowlist_hash()), 64)
 
     def test_decision_binding_preserves_exact_ids_options_and_order(self):
         document = load("governance/story-construction/precontent/decisions.scg-pre-q001-q021.yaml")
@@ -68,13 +95,21 @@ class PreContentReadinessTests(unittest.TestCase):
         self.assertFalse(document["historical_records_rewritten"])
         self.assertTrue(document["no_other_supersessions"])
 
-    def test_candidate_change_set_cannot_activate_or_self_bind(self):
+    def test_fixed_implementation_candidate_object_validates(self):
+        self.assertEqual(
+            collect_errors(ROOT, check_git=False, phase="implementation-candidate-object"),
+            [],
+        )
+
+    def test_tracked_change_set_is_active_but_not_authoritatively_effective(self):
         change_set = load(f"governance/story-construction/change-sets/{CHANGE_SET_ID}.yaml")
-        self.assertEqual(change_set["lifecycle_stage"], "CANDIDATE")
-        self.assertEqual(change_set["disposition"], "CANDIDATE_NOT_ACTIVE")
+        self.assertEqual(change_set["lifecycle_stage"], "APPROVED")
+        self.assertEqual(change_set["disposition"], "ACTIVE")
+        self.assertEqual(change_set["release"], "NOT_RELEASED")
         self.assertEqual(change_set["approval_status"], APPROVAL_STATUS)
-        self.assertEqual(change_set["candidate_binding"], {"strategy": "EXACT_HEAD_AT_VALIDATION"})
-        self.assertNotIn("candidate_commit", json.dumps(change_set))
+        self.assertTrue(change_set["active_wip"])
+        self.assertFalse(change_set["activation_state"]["authoritative_activation_effective"])
+        self.assertEqual(validate_precontent_lifecycle_state(change_set), [])
 
     def test_every_synthetic_fixture_has_nonpromotion_boundary(self):
         for path in (ROOT / FIXTURE_ROOT).iterdir():
@@ -217,6 +252,143 @@ class PreContentReadinessTests(unittest.TestCase):
         self.assertEqual(first["receipt_bytes"], second["receipt_bytes"])
         self.assertNotIn("manifest_sha256", first["manifest"])
         self.assertNotIn("receipt_sha256", first["manifest"])
+        import hashlib
+        self.assertEqual(hashlib.sha256(first["manifest_bytes"]).hexdigest(), R1_MANIFEST_FILE_SHA256)
+        self.assertEqual(first["framework_merkle_root"], R1_MERKLE_ROOT)
+        active_first = derive_activation_documents(ROOT)
+        active_second = derive_activation_documents(ROOT)
+        self.assertEqual(active_first["manifest_bytes"], active_second["manifest_bytes"])
+        self.assertEqual(active_first["receipt_bytes"], active_second["receipt_bytes"])
+
+    def test_exact_r2_merkle_transition_and_schema_counts(self):
+        derived = derive_activation_documents(ROOT)
+        transition = derived["transition"]
+        self.assertEqual(
+            tuple(transition[key] for key in (
+                "old_record_count", "unchanged_old_count", "changed_old_count",
+                "new_record_count", "total_record_count",
+            )),
+            (68, 61, 7, 8, 76),
+        )
+        self.assertEqual([item["path"] for item in transition["changed_old_records"]], sorted(CHANGED_OLD_PATHS))
+        self.assertEqual([item["path"] for item in transition["new_records"]], sorted(NEW_SEMANTIC_PATHS))
+        self.assertEqual(derived["schemas"]["original_count"], 20)
+        self.assertEqual(derived["schemas"]["activation_count"], 5)
+        self.assertEqual(derived["schemas"]["combined_count"], 25)
+        self.assertEqual(validate_framework_manifest_transition(derived["manifest"], derive_framework_documents(ROOT)["manifest"]), [])
+
+    def test_implementation_approval_consumption_and_accept_evidence_are_exact(self):
+        record = load("governance/story-construction/approvals/OWNER-APPROVAL-SCG-PRECONTENT-M3-B002-CANDIDATE-74FECBE6-R1.consumption.json")
+        self.assertEqual(record, expected_approval_consumption())
+        self.assertEqual(validate_implementation_approval_consumption(record), [])
+        for field, bad in (("consumption_count", 2), ("transferable", True), ("consumption_result", "FAIL")):
+            attack = copy.deepcopy(record)
+            attack[field] = bad
+            self.assertTrue(validate_implementation_approval_consumption(attack), field)
+        missing = copy.deepcopy(record)
+        del missing["accept_route_digest"]
+        self.assertTrue(validate_implementation_approval_consumption(missing))
+
+    def test_manifest_and_receipt_cycles_are_rejected(self):
+        derived = derive_activation_documents(ROOT)
+        manifest = copy.deepcopy(derived["manifest"])
+        manifest["records"].append({
+            "path":"governance/story-construction/precontent/manifests/framework-manifest.r2.json",
+            "sha256":"0" * 64,
+        })
+        self.assertTrue(validate_framework_manifest_transition(manifest, derive_framework_documents(ROOT)["manifest"]))
+        wrong_count = copy.deepcopy(derived["manifest"])
+        wrong_count["transition"]["total_record_count"] = 75
+        self.assertTrue(validate_framework_manifest_transition(wrong_count, derive_framework_documents(ROOT)["manifest"]))
+        receipt = copy.deepcopy(derived["receipt"])
+        receipt["payload"]["final_inner_receipt_file_sha256"] = "0" * 64
+        receipt["payload_hash"] = canonical_sha256(receipt["payload"])
+        self.assertTrue(validate_final_receipt_binding(receipt))
+
+    def test_invalid_mixed_lifecycle_and_early_wip_release_are_rejected(self):
+        fixture = load("tests/fixtures/story-construction/precontent-lifecycle-state-v1.json")
+        for attack in fixture["invalid_mixed_states"]:
+            self.assertTrue(validate_precontent_lifecycle_state(attack))
+        self.assertEqual(collect_errors(ROOT, check_git=False, phase="invalid-mixed-state"), [])
+
+    def test_provider_m0_canon_runtime_and_m2_drift_are_rejected(self):
+        change_set = load(f"governance/story-construction/change-sets/{CHANGE_SET_ID}.yaml")
+        schema = load("schemas/story-construction/precontent-change-set-v2.schema.json")
+        for mutation in (
+            ("provider_request_counts", {"deepseek":0,"grok":0,"opencode":0,"story_m0":1}),
+            ("proposed_canon_hash", "0" * 64),
+            ("m2_preservation", {}),
+        ):
+            attack = copy.deepcopy(change_set)
+            attack[mutation[0]] = mutation[1]
+            self.assertTrue(validate(attack, schema), mutation[0])
+        receipt = copy.deepcopy(derive_activation_documents(ROOT)["receipt"])
+        receipt["payload"]["fixed_preservation"]["runtime_package_sha256"] = "0" * 64
+        receipt["payload_hash"] = canonical_sha256(receipt["payload"])
+        self.assertTrue(validate(receipt, load("schemas/story-construction/precontent-final-receipt-v2.schema.json")))
+
+    def test_activation_owner_approval_replay_and_transfer_are_rejected(self):
+        records = activation_path_records(ROOT)
+        approval = {
+            "approval_id":"OWNER-APPROVAL-FUTURE-ACTIVATION",
+            "approval_model":"MODEL_B_FULL_FRAMEWORK_HASH_REAPPROVAL",
+            "approval_status":"APPROVED",
+            "single_use":True,"transferable":False,"consumed":False,"revoked":False,
+            "activation_candidate_parent":"74fecbe6984f150f83c364e5d5a5850132cfc147",
+            "activation_path_allowlist_sha256":activation_allowlist_hash(),
+            "activation_path_hashes":records,
+            "activation_path_set_hash":activation_path_set_hash(ROOT),
+        }
+        self.assertEqual(validate_activation_owner_approval(approval, {}), [])
+        approval["consumed"] = True
+        self.assertTrue(validate_activation_owner_approval(approval, {}))
+        approval["consumed"] = False
+        approval["transferable"] = True
+        self.assertTrue(validate_activation_owner_approval(approval, {}))
+
+    def test_wrong_tag_lineage_and_remote_proofs_are_rejected(self):
+        payload = {
+            "binding_strategy": "DETACHED_ANNOTATED_TAG_EXACT_COMMIT_TREE",
+            "tag_name": ACTIVATION_PROOF_TAG,
+            "tag_target_commit": "a" * 40,
+            "activation_candidate_commit": "a" * 40,
+            "tag_target_tree": "b" * 40,
+            "activation_candidate_tree": "b" * 40,
+            "accepted_candidate_commit": "a" * 40,
+            "accepted_candidate_tree": "b" * 40,
+            "activation_candidate_parent": "74fecbe6984f150f83c364e5d5a5850132cfc147",
+            "candidate_to_activation_commit_count": 1,
+            "base_to_activation_commit_count": 2,
+            "authoritative_remote_before_activation": BASE_COMMIT,
+            "activation_accept_task_id": "SCG-PRECONTENT-M3-B002-ACTIVATION-CLOSEOUT-ACCEPT-001",
+            "activation_accept_result": "PASS_FIXED_M3_B002_ACTIVATION_CANDIDATE_ACCEPTED",
+            "activation_accept_route": "SCG-PRECONTENT-M3-B002-ACTIVATION-CLOSEOUT-ACCEPT",
+            "integration_mode": "FAST_FORWARD_ONLY",
+            "producer_id": "BUILDER",
+            "verifier_id": "INDEPENDENT-VERIFIER",
+            "verifier_worktree_state": "CLEAN",
+        }
+        envelope = {"payload":payload,"payload_hash":canonical_sha256(payload)}
+        self.assertEqual(validate_activation_closeout_envelope(envelope, {}), [])
+        for field, bad in (
+            ("tag_name", "wrong-tag"),
+            ("candidate_to_activation_commit_count", 2),
+            ("authoritative_remote_before_activation", "0" * 40),
+        ):
+            attack = copy.deepcopy(envelope)
+            attack["payload"][field] = bad
+            attack["payload_hash"] = canonical_sha256(attack["payload"])
+            self.assertTrue(validate_activation_closeout_envelope(attack, {}), field)
+        effective, proof_errors = authoritative_precontent_activation_status(
+            tracked_active=True,
+            activation_approval=None,
+            expected_activation_approval={},
+            envelope=None,
+            expected_envelope={},
+            integration=None,
+        )
+        self.assertFalse(effective)
+        self.assertTrue(proof_errors)
 
     def test_fault_injection_uses_isolated_copy_and_rejects_promotion(self):
         with tempfile.TemporaryDirectory() as temporary:

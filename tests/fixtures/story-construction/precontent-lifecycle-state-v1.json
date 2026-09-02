@@ -1,0 +1,43 @@
+{
+  "schema_version": "rules-residue.story-construction.precontent-lifecycle-state/1.0.0",
+  "implementation_candidate_object": {
+    "commit": "74fecbe6984f150f83c364e5d5a5850132cfc147",
+    "tree": "b81fa075a1b812478dbc3e196429c7392279e28f",
+    "parent": "6f9f671401f5857d460ca8e0bd8a86ebe04bb0b6",
+    "lifecycle_stage": "CANDIDATE",
+    "disposition": "CANDIDATE_NOT_ACTIVE",
+    "approval_status": "PENDING_OWNER_EXACT_HASH_APPROVAL_M3_B002"
+  },
+  "tracked_active_candidate_path": "governance/story-construction/change-sets/CS-SCG-PRECONTENT-READINESS-R1-001.yaml",
+  "tracked_active_projection": {
+    "lifecycle_stage": "APPROVED",
+    "disposition": "ACTIVE",
+    "release": "NOT_RELEASED",
+    "approval_status": "PENDING_OWNER_ACTIVATION_HASH_APPROVAL_M3_B002",
+    "implementation_approval_status": "CONSUMED_BY_INDEPENDENT_ACCEPT",
+    "tracked_target_state": "TRACKED_B002_TARGET_STATE_ACTIVE",
+    "active_wip": true,
+    "authoritative_activation_effective": false
+  },
+  "authoritative_effect": {
+    "effective": false,
+    "missing_external_proofs": [
+      "ACTIVATION_SPECIFIC_OWNER_FULL_HASH_APPROVAL",
+      "PASS_FIXED_M3_B002_ACTIVATION_CANDIDATE_ACCEPTED",
+      "VALID_DETACHED_ACCEPTED_ACTIVATION_ENVELOPE_TAG",
+      "FINAL_FAST_FORWARD_INTEGRATION"
+    ]
+  },
+  "invalid_mixed_states": [
+    {"schema_version":"rules-residue.story-construction.precontent-change-set/2.0.0","lifecycle_stage":"APPROVED","disposition":"CANDIDATE_NOT_ACTIVE","release":"NOT_RELEASED","approval_status":"PENDING_OWNER_ACTIVATION_HASH_APPROVAL_M3_B002","implementation_approval_status":"CONSUMED_BY_INDEPENDENT_ACCEPT","active_wip":true,"activation_state":{}},
+    {"schema_version":"rules-residue.story-construction.precontent-change-set/1.0.0","lifecycle_stage":"CANDIDATE","disposition":"ACTIVE","release":"NOT_RELEASED","approval_status":"PENDING_OWNER_EXACT_HASH_APPROVAL_M3_B002","active_wip":true},
+    {"schema_version":"rules-residue.story-construction.precontent-change-set/2.0.0","lifecycle_stage":"RELEASED","disposition":"ACTIVE","release":"RELEASED","approval_status":"PENDING_OWNER_ACTIVATION_HASH_APPROVAL_M3_B002","implementation_approval_status":"CONSUMED_BY_INDEPENDENT_ACCEPT","active_wip":true,"activation_state":{}},
+    {"schema_version":"rules-residue.story-construction.precontent-change-set/2.0.0","lifecycle_stage":"APPROVED","disposition":"ACTIVE","release":"NOT_RELEASED","approval_status":"PENDING_OWNER_ACTIVATION_HASH_APPROVAL_M3_B002","implementation_approval_status":"CONSUMED_BY_INDEPENDENT_ACCEPT","active_wip":false,"activation_state":{}},
+    {"schema_version":"rules-residue.story-construction.precontent-change-set/2.0.0","lifecycle_stage":"APPROVED","disposition":"ACTIVE","release":"NOT_RELEASED","approval_status":"APPROVED","implementation_approval_status":"CONSUMED_BY_INDEPENDENT_ACCEPT","active_wip":true,"activation_state":{}}
+  ],
+  "invalid_external_proofs": [
+    {"attack":"WRONG_TAG","tag_name":"scg-precontent-m3-b002-wrong"},
+    {"attack":"WRONG_LINEAGE","candidate_to_activation_commit_count":2},
+    {"attack":"WRONG_REMOTE","authoritative_remote_before_activation":"0000000000000000000000000000000000000000"}
+  ]
+}

@@ -1,0 +1,117 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://rules-residue.invalid/schemas/story-construction/precontent-activation-owner-approval-v1.schema.json",
+  "title": "Pre-Content Activation Owner Full-Hash Approval",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version", "approval_id", "approval_model", "change_set_id",
+    "activation_closeout_task_id", "base_commit", "base_tree", "base_canon_hash",
+    "implementation_candidate_commit", "implementation_candidate_tree",
+    "implementation_candidate_parent", "implementation_owner_approval_id",
+    "implementation_accept_task_id", "implementation_accept_result",
+    "implementation_accept_route_digest", "activation_candidate_commit",
+    "activation_candidate_tree", "activation_candidate_parent", "activation_path_allowlist_sha256",
+    "activation_path_hashes", "activation_path_set_hash", "framework_manifest_r1_file_sha256",
+    "framework_manifest_r1_merkle_root", "framework_manifest_r2_file_sha256",
+    "framework_manifest_r2_merkle_root", "merkle_transition", "schema_sets",
+    "approval_consumption_record_sha256", "final_inner_receipt_file_sha256",
+    "final_inner_receipt_payload_hash", "decision_set_hash", "partial_supersession_hash",
+    "traceability_hash", "canon_hash", "runtime_package_sha256", "proof_tag",
+    "authoritative_remote_before_activation", "approval_status", "single_use",
+    "transferable", "consumed", "revoked", "owner_id", "approved_at"
+  ],
+  "properties": {
+    "schema_version": {"const": "rules-residue.story-construction.precontent-activation-owner-approval/1.0.0"},
+    "approval_id": {"type": "string", "minLength": 1},
+    "approval_model": {"const": "MODEL_B_FULL_FRAMEWORK_HASH_REAPPROVAL"},
+    "change_set_id": {"const": "CS-SCG-PRECONTENT-READINESS-R1-001"},
+    "activation_closeout_task_id": {"const": "SCG-PRECONTENT-M3-B002-ACTIVATION-CLOSEOUT-IMPLEMENT-001"},
+    "base_commit": {"const": "6f9f671401f5857d460ca8e0bd8a86ebe04bb0b6"},
+    "base_tree": {"const": "2dfa6553770f4eedbb4def358f661b9b16b79a4d"},
+    "base_canon_hash": {"const": "d7ceea75615b57970f3b9712b73ed4c9f65a9c4406c877e9013470cb53a6141a"},
+    "implementation_candidate_commit": {"const": "74fecbe6984f150f83c364e5d5a5850132cfc147"},
+    "implementation_candidate_tree": {"const": "b81fa075a1b812478dbc3e196429c7392279e28f"},
+    "implementation_candidate_parent": {"const": "6f9f671401f5857d460ca8e0bd8a86ebe04bb0b6"},
+    "implementation_owner_approval_id": {"const": "OWNER-APPROVAL-SCG-PRECONTENT-M3-B002-CANDIDATE-74FECBE6-R1"},
+    "implementation_accept_task_id": {"const": "SCG-PRECONTENT-M3-B002-ACCEPT-001"},
+    "implementation_accept_result": {"const": "PASS_FIXED_M3_B002_CANDIDATE_ACCEPTED"},
+    "implementation_accept_route_digest": {"const": "b08bfd965a6c8ca8515460f5507e212056ab8b6e6d65fc9d53b7976b2a95af76"},
+    "activation_candidate_commit": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+    "activation_candidate_tree": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+    "activation_candidate_parent": {"const": "74fecbe6984f150f83c364e5d5a5850132cfc147"},
+    "activation_path_allowlist_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "activation_path_hashes": {
+      "type": "array", "minItems": 18, "maxItems": 18, "uniqueItems": true,
+      "items": {
+        "type": "object", "additionalProperties": false, "required": ["path", "sha256"],
+        "properties": {
+          "path": {"enum": [
+            ".codex/prompts/m3/PRECONTENT/README.md",
+            ".codex/prompts/m3/PRECONTENT/ACTIVATION_ACCEPT.md",
+            ".codex/routes/m3-precontent-b002-activation-closeout-accept-request.json",
+            "docs/governance/story-construction/10_PRECONTENT_READINESS.md",
+            "governance/story-construction/change-sets/CS-SCG-PRECONTENT-READINESS-R1-001.yaml",
+            "governance/story-construction/precontent/manifests/framework-manifest.r2.json",
+            "governance/story-construction/approvals/OWNER-APPROVAL-SCG-PRECONTENT-M3-B002-CANDIDATE-74FECBE6-R1.consumption.json",
+            "governance/story-construction/receipts/scg-precontent-readiness-r1.final.json",
+            "schemas/story-construction/precontent-change-set-v2.schema.json",
+            "schemas/story-construction/precontent-final-receipt-v2.schema.json",
+            "schemas/story-construction/precontent-owner-approval-consumption-v1.schema.json",
+            "schemas/story-construction/precontent-activation-owner-approval-v1.schema.json",
+            "schemas/story-construction/precontent-activation-closeout-envelope-v1.schema.json",
+            "tests/fixtures/story-construction/precontent-lifecycle-state-v1.json",
+            "tools/build_precontent_readiness_bundle.py",
+            "tools/validate_precontent_readiness.py",
+            "tools/validate_story_construction_governance.py",
+            "tests/test_precontent_readiness.py"
+          ]},
+          "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+        }
+      }
+    },
+    "activation_path_set_hash": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "framework_manifest_r1_file_sha256": {"const": "891944f172236b666eb78bc641f4e7ecabf6ec3e318ab4cd0b5858f045b06b67"},
+    "framework_manifest_r1_merkle_root": {"const": "87c6520fe0822e29312de6c72cad95f0849aa3d0bd4fbb27f97f1f786027bf8f"},
+    "framework_manifest_r2_file_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "framework_manifest_r2_merkle_root": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "merkle_transition": {
+      "type":"object","additionalProperties":false,
+      "required":["old_record_count","unchanged_old_count","changed_old_count","new_record_count","total_record_count","unchanged_old_leaf_set_hash","changed_old_leaf_transition_hash","new_leaf_set_hash","r1_leaf_set_hash","r2_leaf_set_hash"],
+      "properties": {
+        "old_record_count":{"const":68},"unchanged_old_count":{"const":61},"changed_old_count":{"const":7},"new_record_count":{"const":8},"total_record_count":{"const":76},
+        "unchanged_old_leaf_set_hash":{"type":"string","pattern":"^[0-9a-f]{64}$"},
+        "changed_old_leaf_transition_hash":{"type":"string","pattern":"^[0-9a-f]{64}$"},
+        "new_leaf_set_hash":{"type":"string","pattern":"^[0-9a-f]{64}$"},
+        "r1_leaf_set_hash":{"type":"string","pattern":"^[0-9a-f]{64}$"},
+        "r2_leaf_set_hash":{"type":"string","pattern":"^[0-9a-f]{64}$"}
+      }
+    },
+    "schema_sets": {
+      "type":"object","additionalProperties":false,
+      "required":["original_schema_count","original_schema_set_hash","activation_schema_count","activation_schema_set_hash","combined_schema_count","combined_schema_set_hash"],
+      "properties": {
+        "original_schema_count":{"const":20},"original_schema_set_hash":{"const":"77c8d831c2fd4b79edc597215135ca111fd76b1e00b9d126fda5a4d1a7fcdc50"},
+        "activation_schema_count":{"const":5},"activation_schema_set_hash":{"type":"string","pattern":"^[0-9a-f]{64}$"},
+        "combined_schema_count":{"const":25},"combined_schema_set_hash":{"type":"string","pattern":"^[0-9a-f]{64}$"}
+      }
+    },
+    "approval_consumption_record_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "final_inner_receipt_file_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "final_inner_receipt_payload_hash": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "decision_set_hash": {"const": "0e01181acbc9fb95c57ed1b910a3b561545e8824f0c60d7fdc35c93cff44146d"},
+    "partial_supersession_hash": {"const": "45bcd35ef9c18dea5e300c163ef232692a77b42ea9b11d9b555df118f74206da"},
+    "traceability_hash": {"const": "a0ed82836894d8d809447aa0b5d8cb8a05dfff87b363701b719de68f90b8359a"},
+    "canon_hash": {"const": "d7ceea75615b57970f3b9712b73ed4c9f65a9c4406c877e9013470cb53a6141a"},
+    "runtime_package_sha256": {"const": "29ea1e0278e37d183d4c0ff396437088b4873c58c5e9a9c857093f6c552a6314"},
+    "proof_tag": {"const": "scg-precontent-m3-b002-activation-closeout-accepted"},
+    "authoritative_remote_before_activation": {"const": "6f9f671401f5857d460ca8e0bd8a86ebe04bb0b6"},
+    "approval_status": {"enum": ["PENDING_OWNER_ACTIVATION_HASH_APPROVAL_M3_B002", "APPROVED", "REJECTED", "REVOKED"]},
+    "single_use": {"const": true},
+    "transferable": {"const": false},
+    "consumed": {"type": "boolean"},
+    "revoked": {"type": "boolean"},
+    "owner_id": {"type": ["string", "null"]},
+    "approved_at": {"type": ["string", "null"]}
+  }
+}

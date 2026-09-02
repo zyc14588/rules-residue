@@ -1,0 +1,30 @@
+{
+  "schema_version": "1.0",
+  "route_id": "SCG-PRECONTENT-M3-B002-ACTIVATION-CLOSEOUT-ACCEPT",
+  "mode": "ACCEPT",
+  "milestone": "M3",
+  "batch_id": "M3-B002",
+  "capacity_bytes": 196608,
+  "documents": [
+    {"path":"AGENTS.md","required_sections":["M1-AGENTS-CONTRACT"],"optional_sections":[],"reason":"Bind repository boundaries."},
+    {"path":"README.md","required_sections":["M1-README-ENTRY"],"optional_sections":[],"reason":"Bind authority order and tracked-versus-authoritative state."},
+    {"path":".codex/SESSION_START.md","required_sections":["M1-CODEX-SESSION-START","R2-CODEX-SESSION-START","M3-SCG-CODEX-SESSION-START"],"optional_sections":[],"reason":"Bind progressive disclosure."},
+    {"path":".codex/prompts/m3/STORY-CONSTRUCTION/README.md","required_sections":["M3-CODEX-STORY-CONSTRUCTION-README"],"optional_sections":[],"reason":"Bind M3 governance entry."},
+    {"path":".codex/prompts/m3/STORY-CONSTRUCTION/ACCEPT.md","required_sections":["M3-CODEX-STORY-CONSTRUCTION-ACCEPT"],"optional_sections":[],"reason":"Bind independent ACCEPT rules."},
+    {"path":".codex/prompts/m3/PRECONTENT/README.md","required_sections":["M3-CODEX-PRECONTENT-README","M3-CODEX-PRECONTENT-B003-PLAN"],"optional_sections":[],"reason":"Bind B002 state and later-batch boundary."},
+    {"path":".codex/prompts/m3/PRECONTENT/ACTIVATION_ACCEPT.md","required_sections":["M3-CODEX-PRECONTENT-ACTIVATION-ACCEPT"],"optional_sections":[],"reason":"Bind activation-specific ACCEPT."},
+    {"path":"docs/governance/story-construction/00_AUTHORITY_AND_PRECEDENCE.md","required_sections":["M3-SCG-AUTHORITY-PRECEDENCE"],"optional_sections":[],"reason":"Bind R2 precedence and fail-closed authority."},
+    {"path":"docs/governance/story-construction/02_CHANGE_SET_AND_LIFECYCLE.md","required_sections":["M3-SCG-CHANGESET-LIFECYCLE"],"optional_sections":[],"reason":"Bind ACTIVE lifecycle semantics."},
+    {"path":"docs/governance/story-construction/03_CANON_REGISTRY.md","required_sections":["M3-SCG-CANON-REGISTRY"],"optional_sections":[],"reason":"Bind Canon and Merkle separation."},
+    {"path":"docs/governance/story-construction/09_DAB_AND_ACCEPTANCE.md","required_sections":["M3-SCG-DAB-ACCEPTANCE"],"optional_sections":[],"reason":"Bind independent verification and detached proof."},
+    {"path":"docs/governance/story-construction/10_PRECONTENT_READINESS.md","required_sections":["M3-SCG-PRECONTENT-READINESS"],"optional_sections":[],"reason":"Bind exact B002 tracked target."},
+    {"path":"governance/story-construction/change-sets/CS-SCG-PRECONTENT-READINESS-R1-001.yaml","required_sections":[],"optional_sections":[],"reason":"Bind tracked active Change Set."},
+    {"path":"governance/story-construction/precontent/manifests/framework-manifest.r1.json","required_sections":[],"optional_sections":[],"reason":"Bind immutable accepted R1 manifest."},
+    {"path":"governance/story-construction/precontent/manifests/framework-manifest.r2.json","required_sections":[],"optional_sections":[],"reason":"Bind additive Model-B R2 manifest."},
+    {"path":"governance/story-construction/receipts/scg-precontent-readiness-r1.pending.json","required_sections":[],"optional_sections":[],"reason":"Bind immutable pending receipt."},
+    {"path":"governance/story-construction/receipts/scg-precontent-readiness-r1.final.json","required_sections":[],"optional_sections":[],"reason":"Bind final non-self-referential inner receipt."},
+    {"path":"schemas/story-construction/precontent-activation-owner-approval-v1.schema.json","required_sections":[],"optional_sections":[],"reason":"Bind future full-hash Owner approval contract."},
+    {"path":"schemas/story-construction/precontent-activation-closeout-envelope-v1.schema.json","required_sections":[],"optional_sections":[],"reason":"Bind detached accepted envelope contract."}
+  ],
+  "forbidden_bulk_reads": ["docs/**","authoring/**","governance/**","schemas/**","workflow/**","game-package/**","*","git_history_all","prior_chat_transcripts"]
+}

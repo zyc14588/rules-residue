@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://rules-residue.invalid/schemas/story-construction/precontent-activation-closeout-envelope-v1.schema.json",
+  "title": "Pre-Content Detached Accepted Activation Envelope",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "envelope_kind", "payload", "payload_hash"],
+  "properties": {
+    "schema_version": {"const": "rules-residue.story-construction.precontent-activation-closeout-envelope/1.0.0"},
+    "envelope_kind": {"const": "DETACHED_ACCEPTED_ACTIVATION_ENVELOPE"},
+    "payload": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "envelope_id", "change_set_id", "binding_strategy", "activation_candidate_commit",
+        "activation_candidate_tree", "activation_candidate_parent", "activation_path_set_hash",
+        "tag_name", "tag_target_commit", "tag_target_tree", "final_inner_receipt_file_sha256",
+        "final_inner_receipt_payload_hash", "activation_owner_approval_id",
+        "activation_owner_approval_sha256", "activation_accept_task_id",
+        "activation_accept_result", "activation_accept_route", "activation_accept_route_digest",
+        "accepted_candidate_commit", "accepted_candidate_tree", "producer_id", "verifier_id",
+        "verifier_worktree_state", "candidate_to_activation_commit_count",
+        "base_to_activation_commit_count", "authoritative_remote_before_activation",
+        "integration_mode"
+      ],
+      "properties": {
+        "envelope_id": {"type":"string","minLength":1},
+        "change_set_id": {"const":"CS-SCG-PRECONTENT-READINESS-R1-001"},
+        "binding_strategy": {"const":"DETACHED_ANNOTATED_TAG_EXACT_COMMIT_TREE"},
+        "activation_candidate_commit": {"type":"string","pattern":"^[0-9a-f]{40}$"},
+        "activation_candidate_tree": {"type":"string","pattern":"^[0-9a-f]{40}$"},
+        "activation_candidate_parent": {"const":"74fecbe6984f150f83c364e5d5a5850132cfc147"},
+        "activation_path_set_hash": {"type":"string","pattern":"^[0-9a-f]{64}$"},
+        "tag_name": {"const":"scg-precontent-m3-b002-activation-closeout-accepted"},
+        "tag_target_commit": {"type":"string","pattern":"^[0-9a-f]{40}$"},
+        "tag_target_tree": {"type":"string","pattern":"^[0-9a-f]{40}$"},
+        "final_inner_receipt_file_sha256": {"type":"string","pattern":"^[0-9a-f]{64}$"},
+        "final_inner_receipt_payload_hash": {"type":"string","pattern":"^[0-9a-f]{64}$"},
+        "activation_owner_approval_id": {"type":"string","minLength":1},
+        "activation_owner_approval_sha256": {"type":"string","pattern":"^[0-9a-f]{64}$"},
+        "activation_accept_task_id": {"const":"SCG-PRECONTENT-M3-B002-ACTIVATION-CLOSEOUT-ACCEPT-001"},
+        "activation_accept_result": {"const":"PASS_FIXED_M3_B002_ACTIVATION_CANDIDATE_ACCEPTED"},
+        "activation_accept_route": {"const":"SCG-PRECONTENT-M3-B002-ACTIVATION-CLOSEOUT-ACCEPT"},
+        "activation_accept_route_digest": {"type":"string","pattern":"^[0-9a-f]{64}$"},
+        "accepted_candidate_commit": {"type":"string","pattern":"^[0-9a-f]{40}$"},
+        "accepted_candidate_tree": {"type":"string","pattern":"^[0-9a-f]{40}$"},
+        "producer_id": {"type":"string","minLength":1},
+        "verifier_id": {"type":"string","minLength":1},
+        "verifier_worktree_state": {"const":"CLEAN"},
+        "candidate_to_activation_commit_count": {"const":1},
+        "base_to_activation_commit_count": {"const":2},
+        "authoritative_remote_before_activation": {"const":"6f9f671401f5857d460ca8e0bd8a86ebe04bb0b6"},
+        "integration_mode": {"const":"FAST_FORWARD_ONLY"}
+      }
+    },
+    "payload_hash": {"type":"string","pattern":"^[0-9a-f]{64}$"}
+  }
+}

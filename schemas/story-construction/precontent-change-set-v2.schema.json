@@ -1,0 +1,119 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://rules-residue.invalid/schemas/story-construction/precontent-change-set-v2.schema.json",
+  "title": "Pre-Content Tracked Active Change Set",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version", "change_set_id", "machine_milestone", "machine_batch_id",
+    "batch_semantics", "lifecycle_stage", "disposition", "release", "approval_status",
+    "implementation_approval_status", "implementation_candidate_binding",
+    "implementation_acceptance", "activation_state", "base_commit", "base_tree",
+    "base_canon_hash", "proposed_canon_hash", "canon_change", "authority_scope",
+    "r2_canon_precedence", "owner_plan_approval_id", "owner_package_id",
+    "source_plan_package_id", "decision_set_path", "decision_set_count",
+    "partial_supersession_path", "traceability_path", "framework_manifest_r1_path",
+    "framework_manifest_r2_path", "pending_receipt_path", "final_inner_receipt_path",
+    "approval_consumption_record_path", "active_wip", "wip", "canon_tier_impact",
+    "content_class_impact", "provider_request_counts", "m2_preservation",
+    "forbidden_actions", "tests"
+  ],
+  "properties": {
+    "schema_version": {"const": "rules-residue.story-construction.precontent-change-set/2.0.0"},
+    "change_set_id": {"const": "CS-SCG-PRECONTENT-READINESS-R1-001"},
+    "machine_milestone": {"const": "M3"},
+    "machine_batch_id": {"const": "M3-B002"},
+    "batch_semantics": {"const": "SCG_PRECONTENT_DECISION_BINDING_AND_M0_FRAMEWORK"},
+    "lifecycle_stage": {"const": "APPROVED"},
+    "disposition": {"const": "ACTIVE"},
+    "release": {"const": "NOT_RELEASED"},
+    "approval_status": {"const": "PENDING_OWNER_ACTIVATION_HASH_APPROVAL_M3_B002"},
+    "implementation_approval_status": {"const": "CONSUMED_BY_INDEPENDENT_ACCEPT"},
+    "implementation_candidate_binding": {
+      "type": "object", "additionalProperties": false,
+      "required": ["strategy", "candidate_commit", "candidate_tree", "candidate_parent"],
+      "properties": {
+        "strategy": {"const": "EXACT_ACCEPTED_IMPLEMENTATION_CANDIDATE"},
+        "candidate_commit": {"const": "74fecbe6984f150f83c364e5d5a5850132cfc147"},
+        "candidate_tree": {"const": "b81fa075a1b812478dbc3e196429c7392279e28f"},
+        "candidate_parent": {"const": "6f9f671401f5857d460ca8e0bd8a86ebe04bb0b6"}
+      }
+    },
+    "implementation_acceptance": {
+      "type": "object", "additionalProperties": false,
+      "required": ["owner_approval_id", "task_id", "result", "verifier", "route", "route_digest"],
+      "properties": {
+        "owner_approval_id": {"const": "OWNER-APPROVAL-SCG-PRECONTENT-M3-B002-CANDIDATE-74FECBE6-R1"},
+        "task_id": {"const": "SCG-PRECONTENT-M3-B002-ACCEPT-001"},
+        "result": {"const": "PASS_FIXED_M3_B002_CANDIDATE_ACCEPTED"},
+        "verifier": {"const": "CODEX-INDEPENDENT-VERIFIER-SCG-PRECONTENT-M3-B002-ACCEPT-001"},
+        "route": {"const": "SCG-PRECONTENT-M3-B002-ACCEPT"},
+        "route_digest": {"const": "b08bfd965a6c8ca8515460f5507e212056ab8b6e6d65fc9d53b7976b2a95af76"}
+      }
+    },
+    "activation_state": {
+      "type": "object", "additionalProperties": false,
+      "required": ["tracked_target_state", "authoritative_activation_effective", "required_external_proofs"],
+      "properties": {
+        "tracked_target_state": {"const": "TRACKED_B002_TARGET_STATE_ACTIVE"},
+        "authoritative_activation_effective": {"const": false},
+        "required_external_proofs": {
+          "type": "array", "minItems": 4, "maxItems": 4, "uniqueItems": true,
+          "items": {"enum": ["ACTIVATION_SPECIFIC_OWNER_FULL_HASH_APPROVAL", "PASS_FIXED_M3_B002_ACTIVATION_CANDIDATE_ACCEPTED", "VALID_DETACHED_ACCEPTED_ACTIVATION_ENVELOPE_TAG", "FINAL_FAST_FORWARD_INTEGRATION"]}
+        }
+      }
+    },
+    "base_commit": {"const": "6f9f671401f5857d460ca8e0bd8a86ebe04bb0b6"},
+    "base_tree": {"const": "2dfa6553770f4eedbb4def358f661b9b16b79a4d"},
+    "base_canon_hash": {"const": "d7ceea75615b57970f3b9712b73ed4c9f65a9c4406c877e9013470cb53a6141a"},
+    "proposed_canon_hash": {"const": "d7ceea75615b57970f3b9712b73ed4c9f65a9c4406c877e9013470cb53a6141a"},
+    "canon_change": {"const": "NONE_CONSTRUCTION_GOVERNANCE_ONLY"},
+    "authority_scope": {"const": "CONSTRUCTION_GOVERNANCE_ONLY"},
+    "r2_canon_precedence": {"const": "HIGHER"},
+    "owner_plan_approval_id": {"const": "OWNER-APPROVAL-SCG-PRECONTENT-M3-B002-PLAN-R2"},
+    "owner_package_id": {"const": "SCG-PRECONTENT-M3-B002-ACTIVATION-IMPLEMENT-V1"},
+    "source_plan_package_id": {"const": "SCG-PRECONTENT-R1-Q001-Q021-PLAN-V1"},
+    "decision_set_path": {"const": "governance/story-construction/precontent/decisions.scg-pre-q001-q021.yaml"},
+    "decision_set_count": {"const": 21},
+    "partial_supersession_path": {"const": "governance/story-construction/precontent/partial-supersession.scg-pre-r1.yaml"},
+    "traceability_path": {"const": "governance/story-construction/precontent/traceability.scg-pre-r1.yaml"},
+    "framework_manifest_r1_path": {"const": "governance/story-construction/precontent/manifests/framework-manifest.r1.json"},
+    "framework_manifest_r2_path": {"const": "governance/story-construction/precontent/manifests/framework-manifest.r2.json"},
+    "pending_receipt_path": {"const": "governance/story-construction/receipts/scg-precontent-readiness-r1.pending.json"},
+    "final_inner_receipt_path": {"const": "governance/story-construction/receipts/scg-precontent-readiness-r1.final.json"},
+    "approval_consumption_record_path": {"const": "governance/story-construction/approvals/OWNER-APPROVAL-SCG-PRECONTENT-M3-B002-CANDIDATE-74FECBE6-R1.consumption.json"},
+    "active_wip": {"const": true},
+    "wip": {
+      "type": "object", "additionalProperties": false,
+      "required": ["precondition_global_active_wip", "implementation_global_active_wip"],
+      "properties": {"precondition_global_active_wip": {"const": 1}, "implementation_global_active_wip": {"const": 1}}
+    },
+    "canon_tier_impact": {
+      "type": "object", "additionalProperties": false, "required": ["T1", "T2", "T3"],
+      "properties": {"T1":{"const":"NONE"},"T2":{"const":"NONE"},"T3":{"const":"TEST_ONLY_NON_CANON"}}
+    },
+    "content_class_impact": {
+      "type": "object", "additionalProperties": false, "required": ["P0", "P1", "C1", "C2"],
+      "properties": {"P0":{"const":"FRAMEWORK_ONLY"},"P1":{"const":"FRAMEWORK_ONLY"},"C1":{"const":"NO_REVEAL_AUTHORITY"},"C2":{"const":"NONE"}}
+    },
+    "provider_request_counts": {
+      "type": "object", "additionalProperties": false, "required": ["deepseek", "grok", "opencode", "story_m0"],
+      "properties": {"deepseek":{"const":0},"grok":{"const":0},"opencode":{"const":0},"story_m0":{"const":0}}
+    },
+    "m2_preservation": {
+      "type": "object", "additionalProperties": false,
+      "required": ["M2-B001", "M2-B002", "M2-B002_READY", "R2-INT-010", "formal_B002", "formal_B009", "blocking_ids"],
+      "properties": {
+        "M2-B001":{"const":"ACCEPTED_WITH_DOWNSTREAM_BLOCKERS"},
+        "M2-B002":{"const":"PLANNED_NOT_STARTED"},
+        "M2-B002_READY":{"const":"NO"},
+        "R2-INT-010":{"const":"RESOLVED_ADAPTER"},
+        "formal_B002":{"const":false},
+        "formal_B009":{"const":false},
+        "blocking_ids":{"type":"array","minItems":3,"maxItems":3,"uniqueItems":true,"items":{"enum":["R2-INT-011","R2-INT-012","DEFER-R2-C14-001"]}}
+      }
+    },
+    "forbidden_actions": {"type":"array","minItems":1,"uniqueItems":true,"items":{"type":"string","minLength":1}},
+    "tests": {"type":"array","minItems":1,"uniqueItems":true,"items":{"type":"string","minLength":1}}
+  }
+}

@@ -63,8 +63,10 @@ from tools.story_construction import (
     write_derived_installation,
 )
 from tools.validate_precontent_readiness import (
+    ACTIVATION_ALLOWLIST as PRECONTENT_ACTIVATION_ALLOWLIST,
     ALLOWLIST as PRECONTENT_ALLOWLIST,
     BASE_COMMIT as PRECONTENT_BASE_COMMIT,
+    IMPLEMENTATION_CANDIDATE_COMMIT as PRECONTENT_IMPLEMENTATION_CANDIDATE_COMMIT,
     changed_paths as precontent_changed_paths,
     collect_errors as validate_precontent_readiness,
 )
@@ -109,6 +111,11 @@ SCHEMA_FILES = {
     "causal-epistemic-proof-matrix-v1.schema.json",
     "region-risk-scorecard-v1.schema.json",
     "precontent-readiness-bundle-v1.schema.json",
+    "precontent-change-set-v2.schema.json",
+    "precontent-final-receipt-v2.schema.json",
+    "precontent-owner-approval-consumption-v1.schema.json",
+    "precontent-activation-owner-approval-v1.schema.json",
+    "precontent-activation-closeout-envelope-v1.schema.json",
 }
 
 PRECONTENT_SCHEMA_FILES = {
@@ -132,6 +139,11 @@ PRECONTENT_SCHEMA_FILES = {
     "causal-epistemic-proof-matrix-v1.schema.json",
     "region-risk-scorecard-v1.schema.json",
     "precontent-readiness-bundle-v1.schema.json",
+    "precontent-change-set-v2.schema.json",
+    "precontent-final-receipt-v2.schema.json",
+    "precontent-owner-approval-consumption-v1.schema.json",
+    "precontent-activation-owner-approval-v1.schema.json",
+    "precontent-activation-closeout-envelope-v1.schema.json",
 }
 
 GOVERNANCE_DOCS = [
@@ -660,19 +672,21 @@ def _check_activation_git_scope(root: Path, errors: list[str]) -> None:
         except (OSError, subprocess.CalledProcessError) as exc:
             errors.append(f"pre-content changed paths: {exc}")
             return
-        outside = sorted(changed - set(PRECONTENT_ALLOWLIST))
-        if outside:
-            errors.append(f"pre-content changed paths exceed approved scope: {outside}")
+        expected = set(PRECONTENT_ACTIVATION_ALLOWLIST)
+        outside = sorted(changed - expected)
+        missing = sorted(expected - changed)
+        if outside or missing:
+            errors.append(f"pre-content activation diff is not exact: missing={missing}, extra={outside}")
         head = _git_output(root, ["rev-parse", "HEAD"], errors, "pre-content HEAD")
-        if head is not None and head != PRECONTENT_BASE_COMMIT:
+        if head is not None and head != PRECONTENT_IMPLEMENTATION_CANDIDATE_COMMIT:
             parent = _git_output(root, ["rev-parse", "HEAD^"], errors, "pre-content parent")
             count = _git_output(
                 root,
-                ["rev-list", "--count", f"{PRECONTENT_BASE_COMMIT}..HEAD"],
+                ["rev-list", "--count", f"{PRECONTENT_IMPLEMENTATION_CANDIDATE_COMMIT}..HEAD"],
                 errors,
                 "pre-content lineage count",
             )
-            if parent != PRECONTENT_BASE_COMMIT or count != "1":
+            if parent != PRECONTENT_IMPLEMENTATION_CANDIDATE_COMMIT or count != "1":
                 errors.append("pre-content lineage is non-FF, rebased, amended, or multi-commit")
         return
     changed_output = _git_output(
