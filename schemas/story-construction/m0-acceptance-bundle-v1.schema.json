@@ -1,0 +1,13 @@
+{
+  "$schema":"https://json-schema.org/draft/2020-12/schema",
+  "$id":"https://rules-residue.invalid/schemas/story-construction/m0-acceptance-bundle-v1.schema.json",
+  "title":"Synthetic M0 Acceptance Bundle",
+  "type":"object","additionalProperties":false,
+  "required":["schema_version","bundle_id","namespace_prefix","canon","release_eligible","promotion_allowed","disposition","dab_level","provider_certificates","required_consecutive_passes","fault_injection_receipts","validation_layers","cross_modal_oracle_result","m2_dependency_result","rights_status","worker_self_review_final","independent_verifier_id","result","bundle_payload_hash"],
+  "properties":{
+    "schema_version":{"const":"rules-residue.story-construction.m0-acceptance-bundle/1.0.0"},"bundle_id":{"const":"TEST-SCG-M0-ACCEPTANCE-BUNDLE-001"},"namespace_prefix":{"const":"TEST-"},"canon":{"const":false},"release_eligible":{"const":false},"promotion_allowed":{"const":false},"disposition":{"const":"TEST_EVIDENCE_ONLY"},"dab_level":{"const":"FORENSIC"},
+    "provider_certificates":{"type":"array","minItems":2,"maxItems":2,"uniqueItems":true,"items":{"type":"string","pattern":"^TEST-PROVIDER-CERT-[A-Z0-9-]+$"}},"required_consecutive_passes":{"const":3},"fault_injection_receipts":{"type":"array","minItems":2,"maxItems":2,"uniqueItems":true,"items":{"type":"string","pattern":"^TEST-FAULT-RECEIPT-[A-Z0-9-]+$"}},
+    "validation_layers":{"type":"object","additionalProperties":false,"required":["V0","V1","V2","V3","V4","V5","V6"],"properties":{"V0":{"enum":["PASS","FAIL","NOT_RUN"]},"V1":{"enum":["PASS","FAIL","NOT_RUN"]},"V2":{"enum":["PASS","FAIL","NOT_RUN"]},"V3":{"enum":["PASS","FAIL","NOT_RUN"]},"V4":{"enum":["PASS","FAIL","NOT_RUN"]},"V5":{"enum":["PASS","FAIL","NOT_RUN"]},"V6":{"enum":["PASS","FAIL","NOT_RUN"]}}},
+    "cross_modal_oracle_result":{"enum":["PASS","FAIL","NOT_RUN"]},"m2_dependency_result":{"const":"INDEPENDENT_OF_CURRENT_M2_BLOCKERS"},"rights_status":{"const":"RIGHTS_PENDING"},"worker_self_review_final":{"const":false},"independent_verifier_id":{"type":"string","minLength":1},"result":{"enum":["PASS","FAIL","NOT_RUN"]},"bundle_payload_hash":{"type":"string","pattern":"^[0-9a-f]{64}$"}
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "schema_version":"rules-residue.story-construction.omission-report/1.0.0",
+  "report_id":"TEST-OMISSION-REPORT-VISUAL-001","order_id":"VISUAL-ORDER-TEST-SCG-M0-001",
+  "namespace_prefix":"TEST-","canon":false,"release_eligible":false,"promotion_allowed":false,"disposition":"TEST_EVIDENCE_ONLY",
+  "context_manifest_ref":"tests/fixtures/story-construction/precontent-m0/test-context-manifest-visual-001.json",
+  "omissions":[
+    {"source_class":"FULL_R2_CANON","reason":"PROHIBITED_OR_NOT_REQUIRED_BY_DEPENDENCY_CLOSURE","dependency_proof":"Visual order uses synthetic references only.","impact":"NONE_ON_AUTHORIZED_SYNTHETIC_ORDER"},
+    {"source_class":"PRODUCTION_ASSETS","reason":"PROHIBITED_OR_NOT_REQUIRED_BY_DEPENDENCY_CLOSURE","dependency_proof":"M0 is contract and TEST evidence only.","impact":"NONE_ON_AUTHORIZED_SYNTHETIC_ORDER"},
+    {"source_class":"UNRELATED_REGIONS","reason":"PROHIBITED_OR_NOT_REQUIRED_BY_DEPENDENCY_CLOSURE","dependency_proof":"Only TEST-REGION-SCG-M0-001 is in closure.","impact":"NONE_ON_AUTHORIZED_SYNTHETIC_ORDER"}
+  ],
+  "required_dependency_omitted":false,"closure_complete":true,"report_hash":"e86dc5660900921c5d6f8008b9fe814004961aabfa814abf97c2fea4bf7ca99e"
+}

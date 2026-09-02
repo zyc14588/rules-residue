@@ -1,0 +1,13 @@
+{
+  "$schema":"https://json-schema.org/draft/2020-12/schema",
+  "$id":"https://rules-residue.invalid/schemas/story-construction/omission-report-v1.schema.json",
+  "title":"Deterministic Provider Context Omission Report",
+  "type":"object","additionalProperties":false,
+  "required":["schema_version","report_id","order_id","namespace_prefix","canon","release_eligible","promotion_allowed","disposition","context_manifest_ref","omissions","required_dependency_omitted","closure_complete","report_hash"],
+  "properties":{
+    "schema_version":{"const":"rules-residue.story-construction.omission-report/1.0.0"},"report_id":{"type":"string","pattern":"^TEST-OMISSION-REPORT-[A-Z0-9-]+$"},"order_id":{"type":"string","pattern":"^(TEXT|VISUAL)-ORDER-TEST-[A-Z0-9-]+$"},
+    "namespace_prefix":{"const":"TEST-"},"canon":{"const":false},"release_eligible":{"const":false},"promotion_allowed":{"const":false},"disposition":{"const":"TEST_EVIDENCE_ONLY"},"context_manifest_ref":{"type":"string","minLength":1},
+    "omissions":{"type":"array","minItems":1,"uniqueItems":true,"items":{"type":"object","additionalProperties":false,"required":["source_class","reason","dependency_proof","impact"],"properties":{"source_class":{"enum":["FULL_R2_CANON","GM_ONLY_TRUTH","FORMAL_REGION_CONTENT","PERSONAL_DATA","SECRETS","PRODUCTION_ASSETS","PRIVATE_CHAIN_OF_THOUGHT","UNRELATED_REGIONS"]},"reason":{"const":"PROHIBITED_OR_NOT_REQUIRED_BY_DEPENDENCY_CLOSURE"},"dependency_proof":{"type":"string","minLength":1},"impact":{"const":"NONE_ON_AUTHORIZED_SYNTHETIC_ORDER"}}}},
+    "required_dependency_omitted":{"const":false},"closure_complete":{"const":true},"report_hash":{"type":"string","pattern":"^[0-9a-f]{64}$"}
+  }
+}

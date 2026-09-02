@@ -1,0 +1,131 @@
+{
+  "schema_version": "1.0",
+  "route_id": "SCG-PRECONTENT-M3-B002-ACCEPT",
+  "mode": "ACCEPT",
+  "milestone": "M3",
+  "batch_id": "M3-B002",
+  "capacity_bytes": 196608,
+  "documents": [
+    {
+      "path": "AGENTS.md",
+      "required_sections": [
+        "M1-AGENTS-CONTRACT"
+      ],
+      "optional_sections": [],
+      "reason": "Bind repository boundaries."
+    },
+    {
+      "path": "README.md",
+      "required_sections": [
+        "M1-README-ENTRY"
+      ],
+      "optional_sections": [],
+      "reason": "Bind repository authority entry."
+    },
+    {
+      "path": ".codex/SESSION_START.md",
+      "required_sections": [
+        "M1-CODEX-SESSION-START",
+        "R2-CODEX-SESSION-START",
+        "M3-SCG-CODEX-SESSION-START"
+      ],
+      "optional_sections": [],
+      "reason": "Bind M3 progressive disclosure."
+    },
+    {
+      "path": ".codex/prompts/m3/PRECONTENT/README.md",
+      "required_sections": [
+        "M3-CODEX-PRECONTENT-README"
+      ],
+      "optional_sections": [],
+      "reason": "Bind pre-content topology and boundary."
+    },
+    {
+      "path": ".codex/prompts/m3/PRECONTENT/ACCEPT.md",
+      "required_sections": [
+        "M3-CODEX-PRECONTENT-ACCEPT"
+      ],
+      "optional_sections": [],
+      "reason": "Bind ACCEPT role."
+    },
+    {
+      "path": "docs/governance/story-construction/00_AUTHORITY_AND_PRECEDENCE.md",
+      "required_sections": [
+        "M3-SCG-AUTHORITY-PRECEDENCE"
+      ],
+      "optional_sections": [],
+      "reason": "Bind R2 precedence."
+    },
+    {
+      "path": "docs/governance/story-construction/02_CHANGE_SET_AND_LIFECYCLE.md",
+      "required_sections": [
+        "M3-SCG-CHANGESET-LIFECYCLE"
+      ],
+      "optional_sections": [],
+      "reason": "Bind Change Set lifecycle."
+    },
+    {
+      "path": "docs/governance/story-construction/03_CANON_REGISTRY.md",
+      "required_sections": [
+        "M3-SCG-CANON-REGISTRY"
+      ],
+      "optional_sections": [],
+      "reason": "Bind Canon preservation."
+    },
+    {
+      "path": "docs/governance/story-construction/08_VALIDATION_V0_V6.md",
+      "required_sections": [
+        "M3-SCG-VALIDATION-V0-V6"
+      ],
+      "optional_sections": [],
+      "reason": "Bind validation layers."
+    },
+    {
+      "path": "docs/governance/story-construction/09_DAB_AND_ACCEPTANCE.md",
+      "required_sections": [
+        "M3-SCG-DAB-ACCEPTANCE"
+      ],
+      "optional_sections": [],
+      "reason": "Bind independent acceptance."
+    },
+    {
+      "path": "docs/governance/story-construction/10_PRECONTENT_READINESS.md",
+      "required_sections": [
+        "M3-SCG-PRECONTENT-READINESS"
+      ],
+      "optional_sections": [],
+      "reason": "Bind B002 framework and B003 blockers."
+    },
+    {
+      "path": "docs/operations/agents/m3/deepseek-harness/PRECONTENT_M0_PROFILE.md",
+      "required_sections": [
+        "M3-DEEPSEEK-PRECONTENT-M0-PROFILE"
+      ],
+      "optional_sections": [],
+      "reason": "Bind DeepSeek reference profile candidate."
+    },
+    {
+      "path": ".grok/PRECONTENT_M0_PROFILE.md",
+      "required_sections": [
+        "M3-GROK-PRECONTENT-M0-PROFILE"
+      ],
+      "optional_sections": [],
+      "reason": "Bind Grok reference profile candidate."
+    }
+  ],
+  "forbidden_bulk_reads": [
+    "docs/**",
+    "authoring/**",
+    "governance/**",
+    "schemas/**",
+    "workflow/**",
+    "game-package/**",
+    ".grok/**",
+    ".opencode/**",
+    "reports/**",
+    "TRPG_PLATFORM/**",
+    "*",
+    "git_history_all",
+    "prior_chat_transcripts"
+  ]
+}

@@ -53,6 +53,7 @@ REQUIRED_ROOT_FILES = [
     "tests/test_codex_route.py",
     "reports/M1_CODEX_ROUTE_COMPATIBILITY.md",
     "tools/validate_story_construction_governance.py",
+    "tools/validate_precontent_readiness.py",
 ]
 
 REQUIRED_AUTHORING_FILES = [
@@ -999,6 +1000,7 @@ def main() -> int:
     print("- Codex progressive-disclosure route infrastructure: PASS")
     print("- R2 authority installation and progressive-delivery registry: PASS")
     print("- Story Construction Governance tracked-active/fail-closed gates: PASS")
+    print("- SCG Pre-Content decision binding and TEST-only M0 framework: PASS")
     print("- originality and release block: PASS")
     print("- package lock: PASS")
     return 0

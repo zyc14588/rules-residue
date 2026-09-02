@@ -1,0 +1,12 @@
+{
+  "schema_version":"rules-residue.story-construction.omission-report/1.0.0",
+  "report_id":"TEST-OMISSION-REPORT-TEXT-001","order_id":"TEXT-ORDER-TEST-SCG-M0-001",
+  "namespace_prefix":"TEST-","canon":false,"release_eligible":false,"promotion_allowed":false,"disposition":"TEST_EVIDENCE_ONLY",
+  "context_manifest_ref":"tests/fixtures/story-construction/precontent-m0/test-context-manifest-text-001.json",
+  "omissions":[
+    {"source_class":"FULL_R2_CANON","reason":"PROHIBITED_OR_NOT_REQUIRED_BY_DEPENDENCY_CLOSURE","dependency_proof":"Order references synthetic envelope only.","impact":"NONE_ON_AUTHORIZED_SYNTHETIC_ORDER"},
+    {"source_class":"GM_ONLY_TRUTH","reason":"PROHIBITED_OR_NOT_REQUIRED_BY_DEPENDENCY_CLOSURE","dependency_proof":"Reveal boundary withholds hidden cause.","impact":"NONE_ON_AUTHORIZED_SYNTHETIC_ORDER"},
+    {"source_class":"SECRETS","reason":"PROHIBITED_OR_NOT_REQUIRED_BY_DEPENDENCY_CLOSURE","dependency_proof":"No credential or secret is an order dependency.","impact":"NONE_ON_AUTHORIZED_SYNTHETIC_ORDER"}
+  ],
+  "required_dependency_omitted":false,"closure_complete":true,"report_hash":"f6e57921edc075b679c0322d5b88c6498da3e43c0bc08e4bfeece1148d6670da"
+}

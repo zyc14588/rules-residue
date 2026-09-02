@@ -1,0 +1,22 @@
+{
+  "$schema":"https://json-schema.org/draft/2020-12/schema",
+  "$id":"https://rules-residue.invalid/schemas/story-construction/precontent-decision-set-v1.schema.json",
+  "title":"SCG Pre-Content Owner Decision Set",
+  "type":"object","additionalProperties":false,
+  "required":["schema_version","decision_set_id","stage_id","change_set_id","machine_milestone","machine_batch_id","authority_scope","r2_canon_precedence","binding_kind","owner_plan_approval_id","owner_package_id","source_plan_package_id","source_owner_decisions_sha256","preserves_q001_q130","decision_count","decisions"],
+  "properties":{
+    "schema_version":{"const":"rules-residue.story-construction.precontent-decisions/1.0.0"},
+    "decision_set_id":{"const":"SCG-PRECONTENT-R1-Q001-Q021"},
+    "stage_id":{"const":"SCG-PRECONTENT-READINESS-R1"},
+    "change_set_id":{"const":"CS-SCG-PRECONTENT-READINESS-R1-001"},
+    "machine_milestone":{"const":"M3"},"machine_batch_id":{"const":"M3-B002"},
+    "authority_scope":{"const":"CONSTRUCTION_GOVERNANCE_ONLY"},"r2_canon_precedence":{"const":"HIGHER"},
+    "binding_kind":{"const":"APPEND_ONLY_OWNER_DECISION_BINDING"},
+    "owner_plan_approval_id":{"const":"OWNER-APPROVAL-SCG-PRECONTENT-M3-B002-PLAN-R2"},
+    "owner_package_id":{"const":"SCG-PRECONTENT-M3-B002-IMPLEMENT-V2"},
+    "source_plan_package_id":{"const":"SCG-PRECONTENT-R1-Q001-Q021-PLAN-V1"},
+    "source_owner_decisions_sha256":{"type":"string","pattern":"^[0-9a-f]{64}$"},
+    "preserves_q001_q130":{"const":true},"decision_count":{"const":21},
+    "decisions":{"type":"array","minItems":21,"maxItems":21,"items":{"type":"object","additionalProperties":false,"required":["id","option","summary","status"],"properties":{"id":{"type":"string","pattern":"^SCG-PRE-Q0(0[1-9]|1[0-9]|2[01])$"},"option":{"type":"string","minLength":1},"summary":{"type":"string","minLength":1},"status":{"const":"OWNER_APPROVED"}}}}
+  }
+}

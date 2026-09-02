@@ -1,0 +1,12 @@
+{
+  "$schema":"https://json-schema.org/draft/2020-12/schema",
+  "$id":"https://rules-residue.invalid/schemas/story-construction/region-content-intensity-contract-v1.schema.json",
+  "title":"Owner-Revisable Region Content Intensity Contract",
+  "type":"object","additionalProperties":false,
+  "required":["schema_version","contract_id","region_id","namespace_prefix","canon","release_eligible","promotion_allowed","disposition","revision","owner_revisable","per_region","permanent_global_ceiling","dimensions","preserved_constraints","cost_latency_policy","stale_order_result"],
+  "properties":{
+    "schema_version":{"const":"rules-residue.story-construction.region-content-intensity/1.0.0"},"contract_id":{"type":"string","pattern":"^TEST-[A-Z0-9-]+$"},"region_id":{"type":"string","pattern":"^TEST-[A-Z0-9-]+$"},"namespace_prefix":{"const":"TEST-"},"canon":{"const":false},"release_eligible":{"const":false},"promotion_allowed":{"const":false},"disposition":{"const":"TEST_EVIDENCE_ONLY"},"revision":{"type":"integer","minimum":1},"owner_revisable":{"const":true},"per_region":{"const":true},"permanent_global_ceiling":{"const":false},
+    "dimensions":{"type":"array","minItems":4,"uniqueItems":true,"items":{"type":"object","additionalProperties":false,"required":["name","level","rationale"],"properties":{"name":{"enum":["RULE_DENSITY","PSYCHOLOGICAL_PRESSURE","BODY_HORROR","RESOURCE_SCARCITY","SOCIAL_DECEPTION","FAILURE_SEVERITY"]},"level":{"enum":["LOW","MEDIUM","HIGH","OWNER_FROZEN"]},"rationale":{"type":"string","minLength":1}}}},
+    "preserved_constraints":{"type":"array","minItems":4,"uniqueItems":true,"items":{"enum":["LEGAL","PLATFORM_POLICY","R2_SAFETY","WARNINGS","ACCESSIBILITY"]}},"cost_latency_policy":{"const":"RECORD_ONLY_NOT_AUTOMATIC_ADMISSION"},"stale_order_result":{"const":"STALE_CONTRACT_REVISION"}
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "schema_version": "rules-residue.story-construction.partial-supersession/1.0.0",
+  "manifest_id": "SCG-PRECONTENT-PARTIAL-SUPERSESSION-R1",
+  "change_set_id": "CS-SCG-PRECONTENT-READINESS-R1-001",
+  "authority_scope": "CONSTRUCTION_GOVERNANCE_ONLY",
+  "append_only": true,
+  "historical_records_rewritten": false,
+  "supersession_count": 3,
+  "entries": [
+    {"source_decision_id":"Q093","disposition":"SUPERSEDED_IN_PART","replacement_decision_ids":["SCG-PRE-Q015"],"unaffected_meaning_preserved":true},
+    {"source_decision_id":"Q099","disposition":"SUPERSEDED_IN_PART","replacement_decision_ids":["SCG-PRE-Q010","SCG-PRE-Q011","SCG-PRE-Q013"],"unaffected_meaning_preserved":true},
+    {"source_decision_id":"Q129","disposition":"SUPERSEDED_IN_PART","replacement_decision_ids":["SCG-PRE-Q015"],"unaffected_meaning_preserved":true}
+  ],
+  "no_other_supersessions": true
+}

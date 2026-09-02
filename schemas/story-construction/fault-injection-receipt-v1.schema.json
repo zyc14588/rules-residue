@@ -1,0 +1,10 @@
+{
+  "$schema":"https://json-schema.org/draft/2020-12/schema",
+  "$id":"https://rules-residue.invalid/schemas/story-construction/fault-injection-receipt-v1.schema.json",
+  "title":"Controlled Provider Fault-Injection Receipt",
+  "type":"object","additionalProperties":false,
+  "required":["schema_version","receipt_id","profile_id","namespace_prefix","canon","release_eligible","promotion_allowed","disposition","fault_id","isolated_copy","provider_called","fault_injected","expected_gate","observed_rejection","output_accepted","receipt_payload_hash"],
+  "properties":{
+    "schema_version":{"const":"rules-residue.story-construction.fault-injection-receipt/1.0.0"},"receipt_id":{"type":"string","pattern":"^TEST-FAULT-RECEIPT-[A-Z0-9-]+$"},"profile_id":{"type":"string","pattern":"^TEST-[A-Z0-9-]+$"},"namespace_prefix":{"const":"TEST-"},"canon":{"const":false},"release_eligible":{"const":false},"promotion_allowed":{"const":false},"disposition":{"const":"TEST_EVIDENCE_ONLY"},"fault_id":{"type":"string","pattern":"^TEST-FAULT-[A-Z0-9-]+$"},"isolated_copy":{"const":true},"provider_called":{"const":false},"fault_injected":{"type":"string","minLength":1},"expected_gate":{"type":"string","minLength":1},"observed_rejection":{"const":true},"output_accepted":{"const":false},"receipt_payload_hash":{"type":"string","pattern":"^[0-9a-f]{64}$"}
+  }
+}

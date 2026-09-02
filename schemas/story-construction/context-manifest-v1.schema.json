@@ -1,0 +1,15 @@
+{
+  "$schema":"https://json-schema.org/draft/2020-12/schema",
+  "$id":"https://rules-residue.invalid/schemas/story-construction/context-manifest-v1.schema.json",
+  "title":"Deterministic Provider Context Manifest",
+  "type":"object","additionalProperties":false,
+  "required":["schema_version","manifest_id","order_id","namespace_prefix","canon","release_eligible","promotion_allowed","disposition","closure_algorithm","canonicalization","sources","combined_source_hash","omission_report_ref","contains_secrets","contains_personal_data","contains_unpublished_canon","private_chain_of_thought_requested"],
+  "properties":{
+    "schema_version":{"const":"rules-residue.story-construction.context-manifest/1.0.0"},"manifest_id":{"type":"string","pattern":"^TEST-CONTEXT-MANIFEST-[A-Z0-9-]+$"},"order_id":{"type":"string","pattern":"^(TEXT|VISUAL)-ORDER-TEST-[A-Z0-9-]+$"},
+    "namespace_prefix":{"const":"TEST-"},"canon":{"const":false},"release_eligible":{"const":false},"promotion_allowed":{"const":false},"disposition":{"const":"TEST_EVIDENCE_ONLY"},
+    "closure_algorithm":{"const":"DETERMINISTIC_DEPENDENCY_CLOSURE_V1"},"canonicalization":{"const":"UTF8_NFC_SORTED_KEYS_FINITE_NUMBERS_V1"},
+    "sources":{"type":"array","minItems":3,"uniqueItems":true,"items":{"type":"object","additionalProperties":false,"required":["path","role","sha256","required"],"properties":{"path":{"type":"string","minLength":1},"role":{"enum":["TEST_CANON_ENVELOPE","TEST_REGION_DOSSIER","TEST_REVEAL_CONTRACT","TEST_NPC_EPISTEMIC_STATE","TEST_INTENSITY_CONTRACT","STYLE_CONTRACT"]},"sha256":{"type":"string","pattern":"^[0-9a-f]{64}$"},"required":{"const":true}}}},
+    "combined_source_hash":{"type":"string","pattern":"^[0-9a-f]{64}$"},"omission_report_ref":{"type":"string","minLength":1},
+    "contains_secrets":{"const":false},"contains_personal_data":{"const":false},"contains_unpublished_canon":{"const":false},"private_chain_of_thought_requested":{"const":false}
+  }
+}

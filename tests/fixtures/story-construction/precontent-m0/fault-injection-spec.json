@@ -1,0 +1,12 @@
+{
+  "schema_version":"rules-residue.story-construction.test-fault-injection-spec/1.0.0",
+  "spec_id":"TEST-FAULT-INJECTION-SCG-M0-001",
+  "namespace_prefix":"TEST-","canon":false,"release_eligible":false,"promotion_allowed":false,"disposition":"TEST_EVIDENCE_ONLY",
+  "isolated_temporary_copies_only":true,"provider_calls":false,"story_m0_execution":false,"private_chain_of_thought":false,
+  "faults":[
+    {"id":"TEST-FAULT-PROMOTION-001","target":"test-fixture-graph.json","mutation":"canon=true","expected_gate":"TEST_NON_PROMOTION"},
+    {"id":"TEST-FAULT-IDENTITY-001","target":"provider-run-receipt-v1","mutation":"resolved_model missing","expected_gate":"PROVIDER_IDENTITY"},
+    {"id":"TEST-FAULT-REUSE-001","target":"provider-certificate-v1","mutation":"duplicate run id","expected_gate":"DISTINCT_CONSECUTIVE_RUNS"},
+    {"id":"TEST-FAULT-REVISION-001","target":"text-order-001.json","mutation":"stale intensity revision","expected_gate":"STALE_CONTRACT_REVISION"}
+  ]
+}

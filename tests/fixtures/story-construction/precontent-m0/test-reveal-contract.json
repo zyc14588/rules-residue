@@ -1,0 +1,10 @@
+{
+  "schema_version":"rules-residue.story-construction.test-reveal-contract/1.0.0",
+  "reveal_id":"TEST-C1-REVEAL-SCG-M0-001",
+  "namespace_prefix":"TEST-","canon":false,"release_eligible":false,"promotion_allowed":false,"disposition":"TEST_EVIDENCE_ONLY",
+  "reveal_class":"C1_BOUNDARY_TEST_NOT_FORMAL_APPROVAL","owner_reveal_authority_created":false,
+  "recipient":"TEST-PARTICIPANT-001","trigger":"AFTER_TEST-SIGNAL-FIRST-001","channel":"DIEGETIC_OBSERVATION","reliability":"PARTIAL_RELIABLE","ambiguity":"CAUSE_WITHHELD","confidence":"MEDIUM",
+  "allowed_claims":["TEST-SIGNAL-FIRST-001 precedes TEST-SIGNAL-SECOND-001","TEST-VISIBLE-MARK-001 appears only after crossing"],
+  "forbidden_claims":["hidden cause of TEST-SIGNAL-SECOND-001","formal world truth","puzzle answer"],
+  "text_visual_combined_budget":"NO_MORE_THAN_ALLOWED_CLAIMS","accessible_equivalent_required":true
+}

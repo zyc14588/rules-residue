@@ -1,0 +1,11 @@
+{
+  "$schema":"https://json-schema.org/draft/2020-12/schema",
+  "$id":"https://rules-residue.invalid/schemas/story-construction/region-interface-matrix-v1.schema.json",
+  "title":"Six-Region Import and Export Interface Matrix",
+  "type":"object","additionalProperties":false,
+  "required":["schema_version","matrix_id","minimum_region_count","regions","all_interfaces_frozen","formal_vertical_slice_allowed"],
+  "properties":{
+    "schema_version":{"const":"rules-residue.story-construction.region-interface-matrix/1.0.0"},"matrix_id":{"type":"string","minLength":1},"minimum_region_count":{"const":6},
+    "regions":{"type":"array","minItems":6,"uniqueItems":true,"items":{"type":"object","additionalProperties":false,"required":["region_id","imports","exports","revision","status"],"properties":{"region_id":{"type":"string","minLength":1},"imports":{"type":"array","minItems":1,"uniqueItems":true,"items":{"type":"string","minLength":1}},"exports":{"type":"array","minItems":1,"uniqueItems":true,"items":{"type":"string","minLength":1}},"revision":{"type":"integer","minimum":1},"status":{"enum":["FROZEN","OPEN","BLOCKED"]}}}},"all_interfaces_frozen":{"type":"boolean"},"formal_vertical_slice_allowed":{"type":"boolean"}
+  }
+}

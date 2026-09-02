@@ -1,0 +1,36 @@
+{
+  "schema_version":"rules-residue.story-construction.precontent-static-gates/1.0.0",
+  "evidence_id":"TEST-SCG-M0-STATIC-GATES-001",
+  "namespace_prefix":"TEST-","canon":false,"release_eligible":false,"promotion_allowed":false,"disposition":"TEST_EVIDENCE_ONLY",
+  "base_commit":"6f9f671401f5857d460ca8e0bd8a86ebe04bb0b6","base_tree":"2dfa6553770f4eedbb4def358f661b9b16b79a4d","base_canon_hash":"d7ceea75615b57970f3b9712b73ed4c9f65a9c4406c877e9013470cb53a6141a",
+  "proof_tag":"r2-sc-gov-install-001-activation-closeout-accepted","proof_tag_object":"1699151155072126a61e77c69a386a233b3e9f8e","proof_tag_target":"6f9f671401f5857d460ca8e0bd8a86ebe04bb0b6",
+  "immutable_sha256":{
+    "governance/story-construction/decisions.q001-q130.yaml":"d52cf6a892679e9a0b29d28826ae0663033ed30d8c416e626cb6b6c22d0c74fd",
+    "governance/story-construction/canonical-manifest.json":"30d3b74d68636a7281e711cc6d511ef2b549d5b91857ddc4a8bba0e5cfe96f79",
+    "governance/story-construction/traceability.yaml":"b761c76e2fa6a4789060e0625fda24e613019221f6b65723eb60ad55d69bc1d7",
+    "governance/story-construction/authority-overlay.yaml":"ed2cfd02de36b22abbcebae902bfc63eb8f7405289dc516196f69b520a8aef19",
+    "governance/story-construction/canon-registry.yaml":"906e28eeb02b5d10cac989161ebd7898904425ec8bc24da0cd39607915e78455",
+    "governance/story-construction/change-sets/CS-R2-SC-GOV-INSTALL-001.yaml":"8008a02666805b976de2a534bbde584b245ca422ab3eb151b4500881406c6b96",
+    "governance/story-construction/receipts/installation-receipt.final.json":"99342534a7e9cc86781b13eea3662cab4d0b7d3e204d1a0cb64007a4e0571607",
+    "governance/story-construction/supersession/supersession-manifest.v1.yaml":"d78b63c79e0971fabaf121a0c57f5176c84d7cca29484ddc833c813c8ed2878e",
+    ".grok/r2/READING_MAP_PROFILE.yaml":"40823071955a687340d586cf1ad510bbabbf5cee66e41dd45481ab76d283e0a0",
+    ".grok/r2/RETURN_CONTRACT.md":"d0ebd100f99269feb4cdb0322e5370be5a945d3b113838033613621cd1a75efa",
+    ".codex/state/MILESTONE_PLAN.yaml":"74da7cc866e0b3b1f3580d86df18c8c6d9724ff6131e5d35c155fc33a2f71c17",
+    ".codex/plans/m2-vertical-slice/batches.json":"bd905ca66ceadb57ded858e832673ffac9358b2aacdbb7a8d032eaf932919d88"
+  },
+  "runtime_package_sha256":"29ea1e0278e37d183d4c0ff396437088b4873c58c5e9a9c857093f6c552a6314",
+  "allowlist_count":70,"allowlist_sha256":"5865bf9d1e6473b0c839b9a9395e96eb5bcaeea3f1b5df0d6bd2679310a9b0bd",
+  "request_counts":{"deepseek":0,"grok":0,"opencode":0,"story_m0":0},
+  "m2_dependency_classification":{
+    "schema_version":"rules-residue.story-construction.m2-dependency-classification/1.0.0","classification_id":"TEST-M2-DEPENDENCY-SCG-M0-001","subject_id":"TEST-SCG-M0-FIXTURE-001",
+    "namespace_prefix":"TEST-","canon":false,"release_eligible":false,"promotion_allowed":false,"disposition":"TEST_EVIDENCE_ONLY","algorithm":"TAG_INTERSECTION_WITH_PROOF_CLOSURE_V1",
+    "dependency_tags":["STORY_GOVERNANCE_STATIC_SCHEMA","SYNTHETIC_TEST_FIXTURE","LOCAL_DETERMINISTIC_VALIDATION"],"blocker_catalog":["R2-INT-011","R2-INT-012","DEFER-R2-C14-001"],
+    "closure_proofs":[
+      {"blocker_id":"R2-INT-011","required_tags":["LIVE_PROVIDER_RUNTIME","PLATFORM_AI_SESSION"],"intersection":[],"proof_ref":"M0 uses static local fixtures and no Provider call."},
+      {"blocker_id":"R2-INT-012","required_tags":["FORMAL_CREATOR_IMPORT","RUNTIME_PRODUCTION_ASSET"],"intersection":[],"proof_ref":"M0 artifacts are excluded from runtime and formal Creator inputs."},
+      {"blocker_id":"DEFER-R2-C14-001","required_tags":["FORMAL_C14_CONTENT","FORMAL_REGION_DEPENDENCY"],"intersection":[],"proof_ref":"Synthetic absolute rule declares defer_r2_c14_dependency=NONE."}
+    ],
+    "computed_affected_blockers":[],"result":"INDEPENDENT_OF_CURRENT_M2_BLOCKERS"
+  },
+  "result":"FRAMEWORK_STATIC_GATES_EXPECTED_PASS_NO_PROVIDER_CALLS"
+}

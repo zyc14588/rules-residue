@@ -1,0 +1,6 @@
+{
+  "schema_version":"rules-residue.story-construction.test-task-packet-envelope/1.0.0","envelope_id":"TEST-TASK-PACKET-VISUAL-001",
+  "namespace_prefix":"TEST-","canon":false,"release_eligible":false,"promotion_allowed":false,"disposition":"TEST_EVIDENCE_ONLY",
+  "execution_authorized_in_m3_b002":false,
+  "task_packet":{"schema_version":"rules-residue.task-packet/1.1","task_id":"RR-TASK-3003","status":"PLANNED","owner":"grok","task_type":"art","objective":"Execute VISUAL-ORDER-TEST-SCG-M0-001 only after separate B003 authorization.","authority":["VALIDATED_VISUAL_ORDER_PACKAGE","SCG-PRE-Q001","SCG-PRE-Q012"],"inputs":["tests/fixtures/story-construction/precontent-m0/visual-order-001.json","tests/fixtures/story-construction/precontent-m0/test-context-manifest-visual-001.json","tests/fixtures/story-construction/precontent-m0/test-omission-report-visual-001.json"],"allowed_paths":["workflow/returns/visual/TEST-SCG-M0-VISUAL-001/"],"forbidden_paths":["authoring/","governance/","schemas/","game-package/","TRPG_PLATFORM/"],"open_decisions":[],"acceptance":["exact order/context hashes","all must-objects present","no hidden-cause reveal","structured candidate only"],"expected_outputs":["controlled visual return bundle"],"notes":"Synthetic TEST material only; M3-B002 execution forbidden."}
+}

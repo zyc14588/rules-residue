@@ -1,0 +1,12 @@
+{
+  "$schema":"https://json-schema.org/draft/2020-12/schema",
+  "$id":"https://rules-residue.invalid/schemas/story-construction/region-risk-scorecard-v1.schema.json",
+  "title":"First-Region Risk and Controllability Scorecard",
+  "type":"object","additionalProperties":false,
+  "required":["schema_version","scorecard_id","region_id","formula","risk_weight","controllability_weight","missing_evidence_score","risk_coverage","controllability_rubric","computed_score","evidence_complete","real_region_scoring_authorized"],
+  "properties":{
+    "schema_version":{"const":"rules-residue.story-construction.region-risk-scorecard/1.0.0"},"scorecard_id":{"type":"string","minLength":1},"region_id":{"type":"string","minLength":1},"formula":{"const":"0.70*risk_coverage+0.30*controllability"},"risk_weight":{"const":0.7},"controllability_weight":{"const":0.3},"missing_evidence_score":{"const":0},
+    "risk_coverage":{"type":"array","minItems":1,"items":{"type":"object","additionalProperties":false,"required":["risk_id","evidence_ref","score"],"properties":{"risk_id":{"type":"string","minLength":1},"evidence_ref":{"type":"string"},"score":{"type":"integer","minimum":0,"maximum":4}}}},
+    "controllability_rubric":{"type":"array","minItems":5,"maxItems":5,"items":{"type":"object","additionalProperties":false,"required":["score","label","definition"],"properties":{"score":{"type":"integer","minimum":0,"maximum":4},"label":{"enum":["ABSENT","WEAK","PARTIAL","STRONG","DEMONSTRATED"]},"definition":{"type":"string","minLength":1}}}},"computed_score":{"type":"number","minimum":0,"maximum":4},"evidence_complete":{"type":"boolean"},"real_region_scoring_authorized":{"type":"boolean"}
+  }
+}

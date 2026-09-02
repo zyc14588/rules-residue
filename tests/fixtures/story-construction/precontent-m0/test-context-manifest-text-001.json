@@ -1,0 +1,14 @@
+{
+  "schema_version":"rules-residue.story-construction.context-manifest/1.0.0",
+  "manifest_id":"TEST-CONTEXT-MANIFEST-TEXT-001","order_id":"TEXT-ORDER-TEST-SCG-M0-001",
+  "namespace_prefix":"TEST-","canon":false,"release_eligible":false,"promotion_allowed":false,"disposition":"TEST_EVIDENCE_ONLY",
+  "closure_algorithm":"DETERMINISTIC_DEPENDENCY_CLOSURE_V1","canonicalization":"UTF8_NFC_SORTED_KEYS_FINITE_NUMBERS_V1",
+  "sources":[
+    {"path":"tests/fixtures/story-construction/precontent-m0/test-canon-envelope.json","role":"TEST_CANON_ENVELOPE","sha256":"97acd8fcb772c043dc41b2cba5895d8ca30951b4cf04a25c48654045fabe5ace","required":true},
+    {"path":"tests/fixtures/story-construction/precontent-m0/test-region-dossier.json","role":"TEST_REGION_DOSSIER","sha256":"16dc6e238a3ea26da49b67ebf1c85b84ee8299c0fb69ea8d6f17eddd1e6c20dc","required":true},
+    {"path":"tests/fixtures/story-construction/precontent-m0/test-reveal-contract.json","role":"TEST_REVEAL_CONTRACT","sha256":"f524933e0d0902efb2d88ce3e31a19934484006b0bd20dbc40f0fff8065628e9","required":true},
+    {"path":"tests/fixtures/story-construction/precontent-m0/test-region-intensity-contract.json","role":"TEST_INTENSITY_CONTRACT","sha256":"3cf4b1083182859196faabf0a17ef683f8d198401a90a68d6bf027d9bfee5068","required":true}
+  ],
+  "combined_source_hash":"337e5b0ab20d74ae532341acb6ef644ac9aa8189102ef5d04d14e2e688b4ca42","omission_report_ref":"tests/fixtures/story-construction/precontent-m0/test-omission-report-text-001.json",
+  "contains_secrets":false,"contains_personal_data":false,"contains_unpublished_canon":false,"private_chain_of_thought_requested":false
+}

@@ -1,0 +1,14 @@
+{
+  "schema_version": "rules-residue.grok.precontent-reading-map-profile/1.0.0",
+  "platform_role": "GROK_VISUAL_ORDER_WORKER",
+  "authority": "VALIDATED_VISUAL_ORDER_PACKAGE_ONLY",
+  "context_policy": "MINIMUM_AUTHORIZED_SYNTHETIC_SLICE",
+  "default_layers": ["L0_IDENTITY", "L1_VISUAL_ORDER_AUTHORITY", "L2_TEST_CONTEXT_MANIFEST"],
+  "conditional_layers": ["L3_TEST_REVEAL_MASKING_ONLY"],
+  "forbidden": ["RAW_ART_REQUEST", "FULL_TRUTH_BIBLE", "FULL_CAMPAIGN_SEED", "FORMAL_REGION_CONTENT", "PERSONAL_DATA", "SECRETS", "PRIVATE_CHAIN_OF_THOUGHT", "RULE_MECHANICS_EDIT", "LUA", "UNRELATED_REGIONS"],
+  "namespace_prefix": "TEST-",
+  "soft_context_ratio": 0.55,
+  "hard_context_ratio": 0.70,
+  "stale_action": "REJECT",
+  "m3_b002_execution": "FORBIDDEN"
+}

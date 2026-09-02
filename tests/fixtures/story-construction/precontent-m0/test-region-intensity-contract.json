@@ -1,0 +1,16 @@
+{
+  "schema_version":"rules-residue.story-construction.region-content-intensity/1.0.0",
+  "contract_id":"TEST-REGION-INTENSITY-SCG-M0-001","region_id":"TEST-REGION-SCG-M0-001",
+  "namespace_prefix":"TEST-","canon":false,"release_eligible":false,"promotion_allowed":false,"disposition":"TEST_EVIDENCE_ONLY",
+  "revision":1,"owner_revisable":true,"per_region":true,"permanent_global_ceiling":false,
+  "dimensions":[
+    {"name":"RULE_DENSITY","level":"MEDIUM","rationale":"Exercises interacting rules without formal content."},
+    {"name":"PSYCHOLOGICAL_PRESSURE","level":"LOW","rationale":"Synthetic fixture avoids production intensity claims."},
+    {"name":"BODY_HORROR","level":"LOW","rationale":"No graphic content required for certification."},
+    {"name":"RESOURCE_SCARCITY","level":"MEDIUM","rationale":"Tests controllability evidence."},
+    {"name":"SOCIAL_DECEPTION","level":"LOW","rationale":"NPC has no deception intent."},
+    {"name":"FAILURE_SEVERITY","level":"MEDIUM","rationale":"Retreat remains available and critical paths continue."}
+  ],
+  "preserved_constraints":["LEGAL","PLATFORM_POLICY","R2_SAFETY","WARNINGS","ACCESSIBILITY"],
+  "cost_latency_policy":"RECORD_ONLY_NOT_AUTOMATIC_ADMISSION","stale_order_result":"STALE_CONTRACT_REVISION"
+}

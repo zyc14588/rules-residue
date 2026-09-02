@@ -1,0 +1,13 @@
+{
+  "schema_version":"rules-residue.story-construction.test-region-dossier/1.0.0",
+  "dossier_id":"TEST-REGION-DOSSIER-SCG-M0-001","region_id":"TEST-REGION-SCG-M0-001",
+  "namespace_prefix":"TEST-","canon":false,"release_eligible":false,"promotion_allowed":false,"disposition":"TEST_EVIDENCE_ONLY",
+  "formal_region":false,"story_m0_executed":false,
+  "rule_refs":["TEST-ABSOLUTE-RULE-SCG-M0-001"],"npc_refs":["TEST-NPC-OBSERVER-SCG-M0-001"],"reveal_refs":["TEST-C1-REVEAL-SCG-M0-001"],
+  "routes":[
+    {"id":"TEST-ROUTE-NORMAL-SCG-M0-001","entry":"TEST-SAFE-THRESHOLD-001","steps":["WAIT_FIRST_SIGNAL","WAIT_SECOND_SIGNAL","CROSS"],"exit":"TEST-MARKED-SIDE-001","critical_failure_stalls":false},
+    {"id":"TEST-ROUTE-RETREAT-SCG-M0-001","entry":"TEST-THRESHOLD-EDGE-001","steps":["OBSERVE_FIRST_SIGNAL","RETREAT_BEFORE_SECOND_SIGNAL"],"exit":"TEST-SAFE-THRESHOLD-001","critical_failure_stalls":false}
+  ],
+  "failure_handling":{"critical_path_continues":true,"optional_secret_missable":true,"tpk_test_only":"RESET_TO_TEST-SAFE-THRESHOLD-001"},
+  "design_complete":false,"formal_order_authorized":false
+}

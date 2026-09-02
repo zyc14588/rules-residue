@@ -1,0 +1,12 @@
+{
+  "schema_version":"rules-residue.story-construction.omission-report/1.0.0",
+  "report_id":"TEST-OMISSION-REPORT-TEXT-002","order_id":"TEXT-ORDER-TEST-SCG-M0-002",
+  "namespace_prefix":"TEST-","canon":false,"release_eligible":false,"promotion_allowed":false,"disposition":"TEST_EVIDENCE_ONLY",
+  "context_manifest_ref":"tests/fixtures/story-construction/precontent-m0/test-context-manifest-text-002.json",
+  "omissions":[
+    {"source_class":"FULL_R2_CANON","reason":"PROHIBITED_OR_NOT_REQUIRED_BY_DEPENDENCY_CLOSURE","dependency_proof":"Synthetic causal link is complete for the order.","impact":"NONE_ON_AUTHORIZED_SYNTHETIC_ORDER"},
+    {"source_class":"FORMAL_REGION_CONTENT","reason":"PROHIBITED_OR_NOT_REQUIRED_BY_DEPENDENCY_CLOSURE","dependency_proof":"TEST dossier is the only region dependency.","impact":"NONE_ON_AUTHORIZED_SYNTHETIC_ORDER"},
+    {"source_class":"PRIVATE_CHAIN_OF_THOUGHT","reason":"PROHIBITED_OR_NOT_REQUIRED_BY_DEPENDENCY_CLOSURE","dependency_proof":"Only structured evidence and outputs are allowed.","impact":"NONE_ON_AUTHORIZED_SYNTHETIC_ORDER"}
+  ],
+  "required_dependency_omitted":false,"closure_complete":true,"report_hash":"fbda36d853e5ee29e0f489e96beb6df7096a92c6260dd37feb4f842a0d333293"
+}

@@ -1,0 +1,14 @@
+{
+  "schema_version":"2.0.0","order_id":"VISUAL-ORDER-TEST-SCG-M0-001","order_authority":"VALIDATED_VISUAL_ORDER_PACKAGE","task_type":"art",
+  "namespace_prefix":"TEST-","canon":false,"release_eligible":false,"promotion_allowed":false,"disposition":"TEST_EVIDENCE_ONLY","synthetic_fixture_id":"TEST-SCG-M0-FIXTURE-001","raw_request":false,
+  "context_manifest_ref":"tests/fixtures/story-construction/precontent-m0/test-context-manifest-visual-001.json","context_manifest_sha256":"b8a22e7f206093ff4fdbe4b7e4dadba32e9ecaa3535db1f4a13ed861202bddb2",
+  "omission_report_ref":"tests/fixtures/story-construction/precontent-m0/test-omission-report-visual-001.json","omission_report_sha256":"60f6103ba13bb25c5c09061f905220f4cb178ffe345384b81ba014714eef6393",
+  "intensity_contract_id":"TEST-REGION-INTENSITY-SCG-M0-001","intensity_contract_revision":1,
+  "semantic_composition_proof":"A square TEST diagram shows the safe threshold, two nonverbal signal markers, and a visible entrant mark without depicting the hidden cause.",
+  "canon_refs":["TEST-T1-ANCHOR-PHASE-001","TEST-T2-SIGNAL-TO-MARK-001"],"dossier_refs":["TEST-REGION-DOSSIER-SCG-M0-001"],
+  "must_objects":["safe threshold line","two distinct signal markers","visible entrant mark"],"forbidden_objects":["hidden-cause symbol","formal setting insignia","puzzle-answer text"],
+  "spatial_relations":["signal markers remain on the approach side","visible mark remains on the crossed side"],"salience":["threshold highest","signal order second","mark third"],"occlusion":["no required object may be occluded"],"state_continuity":["mark exists only in post-crossing state"],
+  "reveal_refs":["TEST-C1-REVEAL-SCG-M0-001"],"accessibility_equivalent":"A threshold separates a safe approach from a crossed side; two ordered signal markers precede a visible mark, while the cause remains unspecified.",
+  "rights_provenance":["original synthetic geometric composition only","no third-party assets","RIGHTS_PENDING","INTERNAL_TEST_ONLY"],"capability_declaration":["text-to-image candidate only","no authority creation","no rule definition"],"proposed_fact_classes":[],"creates_authority":false,
+  "provider_profile_ref":"TEST-XAI-GROK-CLI-PRECONTENT-M0-R1","provider_execution_authorized":false,"order_hash":"86c951f7e7afc1676715fc56e4ba62b1a65b6a2536882c7c48d5bdcebbcf9105"
+}

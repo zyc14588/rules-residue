@@ -1,0 +1,17 @@
+{
+  "$schema":"https://json-schema.org/draft/2020-12/schema",
+  "$id":"https://rules-residue.invalid/schemas/story-construction/test-fixture-graph-v1.schema.json",
+  "title":"Synthetic Story M0 TEST Fixture Graph",
+  "type":"object","additionalProperties":false,
+  "required":["schema_version","fixture_id","namespace_prefix","canon","release_eligible","promotion_allowed","disposition","ordinary_exemption","defer_r2_c14_dependency","dab_level","provider_calls_in_b002","nodes","edges","required_routes","orders","cross_modal_oracle_ref"],
+  "properties":{
+    "schema_version":{"const":"rules-residue.story-construction.test-fixture-graph/1.0.0"},
+    "fixture_id":{"const":"TEST-SCG-M0-FIXTURE-001"},"namespace_prefix":{"const":"TEST-"},"canon":{"const":false},"release_eligible":{"const":false},"promotion_allowed":{"const":false},"disposition":{"const":"TEST_EVIDENCE_ONLY"},
+    "ordinary_exemption":{"const":"NONE"},"defer_r2_c14_dependency":{"const":"NONE"},"dab_level":{"const":"FORENSIC"},"provider_calls_in_b002":{"const":0},
+    "nodes":{"type":"array","minItems":8,"uniqueItems":true,"items":{"type":"object","additionalProperties":false,"required":["id","kind","authority","description"],"properties":{"id":{"type":"string","pattern":"^TEST-[A-Z0-9-]+$"},"kind":{"enum":["T1_ANCHOR","T2_CAUSAL_LINK","T3_ENVELOPE","ABSOLUTE_RULE","NPC_EPISTEMIC_BOUNDARY","C1_REVEAL_BOUNDARY","ROUTE","DAB","ACCEPTANCE_BUNDLE"]},"authority":{"const":"SYNTHETIC_TEST_ONLY"},"description":{"type":"string","minLength":1}}}},
+    "edges":{"type":"array","minItems":6,"items":{"type":"object","additionalProperties":false,"required":["from","to","relation"],"properties":{"from":{"type":"string","minLength":1},"to":{"type":"string","minLength":1},"relation":{"enum":["CAUSES","CONSTRAINS","REVEALS","OBSERVES","TRAVERSES","RETREATS_TO","VALIDATES"]}}}},
+    "required_routes":{"type":"array","minItems":2,"maxItems":2,"uniqueItems":true,"items":{"enum":["TEST-ROUTE-NORMAL-SCG-M0-001","TEST-ROUTE-RETREAT-SCG-M0-001"]}},
+    "orders":{"type":"array","minItems":3,"maxItems":3,"uniqueItems":true,"items":{"enum":["TEXT-ORDER-TEST-SCG-M0-001","TEXT-ORDER-TEST-SCG-M0-002","VISUAL-ORDER-TEST-SCG-M0-001"]}},
+    "cross_modal_oracle_ref":{"const":"TEST-CROSS-MODAL-ORACLE-SCG-M0-001"}
+  }
+}

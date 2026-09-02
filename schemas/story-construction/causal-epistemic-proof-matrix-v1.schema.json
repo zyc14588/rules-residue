@@ -1,0 +1,12 @@
+{
+  "$schema":"https://json-schema.org/draft/2020-12/schema",
+  "$id":"https://rules-residue.invalid/schemas/story-construction/causal-epistemic-proof-matrix-v1.schema.json",
+  "title":"Typed Causal and Epistemic Proof Matrix",
+  "type":"object","additionalProperties":false,
+  "required":["schema_version","matrix_id","namespace_prefix","canon","release_eligible","promotion_allowed","disposition","claims","counterexamples","owner_review_required","combined_modal_reveal_within_contract","result"],
+  "properties":{
+    "schema_version":{"const":"rules-residue.story-construction.causal-epistemic-proof/1.0.0"},"matrix_id":{"type":"string","pattern":"^TEST-[A-Z0-9-]+$"},"namespace_prefix":{"const":"TEST-"},"canon":{"const":false},"release_eligible":{"const":false},"promotion_allowed":{"const":false},"disposition":{"const":"TEST_EVIDENCE_ONLY"},
+    "claims":{"type":"array","minItems":1,"items":{"type":"object","additionalProperties":false,"required":["claim_id","cause_ref","effect_ref","state_preconditions","observer_ref","reveal_ref","proof_ref"],"properties":{"claim_id":{"type":"string","pattern":"^TEST-[A-Z0-9-]+$"},"cause_ref":{"type":"string","pattern":"^TEST-[A-Z0-9-]+$"},"effect_ref":{"type":"string","pattern":"^TEST-[A-Z0-9-]+$"},"state_preconditions":{"type":"array","minItems":1,"uniqueItems":true,"items":{"type":"string","minLength":1}},"observer_ref":{"type":"string","pattern":"^TEST-[A-Z0-9-]+$"},"reveal_ref":{"type":"string","pattern":"^TEST-[A-Z0-9-]+$"},"proof_ref":{"type":"string","minLength":1}}}},
+    "counterexamples":{"type":"array","minItems":1,"items":{"type":"object","additionalProperties":false,"required":["counterexample_id","mutation","expected_rejection"],"properties":{"counterexample_id":{"type":"string","pattern":"^TEST-[A-Z0-9-]+$"},"mutation":{"type":"string","minLength":1},"expected_rejection":{"type":"string","minLength":1}}}},"owner_review_required":{"const":true},"combined_modal_reveal_within_contract":{"type":"boolean"},"result":{"enum":["PASS","FAIL","NOT_RUN"]}
+  }
+}

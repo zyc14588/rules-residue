@@ -1,0 +1,11 @@
+{
+  "$schema":"https://json-schema.org/draft/2020-12/schema",
+  "$id":"https://rules-residue.invalid/schemas/story-construction/global-t1-closure-matrix-v1.schema.json",
+  "title":"Global T1 Closure Matrix",
+  "type":"object","additionalProperties":false,
+  "required":["schema_version","matrix_id","campaign_scope","entries","all_required_t1_closed","owner_approval_id","formal_region_orders_allowed"],
+  "properties":{
+    "schema_version":{"const":"rules-residue.story-construction.global-t1-closure/1.0.0"},"matrix_id":{"type":"string","minLength":1},"campaign_scope":{"type":"string","minLength":1},
+    "entries":{"type":"array","minItems":1,"items":{"type":"object","additionalProperties":false,"required":["t1_id","required","status","owner_approval_ref"],"properties":{"t1_id":{"type":"string","minLength":1},"required":{"type":"boolean"},"status":{"enum":["OPEN","APPROVED","BLOCKED"]},"owner_approval_ref":{"type":"string"}}}},"all_required_t1_closed":{"type":"boolean"},"owner_approval_id":{"type":"string"},"formal_region_orders_allowed":{"type":"boolean"}
+  }
+}

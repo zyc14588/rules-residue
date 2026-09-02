@@ -1,0 +1,9 @@
+{
+  "schema_version":"rules-residue.story-construction.test-npc-epistemic-state/1.0.0",
+  "npc_id":"TEST-NPC-OBSERVER-SCG-M0-001",
+  "namespace_prefix":"TEST-","canon":false,"release_eligible":false,"promotion_allowed":false,"disposition":"TEST_EVIDENCE_ONLY",
+  "observations":["TEST-SIGNAL-FIRST-001","TEST-SIGNAL-SECOND-001","TEST-VISIBLE-MARK-001"],
+  "claims":[{"claim":"The second signal follows the first.","source_reliability":"DIRECT_OBSERVATION","confidence":"HIGH"}],
+  "knowledge":["TEST-SIGNAL-ORDER-001"],"beliefs":["Crossing timing influences the mark."],"unknowns":["TEST-HIDDEN-CAUSE-001"],"deception_intent":"NONE",
+  "forbidden_knowledge":["formal R2 Canon","GM-only truth","TEST-HIDDEN-CAUSE-001"],"may_authorize_reveal":false
+}

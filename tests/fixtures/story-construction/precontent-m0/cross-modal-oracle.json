@@ -1,0 +1,8 @@
+{
+  "schema_version":"rules-residue.story-construction.causal-epistemic-proof/1.0.0",
+  "matrix_id":"TEST-CROSS-MODAL-ORACLE-SCG-M0-001",
+  "namespace_prefix":"TEST-","canon":false,"release_eligible":false,"promotion_allowed":false,"disposition":"TEST_EVIDENCE_ONLY",
+  "claims":[{"claim_id":"TEST-CLAIM-SIGNAL-MARK-001","cause_ref":"TEST-T2-SIGNAL-TO-MARK-001","effect_ref":"TEST-VISIBLE-MARK-001","state_preconditions":["SECOND_SIGNAL_OBSERVED","THRESHOLD_CROSSED"],"observer_ref":"TEST-NPC-OBSERVER-SCG-M0-001","reveal_ref":"TEST-C1-REVEAL-SCG-M0-001","proof_ref":"test-fixture-graph.json#/edges"}],
+  "counterexamples":[{"counterexample_id":"TEST-COUNTEREXAMPLE-COMBINED-LEAK-001","mutation":"Text implies the hidden cause while image identifies it.","expected_rejection":"COMBINED_MODAL_REVEAL_EXCEEDS_CONTRACT"}],
+  "owner_review_required":true,"combined_modal_reveal_within_contract":true,"result":"NOT_RUN"
+}

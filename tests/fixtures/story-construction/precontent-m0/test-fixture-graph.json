@@ -1,0 +1,30 @@
+{
+  "schema_version":"rules-residue.story-construction.test-fixture-graph/1.0.0",
+  "fixture_id":"TEST-SCG-M0-FIXTURE-001",
+  "namespace_prefix":"TEST-","canon":false,"release_eligible":false,"promotion_allowed":false,"disposition":"TEST_EVIDENCE_ONLY",
+  "ordinary_exemption":"NONE","defer_r2_c14_dependency":"NONE","dab_level":"FORENSIC","provider_calls_in_b002":0,
+  "nodes":[
+    {"id":"TEST-T1-ANCHOR-PHASE-001","kind":"T1_ANCHOR","authority":"SYNTHETIC_TEST_ONLY","description":"A synthetic phase anchor exists only to test tier boundaries."},
+    {"id":"TEST-T2-SIGNAL-TO-MARK-001","kind":"T2_CAUSAL_LINK","authority":"SYNTHETIC_TEST_ONLY","description":"A synthetic signal deterministically precedes a visible mark."},
+    {"id":"TEST-T3-ENVELOPE-SCG-M0-001","kind":"T3_ENVELOPE","authority":"SYNTHETIC_TEST_ONLY","description":"A non-promotable envelope bounds all TEST instances."},
+    {"id":"TEST-ABSOLUTE-RULE-SCG-M0-001","kind":"ABSOLUTE_RULE","authority":"SYNTHETIC_TEST_ONLY","description":"Crossing after the second signal always marks the entrant, with no ordinary exemption."},
+    {"id":"TEST-NPC-OBSERVER-SCG-M0-001","kind":"NPC_EPISTEMIC_BOUNDARY","authority":"SYNTHETIC_TEST_ONLY","description":"The observer knows the signal order but not the hidden cause."},
+    {"id":"TEST-C1-REVEAL-SCG-M0-001","kind":"C1_REVEAL_BOUNDARY","authority":"SYNTHETIC_TEST_ONLY","description":"Only signal order and visible mark may be conveyed."},
+    {"id":"TEST-ROUTE-NORMAL-SCG-M0-001","kind":"ROUTE","authority":"SYNTHETIC_TEST_ONLY","description":"Normal route waits through two signals before crossing."},
+    {"id":"TEST-ROUTE-RETREAT-SCG-M0-001","kind":"ROUTE","authority":"SYNTHETIC_TEST_ONLY","description":"Retreat route returns to the safe threshold before the second signal."},
+    {"id":"TEST-SCG-M0-DAB-001","kind":"DAB","authority":"SYNTHETIC_TEST_ONLY","description":"FORENSIC decision and audit boundary without private reasoning."},
+    {"id":"TEST-SCG-M0-ACCEPTANCE-BUNDLE-001","kind":"ACCEPTANCE_BUNDLE","authority":"SYNTHETIC_TEST_ONLY","description":"Future B003 synthetic evidence aggregation target."}
+  ],
+  "edges":[
+    {"from":"TEST-T1-ANCHOR-PHASE-001","to":"TEST-T2-SIGNAL-TO-MARK-001","relation":"CONSTRAINS"},
+    {"from":"TEST-T2-SIGNAL-TO-MARK-001","to":"TEST-ABSOLUTE-RULE-SCG-M0-001","relation":"CAUSES"},
+    {"from":"TEST-ABSOLUTE-RULE-SCG-M0-001","to":"TEST-ROUTE-NORMAL-SCG-M0-001","relation":"CONSTRAINS"},
+    {"from":"TEST-ROUTE-NORMAL-SCG-M0-001","to":"TEST-C1-REVEAL-SCG-M0-001","relation":"REVEALS"},
+    {"from":"TEST-NPC-OBSERVER-SCG-M0-001","to":"TEST-C1-REVEAL-SCG-M0-001","relation":"OBSERVES"},
+    {"from":"TEST-ROUTE-NORMAL-SCG-M0-001","to":"TEST-ROUTE-RETREAT-SCG-M0-001","relation":"RETREATS_TO"},
+    {"from":"TEST-C1-REVEAL-SCG-M0-001","to":"TEST-SCG-M0-ACCEPTANCE-BUNDLE-001","relation":"VALIDATES"}
+  ],
+  "required_routes":["TEST-ROUTE-NORMAL-SCG-M0-001","TEST-ROUTE-RETREAT-SCG-M0-001"],
+  "orders":["TEXT-ORDER-TEST-SCG-M0-001","TEXT-ORDER-TEST-SCG-M0-002","VISUAL-ORDER-TEST-SCG-M0-001"],
+  "cross_modal_oracle_ref":"TEST-CROSS-MODAL-ORACLE-SCG-M0-001"
+}

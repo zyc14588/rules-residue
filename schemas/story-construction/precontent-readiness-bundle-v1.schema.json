@@ -1,0 +1,12 @@
+{
+  "$schema":"https://json-schema.org/draft/2020-12/schema",
+  "$id":"https://rules-residue.invalid/schemas/story-construction/precontent-readiness-bundle-v1.schema.json",
+  "title":"Pre-Content Readiness Bundle",
+  "type":"object","additionalProperties":false,
+  "required":["schema_version","bundle_id","change_set_id","decision_set_hash","partial_supersession_hash","traceability_hash","schema_set_hash","m0_acceptance_bundle_hash","global_t1_closure_hash","region_interface_matrix_hash","causal_epistemic_proof_hash","region_risk_scorecard_hash","provider_certificate_hashes","rights_gate","owner_exact_hash_approval","result","scoped_blockers","bundle_payload_hash"],
+  "properties":{
+    "schema_version":{"const":"rules-residue.story-construction.precontent-readiness-bundle/1.0.0"},"bundle_id":{"type":"string","minLength":1},"change_set_id":{"const":"CS-SCG-PRECONTENT-READINESS-R1-001"},
+    "decision_set_hash":{"type":"string","pattern":"^[0-9a-f]{64}$"},"partial_supersession_hash":{"type":"string","pattern":"^[0-9a-f]{64}$"},"traceability_hash":{"type":"string","pattern":"^[0-9a-f]{64}$"},"schema_set_hash":{"type":"string","pattern":"^[0-9a-f]{64}$"},"m0_acceptance_bundle_hash":{"type":"string","pattern":"^[0-9a-f]{64}$"},"global_t1_closure_hash":{"type":"string","pattern":"^[0-9a-f]{64}$"},"region_interface_matrix_hash":{"type":"string","pattern":"^[0-9a-f]{64}$"},"causal_epistemic_proof_hash":{"type":"string","pattern":"^[0-9a-f]{64}$"},"region_risk_scorecard_hash":{"type":"string","pattern":"^[0-9a-f]{64}$"},
+    "provider_certificate_hashes":{"type":"array","minItems":2,"maxItems":2,"uniqueItems":true,"items":{"type":"string","pattern":"^[0-9a-f]{64}$"}},"rights_gate":{"enum":["PASS","FAIL","PENDING"]},"owner_exact_hash_approval":{"enum":["APPROVED","PENDING","REJECTED"]},"result":{"enum":["READY_FOR_FORMAL_VERTICAL_SLICE","READY_WITH_SCOPED_BLOCKERS","NOT_READY"]},"scoped_blockers":{"type":"array","uniqueItems":true,"items":{"type":"string","minLength":1}},"bundle_payload_hash":{"type":"string","pattern":"^[0-9a-f]{64}$"}
+  }
+}

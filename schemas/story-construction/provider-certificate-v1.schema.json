@@ -1,0 +1,13 @@
+{
+  "$schema":"https://json-schema.org/draft/2020-12/schema",
+  "$id":"https://rules-residue.invalid/schemas/story-construction/provider-certificate-v1.schema.json",
+  "title":"Provider-Level Certification",
+  "type":"object","additionalProperties":false,
+  "required":["schema_version","certificate_id","certificate_subject","provider_id","profile_id","profile_version","resolved_model","provider_revision","actual_fingerprint","identity_assurance","capability_envelope","consecutive_real_run_ids","fault_injection_receipt_id","run_count","distinct_run_evidence","drift_preflight","suspension_triggers","certification_result","owner_data_boundary_approval_id","certificate_payload_hash"],
+  "properties":{
+    "schema_version":{"const":"rules-residue.story-construction.provider-certificate/1.0.0"},"certificate_id":{"type":"string","pattern":"^TEST-PROVIDER-CERT-[A-Z0-9-]+$"},"certificate_subject":{"const":"PROVIDER"},"provider_id":{"enum":["DEEPSEEK-HARNESS","XAI-GROK-CLI"]},"profile_id":{"type":"string","pattern":"^TEST-[A-Z0-9-]+$"},"profile_version":{"type":"string","minLength":1},
+    "resolved_model":{"type":"string","minLength":1},"provider_revision":{"type":"string","minLength":1},"actual_fingerprint":{"type":"string","minLength":1},"identity_assurance":{"const":"RESOLVED_AND_FINGERPRINTED"},
+    "capability_envelope":{"type":"array","minItems":1,"uniqueItems":true,"items":{"type":"string","minLength":1}},"consecutive_real_run_ids":{"type":"array","minItems":3,"maxItems":3,"uniqueItems":true,"items":{"type":"string","pattern":"^TEST-RUN-[A-Z0-9-]+$"}},"fault_injection_receipt_id":{"type":"string","pattern":"^TEST-FAULT-RECEIPT-[A-Z0-9-]+$"},"run_count":{"const":3},"distinct_run_evidence":{"const":true},
+    "drift_preflight":{"enum":["COMPATIBLE","INCOMPATIBLE","REVALIDATION_REQUIRED"]},"suspension_triggers":{"type":"array","minItems":1,"uniqueItems":true,"items":{"enum":["MODEL_DRIFT","PROFILE_DRIFT","FINGERPRINT_DRIFT","POLICY_DRIFT","DATA_CONTROL_DRIFT","CAPABILITY_DRIFT","RIGHTS_DRIFT"]}},"certification_result":{"enum":["CERTIFIED","NOT_CERTIFIED","SUSPENDED"]},"owner_data_boundary_approval_id":{"type":"string","minLength":1},"certificate_payload_hash":{"type":"string","pattern":"^[0-9a-f]{64}$"}
+  }
+}

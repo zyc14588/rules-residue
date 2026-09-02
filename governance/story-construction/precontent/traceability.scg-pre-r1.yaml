@@ -1,0 +1,31 @@
+{
+  "schema_version": "rules-residue.story-construction.precontent-traceability/1.0.0",
+  "traceability_id": "SCG-PRECONTENT-TRACEABILITY-R1",
+  "change_set_id": "CS-SCG-PRECONTENT-READINESS-R1-001",
+  "authority_scope": "CONSTRUCTION_GOVERNANCE_ONLY",
+  "bidirectional": true,
+  "decision_count": 21,
+  "entries": [
+    {"decision_id":"SCG-PRE-Q001","requirements":["REAL_PROVIDER_AFTER_STATIC_GATES","NO_SIMULATION_AS_CERTIFICATION"],"artifacts":["provider-execution-profile-v1.schema.json","provider-run-receipt-v1.schema.json"],"tests":["provider_execution_requires_b003_authorization"]},
+    {"decision_id":"SCG-PRE-Q002","requirements":["TEST_EVIDENCE_IMMUTABLE","NO_PROMOTION"],"artifacts":["test-fixture-graph.json"],"tests":["test_artifact_cannot_be_promoted"]},
+    {"decision_id":"SCG-PRE-Q003","requirements":["THREE_CONSECUTIVE_REAL_RUNS","ONE_FAULT_INJECTION"],"artifacts":["provider-certificate-v1.schema.json","fault-injection-receipt-v1.schema.json"],"tests":["certificate_rejects_reused_run"]},
+    {"decision_id":"SCG-PRE-Q004","requirements":["CAPABILITY_DOMAIN_ISOLATION"],"artifacts":["m2-dependency-classification-v1.schema.json"],"tests":["missing_dependency_proof_is_rejected"]},
+    {"decision_id":"SCG-PRE-Q005","requirements":["EXPLICIT_ABSOLUTE_RULE_EXEMPTION"],"artifacts":["test-canon-envelope.json"],"tests":["absolute_rule_requires_no_exemption"]},
+    {"decision_id":"SCG-PRE-Q006","requirements":["GLOBAL_T1_CLOSURE_BEFORE_FORMAL_REGION"],"artifacts":["global-t1-closure-matrix-v1.schema.json"],"tests":["open_t1_blocks_formal_order"]},
+    {"decision_id":"SCG-PRE-Q007","requirements":["SIX_REGION_INTERFACE_CONTRACTS"],"artifacts":["region-interface-matrix-v1.schema.json"],"tests":["incomplete_region_interfaces_block"]},
+    {"decision_id":"SCG-PRE-Q008","requirements":["ONLY_NONCRITICAL_T3_PLACEHOLDER"],"artifacts":["text-order-v2.schema.json","visual-order-v2.schema.json"],"tests":["worker_created_t1_t2_c1_rejected"]},
+    {"decision_id":"SCG-PRE-Q009","requirements":["TYPED_CAUSAL_EPISTEMIC_ORACLE"],"artifacts":["causal-epistemic-proof-matrix-v1.schema.json","cross-modal-oracle.json"],"tests":["combined_modal_leak_rejected"]},
+    {"decision_id":"SCG-PRE-Q010","requirements":["DEEPSEEK_PROVIDER_CERTIFICATION"],"artifacts":["PRECONTENT_M0_PROFILE.md"],"tests":["provider_certificate_subject_is_provider"]},
+    {"decision_id":"SCG-PRE-Q011","requirements":["GROK_PROVIDER_CERTIFICATION"],"artifacts":[".grok/PRECONTENT_M0_PROFILE.md"],"tests":["alias_only_identity_rejected"]},
+    {"decision_id":"SCG-PRE-Q012","requirements":["DETERMINISTIC_CONTEXT_CLOSURE","OMISSION_REPORT"],"artifacts":["context-manifest-v1.schema.json","omission-report-v1.schema.json"],"tests":["context_hash_mismatch_rejected"]},
+    {"decision_id":"SCG-PRE-Q013","requirements":["ALL_HARD_GATES_AND_THREE_REAL_RUNS"],"artifacts":["m0-acceptance-bundle-v1.schema.json"],"tests":["simulated_output_cannot_satisfy_real_gate"]},
+    {"decision_id":"SCG-PRE-Q014","requirements":["FORENSIC_DAB"],"artifacts":["fault-injection-spec.json"],"tests":["private_chain_of_thought_forbidden"]},
+    {"decision_id":"SCG-PRE-Q015","requirements":["OWNER_REVISABLE_REGION_INTENSITY","NO_GLOBAL_CEILING"],"artifacts":["region-content-intensity-contract-v1.schema.json"],"tests":["stale_intensity_revision_invalidates_order"]},
+    {"decision_id":"SCG-PRE-Q016","requirements":["CALIBRATION_WITHIN_R2_RANGES"],"artifacts":["region-risk-scorecard-v1.schema.json"],"tests":["b002_cannot_score_real_region"]},
+    {"decision_id":"SCG-PRE-Q017","requirements":["RECORD_COST_LATENCY_NO_ADMISSION"],"artifacts":["provider-run-receipt-v1.schema.json"],"tests":["cost_latency_cannot_lower_quality_gate"]},
+    {"decision_id":"SCG-PRE-Q018","requirements":["CONTINUOUS_PROVENANCE","FINAL_BLOCKING_RIGHTS_GATE"],"artifacts":["provider-run-receipt-v1.schema.json"],"tests":["missing_provenance_not_release_eligible"]},
+    {"decision_id":"SCG-PRE-Q019","requirements":["RISK_WEIGHT_070","CONTROLLABILITY_WEIGHT_030","MISSING_EVIDENCE_ZERO"],"artifacts":["region-risk-scorecard-v1.schema.json"],"tests":["risk_formula_is_fixed"]},
+    {"decision_id":"SCG-PRE-Q020","requirements":["HUMAN_TEST_AFTER_FIRST_FORMAL_SLICE"],"artifacts":["precontent-readiness-bundle-v1.schema.json"],"tests":["b002_does_not_authorize_human_formal_test"]},
+    {"decision_id":"SCG-PRE-Q021","requirements":["OWNER_EXACT_BUNDLE_HASH_APPROVAL"],"artifacts":["scg-precontent-readiness-r1.pending.json"],"tests":["owner_approval_replay_rejected"]}
+  ]
+}

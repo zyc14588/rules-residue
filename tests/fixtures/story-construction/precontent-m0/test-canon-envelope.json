@@ -1,0 +1,11 @@
+{
+  "schema_version":"rules-residue.story-construction.test-canon-envelope/1.0.0",
+  "envelope_id":"TEST-T3-ENVELOPE-SCG-M0-001",
+  "namespace_prefix":"TEST-","canon":false,"release_eligible":false,"promotion_allowed":false,"disposition":"TEST_EVIDENCE_ONLY",
+  "authority_scope":"SYNTHETIC_TEST_ONLY",
+  "t1_records":[{"id":"TEST-T1-ANCHOR-PHASE-001","owner_approved_semantics":true,"formal_authority":false}],
+  "t2_records":[{"id":"TEST-T2-SIGNAL-TO-MARK-001","cause":"TEST-SIGNAL-SECOND-001","effect":"TEST-VISIBLE-MARK-001","formal_authority":false}],
+  "t3_records":[{"id":"TEST-T3-ENVELOPE-SCG-M0-001","bounded_by":"TEST-T1-ANCHOR-PHASE-001","formal_authority":false}],
+  "absolute_rule":{"id":"TEST-ABSOLUTE-RULE-SCG-M0-001","scope":"TEST-THRESHOLD-001","trigger":"CROSS_AFTER_TEST-SIGNAL-SECOND-001","condition":"ENTRANT_UNMARKED","effect":"APPLY_TEST-VISIBLE-MARK-001","exceptions":[],"conflict_priority":100,"ordinary_exemption":"NONE","defer_r2_c14_dependency":"NONE"},
+  "promotion_policy":"REJECT_RENAME_COPY_OR_DIRECT_PROMOTION"
+}

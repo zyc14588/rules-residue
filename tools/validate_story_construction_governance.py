@@ -62,6 +62,12 @@ from tools.story_construction import (
     validate_pending_receipt_binding,
     write_derived_installation,
 )
+from tools.validate_precontent_readiness import (
+    ALLOWLIST as PRECONTENT_ALLOWLIST,
+    BASE_COMMIT as PRECONTENT_BASE_COMMIT,
+    changed_paths as precontent_changed_paths,
+    collect_errors as validate_precontent_readiness,
+)
 
 
 SCHEMA_ROOT = Path("schemas/story-construction")
@@ -83,6 +89,49 @@ SCHEMA_FILES = {
     "installation-receipt-v2.schema.json",
     "owner-approval-consumption-v1.schema.json",
     "candidate-approval-v1.schema.json",
+    "precontent-decision-set-v1.schema.json",
+    "partial-supersession-v1.schema.json",
+    "test-fixture-graph-v1.schema.json",
+    "text-order-v2.schema.json",
+    "visual-order-v2.schema.json",
+    "context-manifest-v1.schema.json",
+    "omission-report-v1.schema.json",
+    "m2-dependency-classification-v1.schema.json",
+    "provider-execution-profile-v1.schema.json",
+    "provider-run-receipt-v1.schema.json",
+    "provider-certificate-v1.schema.json",
+    "profile-compatibility-preflight-v1.schema.json",
+    "fault-injection-receipt-v1.schema.json",
+    "region-content-intensity-contract-v1.schema.json",
+    "m0-acceptance-bundle-v1.schema.json",
+    "global-t1-closure-matrix-v1.schema.json",
+    "region-interface-matrix-v1.schema.json",
+    "causal-epistemic-proof-matrix-v1.schema.json",
+    "region-risk-scorecard-v1.schema.json",
+    "precontent-readiness-bundle-v1.schema.json",
+}
+
+PRECONTENT_SCHEMA_FILES = {
+    "precontent-decision-set-v1.schema.json",
+    "partial-supersession-v1.schema.json",
+    "test-fixture-graph-v1.schema.json",
+    "text-order-v2.schema.json",
+    "visual-order-v2.schema.json",
+    "context-manifest-v1.schema.json",
+    "omission-report-v1.schema.json",
+    "m2-dependency-classification-v1.schema.json",
+    "provider-execution-profile-v1.schema.json",
+    "provider-run-receipt-v1.schema.json",
+    "provider-certificate-v1.schema.json",
+    "profile-compatibility-preflight-v1.schema.json",
+    "fault-injection-receipt-v1.schema.json",
+    "region-content-intensity-contract-v1.schema.json",
+    "m0-acceptance-bundle-v1.schema.json",
+    "global-t1-closure-matrix-v1.schema.json",
+    "region-interface-matrix-v1.schema.json",
+    "causal-epistemic-proof-matrix-v1.schema.json",
+    "region-risk-scorecard-v1.schema.json",
+    "precontent-readiness-bundle-v1.schema.json",
 }
 
 GOVERNANCE_DOCS = [
@@ -102,6 +151,7 @@ GOVERNANCE_DOCS = [
         )
     )
 ]
+GOVERNANCE_DOCS.append("docs/governance/story-construction/10_PRECONTENT_READINESS.md")
 
 PROMPT_FILES = [
     f".codex/prompts/m3/STORY-CONSTRUCTION/{name}.md"
@@ -142,6 +192,7 @@ AGENT_FILES = [
         "RETURN_CONTRACT.md",
     )
 ]
+AGENT_FILES.append("docs/operations/agents/m3/deepseek-harness/PRECONTENT_M0_PROFILE.md")
 
 REQUIRED_FILES = (
     GOVERNANCE_DOCS
@@ -286,7 +337,15 @@ def _check_schemas(root: Path, errors: list[str]) -> dict[str, dict[str, Any]]:
         if schema.get("additionalProperties") is not False:
             errors.append(f"{name}: root unknown fields must be rejected")
         version = schema.get("properties", {}).get("schema_version", {}).get("const")
-        if not isinstance(version, str) or re.fullmatch(r"[0-9]+\.[0-9]+\.[0-9]+", version) is None:
+        if name in PRECONTENT_SCHEMA_FILES:
+            valid_version = isinstance(version, str) and re.search(
+                r"(?:^|/)[0-9]+\.[0-9]+\.[0-9]+$", version
+            ) is not None
+        else:
+            valid_version = isinstance(version, str) and re.fullmatch(
+                r"[0-9]+\.[0-9]+\.[0-9]+", version
+            ) is not None
+        if not valid_version:
             errors.append(f"{name}: explicit SemVer schema_version const missing")
     return schemas
 
@@ -594,6 +653,28 @@ def validate_activation_changed_paths(changed: set[str]) -> list[str]:
 
 
 def _check_activation_git_scope(root: Path, errors: list[str]) -> None:
+    precontent_change_set = root / "governance/story-construction/change-sets/CS-SCG-PRECONTENT-READINESS-R1-001.yaml"
+    if precontent_change_set.is_file():
+        try:
+            changed = precontent_changed_paths(root)
+        except (OSError, subprocess.CalledProcessError) as exc:
+            errors.append(f"pre-content changed paths: {exc}")
+            return
+        outside = sorted(changed - set(PRECONTENT_ALLOWLIST))
+        if outside:
+            errors.append(f"pre-content changed paths exceed approved scope: {outside}")
+        head = _git_output(root, ["rev-parse", "HEAD"], errors, "pre-content HEAD")
+        if head is not None and head != PRECONTENT_BASE_COMMIT:
+            parent = _git_output(root, ["rev-parse", "HEAD^"], errors, "pre-content parent")
+            count = _git_output(
+                root,
+                ["rev-list", "--count", f"{PRECONTENT_BASE_COMMIT}..HEAD"],
+                errors,
+                "pre-content lineage count",
+            )
+            if parent != PRECONTENT_BASE_COMMIT or count != "1":
+                errors.append("pre-content lineage is non-FF, rebased, amended, or multi-commit")
+        return
     changed_output = _git_output(
         root,
         ["diff", "--name-only", IMPLEMENTATION_CANDIDATE_COMMIT, "--"],
@@ -923,6 +1004,10 @@ def collect_errors(project_root: Path = PROJECT_ROOT) -> list[str]:
     _check_role_migration(root, errors)
     _check_m2_preservation(root, errors)
     _check_package_and_roots(root, errors)
+    errors.extend(
+        f"Pre-Content Readiness: {error}"
+        for error in validate_precontent_readiness(root, check_git=False)
+    )
     return errors
 
 
