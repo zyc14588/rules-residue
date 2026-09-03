@@ -1,0 +1,221 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://rules-residue.invalid/schemas/story-construction/precontent-activation-owner-approval-v2.schema.json",
+  "title": "Pre-Content Authoritative-Effect Repair Owner Full-Hash Approval",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version", "approval_id", "approval_model", "defect_id", "change_set_id",
+    "repair_task_id", "lineage", "repair_path_allowlist", "repair_path_hashes",
+    "repair_path_set_hash", "framework_manifests", "r3_transition", "schema_sets",
+    "contracts", "historical_activation", "fixed_preservation", "proof_contract",
+    "approval_status", "single_use", "transferable", "consumed", "revoked",
+    "owner_id", "approved_at"
+  ],
+  "properties": {
+    "schema_version": {"const": "rules-residue.story-construction.precontent-activation-owner-approval/2.0.0"},
+    "approval_id": {"type": "string", "pattern": "^OWNER-APPROVAL-SCG-PRECONTENT-M3-B002-AUTHORITATIVE-EFFECT-REPAIR-CANDIDATE-[0-9A-F]{8}-R1$"},
+    "approval_model": {"const": "MODEL_R3_ADDITIVE"},
+    "defect_id": {"const": "SCG-PRE-B002-AUTHORITATIVE-EFFECT-EXTERNAL-PROOF-INTERFACE-MISSING-001"},
+    "change_set_id": {"const": "CS-SCG-PRECONTENT-READINESS-R1-001"},
+    "repair_task_id": {"const": "SCG-PRECONTENT-M3-B002-AUTHORITATIVE-EFFECT-REPAIR-IMPLEMENT-001"},
+    "lineage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["base_commit", "base_tree", "implementation_commit", "implementation_tree", "implementation_parent", "defective_activation_commit", "defective_activation_tree", "defective_activation_parent", "repair_commit", "repair_tree", "repair_parent", "base_to_implementation_count", "implementation_to_defective_count", "defective_to_repair_count", "implementation_to_repair_count", "base_to_repair_count"],
+      "properties": {
+        "base_commit": {"const": "6f9f671401f5857d460ca8e0bd8a86ebe04bb0b6"},
+        "base_tree": {"const": "2dfa6553770f4eedbb4def358f661b9b16b79a4d"},
+        "implementation_commit": {"const": "74fecbe6984f150f83c364e5d5a5850132cfc147"},
+        "implementation_tree": {"const": "b81fa075a1b812478dbc3e196429c7392279e28f"},
+        "implementation_parent": {"const": "6f9f671401f5857d460ca8e0bd8a86ebe04bb0b6"},
+        "defective_activation_commit": {"const": "d80aae8d1dfede85d91ff0367f4c6a18d62bb2a7"},
+        "defective_activation_tree": {"const": "f6e5eaabd5bcbc66666d54f2cb389f2c96e643c0"},
+        "defective_activation_parent": {"const": "74fecbe6984f150f83c364e5d5a5850132cfc147"},
+        "repair_commit": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+        "repair_tree": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+        "repair_parent": {"const": "d80aae8d1dfede85d91ff0367f4c6a18d62bb2a7"},
+        "base_to_implementation_count": {"const": 1},
+        "implementation_to_defective_count": {"const": 1},
+        "defective_to_repair_count": {"const": 1},
+        "implementation_to_repair_count": {"const": 2},
+        "base_to_repair_count": {"const": 3}
+      }
+    },
+    "repair_path_allowlist": {
+      "type": "object", "additionalProperties": false, "required": ["path_count", "sha256"],
+      "properties": {"path_count": {"const": 13}, "sha256": {"const": "cd142235a3ecc660ade277efc0a99d2e3799456786062fb098530a864c9bbeca"}}
+    },
+    "repair_path_hashes": {
+      "type": "array", "minItems": 13, "maxItems": 13, "uniqueItems": true,
+      "items": {
+        "type": "object", "additionalProperties": false, "required": ["path", "sha256"],
+        "properties": {
+          "path": {"enum": [
+            ".codex/prompts/m3/PRECONTENT/README.md",
+            ".codex/prompts/m3/PRECONTENT/AUTHORITATIVE_EFFECT_REPAIR_ACCEPT.md",
+            ".codex/routes/m3-precontent-b002-authoritative-effect-repair-accept-request.json",
+            "docs/governance/story-construction/10_PRECONTENT_READINESS.md",
+            "governance/story-construction/precontent/manifests/framework-manifest.r3.json",
+            "governance/story-construction/receipts/scg-precontent-readiness-r3.final.json",
+            "schemas/story-construction/precontent-activation-closeout-envelope-v2.schema.json",
+            "schemas/story-construction/precontent-activation-owner-approval-v2.schema.json",
+            "schemas/story-construction/precontent-final-receipt-v3.schema.json",
+            "tests/test_precontent_readiness.py",
+            "tools/build_precontent_readiness_bundle.py",
+            "tools/validate_precontent_readiness.py",
+            "tools/validate_story_construction_governance.py"
+          ]},
+          "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+        }
+      }
+    },
+    "repair_path_set_hash": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "framework_manifests": {
+      "type": "object", "additionalProperties": false, "required": ["r1", "r2", "r3"],
+      "properties": {
+        "r1": {"$ref": "#/$defs/manifest_r1"},
+        "r2": {"$ref": "#/$defs/manifest_r2"},
+        "r3": {"$ref": "#/$defs/manifest_r3"}
+      }
+    },
+    "r3_transition": {"$ref": "#/$defs/r3_transition"},
+    "schema_sets": {"$ref": "#/$defs/schema_sets"},
+    "contracts": {
+      "type": "object", "additionalProperties": false,
+      "required": ["closeout_envelope_v2_schema_path", "closeout_envelope_v2_schema_sha256", "activation_owner_approval_v2_schema_path", "activation_owner_approval_v2_schema_sha256", "final_receipt_v3_schema_path", "final_receipt_v3_schema_sha256", "final_receipt_v3_path", "final_receipt_v3_file_sha256", "final_receipt_v3_payload_hash"],
+      "properties": {
+        "closeout_envelope_v2_schema_path": {"const": "schemas/story-construction/precontent-activation-closeout-envelope-v2.schema.json"},
+        "closeout_envelope_v2_schema_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "activation_owner_approval_v2_schema_path": {"const": "schemas/story-construction/precontent-activation-owner-approval-v2.schema.json"},
+        "activation_owner_approval_v2_schema_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "final_receipt_v3_schema_path": {"const": "schemas/story-construction/precontent-final-receipt-v3.schema.json"},
+        "final_receipt_v3_schema_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "final_receipt_v3_path": {"const": "governance/story-construction/receipts/scg-precontent-readiness-r3.final.json"},
+        "final_receipt_v3_file_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "final_receipt_v3_payload_hash": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+      }
+    },
+    "historical_activation": {"$ref": "#/$defs/historical_activation"},
+    "fixed_preservation": {"$ref": "#/$defs/fixed_preservation"},
+    "proof_contract": {
+      "type": "object", "additionalProperties": false,
+      "required": ["proof_tag_ref", "authoritative_ref", "remote_name", "expected_remote_url", "remote_authoritative_ref", "remote_proof_tag_ref", "repair_accept_task_id", "repair_accept_result", "repair_accept_verifier", "repair_accept_route", "repair_accept_route_digest"],
+      "properties": {
+        "proof_tag_ref": {"const": "refs/tags/scg-precontent-m3-b002-authoritative-effect-repair-accepted"},
+        "authoritative_ref": {"const": "refs/heads/design/r1-story-architecture"},
+        "remote_name": {"type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$"},
+        "expected_remote_url": {"type": "string", "minLength": 1},
+        "remote_authoritative_ref": {"const": "refs/heads/design/r1-story-architecture"},
+        "remote_proof_tag_ref": {"const": "refs/tags/scg-precontent-m3-b002-authoritative-effect-repair-accepted"},
+        "repair_accept_task_id": {"const": "SCG-PRECONTENT-M3-B002-AUTHORITATIVE-EFFECT-REPAIR-ACCEPT-001"},
+        "repair_accept_result": {"const": "PASS_FIXED_M3_B002_AUTHORITATIVE_EFFECT_REPAIR_CANDIDATE_ACCEPTED"},
+        "repair_accept_verifier": {"const": "CODEX-INDEPENDENT-VERIFIER-SCG-PRECONTENT-M3-B002-AUTHORITATIVE-EFFECT-REPAIR-ACCEPT-001"},
+        "repair_accept_route": {"const": "SCG-PRECONTENT-M3-B002-AUTHORITATIVE-EFFECT-REPAIR-ACCEPT"},
+        "repair_accept_route_digest": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+      }
+    },
+    "approval_status": {"const": "APPROVED"},
+    "single_use": {"const": true},
+    "transferable": {"const": false},
+    "consumed": {"const": false},
+    "revoked": {"const": false},
+    "owner_id": {"const": "OWNER"},
+    "approved_at": {"type": "string", "minLength": 1}
+  },
+  "$defs": {
+    "hash": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "leaf": {
+      "type": "object", "additionalProperties": false, "required": ["path", "sha256"],
+      "properties": {"path": {"type": "string", "minLength": 1}, "sha256": {"$ref": "#/$defs/hash"}}
+    },
+    "changed_leaf": {
+      "type": "object", "additionalProperties": false, "required": ["path", "old_sha256", "new_sha256"],
+      "properties": {"path": {"type": "string", "minLength": 1}, "old_sha256": {"$ref": "#/$defs/hash"}, "new_sha256": {"$ref": "#/$defs/hash"}}
+    },
+    "manifest_r1": {
+      "type": "object", "additionalProperties": false, "required": ["path", "file_sha256", "merkle_root", "record_count"],
+      "properties": {
+        "path": {"const": "governance/story-construction/precontent/manifests/framework-manifest.r1.json"},
+        "file_sha256": {"const": "891944f172236b666eb78bc641f4e7ecabf6ec3e318ab4cd0b5858f045b06b67"},
+        "merkle_root": {"const": "87c6520fe0822e29312de6c72cad95f0849aa3d0bd4fbb27f97f1f786027bf8f"},
+        "record_count": {"const": 68}
+      }
+    },
+    "manifest_r2": {
+      "type": "object", "additionalProperties": false, "required": ["path", "file_sha256", "merkle_root", "record_count"],
+      "properties": {
+        "path": {"const": "governance/story-construction/precontent/manifests/framework-manifest.r2.json"},
+        "file_sha256": {"const": "43346ea1c462cc70d2c1e4855351d111e9f6cfa263a7aeca6f5821d4d3a00a8f"},
+        "merkle_root": {"const": "5c272518a3acd983bc8b5cea5290f77ec5da15f291baac7ade39fd32d699aeea"},
+        "record_count": {"const": 76}
+      }
+    },
+    "manifest_r3": {
+      "type": "object", "additionalProperties": false, "required": ["path", "file_sha256", "merkle_root", "record_count", "semantic_path_content_record_set_hash"],
+      "properties": {
+        "path": {"const": "governance/story-construction/precontent/manifests/framework-manifest.r3.json"},
+        "file_sha256": {"$ref": "#/$defs/hash"}, "merkle_root": {"$ref": "#/$defs/hash"},
+        "record_count": {"const": 81}, "semantic_path_content_record_set_hash": {"$ref": "#/$defs/hash"}
+      }
+    },
+    "r3_transition": {
+      "type": "object", "additionalProperties": false,
+      "required": ["old_record_count", "unchanged_old_count", "changed_old_count", "new_record_count", "total_record_count", "unchanged_old_leaf_set_hash", "changed_old_leaf_transition_hash", "new_leaf_set_hash", "r2_leaf_set_hash", "r3_leaf_set_hash", "changed_old_records", "new_records"],
+      "properties": {
+        "old_record_count": {"const": 76}, "unchanged_old_count": {"const": 70},
+        "changed_old_count": {"const": 6}, "new_record_count": {"const": 5}, "total_record_count": {"const": 81},
+        "unchanged_old_leaf_set_hash": {"$ref": "#/$defs/hash"}, "changed_old_leaf_transition_hash": {"$ref": "#/$defs/hash"},
+        "new_leaf_set_hash": {"$ref": "#/$defs/hash"}, "r2_leaf_set_hash": {"$ref": "#/$defs/hash"}, "r3_leaf_set_hash": {"$ref": "#/$defs/hash"},
+        "changed_old_records": {"type": "array", "minItems": 6, "maxItems": 6, "uniqueItems": true, "items": {"$ref": "#/$defs/changed_leaf"}},
+        "new_records": {"type": "array", "minItems": 5, "maxItems": 5, "uniqueItems": true, "items": {"$ref": "#/$defs/leaf"}}
+      }
+    },
+    "schema_sets": {
+      "type": "object", "additionalProperties": false,
+      "required": ["original_schema_count", "original_schema_set_hash", "preserved_activation_v1_schema_count", "preserved_activation_v1_schema_set_hash", "repair_schema_count", "repair_schema_set_hash", "combined_schema_count", "combined_schema_set_hash"],
+      "properties": {
+        "original_schema_count": {"const": 20}, "original_schema_set_hash": {"const": "77c8d831c2fd4b79edc597215135ca111fd76b1e00b9d126fda5a4d1a7fcdc50"},
+        "preserved_activation_v1_schema_count": {"const": 5}, "preserved_activation_v1_schema_set_hash": {"const": "86d86a286fd1bbd3810720b943d61c1e00c3a63c9e6aed714f6e40d072b90b7f"},
+        "repair_schema_count": {"const": 3}, "repair_schema_set_hash": {"$ref": "#/$defs/hash"},
+        "combined_schema_count": {"const": 28}, "combined_schema_set_hash": {"$ref": "#/$defs/hash"}
+      }
+    },
+    "historical_activation": {
+      "type": "object", "additionalProperties": false,
+      "required": ["approval_id", "approval_raw_sha256", "approval_canonical_sha256", "approval_issued_consumed", "single_use", "transferable", "consumption_count", "consumed_by_accept_task", "accept_result", "accept_verifier", "accept_route", "accept_route_digest", "authoritative_effect_established"],
+      "properties": {
+        "approval_id": {"const": "OWNER-APPROVAL-SCG-PRECONTENT-M3-B002-ACTIVATION-CANDIDATE-D80AAE8D-R1"},
+        "approval_raw_sha256": {"const": "df75a91874a816b47c9772190e858ec6b0890e7b70e809fa7210c69bbee1812c"},
+        "approval_canonical_sha256": {"const": "df75a91874a816b47c9772190e858ec6b0890e7b70e809fa7210c69bbee1812c"},
+        "approval_issued_consumed": {"const": false}, "single_use": {"const": true}, "transferable": {"const": false},
+        "consumption_count": {"const": 1}, "consumed_by_accept_task": {"const": "SCG-PRECONTENT-M3-B002-ACTIVATION-CLOSEOUT-ACCEPT-001"},
+        "accept_result": {"const": "PASS_FIXED_M3_B002_ACTIVATION_CANDIDATE_ACCEPTED"},
+        "accept_verifier": {"const": "CODEX-INDEPENDENT-VERIFIER-SCG-PRECONTENT-M3-B002-ACTIVATION-CLOSEOUT-ACCEPT-001"},
+        "accept_route": {"const": "SCG-PRECONTENT-M3-B002-ACTIVATION-CLOSEOUT-ACCEPT"},
+        "accept_route_digest": {"const": "5aee4ad9bf88bded6529820ca3a70ad8f2843cd0cad1990404647fce6d1dcdcf"},
+        "authoritative_effect_established": {"const": false}
+      }
+    },
+    "fixed_preservation": {
+      "type": "object", "additionalProperties": false,
+      "required": ["q001_q130_hash", "decision_set_hash", "partial_supersession_hash", "traceability_hash", "m2_plan_hash", "m2_state", "canon_hash", "runtime_package_sha256", "provider_contract_set_hash", "provider_zero_call_evidence_hash", "provider_request_counts"],
+      "properties": {
+        "q001_q130_hash": {"const": "01fdebbd338a8abdbc0226d0290b1bc2b02366cb615a22182f0df0a5f75fa7b2"},
+        "decision_set_hash": {"const": "0e01181acbc9fb95c57ed1b910a3b561545e8824f0c60d7fdc35c93cff44146d"},
+        "partial_supersession_hash": {"const": "45bcd35ef9c18dea5e300c163ef232692a77b42ea9b11d9b555df118f74206da"},
+        "traceability_hash": {"const": "a0ed82836894d8d809447aa0b5d8cb8a05dfff87b363701b719de68f90b8359a"},
+        "m2_plan_hash": {"const": "74da7cc866e0b3b1f3580d86df18c8c6d9724ff6131e5d35c155fc33a2f71c17"},
+        "m2_state": {"const": "M2_B001_ACCEPTED_WITH_DOWNSTREAM_BLOCKERS_B002_NOT_STARTED"},
+        "canon_hash": {"const": "d7ceea75615b57970f3b9712b73ed4c9f65a9c4406c877e9013470cb53a6141a"},
+        "runtime_package_sha256": {"const": "29ea1e0278e37d183d4c0ff396437088b4873c58c5e9a9c857093f6c552a6314"},
+        "provider_contract_set_hash": {"const": "dc1a5b37bc42f0d9f97ceac9f34460138009a79499304ac1844ef77e21ceb3e5"},
+        "provider_zero_call_evidence_hash": {"const": "e6536a180aeb21b20ca9b65594610e65c50d72bf388b513533bed799366214f5"},
+        "provider_request_counts": {
+          "type": "object", "additionalProperties": false, "required": ["deepseek", "grok", "opencode", "story_m0"],
+          "properties": {"deepseek": {"const": 0}, "grok": {"const": 0}, "opencode": {"const": 0}, "story_m0": {"const": 0}}
+        }
+      }
+    }
+  }
+}

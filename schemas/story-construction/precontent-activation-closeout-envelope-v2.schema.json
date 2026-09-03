@@ -1,0 +1,126 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://rules-residue.invalid/schemas/story-construction/precontent-activation-closeout-envelope-v2.schema.json",
+  "title": "Pre-Content Detached Authoritative-Effect Repair Closeout Envelope",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "envelope_kind", "payload", "payload_hash"],
+  "properties": {
+    "schema_version": {"const": "rules-residue.story-construction.precontent-activation-closeout-envelope/2.0.0"},
+    "envelope_kind": {"const": "DETACHED_ACCEPTED_AUTHORITATIVE_EFFECT_REPAIR_ENVELOPE"},
+    "payload": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["envelope_id", "defect_id", "change_set_id", "binding_strategy", "repair_candidate", "repair_path_set_hash", "framework_manifest_r3", "schema_sets", "final_receipt_v3", "activation_owner_approval", "approval_consumption", "repair_accept", "proof_tag", "integration", "fixed_preservation", "producer_id", "verifier_id", "verifier_worktree_state"],
+      "properties": {
+        "envelope_id": {"type": "string", "minLength": 1},
+        "defect_id": {"const": "SCG-PRE-B002-AUTHORITATIVE-EFFECT-EXTERNAL-PROOF-INTERFACE-MISSING-001"},
+        "change_set_id": {"const": "CS-SCG-PRECONTENT-READINESS-R1-001"},
+        "binding_strategy": {"const": "DETACHED_ANNOTATED_TAG_EXACT_COMMIT_TREE_REMOTE_REFS"},
+        "repair_candidate": {
+          "type": "object", "additionalProperties": false,
+          "required": ["commit", "tree", "parent", "defective_to_repair_count", "implementation_to_repair_count", "base_to_repair_count"],
+          "properties": {
+            "commit": {"type": "string", "pattern": "^[0-9a-f]{40}$"}, "tree": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+            "parent": {"const": "d80aae8d1dfede85d91ff0367f4c6a18d62bb2a7"},
+            "defective_to_repair_count": {"const": 1}, "implementation_to_repair_count": {"const": 2}, "base_to_repair_count": {"const": 3}
+          }
+        },
+        "repair_path_set_hash": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "framework_manifest_r3": {
+          "type": "object", "additionalProperties": false,
+          "required": ["file_sha256", "merkle_root", "record_count", "semantic_path_content_record_set_hash"],
+          "properties": {"file_sha256": {"$ref": "#/$defs/hash"}, "merkle_root": {"$ref": "#/$defs/hash"}, "record_count": {"const": 81}, "semantic_path_content_record_set_hash": {"$ref": "#/$defs/hash"}}
+        },
+        "schema_sets": {"$ref": "#/$defs/schema_sets"},
+        "final_receipt_v3": {
+          "type": "object", "additionalProperties": false, "required": ["path", "file_sha256", "payload_hash"],
+          "properties": {"path": {"const": "governance/story-construction/receipts/scg-precontent-readiness-r3.final.json"}, "file_sha256": {"$ref": "#/$defs/hash"}, "payload_hash": {"$ref": "#/$defs/hash"}}
+        },
+        "activation_owner_approval": {
+          "type": "object", "additionalProperties": false,
+          "required": ["approval_id", "raw_sha256", "canonical_sha256", "approval_issued_consumed", "single_use", "transferable", "revoked"],
+          "properties": {
+            "approval_id": {"type": "string", "pattern": "^OWNER-APPROVAL-SCG-PRECONTENT-M3-B002-AUTHORITATIVE-EFFECT-REPAIR-CANDIDATE-[0-9A-F]{8}-R1$"},
+            "raw_sha256": {"$ref": "#/$defs/hash"}, "canonical_sha256": {"$ref": "#/$defs/hash"},
+            "approval_issued_consumed": {"const": false}, "single_use": {"const": true}, "transferable": {"const": false}, "revoked": {"const": false}
+          }
+        },
+        "approval_consumption": {
+          "type": "object", "additionalProperties": false,
+          "required": ["consumption_count", "consumed_by_accept_task", "events"],
+          "properties": {
+            "consumption_count": {"const": 1},
+            "consumed_by_accept_task": {"const": "SCG-PRECONTENT-M3-B002-AUTHORITATIVE-EFFECT-REPAIR-ACCEPT-001"},
+            "events": {
+              "type": "array", "minItems": 1, "maxItems": 1, "uniqueItems": true,
+              "items": {
+                "type": "object", "additionalProperties": false,
+                "required": ["approval_id", "approval_raw_sha256", "approval_canonical_sha256", "accept_task_id", "accept_result", "accept_verifier", "accept_route", "accept_route_digest"],
+                "properties": {
+                  "approval_id": {"type": "string", "minLength": 1}, "approval_raw_sha256": {"$ref": "#/$defs/hash"}, "approval_canonical_sha256": {"$ref": "#/$defs/hash"},
+                  "accept_task_id": {"const": "SCG-PRECONTENT-M3-B002-AUTHORITATIVE-EFFECT-REPAIR-ACCEPT-001"},
+                  "accept_result": {"const": "PASS_FIXED_M3_B002_AUTHORITATIVE_EFFECT_REPAIR_CANDIDATE_ACCEPTED"},
+                  "accept_verifier": {"const": "CODEX-INDEPENDENT-VERIFIER-SCG-PRECONTENT-M3-B002-AUTHORITATIVE-EFFECT-REPAIR-ACCEPT-001"},
+                  "accept_route": {"const": "SCG-PRECONTENT-M3-B002-AUTHORITATIVE-EFFECT-REPAIR-ACCEPT"},
+                  "accept_route_digest": {"$ref": "#/$defs/hash"}
+                }
+              }
+            }
+          }
+        },
+        "repair_accept": {
+          "type": "object", "additionalProperties": false,
+          "required": ["task_id", "result", "verifier", "route", "route_digest"],
+          "properties": {
+            "task_id": {"const": "SCG-PRECONTENT-M3-B002-AUTHORITATIVE-EFFECT-REPAIR-ACCEPT-001"},
+            "result": {"const": "PASS_FIXED_M3_B002_AUTHORITATIVE_EFFECT_REPAIR_CANDIDATE_ACCEPTED"},
+            "verifier": {"const": "CODEX-INDEPENDENT-VERIFIER-SCG-PRECONTENT-M3-B002-AUTHORITATIVE-EFFECT-REPAIR-ACCEPT-001"},
+            "route": {"const": "SCG-PRECONTENT-M3-B002-AUTHORITATIVE-EFFECT-REPAIR-ACCEPT"},
+            "route_digest": {"$ref": "#/$defs/hash"}
+          }
+        },
+        "proof_tag": {
+          "type": "object", "additionalProperties": false, "required": ["ref", "target_commit", "target_tree"],
+          "properties": {"ref": {"const": "refs/tags/scg-precontent-m3-b002-authoritative-effect-repair-accepted"}, "target_commit": {"type": "string", "pattern": "^[0-9a-f]{40}$"}, "target_tree": {"type": "string", "pattern": "^[0-9a-f]{40}$"}}
+        },
+        "integration": {
+          "type": "object", "additionalProperties": false,
+          "required": ["mode", "authoritative_ref", "remote_name", "expected_remote_url", "remote_authoritative_ref", "remote_proof_tag_ref", "authoritative_remote_before_repair", "authoritative_remote_after_repair"],
+          "properties": {
+            "mode": {"const": "FAST_FORWARD_ONLY"}, "authoritative_ref": {"const": "refs/heads/design/r1-story-architecture"},
+            "remote_name": {"type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$"}, "expected_remote_url": {"type": "string", "minLength": 1},
+            "remote_authoritative_ref": {"const": "refs/heads/design/r1-story-architecture"},
+            "remote_proof_tag_ref": {"const": "refs/tags/scg-precontent-m3-b002-authoritative-effect-repair-accepted"},
+            "authoritative_remote_before_repair": {"const": "6f9f671401f5857d460ca8e0bd8a86ebe04bb0b6"},
+            "authoritative_remote_after_repair": {"type": "string", "pattern": "^[0-9a-f]{40}$"}
+          }
+        },
+        "fixed_preservation": {
+          "type": "object", "additionalProperties": false, "required": ["canon_hash", "runtime_package_sha256", "provider_request_counts"],
+          "properties": {
+            "canon_hash": {"const": "d7ceea75615b57970f3b9712b73ed4c9f65a9c4406c877e9013470cb53a6141a"},
+            "runtime_package_sha256": {"const": "29ea1e0278e37d183d4c0ff396437088b4873c58c5e9a9c857093f6c552a6314"},
+            "provider_request_counts": {"type": "object", "additionalProperties": false, "required": ["deepseek", "grok", "opencode", "story_m0"], "properties": {"deepseek": {"const": 0}, "grok": {"const": 0}, "opencode": {"const": 0}, "story_m0": {"const": 0}}}
+          }
+        },
+        "producer_id": {"type": "string", "minLength": 1},
+        "verifier_id": {"type": "string", "minLength": 1},
+        "verifier_worktree_state": {"const": "CLEAN"}
+      }
+    },
+    "payload_hash": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+  },
+  "$defs": {
+    "hash": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "schema_sets": {
+      "type": "object", "additionalProperties": false,
+      "required": ["original_schema_set_hash", "preserved_activation_v1_schema_set_hash", "repair_schema_set_hash", "combined_schema_set_hash"],
+      "properties": {
+        "original_schema_set_hash": {"const": "77c8d831c2fd4b79edc597215135ca111fd76b1e00b9d126fda5a4d1a7fcdc50"},
+        "preserved_activation_v1_schema_set_hash": {"const": "86d86a286fd1bbd3810720b943d61c1e00c3a63c9e6aed714f6e40d072b90b7f"},
+        "repair_schema_set_hash": {"$ref": "#/$defs/hash"}, "combined_schema_set_hash": {"$ref": "#/$defs/hash"}
+      }
+    }
+  }
+}

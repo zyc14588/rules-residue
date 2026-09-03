@@ -29,6 +29,23 @@ and 76 total leaves. Approval consumption, receipts, future approval/ACCEPT, det
 and remote state remain outside the Merkle. The original 20 schemas are immutable; exactly five
 activation lifecycle/audit schemas are additive.
 
+The accepted `d80aae8` activation Candidate is retained as closeout-defective historical evidence.
+Its additive authoritative-effect repair preserves the R2 manifest and the R1 final receipt
+byte-for-byte, then adds an R3 manifest with exactly 70 unchanged old leaves, six changed old
+leaves, five new semantic leaves, and 81 total leaves. The three repair schemas extend—but do not
+repurpose—the five activation-v1 schemas, yielding the fixed `20 + 5 + 3 = 28` schema topology.
+The R3 manifest, R3 receipt, future repair approval/ACCEPT, detached envelope/tag, and local or
+remote ref state remain outside the semantic Merkle.
+
+Tracked state remains `APPROVED + ACTIVE + NOT_RELEASED`, `active_wip=true`, and
+`authoritative_activation_effective=false`. The repository-native `authoritative-effect` phase is
+the only interface that may compute the external projection. It fails closed unless an explicit
+new repair Owner approval, exactly one independent repair ACCEPT consumption event, canonical v2
+closeout envelope, matching annotated tag, exact local authoritative branch, and a single strictly
+parsed remote branch/tag snapshot all bind the same one-commit repair Candidate. A complete valid
+proof computes `AUTHORITATIVE_M3_B002_EFFECTIVE=true`, `effective_active_wip=false`, and
+`global_active_WIP=0` without writing tracked state. Normal acceptance remains offline.
+
 Every synthetic story artifact uses the `TEST-` namespace and the fixed boundary
 `canon=false`, `release_eligible=false`, `promotion_allowed=false`, and
 `disposition=TEST_EVIDENCE_ONLY`. Renaming or copying a TEST identity into a formal

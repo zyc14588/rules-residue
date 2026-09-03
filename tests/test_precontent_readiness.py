@@ -1,7 +1,9 @@
 from __future__ import annotations
 
 import copy
+import hashlib
 import json
+import shutil
 import subprocess
 import sys
 import tempfile
@@ -14,7 +16,7 @@ if str(ROOT) not in sys.path:
 
 from tools.lib.common import runtime_relative_paths
 from tools.lib.schema_subset import validate
-from tools.story_construction import canonical_sha256, validate_literary_execution, validate_visual_execution
+from tools.story_construction import canonical_json_bytes, canonical_sha256, validate_literary_execution, validate_visual_execution
 from tools.validate_precontent_readiness import (
     ACTIVATION_ALLOWLIST,
     ACTIVATION_PROOF_TAG,
@@ -29,6 +31,17 @@ from tools.validate_precontent_readiness import (
     EXPECTED_DECISIONS,
     FIXTURE_ROOT,
     NEW_SEMANTIC_PATHS,
+    REPAIR_ACCEPT_RESULT,
+    REPAIR_ACCEPT_ROUTE,
+    REPAIR_ACCEPT_TASK_ID,
+    REPAIR_ACCEPT_VERIFIER,
+    REPAIR_ALLOWLIST,
+    REPAIR_PATH_ALLOWLIST_SHA256,
+    REPAIR_PROOF_TAG_REF,
+    R2_MANIFEST_FILE_SHA256,
+    R2_MANIFEST_PATH,
+    R3_CHANGED_OLD_PATHS,
+    R3_NEW_SEMANTIC_PATHS,
     R1_MANIFEST_FILE_SHA256,
     R1_MERKLE_ROOT,
     activation_allowlist_hash,
@@ -38,9 +51,12 @@ from tools.validate_precontent_readiness import (
     authoritative_precontent_activation_status,
     collect_errors,
     compute_region_score,
-    derive_activation_documents,
+    derive_repair_documents,
     derive_framework_documents,
+    expected_repair_approval_fields,
     expected_approval_consumption,
+    load_external_proof_json,
+    repair_allowlist_hash,
     validate_b003_authorization,
     validate_activation_closeout_envelope,
     validate_activation_owner_approval,
@@ -51,6 +67,10 @@ from tools.validate_precontent_readiness import (
     validate_m2_dependency_classification,
     validate_precontent_lifecycle_state,
     validate_precontent_owner_approval,
+    validate_repair_closeout_envelope,
+    validate_repair_manifest_transition,
+    validate_repair_owner_approval,
+    validate_repair_receipt_binding,
     validate_readiness_bundle,
     validate_test_boundary,
 )
@@ -58,6 +78,240 @@ from tools.validate_precontent_readiness import (
 
 def load(relative: str):
     return json.loads((ROOT / relative).read_text(encoding="utf-8"))
+
+
+def run_git(root: Path, *args: str) -> str:
+    result = subprocess.run(
+        ["git", "-C", str(root), *args],
+        check=False,
+        capture_output=True,
+        text=True,
+    )
+    if result.returncode != 0:
+        raise AssertionError(result.stdout + result.stderr)
+    return result.stdout.rstrip("\n")
+
+
+def build_repair_envelope(expected: dict, approval: dict, raw_sha256: str, canonical_digest: str) -> dict:
+    lineage = expected["lineage"]
+    transition = expected["r3_transition"]
+    schemas = expected["schema_sets"]
+    contracts = expected["contracts"]
+    proof = expected["proof_contract"]
+    payload = {
+        "envelope_id": f"SCG-PRECONTENT-M3-B002-AUTHORITATIVE-EFFECT-REPAIR-{lineage['repair_commit'][:8].upper()}",
+        "defect_id": expected["defect_id"],
+        "change_set_id": expected["change_set_id"],
+        "binding_strategy": "DETACHED_ANNOTATED_TAG_EXACT_COMMIT_TREE_REMOTE_REFS",
+        "repair_candidate": {
+            "commit": lineage["repair_commit"],
+            "tree": lineage["repair_tree"],
+            "parent": lineage["repair_parent"],
+            "defective_to_repair_count": 1,
+            "implementation_to_repair_count": 2,
+            "base_to_repair_count": 3,
+        },
+        "repair_path_set_hash": expected["repair_path_set_hash"],
+        "framework_manifest_r3": {
+            "file_sha256": expected["framework_manifests"]["r3"]["file_sha256"],
+            "merkle_root": expected["framework_manifests"]["r3"]["merkle_root"],
+            "record_count": 81,
+            "semantic_path_content_record_set_hash": transition["r3_leaf_set_hash"],
+        },
+        "schema_sets": {
+            "original_schema_set_hash": schemas["original_schema_set_hash"],
+            "preserved_activation_v1_schema_set_hash": schemas["preserved_activation_v1_schema_set_hash"],
+            "repair_schema_set_hash": schemas["repair_schema_set_hash"],
+            "combined_schema_set_hash": schemas["combined_schema_set_hash"],
+        },
+        "final_receipt_v3": {
+            "path": contracts["final_receipt_v3_path"],
+            "file_sha256": contracts["final_receipt_v3_file_sha256"],
+            "payload_hash": contracts["final_receipt_v3_payload_hash"],
+        },
+        "activation_owner_approval": {
+            "approval_id": approval["approval_id"],
+            "raw_sha256": raw_sha256,
+            "canonical_sha256": canonical_digest,
+            "approval_issued_consumed": False,
+            "single_use": True,
+            "transferable": False,
+            "revoked": False,
+        },
+        "approval_consumption": {
+            "consumption_count": 1,
+            "consumed_by_accept_task": REPAIR_ACCEPT_TASK_ID,
+            "events": [{
+                "approval_id": approval["approval_id"],
+                "approval_raw_sha256": raw_sha256,
+                "approval_canonical_sha256": canonical_digest,
+                "accept_task_id": REPAIR_ACCEPT_TASK_ID,
+                "accept_result": REPAIR_ACCEPT_RESULT,
+                "accept_verifier": REPAIR_ACCEPT_VERIFIER,
+                "accept_route": REPAIR_ACCEPT_ROUTE,
+                "accept_route_digest": proof["repair_accept_route_digest"],
+            }],
+        },
+        "repair_accept": {
+            "task_id": REPAIR_ACCEPT_TASK_ID,
+            "result": REPAIR_ACCEPT_RESULT,
+            "verifier": REPAIR_ACCEPT_VERIFIER,
+            "route": REPAIR_ACCEPT_ROUTE,
+            "route_digest": proof["repair_accept_route_digest"],
+        },
+        "proof_tag": {
+            "ref": proof["proof_tag_ref"],
+            "target_commit": lineage["repair_commit"],
+            "target_tree": lineage["repair_tree"],
+        },
+        "integration": {
+            "mode": "FAST_FORWARD_ONLY",
+            "authoritative_ref": proof["authoritative_ref"],
+            "remote_name": proof["remote_name"],
+            "expected_remote_url": proof["expected_remote_url"],
+            "remote_authoritative_ref": proof["remote_authoritative_ref"],
+            "remote_proof_tag_ref": proof["remote_proof_tag_ref"],
+            "authoritative_remote_before_repair": BASE_COMMIT,
+            "authoritative_remote_after_repair": lineage["repair_commit"],
+        },
+        "fixed_preservation": {
+            "canon_hash": BASE_CANON_HASH,
+            "runtime_package_sha256": expected["fixed_preservation"]["runtime_package_sha256"],
+            "provider_request_counts": {"deepseek": 0, "grok": 0, "opencode": 0, "story_m0": 0},
+        },
+        "producer_id": "TEST-INDEPENDENT-ACCEPT-PRODUCER",
+        "verifier_id": REPAIR_ACCEPT_VERIFIER,
+        "verifier_worktree_state": "CLEAN",
+    }
+    return {
+        "schema_version": "rules-residue.story-construction.precontent-activation-closeout-envelope/2.0.0",
+        "envelope_kind": "DETACHED_ACCEPTED_AUTHORITATIVE_EFFECT_REPAIR_ENVELOPE",
+        "payload": payload,
+        "payload_hash": canonical_sha256(payload),
+    }
+
+
+def create_authoritative_fixture(temporary: Path) -> dict:
+    repository = temporary / "candidate"
+    remote = temporary / "remote.git"
+    proof_root = temporary / "proofs"
+    subprocess.run(
+        ["git", "clone", "--no-hardlinks", "--quiet", str(ROOT), str(repository)],
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    run_git(repository, "config", "user.name", "PreContent Test")
+    run_git(repository, "config", "user.email", "precontent-test@invalid.example")
+    run_git(repository, "switch", "-C", "design/r1-story-architecture", "d80aae8d1dfede85d91ff0367f4c6a18d62bb2a7")
+    for relative in REPAIR_ALLOWLIST:
+        source = ROOT / relative
+        target = repository / relative
+        target.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copy2(source, target)
+    run_git(repository, "add", "--", *REPAIR_ALLOWLIST)
+    run_git(repository, "commit", "-m", "test: synthetic authoritative-effect repair candidate")
+    repair_commit = run_git(repository, "rev-parse", "HEAD")
+    repair_tree = run_git(repository, "rev-parse", "HEAD^{tree}")
+    subprocess.run(
+        ["git", "init", "--bare", "--quiet", str(remote)],
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    run_git(repository, "remote", "set-url", "origin", str(remote))
+    run_git(
+        repository,
+        "push",
+        "origin",
+        f"{BASE_COMMIT}:refs/heads/design/r1-story-architecture",
+    )
+    expected = expected_repair_approval_fields(
+        repository,
+        repair_commit=repair_commit,
+        repair_tree=repair_tree,
+        repair_parent="d80aae8d1dfede85d91ff0367f4c6a18d62bb2a7",
+        proof_tag_ref=REPAIR_PROOF_TAG_REF,
+        authoritative_ref="refs/heads/design/r1-story-architecture",
+        remote_name="origin",
+        expected_remote_url=str(remote),
+        remote_authoritative_ref="refs/heads/design/r1-story-architecture",
+        remote_proof_tag_ref=REPAIR_PROOF_TAG_REF,
+    )
+    approval = {
+        "schema_version": "rules-residue.story-construction.precontent-activation-owner-approval/2.0.0",
+        "approval_id": f"OWNER-APPROVAL-SCG-PRECONTENT-M3-B002-AUTHORITATIVE-EFFECT-REPAIR-CANDIDATE-{repair_commit[:8].upper()}-R1",
+        **expected,
+        "approval_status": "APPROVED",
+        "single_use": True,
+        "transferable": False,
+        "consumed": False,
+        "revoked": False,
+        "owner_id": "OWNER",
+        "approved_at": "2030-01-01T00:00:00Z",
+    }
+    proof_root.mkdir()
+    approval_path = (proof_root / "owner-approval.json").resolve()
+    approval_bytes = canonical_json_bytes(approval)
+    approval_path.write_bytes(approval_bytes)
+    approval_sha256 = hashlib.sha256(approval_bytes).hexdigest()
+    envelope = build_repair_envelope(expected, approval, approval_sha256, approval_sha256)
+    envelope_path = (proof_root / "closeout-envelope.json").resolve()
+    envelope_path.write_bytes(canonical_json_bytes(envelope))
+    tag_name = REPAIR_PROOF_TAG_REF.removeprefix("refs/tags/")
+    run_git(repository, "tag", "--annotate", "--cleanup=verbatim", "--file", str(envelope_path), tag_name, repair_commit)
+    run_git(
+        repository,
+        "push",
+        "--atomic",
+        "origin",
+        "refs/heads/design/r1-story-architecture",
+        REPAIR_PROOF_TAG_REF,
+    )
+    base_cli = [
+        sys.executable,
+        "tools/validate_precontent_readiness.py",
+        "--project-root", str(repository),
+        "--phase", "authoritative-effect",
+    ]
+    proof_cli = [
+        "--activation-owner-approval", str(approval_path),
+        "--activation-closeout-envelope", str(envelope_path),
+        "--expected-repair-commit", repair_commit,
+        "--expected-repair-tree", repair_tree,
+        "--expected-repair-parent", "d80aae8d1dfede85d91ff0367f4c6a18d62bb2a7",
+        "--proof-tag-ref", REPAIR_PROOF_TAG_REF,
+        "--authoritative-ref", "refs/heads/design/r1-story-architecture",
+        "--remote-name", "origin",
+        "--expected-remote-url", str(remote),
+        "--remote-authoritative-ref", "refs/heads/design/r1-story-architecture",
+        "--remote-proof-tag-ref", REPAIR_PROOF_TAG_REF,
+    ]
+    return {
+        "repository": repository,
+        "remote": remote,
+        "approval": approval,
+        "approval_bytes": approval_bytes,
+        "approval_path": approval_path,
+        "envelope": envelope,
+        "envelope_path": envelope_path,
+        "expected": expected,
+        "repair_commit": repair_commit,
+        "repair_tree": repair_tree,
+        "base_cli": base_cli,
+        "proof_cli": proof_cli,
+    }
+
+
+def run_authoritative_cli(fixture: dict, proof_args: list[str] | None = None) -> subprocess.CompletedProcess[str]:
+    return subprocess.run(
+        fixture["base_cli"] + (fixture["proof_cli"] if proof_args is None else proof_args),
+        cwd=fixture["repository"],
+        check=False,
+        capture_output=True,
+        text=True,
+        timeout=60,
+    )
 
 
 class PreContentReadinessTests(unittest.TestCase):
@@ -75,6 +329,16 @@ class PreContentReadinessTests(unittest.TestCase):
             "governance/story-construction/receipts/scg-precontent-readiness-r1.final.json",
         })
         self.assertEqual(len(activation_allowlist_hash()), 64)
+        self.assertEqual(len(REPAIR_ALLOWLIST), 13)
+        self.assertEqual(len(set(REPAIR_ALLOWLIST)), 13)
+        self.assertEqual(repair_allowlist_hash(), REPAIR_PATH_ALLOWLIST_SHA256)
+        self.assertEqual(
+            set(R3_CHANGED_OLD_PATHS) | set(R3_NEW_SEMANTIC_PATHS),
+            set(REPAIR_ALLOWLIST) - {
+                "governance/story-construction/precontent/manifests/framework-manifest.r3.json",
+                "governance/story-construction/receipts/scg-precontent-readiness-r3.final.json",
+            },
+        )
 
     def test_decision_binding_preserves_exact_ids_options_and_order(self):
         document = load("governance/story-construction/precontent/decisions.scg-pre-q001-q021.yaml")
@@ -252,30 +516,39 @@ class PreContentReadinessTests(unittest.TestCase):
         self.assertEqual(first["receipt_bytes"], second["receipt_bytes"])
         self.assertNotIn("manifest_sha256", first["manifest"])
         self.assertNotIn("receipt_sha256", first["manifest"])
-        import hashlib
         self.assertEqual(hashlib.sha256(first["manifest_bytes"]).hexdigest(), R1_MANIFEST_FILE_SHA256)
         self.assertEqual(first["framework_merkle_root"], R1_MERKLE_ROOT)
-        active_first = derive_activation_documents(ROOT)
-        active_second = derive_activation_documents(ROOT)
-        self.assertEqual(active_first["manifest_bytes"], active_second["manifest_bytes"])
-        self.assertEqual(active_first["receipt_bytes"], active_second["receipt_bytes"])
+        self.assertEqual(hashlib.sha256((ROOT / R2_MANIFEST_PATH).read_bytes()).hexdigest(), R2_MANIFEST_FILE_SHA256)
+        repair_first = derive_repair_documents(ROOT)
+        repair_second = derive_repair_documents(ROOT)
+        self.assertEqual(repair_first["manifest_bytes"], repair_second["manifest_bytes"])
+        self.assertEqual(repair_first["receipt_bytes"], repair_second["receipt_bytes"])
+        receipt_bytes = repair_first["receipt_bytes"]
+        for forbidden in (
+            b'"repair_commit"', b'"repair_tree"', b'"repair_owner_approval_id"',
+            REPAIR_ACCEPT_TASK_ID.encode(), REPAIR_ACCEPT_RESULT.encode(),
+            REPAIR_PROOF_TAG_REF.encode(), b'"authoritative_remote_after_repair"',
+            b'"tag_object_id"', b'"envelope_file_sha256"',
+        ):
+            self.assertNotIn(forbidden, receipt_bytes)
 
-    def test_exact_r2_merkle_transition_and_schema_counts(self):
-        derived = derive_activation_documents(ROOT)
+    def test_exact_r3_merkle_transition_and_schema_counts(self):
+        derived = derive_repair_documents(ROOT)
         transition = derived["transition"]
         self.assertEqual(
             tuple(transition[key] for key in (
                 "old_record_count", "unchanged_old_count", "changed_old_count",
                 "new_record_count", "total_record_count",
             )),
-            (68, 61, 7, 8, 76),
+            (76, 70, 6, 5, 81),
         )
-        self.assertEqual([item["path"] for item in transition["changed_old_records"]], sorted(CHANGED_OLD_PATHS))
-        self.assertEqual([item["path"] for item in transition["new_records"]], sorted(NEW_SEMANTIC_PATHS))
+        self.assertEqual([item["path"] for item in transition["changed_old_records"]], sorted(R3_CHANGED_OLD_PATHS))
+        self.assertEqual([item["path"] for item in transition["new_records"]], sorted(R3_NEW_SEMANTIC_PATHS))
         self.assertEqual(derived["schemas"]["original_count"], 20)
-        self.assertEqual(derived["schemas"]["activation_count"], 5)
-        self.assertEqual(derived["schemas"]["combined_count"], 25)
-        self.assertEqual(validate_framework_manifest_transition(derived["manifest"], derive_framework_documents(ROOT)["manifest"]), [])
+        self.assertEqual(derived["schemas"]["preserved_activation_v1_count"], 5)
+        self.assertEqual(derived["schemas"]["repair_count"], 3)
+        self.assertEqual(derived["schemas"]["combined_count"], 28)
+        self.assertEqual(validate_repair_manifest_transition(derived["manifest"], load(R2_MANIFEST_PATH.as_posix())), [])
 
     def test_implementation_approval_consumption_and_accept_evidence_are_exact(self):
         record = load("governance/story-construction/approvals/OWNER-APPROVAL-SCG-PRECONTENT-M3-B002-CANDIDATE-74FECBE6-R1.consumption.json")
@@ -290,20 +563,20 @@ class PreContentReadinessTests(unittest.TestCase):
         self.assertTrue(validate_implementation_approval_consumption(missing))
 
     def test_manifest_and_receipt_cycles_are_rejected(self):
-        derived = derive_activation_documents(ROOT)
+        derived = derive_repair_documents(ROOT)
         manifest = copy.deepcopy(derived["manifest"])
         manifest["records"].append({
-            "path":"governance/story-construction/precontent/manifests/framework-manifest.r2.json",
+            "path":"governance/story-construction/precontent/manifests/framework-manifest.r3.json",
             "sha256":"0" * 64,
         })
-        self.assertTrue(validate_framework_manifest_transition(manifest, derive_framework_documents(ROOT)["manifest"]))
+        self.assertTrue(validate_repair_manifest_transition(manifest, load(R2_MANIFEST_PATH.as_posix())))
         wrong_count = copy.deepcopy(derived["manifest"])
-        wrong_count["transition"]["total_record_count"] = 75
-        self.assertTrue(validate_framework_manifest_transition(wrong_count, derive_framework_documents(ROOT)["manifest"]))
+        wrong_count["transition"]["total_record_count"] = 80
+        self.assertTrue(validate_repair_manifest_transition(wrong_count, load(R2_MANIFEST_PATH.as_posix())))
         receipt = copy.deepcopy(derived["receipt"])
-        receipt["payload"]["final_inner_receipt_file_sha256"] = "0" * 64
+        receipt["payload"]["framework_manifests"]["r3"]["file_sha256"] = "0" * 64
         receipt["payload_hash"] = canonical_sha256(receipt["payload"])
-        self.assertTrue(validate_final_receipt_binding(receipt))
+        self.assertTrue(validate_repair_receipt_binding(receipt, derived["receipt"]))
 
     def test_invalid_mixed_lifecycle_and_early_wip_release_are_rejected(self):
         fixture = load("tests/fixtures/story-construction/precontent-lifecycle-state-v1.json")
@@ -322,10 +595,201 @@ class PreContentReadinessTests(unittest.TestCase):
             attack = copy.deepcopy(change_set)
             attack[mutation[0]] = mutation[1]
             self.assertTrue(validate(attack, schema), mutation[0])
-        receipt = copy.deepcopy(derive_activation_documents(ROOT)["receipt"])
+        derived = derive_repair_documents(ROOT)
+        receipt = copy.deepcopy(derived["receipt"])
         receipt["payload"]["fixed_preservation"]["runtime_package_sha256"] = "0" * 64
         receipt["payload_hash"] = canonical_sha256(receipt["payload"])
-        self.assertTrue(validate(receipt, load("schemas/story-construction/precontent-final-receipt-v2.schema.json")))
+        self.assertTrue(validate_repair_receipt_binding(receipt, derived["receipt"]))
+
+    def test_authoritative_effect_real_cli_accepts_complete_external_proof(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            fixture = create_authoritative_fixture(Path(temporary))
+            result = run_authoritative_cli(fixture)
+            self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+            self.assertIn("PRECONTENT_READINESS: PASS", result.stdout)
+            self.assertIn("AUTHORITATIVE_M3_B002_EFFECTIVE=true", result.stdout)
+            self.assertIn("effective_active_wip=false", result.stdout)
+            self.assertIn("global_active_WIP=0", result.stdout)
+            self.assertEqual(run_git(fixture["repository"], "cat-file", "-t", REPAIR_PROOF_TAG_REF), "tag")
+            self.assertEqual(
+                run_git(fixture["repository"], "rev-parse", f"{REPAIR_PROOF_TAG_REF}^{{commit}}"),
+                fixture["repair_commit"],
+            )
+
+    def test_authoritative_effect_proof_matrix_fails_closed(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            fixture = create_authoritative_fixture(Path(temporary))
+            approval_schema = json.loads(
+                (fixture["repository"] / "schemas/story-construction/precontent-activation-owner-approval-v2.schema.json").read_text()
+            )
+            envelope_schema = json.loads(
+                (fixture["repository"] / "schemas/story-construction/precontent-activation-closeout-envelope-v2.schema.json").read_text()
+            )
+            approval_sha256 = hashlib.sha256(fixture["approval_bytes"]).hexdigest()
+            self.assertEqual(
+                validate_repair_owner_approval(fixture["approval"], fixture["expected"], approval_schema),
+                [],
+            )
+            self.assertEqual(
+                validate_repair_closeout_envelope(
+                    fixture["envelope"],
+                    approval=fixture["approval"],
+                    approval_raw_sha256=approval_sha256,
+                    approval_canonical_sha256=approval_sha256,
+                    expected_approval=fixture["expected"],
+                    schema=envelope_schema,
+                ),
+                [],
+            )
+
+            approval_attacks = []
+            for path, value in (
+                (("consumed",), True),
+                (("approval_id",), "OWNER-APPROVAL-SCG-PRECONTENT-M3-B002-ACTIVATION-CANDIDATE-D80AAE8D-R1"),
+                (("repair_path_set_hash",), "0" * 64),
+                (("lineage", "repair_parent"), "0" * 40),
+                (("proof_contract", "remote_authoritative_ref"), "refs/heads/wrong"),
+            ):
+                attack = copy.deepcopy(fixture["approval"])
+                target = attack
+                for key in path[:-1]:
+                    target = target[key]
+                target[path[-1]] = value
+                approval_attacks.append((".".join(path), attack))
+            for label, attack in approval_attacks:
+                self.assertTrue(
+                    validate_repair_owner_approval(attack, fixture["expected"], approval_schema),
+                    label,
+                )
+
+            envelope_attacks = []
+            bad_payload_hash = copy.deepcopy(fixture["envelope"])
+            bad_payload_hash["payload_hash"] = "0" * 64
+            envelope_attacks.append(("payload_hash", bad_payload_hash))
+            for path, value in (
+                (("approval_consumption", "consumption_count"), 2),
+                (("repair_accept", "result"), "FAIL"),
+                (("activation_owner_approval", "raw_sha256"), "0" * 64),
+                (("producer_id",), REPAIR_ACCEPT_VERIFIER),
+            ):
+                attack = copy.deepcopy(fixture["envelope"])
+                target = attack["payload"]
+                for key in path[:-1]:
+                    target = target[key]
+                target[path[-1]] = value
+                attack["payload_hash"] = canonical_sha256(attack["payload"])
+                envelope_attacks.append((".".join(path), attack))
+            self_reference = copy.deepcopy(fixture["envelope"])
+            self_reference["payload"]["envelope_file_sha256"] = "0" * 64
+            self_reference["payload_hash"] = canonical_sha256(self_reference["payload"])
+            envelope_attacks.append(("self_reference", self_reference))
+            for label, attack in envelope_attacks:
+                self.assertTrue(
+                    validate_repair_closeout_envelope(
+                        attack,
+                        approval=fixture["approval"],
+                        approval_raw_sha256=approval_sha256,
+                        approval_canonical_sha256=approval_sha256,
+                        expected_approval=fixture["expected"],
+                        schema=envelope_schema,
+                    ),
+                    label,
+                )
+
+            malformed = fixture["approval_path"].parent / "malformed.json"
+            malformed.write_bytes(b'{"duplicate":1,"duplicate":2}\n')
+            with self.assertRaises(ValueError):
+                load_external_proof_json(malformed.resolve(), "duplicate proof")
+            malformed.write_bytes(b'{"nonfinite":NaN}\n')
+            with self.assertRaises(ValueError):
+                load_external_proof_json(malformed.resolve(), "non-finite proof")
+            proof_symlink = fixture["approval_path"].parent / "approval-link.json"
+            proof_symlink.symlink_to(fixture["approval_path"])
+            with self.assertRaises(ValueError):
+                load_external_proof_json(proof_symlink.absolute(), "symlink proof")
+            with self.assertRaises(ValueError):
+                load_external_proof_json(Path("relative-proof.json"), "relative proof")
+
+            def assert_cli_fail(result: subprocess.CompletedProcess[str], label: str) -> None:
+                self.assertNotEqual(result.returncode, 0, label + "\n" + result.stdout + result.stderr)
+                self.assertIn("PRECONTENT_READINESS: FAIL", result.stdout, label)
+                self.assertIn("AUTHORITATIVE_M3_B002_EFFECTIVE=false", result.stdout, label)
+                self.assertIn("effective_active_wip=true", result.stdout, label)
+                self.assertIn("global_active_WIP=1", result.stdout, label)
+
+            assert_cli_fail(run_authoritative_cli(fixture, []), "missing proof")
+            assert_cli_fail(run_authoritative_cli(fixture, fixture["proof_cli"][:2]), "partial proof")
+            wrong_tree_args = list(fixture["proof_cli"])
+            wrong_tree_args[wrong_tree_args.index("--expected-repair-tree") + 1] = "0" * 40
+            assert_cli_fail(run_authoritative_cli(fixture, wrong_tree_args), "wrong tree")
+            unsafe_remote_args = list(fixture["proof_cli"])
+            unsafe_remote_args[unsafe_remote_args.index("--expected-remote-url") + 1] = "ext::arbitrary-command"
+            assert_cli_fail(run_authoritative_cli(fixture, unsafe_remote_args), "unsafe remote transport")
+
+            fixture["approval_path"].write_text(json.dumps(fixture["approval"], indent=2), encoding="utf-8")
+            assert_cli_fail(run_authoritative_cli(fixture), "non-canonical approval transport")
+            fixture["approval_path"].write_bytes(fixture["approval_bytes"])
+
+            consumed = copy.deepcopy(fixture["approval"])
+            consumed["consumed"] = True
+            fixture["approval_path"].write_bytes(canonical_json_bytes(consumed))
+            assert_cli_fail(run_authoritative_cli(fixture), "replayed approval")
+            fixture["approval_path"].write_bytes(fixture["approval_bytes"])
+
+            bad_envelope = copy.deepcopy(fixture["envelope"])
+            bad_envelope["payload"]["approval_consumption"]["consumption_count"] = 2
+            bad_envelope["payload_hash"] = canonical_sha256(bad_envelope["payload"])
+            fixture["envelope_path"].write_bytes(canonical_json_bytes(bad_envelope))
+            assert_cli_fail(run_authoritative_cli(fixture), "invalid consumption")
+            fixture["envelope_path"].write_bytes(canonical_json_bytes(fixture["envelope"]))
+
+            dirty_path = fixture["repository"] / "UNTRACKED-AUTHORITATIVE-EFFECT-ATTACK"
+            dirty_path.write_text("dirty", encoding="utf-8")
+            assert_cli_fail(run_authoritative_cli(fixture), "dirty verifier worktree")
+            dirty_path.unlink()
+
+            subprocess.run(
+                ["git", "--git-dir", str(fixture["remote"]), "update-ref", "refs/heads/design/r1-story-architecture", BASE_COMMIT],
+                check=True,
+                capture_output=True,
+                text=True,
+            )
+            assert_cli_fail(run_authoritative_cli(fixture), "remote authoritative ref mismatch")
+            subprocess.run(
+                ["git", "--git-dir", str(fixture["remote"]), "update-ref", "refs/heads/design/r1-story-architecture", fixture["repair_commit"]],
+                check=True,
+                capture_output=True,
+                text=True,
+            )
+
+            tag_name = REPAIR_PROOF_TAG_REF.removeprefix("refs/tags/")
+            local_tag_object = run_git(fixture["repository"], "rev-parse", REPAIR_PROOF_TAG_REF)
+            subprocess.run(
+                ["git", "--git-dir", str(fixture["remote"]), "update-ref", REPAIR_PROOF_TAG_REF, fixture["repair_commit"]],
+                check=True,
+                capture_output=True,
+                text=True,
+            )
+            assert_cli_fail(run_authoritative_cli(fixture), "remote annotated tag/peel mismatch")
+            subprocess.run(
+                ["git", "--git-dir", str(fixture["remote"]), "update-ref", REPAIR_PROOF_TAG_REF, local_tag_object],
+                check=True,
+                capture_output=True,
+                text=True,
+            )
+
+            wrong_tag_message = fixture["approval_path"].parent / "wrong-tag-message.txt"
+            wrong_tag_message.write_text("not the canonical closeout envelope\n", encoding="utf-8")
+            run_git(fixture["repository"], "tag", "--delete", tag_name)
+            run_git(
+                fixture["repository"], "tag", "--annotate", "--cleanup=verbatim",
+                "--file", str(wrong_tag_message), tag_name, fixture["repair_commit"],
+            )
+            assert_cli_fail(run_authoritative_cli(fixture), "wrong annotated tag message")
+
+            run_git(fixture["repository"], "tag", "--delete", tag_name)
+            run_git(fixture["repository"], "tag", tag_name, fixture["repair_commit"])
+            assert_cli_fail(run_authoritative_cli(fixture), "lightweight proof tag")
 
     def test_activation_owner_approval_replay_and_transfer_are_rejected(self):
         records = activation_path_records(ROOT)

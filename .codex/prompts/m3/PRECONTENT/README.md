@@ -21,6 +21,15 @@ or modify R2 Canon, M2, authoring, runtime, Lua, Game Package, or platform code.
 Owner approval is consumed by the first independent ACCEPT and cannot authorize this activation
 Candidate.
 
+The accepted-but-closeout-defective `d80aae8` activation Candidate remains immutable historical
+evidence. The authoritative-effect repair uses additive Model R3: it preserves the R2 manifest and
+old final receipt, adds three repair schemas, and keeps the tracked false sentinel unchanged. A
+fresh repair Owner approval and independent repair ACCEPT are external proofs; only the
+`authoritative-effect` CLI may inspect the explicit approval, envelope, annotated tag, local
+authoritative ref, and remote refs to compute the effective projection. Normal acceptance remains
+offline. The repair ACCEPT contract is discovered through
+`AUTHORITATIVE_EFFECT_REPAIR_ACCEPT.md` and its candidate-bound route.
+
 <!-- SECTION-ID: M3-CODEX-PRECONTENT-B003-PLAN -->
 # M3-B003 PLAN boundary
 

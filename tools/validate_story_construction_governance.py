@@ -63,10 +63,13 @@ from tools.story_construction import (
     write_derived_installation,
 )
 from tools.validate_precontent_readiness import (
-    ACTIVATION_ALLOWLIST as PRECONTENT_ACTIVATION_ALLOWLIST,
     ALLOWLIST as PRECONTENT_ALLOWLIST,
     BASE_COMMIT as PRECONTENT_BASE_COMMIT,
+    DEFECTIVE_ACTIVATION_COMMIT as PRECONTENT_DEFECTIVE_ACTIVATION_COMMIT,
     IMPLEMENTATION_CANDIDATE_COMMIT as PRECONTENT_IMPLEMENTATION_CANDIDATE_COMMIT,
+    REPAIR_ALLOWLIST as PRECONTENT_REPAIR_ALLOWLIST,
+    R3_MANIFEST_PATH as PRECONTENT_R3_MANIFEST_PATH,
+    R3_RECEIPT_PATH as PRECONTENT_R3_RECEIPT_PATH,
     changed_paths as precontent_changed_paths,
     collect_errors as validate_precontent_readiness,
 )
@@ -116,6 +119,9 @@ SCHEMA_FILES = {
     "precontent-owner-approval-consumption-v1.schema.json",
     "precontent-activation-owner-approval-v1.schema.json",
     "precontent-activation-closeout-envelope-v1.schema.json",
+    "precontent-activation-owner-approval-v2.schema.json",
+    "precontent-activation-closeout-envelope-v2.schema.json",
+    "precontent-final-receipt-v3.schema.json",
 }
 
 PRECONTENT_SCHEMA_FILES = {
@@ -144,6 +150,9 @@ PRECONTENT_SCHEMA_FILES = {
     "precontent-owner-approval-consumption-v1.schema.json",
     "precontent-activation-owner-approval-v1.schema.json",
     "precontent-activation-closeout-envelope-v1.schema.json",
+    "precontent-activation-owner-approval-v2.schema.json",
+    "precontent-activation-closeout-envelope-v2.schema.json",
+    "precontent-final-receipt-v3.schema.json",
 }
 
 GOVERNANCE_DOCS = [
@@ -169,6 +178,7 @@ PROMPT_FILES = [
     f".codex/prompts/m3/STORY-CONSTRUCTION/{name}.md"
     for name in ("README", "PLAN", "IMPLEMENT", "ACCEPT", "REPAIR", "LITERARY_WORKER")
 ]
+PROMPT_FILES.append(".codex/prompts/m3/PRECONTENT/AUTHORITATIVE_EFFECT_REPAIR_ACCEPT.md")
 
 ROUTE_IDENTITIES = {
     ".codex/routes/m3-story-construction-plan-request.json": (
@@ -193,6 +203,13 @@ ROUTE_IDENTITIES = {
     ),
 }
 
+PRECONTENT_REPAIR_ROUTE_IDENTITIES = {
+    ".codex/routes/m3-precontent-b002-authoritative-effect-repair-accept-request.json": (
+        "SCG-PRECONTENT-M3-B002-AUTHORITATIVE-EFFECT-REPAIR-ACCEPT",
+        "ACCEPT",
+    ),
+}
+
 AGENT_FILES = [
     f"docs/operations/agents/m3/deepseek-harness/{name}"
     for name in (
@@ -210,6 +227,7 @@ REQUIRED_FILES = (
     GOVERNANCE_DOCS
     + PROMPT_FILES
     + list(ROUTE_IDENTITIES)
+    + list(PRECONTENT_REPAIR_ROUTE_IDENTITIES)
     + AGENT_FILES
     + [
         DECISIONS_PATH.as_posix(),
@@ -231,6 +249,8 @@ REQUIRED_FILES = (
         "tools/story_construction.py",
         "tools/validate_deepseek_literary_task.py",
         "tools/validate_visual_order.py",
+        PRECONTENT_R3_MANIFEST_PATH.as_posix(),
+        PRECONTENT_R3_RECEIPT_PATH.as_posix(),
     ]
     + [(SCHEMA_ROOT / name).as_posix() for name in sorted(SCHEMA_FILES)]
 )
@@ -672,22 +692,34 @@ def _check_activation_git_scope(root: Path, errors: list[str]) -> None:
         except (OSError, subprocess.CalledProcessError) as exc:
             errors.append(f"pre-content changed paths: {exc}")
             return
-        expected = set(PRECONTENT_ACTIVATION_ALLOWLIST)
+        expected = set(PRECONTENT_REPAIR_ALLOWLIST)
         outside = sorted(changed - expected)
         missing = sorted(expected - changed)
         if outside or missing:
             errors.append(f"pre-content activation diff is not exact: missing={missing}, extra={outside}")
         head = _git_output(root, ["rev-parse", "HEAD"], errors, "pre-content HEAD")
-        if head is not None and head != PRECONTENT_IMPLEMENTATION_CANDIDATE_COMMIT:
+        if head is not None and head != PRECONTENT_DEFECTIVE_ACTIVATION_COMMIT:
             parent = _git_output(root, ["rev-parse", "HEAD^"], errors, "pre-content parent")
             count = _git_output(
                 root,
-                ["rev-list", "--count", f"{PRECONTENT_IMPLEMENTATION_CANDIDATE_COMMIT}..HEAD"],
+                ["rev-list", "--count", f"{PRECONTENT_DEFECTIVE_ACTIVATION_COMMIT}..HEAD"],
                 errors,
                 "pre-content lineage count",
             )
-            if parent != PRECONTENT_IMPLEMENTATION_CANDIDATE_COMMIT or count != "1":
-                errors.append("pre-content lineage is non-FF, rebased, amended, or multi-commit")
+            implementation_count = _git_output(
+                root,
+                ["rev-list", "--count", f"{PRECONTENT_IMPLEMENTATION_CANDIDATE_COMMIT}..HEAD"],
+                errors,
+                "pre-content implementation lineage count",
+            )
+            base_count = _git_output(
+                root,
+                ["rev-list", "--count", f"{PRECONTENT_BASE_COMMIT}..HEAD"],
+                errors,
+                "pre-content base lineage count",
+            )
+            if parent != PRECONTENT_DEFECTIVE_ACTIVATION_COMMIT or (count, implementation_count, base_count) != ("1", "2", "3"):
+                errors.append("pre-content repair lineage is non-FF, rebased, amended, or multi-commit")
         return
     changed_output = _git_output(
         root,
@@ -925,6 +957,24 @@ def _check_routes_and_predecessors(root: Path, errors: list[str]) -> None:
             errors.append(f"{relative}: old predecessor selected as authority: {old}")
         if reading_map.get("context_budget", {}).get("ratio", 1) > 0.55:
             errors.append(f"{relative}: required route ratio exceeds 0.55")
+
+    for relative, (route_id, mode) in PRECONTENT_REPAIR_ROUTE_IDENTITIES.items():
+        try:
+            request = read_json(root / relative)
+            validate_request(request)
+            reading_map = generate_reading_map(request, repo_root=root)
+        except (OSError, json.JSONDecodeError, RouteError) as exc:
+            errors.append(f"{relative}: invalid pre-content repair route: {exc}")
+            continue
+        expected = {
+            "route_id": route_id, "mode": mode, "milestone": "M3",
+            "batch_id": "M3-B002", "capacity_bytes": 196608,
+        }
+        for field, value in expected.items():
+            if request.get(field) != value:
+                errors.append(f"{relative}: wrong repair route {field}")
+        if reading_map.get("context_budget", {}).get("ratio", 1) > 0.55:
+            errors.append(f"{relative}: repair route ratio exceeds 0.55")
 
     required_prompt_markers = {
         ".codex/STORY_ARCHITECTURE_BUILD_PROMPT.md": ["HISTORICAL_ONLY", "EXECUTION_AUTHORITY=NONE"],

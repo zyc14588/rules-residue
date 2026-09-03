@@ -4,6 +4,7 @@ import argparse
 import hashlib
 import json
 import os
+import re
 import stat
 import subprocess
 import sys
@@ -56,6 +57,27 @@ IMPLEMENTATION_ACCEPT_ROUTE_DIGEST = "b08bfd965a6c8ca8515460f5507e212056ab8b6e6d
 ACTIVATION_TASK_ID = "SCG-PRECONTENT-M3-B002-ACTIVATION-CLOSEOUT-IMPLEMENT-001"
 ACTIVATION_MODEL = "MODEL_B_FULL_FRAMEWORK_HASH_REAPPROVAL"
 ACTIVATION_PROOF_TAG = "scg-precontent-m3-b002-activation-closeout-accepted"
+DEFECT_ID = "SCG-PRE-B002-AUTHORITATIVE-EFFECT-EXTERNAL-PROOF-INTERFACE-MISSING-001"
+REPAIR_TASK_ID = "SCG-PRECONTENT-M3-B002-AUTHORITATIVE-EFFECT-REPAIR-IMPLEMENT-001"
+REPAIR_APPROVAL_MODEL = "MODEL_R3_ADDITIVE"
+REPAIR_ACCEPT_TASK_ID = "SCG-PRECONTENT-M3-B002-AUTHORITATIVE-EFFECT-REPAIR-ACCEPT-001"
+REPAIR_ACCEPT_RESULT = "PASS_FIXED_M3_B002_AUTHORITATIVE_EFFECT_REPAIR_CANDIDATE_ACCEPTED"
+REPAIR_ACCEPT_VERIFIER = "CODEX-INDEPENDENT-VERIFIER-SCG-PRECONTENT-M3-B002-AUTHORITATIVE-EFFECT-REPAIR-ACCEPT-001"
+REPAIR_ACCEPT_ROUTE = "SCG-PRECONTENT-M3-B002-AUTHORITATIVE-EFFECT-REPAIR-ACCEPT"
+REPAIR_PROOF_TAG_REF = "refs/tags/scg-precontent-m3-b002-authoritative-effect-repair-accepted"
+DEFECTIVE_ACTIVATION_COMMIT = "d80aae8d1dfede85d91ff0367f4c6a18d62bb2a7"
+DEFECTIVE_ACTIVATION_TREE = "f6e5eaabd5bcbc66666d54f2cb389f2c96e643c0"
+DEFECTIVE_ACTIVATION_PARENT = IMPLEMENTATION_CANDIDATE_COMMIT
+R2_MANIFEST_FILE_SHA256 = "43346ea1c462cc70d2c1e4855351d111e9f6cfa263a7aeca6f5821d4d3a00a8f"
+R2_MERKLE_ROOT = "5c272518a3acd983bc8b5cea5290f77ec5da15f291baac7ade39fd32d699aeea"
+R2_RECORD_COUNT = 76
+R1_FINAL_RECEIPT_FILE_SHA256 = "ec0c40c85b1488570965cb85b79a5386dcb5156c29839442b89fea876a80cea5"
+HISTORICAL_ACTIVATION_APPROVAL_ID = "OWNER-APPROVAL-SCG-PRECONTENT-M3-B002-ACTIVATION-CANDIDATE-D80AAE8D-R1"
+HISTORICAL_ACTIVATION_APPROVAL_SHA256 = "df75a91874a816b47c9772190e858ec6b0890e7b70e809fa7210c69bbee1812c"
+HISTORICAL_ACTIVATION_ACCEPT_ROUTE_DIGEST = "5aee4ad9bf88bded6529820ca3a70ad8f2843cd0cad1990404647fce6d1dcdcf"
+Q001_Q130_HASH = "01fdebbd338a8abdbc0226d0290b1bc2b02366cb615a22182f0df0a5f75fa7b2"
+M2_PLAN_HASH = "74da7cc866e0b3b1f3580d86df18c8c6d9724ff6131e5d35c155fc33a2f71c17"
+REPAIR_PATH_ALLOWLIST_SHA256 = "cd142235a3ecc660ade277efc0a99d2e3799456786062fb098530a864c9bbeca"
 R1_MANIFEST_FILE_SHA256 = "891944f172236b666eb78bc641f4e7ecabf6ec3e318ab4cd0b5858f045b06b67"
 R1_MERKLE_ROOT = "87c6520fe0822e29312de6c72cad95f0849aa3d0bd4fbb27f97f1f786027bf8f"
 R1_RECORD_COUNT = 68
@@ -173,6 +195,39 @@ ACTIVATION_ALLOWLIST = (
     "tests/test_precontent_readiness.py",
 )
 
+REPAIR_ALLOWLIST = (
+    ".codex/prompts/m3/PRECONTENT/README.md",
+    ".codex/prompts/m3/PRECONTENT/AUTHORITATIVE_EFFECT_REPAIR_ACCEPT.md",
+    ".codex/routes/m3-precontent-b002-authoritative-effect-repair-accept-request.json",
+    "docs/governance/story-construction/10_PRECONTENT_READINESS.md",
+    "governance/story-construction/precontent/manifests/framework-manifest.r3.json",
+    "governance/story-construction/receipts/scg-precontent-readiness-r3.final.json",
+    "schemas/story-construction/precontent-activation-closeout-envelope-v2.schema.json",
+    "schemas/story-construction/precontent-activation-owner-approval-v2.schema.json",
+    "schemas/story-construction/precontent-final-receipt-v3.schema.json",
+    "tests/test_precontent_readiness.py",
+    "tools/build_precontent_readiness_bundle.py",
+    "tools/validate_precontent_readiness.py",
+    "tools/validate_story_construction_governance.py",
+)
+
+R3_CHANGED_OLD_PATHS = (
+    ".codex/prompts/m3/PRECONTENT/README.md",
+    "docs/governance/story-construction/10_PRECONTENT_READINESS.md",
+    "tests/test_precontent_readiness.py",
+    "tools/build_precontent_readiness_bundle.py",
+    "tools/validate_precontent_readiness.py",
+    "tools/validate_story_construction_governance.py",
+)
+
+R3_NEW_SEMANTIC_PATHS = (
+    ".codex/prompts/m3/PRECONTENT/AUTHORITATIVE_EFFECT_REPAIR_ACCEPT.md",
+    ".codex/routes/m3-precontent-b002-authoritative-effect-repair-accept-request.json",
+    "schemas/story-construction/precontent-activation-closeout-envelope-v2.schema.json",
+    "schemas/story-construction/precontent-activation-owner-approval-v2.schema.json",
+    "schemas/story-construction/precontent-final-receipt-v3.schema.json",
+)
+
 CHANGED_OLD_PATHS = (
     ".codex/prompts/m3/PRECONTENT/README.md",
     "docs/governance/story-construction/10_PRECONTENT_READINESS.md",
@@ -231,7 +286,13 @@ ACTIVATION_SCHEMA_FILES = (
     "precontent-activation-closeout-envelope-v1.schema.json",
 )
 
-COMBINED_SCHEMA_FILES = SCHEMA_FILES + ACTIVATION_SCHEMA_FILES
+REPAIR_SCHEMA_FILES = (
+    "precontent-activation-closeout-envelope-v2.schema.json",
+    "precontent-activation-owner-approval-v2.schema.json",
+    "precontent-final-receipt-v3.schema.json",
+)
+
+COMBINED_SCHEMA_FILES = SCHEMA_FILES + ACTIVATION_SCHEMA_FILES + REPAIR_SCHEMA_FILES
 
 FIXTURE_ROOT = Path("tests/fixtures/story-construction/precontent-m0")
 TEST_FIXTURE_FILES = (
@@ -250,6 +311,8 @@ MANIFEST_PATH = Path("governance/story-construction/precontent/manifests/framewo
 RECEIPT_PATH = Path("governance/story-construction/receipts/scg-precontent-readiness-r1.pending.json")
 R2_MANIFEST_PATH = Path("governance/story-construction/precontent/manifests/framework-manifest.r2.json")
 FINAL_RECEIPT_PATH = Path("governance/story-construction/receipts/scg-precontent-readiness-r1.final.json")
+R3_MANIFEST_PATH = Path("governance/story-construction/precontent/manifests/framework-manifest.r3.json")
+R3_RECEIPT_PATH = Path("governance/story-construction/receipts/scg-precontent-readiness-r3.final.json")
 APPROVAL_CONSUMPTION_PATH = Path("governance/story-construction/approvals/OWNER-APPROVAL-SCG-PRECONTENT-M3-B002-CANDIDATE-74FECBE6-R1.consumption.json")
 DECISION_PATH = Path("governance/story-construction/precontent/decisions.scg-pre-q001-q021.yaml")
 TRACEABILITY_PATH = Path("governance/story-construction/precontent/traceability.scg-pre-r1.yaml")
@@ -277,6 +340,9 @@ ROUTE_SPECS = {
     ".codex/routes/m3-precontent-b002-activation-closeout-accept-request.json": (
         "SCG-PRECONTENT-M3-B002-ACTIVATION-CLOSEOUT-ACCEPT", "ACCEPT", "M3-B002"
     ),
+    ".codex/routes/m3-precontent-b002-authoritative-effect-repair-accept-request.json": (
+        REPAIR_ACCEPT_ROUTE, "ACCEPT", "M3-B002"
+    ),
 }
 
 
@@ -291,6 +357,11 @@ def allowlist_hash() -> str:
 
 def activation_allowlist_hash() -> str:
     payload = "".join(f"{path}\n" for path in sorted(ACTIVATION_ALLOWLIST)).encode("utf-8")
+    return hashlib.sha256(payload).hexdigest()
+
+
+def repair_allowlist_hash() -> str:
+    payload = "".join(f"{path}\n" for path in sorted(REPAIR_ALLOWLIST)).encode("utf-8")
     return hashlib.sha256(payload).hexdigest()
 
 
@@ -310,6 +381,18 @@ def activation_path_set_hash(root: Path = PROJECT_ROOT) -> str:
     return _record_set_hash(activation_path_records(root))
 
 
+def repair_path_records(root: Path = PROJECT_ROOT) -> list[dict[str, str]]:
+    root = root.resolve()
+    return [
+        {"path": path, "sha256": file_sha256(root / path)}
+        for path in sorted(REPAIR_ALLOWLIST)
+    ]
+
+
+def repair_path_set_hash(root: Path = PROJECT_ROOT) -> str:
+    return _record_set_hash(repair_path_records(root))
+
+
 def _schema(root: Path, name: str) -> dict[str, Any]:
     value = read_json(root / "schemas/story-construction" / name)
     if not isinstance(value, dict):
@@ -317,8 +400,46 @@ def _schema(root: Path, name: str) -> dict[str, Any]:
     return value
 
 
+def _resolve_local_schema_refs(
+    value: Any,
+    document: dict[str, Any],
+    active: tuple[str, ...] = (),
+    depth: int = 0,
+) -> Any:
+    if depth > 128:
+        raise ValueError("schema reference expansion exceeds maximum depth")
+    if isinstance(value, list):
+        return [_resolve_local_schema_refs(item, document, active, depth + 1) for item in value]
+    if not isinstance(value, dict):
+        return value
+    reference = value.get("$ref")
+    if reference is not None:
+        if not isinstance(reference, str) or not reference.startswith("#/"):
+            raise ValueError(f"unsupported schema reference: {reference!r}")
+        if reference in active:
+            raise ValueError(f"cyclic schema reference: {reference}")
+        target: Any = document
+        for raw_part in reference[2:].split("/"):
+            part = raw_part.replace("~1", "/").replace("~0", "~")
+            if not isinstance(target, dict) or part not in target:
+                raise ValueError(f"unresolved schema reference: {reference}")
+            target = target[part]
+        if len(value) != 1:
+            raise ValueError(f"schema reference has unsupported siblings: {reference}")
+        return _resolve_local_schema_refs(target, document, active + (reference,), depth + 1)
+    return {
+        key: _resolve_local_schema_refs(child, document, active, depth + 1)
+        for key, child in value.items()
+        if key != "$defs"
+    }
+
+
 def _schema_issues(instance: Any, schema: dict[str, Any], label: str) -> list[str]:
-    return [f"{label}: {issue}" for issue in validate(instance, schema)]
+    try:
+        resolved = _resolve_local_schema_refs(schema, schema)
+    except (RecursionError, ValueError) as exc:
+        return [f"{label}: invalid local schema reference graph: {exc}"]
+    return [f"{label}: {issue}" for issue in validate(instance, resolved)]
 
 
 def validate_test_boundary(document: Any, label: str = "TEST artifact") -> list[str]:
@@ -978,6 +1099,119 @@ def validate_final_receipt_binding(receipt: Any, expected: Any | None = None) ->
     return errors
 
 
+def validate_repair_manifest_transition(manifest: Any, r2_manifest: Any) -> list[str]:
+    if not isinstance(manifest, dict) or not isinstance(r2_manifest, dict):
+        return ["R2 and R3 framework manifests must be objects"]
+    errors: list[str] = []
+    records = manifest.get("records")
+    old_records = r2_manifest.get("records")
+    if not isinstance(records, list) or not isinstance(old_records, list):
+        return ["R3 framework manifest records must be arrays"]
+    paths = [item.get("path") for item in records if isinstance(item, dict)]
+    if len(records) != 81 or len(paths) != 81 or len(set(paths)) != 81:
+        errors.append("R3 framework manifest must contain 81 unique records")
+    forbidden = {R3_MANIFEST_PATH.as_posix(), R3_RECEIPT_PATH.as_posix()}
+    if forbidden & set(paths):
+        errors.append("R3 framework manifest contains self/audit record")
+    try:
+        computed_root = merkle_root((item["path"], item["sha256"]) for item in records)
+        computed_set_hash = _record_set_hash(records)
+    except (KeyError, TypeError, ValueError):
+        errors.append("R3 framework manifest contains malformed leaf records")
+        computed_root = None
+        computed_set_hash = None
+    if manifest.get("merkle", {}).get("root") != computed_root:
+        errors.append("R3 framework manifest Merkle root mismatch")
+    if manifest.get("semantic_path_content_record_set_hash") != computed_set_hash:
+        errors.append("R3 semantic path-content record-set hash mismatch")
+    previous = manifest.get("previous_manifest")
+    expected_previous = {
+        "path": R2_MANIFEST_PATH.as_posix(), "file_sha256": R2_MANIFEST_FILE_SHA256,
+        "merkle_root": R2_MERKLE_ROOT, "record_count": R2_RECORD_COUNT,
+    }
+    if previous != expected_previous:
+        errors.append("R3 predecessor manifest binding mismatch")
+    transition = manifest.get("transition")
+    if not isinstance(transition, dict):
+        return errors + ["R3 framework manifest transition is missing"]
+    exact_counts = {
+        "old_record_count": 76, "unchanged_old_count": 70, "changed_old_count": 6,
+        "new_record_count": 5, "total_record_count": 81,
+    }
+    for field, value in exact_counts.items():
+        if transition.get(field) != value:
+            errors.append(f"R3 Merkle transition count mismatch: {field}")
+    changed = transition.get("changed_old_records", [])
+    new = transition.get("new_records", [])
+    if not isinstance(changed, list) or not isinstance(new, list):
+        return errors + ["R3 changed-old and new transition records must be arrays"]
+    if any(not isinstance(item, dict) or set(item) != {"path", "old_sha256", "new_sha256"} for item in changed):
+        return errors + ["R3 changed-old transition records are malformed"]
+    if any(not isinstance(item, dict) or set(item) != {"path", "sha256"} for item in new):
+        return errors + ["R3 new transition records are malformed"]
+    if [item.get("path") for item in changed if isinstance(item, dict)] != sorted(R3_CHANGED_OLD_PATHS):
+        errors.append("R3 changed-old path set mismatch")
+    if [item.get("path") for item in new if isinstance(item, dict)] != sorted(R3_NEW_SEMANTIC_PATHS):
+        errors.append("R3 new semantic path set mismatch")
+    old_by_path = {item.get("path"): item.get("sha256") for item in old_records if isinstance(item, dict)}
+    new_by_path = {item.get("path"): item.get("sha256") for item in records if isinstance(item, dict)}
+    expected_unchanged = [
+        {"path": path, "sha256": digest}
+        for path, digest in sorted(old_by_path.items())
+        if path not in R3_CHANGED_OLD_PATHS
+    ]
+    aggregates = {
+        "unchanged_old_leaf_set_hash": _record_set_hash(expected_unchanged),
+        "changed_old_leaf_transition_hash": canonical_sha256(changed),
+        "new_leaf_set_hash": _record_set_hash(new),
+        "r2_leaf_set_hash": _record_set_hash(old_records),
+        "r3_leaf_set_hash": computed_set_hash,
+    }
+    for field, value in aggregates.items():
+        if transition.get(field) != value:
+            errors.append(f"R3 transition aggregate mismatch: {field}")
+    for item in changed:
+        if not isinstance(item, dict):
+            continue
+        path = item.get("path")
+        if item.get("old_sha256") != old_by_path.get(path) or item.get("new_sha256") != new_by_path.get(path):
+            errors.append(f"R3 changed-old leaf binding mismatch: {path}")
+    return errors
+
+
+def validate_repair_receipt_binding(receipt: Any, expected: Any | None = None) -> list[str]:
+    if not isinstance(receipt, dict):
+        return ["R3 repair receipt must be an object"]
+    payload = receipt.get("payload")
+    if not isinstance(payload, dict):
+        return ["R3 repair receipt payload must be an object"]
+    errors: list[str] = []
+    if receipt.get("payload_hash") != canonical_sha256(payload):
+        errors.append("R3 repair receipt payload hash mismatch")
+    forbidden_keys = {
+        "repair_commit", "repair_tree", "repair_candidate_commit", "repair_candidate_tree",
+        "repair_owner_approval_id", "repair_accept_route_digest", "tag_object_id",
+        "authoritative_remote_after_repair", "integration_commit", "receipt_file_sha256",
+    }
+    found: set[str] = set()
+
+    def visit(value: Any) -> None:
+        if isinstance(value, dict):
+            found.update(forbidden_keys & set(value))
+            for child in value.values():
+                visit(child)
+        elif isinstance(value, list):
+            for child in value:
+                visit(child)
+
+    visit(payload)
+    if found:
+        errors.append(f"R3 repair receipt contains future/self fields: {sorted(found)}")
+    if expected is not None and receipt != expected:
+        errors.append("R3 repair receipt differs from deterministic derivation")
+    return errors
+
+
 def write_framework_documents(root: Path = PROJECT_ROOT) -> dict[str, Any]:
     """Compatibility entry: R1 is immutable, so this performs no write."""
 
@@ -989,6 +1223,279 @@ def write_activation_documents(root: Path = PROJECT_ROOT) -> dict[str, Any]:
     derived = derive_activation_documents(root)
     (root / R2_MANIFEST_PATH).write_bytes(derived["manifest_bytes"])
     (root / FINAL_RECEIPT_PATH).write_bytes(derived["receipt_bytes"])
+    return derived
+
+
+def historical_activation_record() -> dict[str, Any]:
+    return {
+        "approval_id": HISTORICAL_ACTIVATION_APPROVAL_ID,
+        "approval_raw_sha256": HISTORICAL_ACTIVATION_APPROVAL_SHA256,
+        "approval_canonical_sha256": HISTORICAL_ACTIVATION_APPROVAL_SHA256,
+        "approval_issued_consumed": False,
+        "single_use": True,
+        "transferable": False,
+        "consumption_count": 1,
+        "consumed_by_accept_task": "SCG-PRECONTENT-M3-B002-ACTIVATION-CLOSEOUT-ACCEPT-001",
+        "accept_result": "PASS_FIXED_M3_B002_ACTIVATION_CANDIDATE_ACCEPTED",
+        "accept_verifier": "CODEX-INDEPENDENT-VERIFIER-SCG-PRECONTENT-M3-B002-ACTIVATION-CLOSEOUT-ACCEPT-001",
+        "accept_route": "SCG-PRECONTENT-M3-B002-ACTIVATION-CLOSEOUT-ACCEPT",
+        "accept_route_digest": HISTORICAL_ACTIVATION_ACCEPT_ROUTE_DIGEST,
+        "authoritative_effect_established": False,
+    }
+
+
+def fixed_repair_preservation() -> dict[str, Any]:
+    return {
+        "q001_q130_hash": Q001_Q130_HASH,
+        "decision_set_hash": DECISION_SET_HASH,
+        "partial_supersession_hash": PARTIAL_SUPERSESSION_HASH,
+        "traceability_hash": TRACEABILITY_HASH,
+        "m2_plan_hash": M2_PLAN_HASH,
+        "m2_state": "M2_B001_ACCEPTED_WITH_DOWNSTREAM_BLOCKERS_B002_NOT_STARTED",
+        "canon_hash": BASE_CANON_HASH,
+        "runtime_package_sha256": RUNTIME_PACKAGE_SHA256,
+        "provider_contract_set_hash": PROVIDER_PROFILE_CONTRACT_SET_HASH,
+        "provider_zero_call_evidence_hash": PROVIDER_ZERO_CALL_EVIDENCE_HASH,
+    }
+
+
+def _r3_schema_sets(root: Path, r1_records: list[dict[str, str]], r2_records: list[dict[str, str]]) -> dict[str, Any]:
+    original_paths = {f"schemas/story-construction/{name}" for name in SCHEMA_FILES}
+    activation_paths = {f"schemas/story-construction/{name}" for name in ACTIVATION_SCHEMA_FILES}
+    original = sorted((item for item in r1_records if item.get("path") in original_paths), key=lambda item: item["path"])
+    activation = sorted((item for item in r2_records if item.get("path") in activation_paths), key=lambda item: item["path"])
+    if len(original) != 20 or {item["path"] for item in original} != original_paths:
+        raise ValueError("R1 manifest does not contain the exact original 20-schema set")
+    if len(activation) != 5 or {item["path"] for item in activation} != activation_paths:
+        raise ValueError("R2 manifest does not contain the exact preserved activation-v1 5-schema set")
+    for record in original + activation:
+        if file_sha256(root / record["path"]) != record["sha256"]:
+            raise ValueError(f"preserved schema drift: {record['path']}")
+    repair = [
+        {"path": f"schemas/story-construction/{name}", "sha256": file_sha256(root / "schemas/story-construction" / name)}
+        for name in sorted(REPAIR_SCHEMA_FILES)
+    ]
+    combined = sorted(original + activation + repair, key=lambda item: item["path"])
+    result = {
+        "original_records": original,
+        "original_count": 20,
+        "original_set_hash": _record_set_hash(original),
+        "preserved_activation_v1_records": activation,
+        "preserved_activation_v1_count": 5,
+        "preserved_activation_v1_set_hash": _record_set_hash(activation),
+        "repair_records": repair,
+        "repair_count": 3,
+        "repair_set_hash": _record_set_hash(repair),
+        "combined_records": combined,
+        "combined_count": 28,
+        "combined_set_hash": _record_set_hash(combined),
+    }
+    if result["original_set_hash"] != ORIGINAL_SCHEMA_SET_HASH:
+        raise ValueError("original 20-schema set hash drift")
+    if result["preserved_activation_v1_set_hash"] != "86d86a286fd1bbd3810720b943d61c1e00c3a63c9e6aed714f6e40d072b90b7f":
+        raise ValueError("preserved activation-v1 5-schema set hash drift")
+    return result
+
+
+def _schema_set_summary(schemas: dict[str, Any]) -> dict[str, Any]:
+    return {
+        "original_schema_count": schemas["original_count"],
+        "original_schema_set_hash": schemas["original_set_hash"],
+        "preserved_activation_v1_schema_count": schemas["preserved_activation_v1_count"],
+        "preserved_activation_v1_schema_set_hash": schemas["preserved_activation_v1_set_hash"],
+        "repair_schema_count": schemas["repair_count"],
+        "repair_schema_set_hash": schemas["repair_set_hash"],
+        "combined_schema_count": schemas["combined_count"],
+        "combined_schema_set_hash": schemas["combined_set_hash"],
+    }
+
+
+def derive_repair_documents(root: Path = PROJECT_ROOT) -> dict[str, Any]:
+    root = root.resolve()
+    if repair_allowlist_hash() != REPAIR_PATH_ALLOWLIST_SHA256:
+        raise ValueError("13-path repair allowlist identity drift")
+    if file_sha256(root / R2_MANIFEST_PATH) != R2_MANIFEST_FILE_SHA256:
+        raise ValueError("immutable R2 manifest file hash drift")
+    if file_sha256(root / FINAL_RECEIPT_PATH) != R1_FINAL_RECEIPT_FILE_SHA256:
+        raise ValueError("immutable R1 final receipt file hash drift")
+    r1_manifest = read_json(root / MANIFEST_PATH)
+    r2_manifest = read_json(root / R2_MANIFEST_PATH)
+    r1_records = r1_manifest.get("records")
+    r2_records = r2_manifest.get("records")
+    if not isinstance(r1_records, list) or len(r1_records) != R1_RECORD_COUNT:
+        raise ValueError("immutable R1 manifest record count drift")
+    if not isinstance(r2_records, list) or len(r2_records) != R2_RECORD_COUNT:
+        raise ValueError("immutable R2 manifest record count drift")
+    if r2_manifest.get("merkle", {}).get("root") != R2_MERKLE_ROOT:
+        raise ValueError("immutable R2 manifest root drift")
+    if merkle_root((item["path"], item["sha256"]) for item in r2_records) != R2_MERKLE_ROOT:
+        raise ValueError("immutable R2 manifest leaf/root mismatch")
+    if len({item.get("path") for item in r2_records if isinstance(item, dict)}) != R2_RECORD_COUNT:
+        raise ValueError("immutable R2 manifest records are missing or duplicated")
+    r2_by_path = {item["path"]: item for item in r2_records}
+    if not set(R3_CHANGED_OLD_PATHS).issubset(r2_by_path):
+        raise ValueError("R3 changed-old path is absent from R2")
+
+    unchanged_old: list[dict[str, str]] = []
+    changed_old: list[dict[str, str]] = []
+    r3_records: list[dict[str, str]] = []
+    for old in sorted(r2_records, key=lambda item: item["path"]):
+        path = old["path"]
+        actual_sha256 = file_sha256(root / path)
+        if path in R3_CHANGED_OLD_PATHS:
+            if actual_sha256 == old["sha256"]:
+                raise ValueError(f"approved R3 changed-old path did not change: {path}")
+            changed_old.append({"path": path, "old_sha256": old["sha256"], "new_sha256": actual_sha256})
+            r3_records.append({"path": path, "sha256": actual_sha256})
+        else:
+            if actual_sha256 != old["sha256"]:
+                raise ValueError(f"unapproved R2 semantic leaf drift: {path}")
+            unchanged_old.append({"path": path, "sha256": old["sha256"]})
+            r3_records.append({"path": path, "sha256": old["sha256"]})
+    new_records = [
+        {"path": path, "sha256": file_sha256(root / path)}
+        for path in sorted(R3_NEW_SEMANTIC_PATHS)
+    ]
+    r3_records = sorted(r3_records + new_records, key=lambda item: item["path"])
+    if (len(unchanged_old), len(changed_old), len(new_records), len(r3_records)) != (70, 6, 5, 81):
+        raise ValueError("R3 semantic transition must be exactly 70 unchanged / 6 changed / 5 new / 81 total")
+    semantic_set_hash = _record_set_hash(r3_records)
+    r3_root = merkle_root((item["path"], item["sha256"]) for item in r3_records)
+    transition = {
+        "old_record_count": 76,
+        "unchanged_old_count": 70,
+        "changed_old_count": 6,
+        "new_record_count": 5,
+        "total_record_count": 81,
+        "unchanged_old_leaf_set_hash": _record_set_hash(unchanged_old),
+        "changed_old_leaf_transition_hash": canonical_sha256(changed_old),
+        "new_leaf_set_hash": _record_set_hash(new_records),
+        "r2_leaf_set_hash": _record_set_hash(r2_records),
+        "r3_leaf_set_hash": semantic_set_hash,
+        "changed_old_records": changed_old,
+        "new_records": new_records,
+    }
+    schemas = _r3_schema_sets(root, r1_records, r2_records)
+    schema_summary = _schema_set_summary(schemas)
+    provider_counts = {"deepseek": 0, "grok": 0, "opencode": 0, "story_m0": 0}
+    manifest = {
+        "schema_version": "rules-residue.story-construction.precontent-framework-manifest/3.0.0",
+        "manifest_id": "SCG-PRECONTENT-FRAMEWORK-MANIFEST-R3",
+        "manifest_model": REPAIR_APPROVAL_MODEL,
+        "defect_id": DEFECT_ID,
+        "change_set_id": CHANGE_SET_ID,
+        "repair_task_id": REPAIR_TASK_ID,
+        "machine_milestone": "M3",
+        "machine_batch_id": "M3-B002",
+        "lifecycle_stage": "APPROVED",
+        "disposition": "ACTIVE",
+        "release": "NOT_RELEASED",
+        "tracked_active_wip": True,
+        "tracked_authoritative_activation_effective": False,
+        "authority_scope": "CONSTRUCTION_GOVERNANCE_ONLY",
+        "r2_canon_precedence": "HIGHER",
+        "base_canon_hash": BASE_CANON_HASH,
+        "proposed_canon_hash": BASE_CANON_HASH,
+        "canonicalization": "UTF8_NFC_SORTED_KEYS_FINITE_NUMBERS_V1",
+        "defective_activation_candidate": {
+            "commit": DEFECTIVE_ACTIVATION_COMMIT,
+            "tree": DEFECTIVE_ACTIVATION_TREE,
+            "parent": DEFECTIVE_ACTIVATION_PARENT,
+            "authoritative_effect_established": False,
+        },
+        "previous_manifest": {
+            "path": R2_MANIFEST_PATH.as_posix(),
+            "file_sha256": R2_MANIFEST_FILE_SHA256,
+            "merkle_root": R2_MERKLE_ROOT,
+            "record_count": R2_RECORD_COUNT,
+        },
+        "records": r3_records,
+        "semantic_path_content_record_set_hash": semantic_set_hash,
+        "merkle": {"algorithm": "SHA-256-BINARY-PAIR-DUPLICATE-ODD-V1", "leaf_order": "path_lexical", "root": r3_root},
+        "transition": transition,
+        "schema_sets": schema_summary,
+        "historical_activation": historical_activation_record(),
+        "fixed_preservation": fixed_repair_preservation(),
+        "excluded_from_merkle": [
+            R3_MANIFEST_PATH.as_posix(),
+            R3_RECEIPT_PATH.as_posix(),
+            "FUTURE_REPAIR_OWNER_APPROVAL",
+            "FUTURE_REPAIR_INDEPENDENT_ACCEPT_EVENT",
+            "FUTURE_REPAIR_CLOSEOUT_ENVELOPE_AND_PROOF_TAG",
+            "FUTURE_LOCAL_AND_REMOTE_REF_STATE",
+        ],
+        "provider_request_counts": provider_counts,
+        "runtime_projection": "EXCLUDED",
+        "self_reference": False,
+    }
+    manifest_bytes = canonical_json_bytes(manifest)
+    manifest_file_sha256 = hashlib.sha256(manifest_bytes).hexdigest()
+    receipt_transition = {key: transition[key] for key in (
+        "old_record_count", "unchanged_old_count", "changed_old_count", "new_record_count",
+        "total_record_count", "unchanged_old_leaf_set_hash", "changed_old_leaf_transition_hash",
+        "new_leaf_set_hash", "r2_leaf_set_hash", "r3_leaf_set_hash",
+    )}
+    receipt_payload = {
+        "schema_version": "rules-residue.story-construction.precontent-final-receipt/3.0.0",
+        "receipt_id": "SCG-PRECONTENT-READINESS-R3-FINAL-001",
+        "receipt_status": "PENDING_OWNER_AUTHORITATIVE_EFFECT_REPAIR_HASH_APPROVAL_M3_B002",
+        "manifest_model": REPAIR_APPROVAL_MODEL,
+        "defect_id": DEFECT_ID,
+        "change_set_id": CHANGE_SET_ID,
+        "repair_task_id": REPAIR_TASK_ID,
+        "machine_milestone": "M3",
+        "machine_batch_id": "M3-B002",
+        "tracked_state": {
+            "lifecycle_stage": "APPROVED", "disposition": "ACTIVE", "release": "NOT_RELEASED",
+            "tracked_target_state": "TRACKED_B002_TARGET_STATE_ACTIVE", "active_wip": True,
+            "authoritative_activation_effective": False,
+        },
+        "fixed_lineage": {
+            "base_commit": BASE_COMMIT, "base_tree": BASE_TREE,
+            "implementation_commit": IMPLEMENTATION_CANDIDATE_COMMIT,
+            "implementation_tree": IMPLEMENTATION_CANDIDATE_TREE,
+            "defective_activation_commit": DEFECTIVE_ACTIVATION_COMMIT,
+            "defective_activation_tree": DEFECTIVE_ACTIVATION_TREE,
+            "defective_activation_parent": DEFECTIVE_ACTIVATION_PARENT,
+        },
+        "historical_activation": historical_activation_record(),
+        "framework_manifests": {
+            "r1": {"path": MANIFEST_PATH.as_posix(), "file_sha256": R1_MANIFEST_FILE_SHA256, "merkle_root": R1_MERKLE_ROOT, "record_count": R1_RECORD_COUNT},
+            "r2": {"path": R2_MANIFEST_PATH.as_posix(), "file_sha256": R2_MANIFEST_FILE_SHA256, "merkle_root": R2_MERKLE_ROOT, "record_count": R2_RECORD_COUNT},
+            "r3": {"path": R3_MANIFEST_PATH.as_posix(), "file_sha256": manifest_file_sha256, "merkle_root": r3_root, "record_count": 81, "semantic_path_content_record_set_hash": semantic_set_hash},
+        },
+        "r3_transition": receipt_transition,
+        "schema_sets": schema_summary,
+        "repair_path_allowlist": {"path_count": 13, "sha256": REPAIR_PATH_ALLOWLIST_SHA256},
+        "fixed_preservation": fixed_repair_preservation(),
+        "provider_request_counts": provider_counts,
+    }
+    receipt = {
+        "schema_version": "rules-residue.story-construction.precontent-final-receipt/3.0.0",
+        "receipt_kind": "TRACKED_INNER_AUTHORITATIVE_EFFECT_REPAIR_RECEIPT",
+        "outer_envelope_schema": "schemas/story-construction/precontent-activation-closeout-envelope-v2.schema.json",
+        "payload": receipt_payload,
+        "payload_hash": canonical_sha256(receipt_payload),
+    }
+    return {
+        "manifest": manifest,
+        "manifest_bytes": manifest_bytes,
+        "manifest_file_sha256": manifest_file_sha256,
+        "framework_merkle_root": r3_root,
+        "semantic_path_content_record_set_hash": semantic_set_hash,
+        "transition": transition,
+        "schemas": schemas,
+        "receipt": receipt,
+        "receipt_bytes": canonical_json_bytes(receipt),
+        "receipt_payload_hash": receipt["payload_hash"],
+    }
+
+
+def write_repair_documents(root: Path = PROJECT_ROOT) -> dict[str, Any]:
+    root = root.resolve()
+    derived = derive_repair_documents(root)
+    (root / R3_MANIFEST_PATH).write_bytes(derived["manifest_bytes"])
+    (root / R3_RECEIPT_PATH).write_bytes(derived["receipt_bytes"])
     return derived
 
 
@@ -1005,6 +1512,9 @@ def _validate_schemas_and_instances(root: Path, errors: list[str]) -> None:
         if not name.endswith("-v1.schema.json") and name not in {
             "text-order-v2.schema.json", "visual-order-v2.schema.json",
             "precontent-change-set-v2.schema.json", "precontent-final-receipt-v2.schema.json",
+            "precontent-activation-owner-approval-v2.schema.json",
+            "precontent-activation-closeout-envelope-v2.schema.json",
+            "precontent-final-receipt-v3.schema.json",
         }:
             errors.append(f"{name}: schema filename is not versioned")
         if schema.get("additionalProperties") is not False:
@@ -1022,6 +1532,7 @@ def _validate_schemas_and_instances(root: Path, errors: list[str]) -> None:
         "causal-epistemic-proof-matrix-v1.schema.json": [FIXTURE_ROOT / "cross-modal-oracle.json"],
         "precontent-change-set-v2.schema.json": [CHANGE_SET_PATH],
         "precontent-final-receipt-v2.schema.json": [FINAL_RECEIPT_PATH],
+        "precontent-final-receipt-v3.schema.json": [R3_RECEIPT_PATH],
         "precontent-owner-approval-consumption-v1.schema.json": [APPROVAL_CONSUMPTION_PATH],
     }
     for schema_name, paths in bindings.items():
@@ -1207,6 +1718,535 @@ def authoritative_precontent_activation_status(
         if integration.get("remote_tree") != expected_envelope.get("activation_candidate_tree"):
             errors.append("activation integration remote tree mismatch")
     return not errors, errors
+
+
+class ExternalProofError(ValueError):
+    pass
+
+
+def _reject_duplicate_json_keys(pairs: list[tuple[str, Any]]) -> dict[str, Any]:
+    result: dict[str, Any] = {}
+    for key, value in pairs:
+        if key in result:
+            raise ExternalProofError(f"duplicate JSON key: {key}")
+        result[key] = value
+    return result
+
+
+def _reject_json_constant(value: str) -> Any:
+    raise ExternalProofError(f"non-finite JSON number: {value}")
+
+
+def _check_json_depth_and_strings(value: Any, *, depth: int = 0) -> None:
+    if depth > 64:
+        raise ExternalProofError("external proof JSON exceeds maximum depth")
+    if isinstance(value, str):
+        if any(0xD800 <= ord(character) <= 0xDFFF for character in value):
+            raise ExternalProofError("external proof JSON contains an unpaired surrogate")
+    elif isinstance(value, list):
+        for child in value:
+            _check_json_depth_and_strings(child, depth=depth + 1)
+    elif isinstance(value, dict):
+        for key, child in value.items():
+            _check_json_depth_and_strings(key, depth=depth + 1)
+            _check_json_depth_and_strings(child, depth=depth + 1)
+
+
+def load_external_proof_json(path_value: Path, label: str) -> tuple[dict[str, Any], bytes, str, str]:
+    if not path_value.is_absolute():
+        raise ExternalProofError(f"{label} path must be absolute")
+    try:
+        resolved = path_value.resolve(strict=True)
+    except (OSError, RuntimeError, ValueError) as exc:
+        raise ExternalProofError(f"{label} is unavailable: {exc}") from exc
+    if resolved != path_value:
+        raise ExternalProofError(f"{label} path must not traverse symlinks or aliases")
+    flags = os.O_RDONLY | getattr(os, "O_CLOEXEC", 0) | getattr(os, "O_NOFOLLOW", 0) | getattr(os, "O_NONBLOCK", 0)
+    try:
+        descriptor = os.open(path_value, flags)
+    except (OSError, ValueError) as exc:
+        raise ExternalProofError(f"{label} cannot be opened safely: {exc}") from exc
+    try:
+        metadata = os.fstat(descriptor)
+        if not stat.S_ISREG(metadata.st_mode):
+            raise ExternalProofError(f"{label} must be a regular file")
+        if metadata.st_size <= 0 or metadata.st_size > 1024 * 1024:
+            raise ExternalProofError(f"{label} size is outside 1..1048576 bytes")
+        raw = b""
+        while len(raw) <= metadata.st_size:
+            chunk = os.read(descriptor, min(65536, metadata.st_size - len(raw)))
+            if not chunk:
+                break
+            raw += chunk
+        if len(raw) != metadata.st_size:
+            raise ExternalProofError(f"{label} changed while being read")
+        metadata_after = os.fstat(descriptor)
+        stable_identity = (metadata.st_dev, metadata.st_ino, metadata.st_size, metadata.st_mtime_ns, metadata.st_ctime_ns)
+        stable_identity_after = (
+            metadata_after.st_dev,
+            metadata_after.st_ino,
+            metadata_after.st_size,
+            metadata_after.st_mtime_ns,
+            metadata_after.st_ctime_ns,
+        )
+        if stable_identity_after != stable_identity:
+            raise ExternalProofError(f"{label} changed while being read")
+    finally:
+        os.close(descriptor)
+    try:
+        text = raw.decode("utf-8", errors="strict")
+        value = json.loads(
+            text,
+            object_pairs_hook=_reject_duplicate_json_keys,
+            parse_constant=_reject_json_constant,
+        )
+    except (UnicodeDecodeError, json.JSONDecodeError, ExternalProofError, RecursionError, ValueError) as exc:
+        raise ExternalProofError(f"{label} is not strict UTF-8 JSON: {exc}") from exc
+    if not isinstance(value, dict):
+        raise ExternalProofError(f"{label} root must be an object")
+    _check_json_depth_and_strings(value)
+    try:
+        canonical = canonical_json_bytes(value)
+    except (UnicodeError, TypeError, ValueError) as exc:
+        raise ExternalProofError(f"{label} cannot be canonicalized: {exc}") from exc
+    return value, raw, hashlib.sha256(raw).hexdigest(), hashlib.sha256(canonical).hexdigest()
+
+
+def _git_run(
+    root: Path,
+    args: list[str],
+    *,
+    timeout: int = 10,
+    text: bool = True,
+) -> subprocess.CompletedProcess[Any]:
+    environment = os.environ.copy()
+    blocked_environment = {
+        "GIT_ALTERNATE_OBJECT_DIRECTORIES", "GIT_ASKPASS", "GIT_CEILING_DIRECTORIES",
+        "GIT_CONFIG", "GIT_CONFIG_GLOBAL", "GIT_CONFIG_SYSTEM", "GIT_DIR", "GIT_EXEC_PATH",
+        "GIT_INDEX_FILE", "GIT_OBJECT_DIRECTORY", "GIT_PROXY_COMMAND", "GIT_SSH",
+        "GIT_SSH_COMMAND", "GIT_WORK_TREE", "SSH_ASKPASS",
+    }
+    for name in tuple(environment):
+        if name in blocked_environment or name == "GIT_CONFIG_COUNT" or name.startswith(("GIT_CONFIG_KEY_", "GIT_CONFIG_VALUE_")):
+            environment.pop(name, None)
+    environment["GIT_TERMINAL_PROMPT"] = "0"
+    return subprocess.run(
+        [
+            "git",
+            "-c", "protocol.ext.allow=never",
+            "-c", "core.sshCommand=ssh",
+            "-c", "remote.origin.uploadpack=git-upload-pack",
+            "-C", str(root),
+            *args,
+        ],
+        shell=False,
+        check=False,
+        capture_output=True,
+        text=text,
+        timeout=timeout,
+        env=environment,
+    )
+
+
+def _git_proof_text(root: Path, args: list[str], label: str, errors: list[str], *, timeout: int = 10) -> str | None:
+    try:
+        result = _git_run(root, args, timeout=timeout, text=True)
+    except (OSError, subprocess.TimeoutExpired) as exc:
+        errors.append(f"{label} failed: {exc}")
+        return None
+    if result.returncode != 0:
+        detail = result.stderr.strip() or result.stdout.strip() or f"exit {result.returncode}"
+        errors.append(f"{label} failed: {detail}")
+        return None
+    return result.stdout.rstrip("\n")
+
+
+def _valid_full_ref(value: str, kind: str) -> bool:
+    if kind not in {"heads", "tags"}:
+        return False
+    prefix = f"refs/{kind}/"
+    if not value.startswith(prefix) or not re.fullmatch(r"refs/(?:heads|tags)/[A-Za-z0-9][A-Za-z0-9._/-]*", value):
+        return False
+    return not any(token in value for token in ("..", "@{", "//", "\\")) and not value.endswith(("/", ".", ".lock"))
+
+
+def _valid_remote_name(value: str) -> bool:
+    return value == "origin" and re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9._-]*", value) is not None
+
+
+def _valid_expected_remote_url(value: str) -> bool:
+    if value == "git@github.com:zyc14588/rules-residue.git":
+        return True
+    try:
+        path = Path(value)
+        resolved = path.resolve(strict=True)
+    except (OSError, RuntimeError, ValueError):
+        return False
+    return path.is_absolute() and resolved == path and path.is_dir() and (path / "HEAD").is_file()
+
+
+def repair_accept_route_digest(root: Path = PROJECT_ROOT) -> str:
+    route_path = root.resolve() / ".codex/routes/m3-precontent-b002-authoritative-effect-repair-accept-request.json"
+    request = read_json(route_path)
+    validate_request(request)
+    reading_map = generate_reading_map(request, repo_root=root.resolve())
+    return str(reading_map["binding_digest"])
+
+
+def expected_repair_approval_fields(
+    root: Path,
+    *,
+    repair_commit: str,
+    repair_tree: str,
+    repair_parent: str,
+    proof_tag_ref: str,
+    authoritative_ref: str,
+    remote_name: str,
+    expected_remote_url: str,
+    remote_authoritative_ref: str,
+    remote_proof_tag_ref: str,
+) -> dict[str, Any]:
+    derived = derive_repair_documents(root)
+    transition = derived["transition"]
+    schemas = derived["schemas"]
+    receipt = derived["receipt"]
+    fixed = fixed_repair_preservation()
+    fixed["provider_request_counts"] = {"deepseek": 0, "grok": 0, "opencode": 0, "story_m0": 0}
+    route_digest = repair_accept_route_digest(root)
+    return {
+        "approval_model": REPAIR_APPROVAL_MODEL,
+        "defect_id": DEFECT_ID,
+        "change_set_id": CHANGE_SET_ID,
+        "repair_task_id": REPAIR_TASK_ID,
+        "lineage": {
+            "base_commit": BASE_COMMIT, "base_tree": BASE_TREE,
+            "implementation_commit": IMPLEMENTATION_CANDIDATE_COMMIT,
+            "implementation_tree": IMPLEMENTATION_CANDIDATE_TREE,
+            "implementation_parent": IMPLEMENTATION_CANDIDATE_PARENT,
+            "defective_activation_commit": DEFECTIVE_ACTIVATION_COMMIT,
+            "defective_activation_tree": DEFECTIVE_ACTIVATION_TREE,
+            "defective_activation_parent": DEFECTIVE_ACTIVATION_PARENT,
+            "repair_commit": repair_commit, "repair_tree": repair_tree, "repair_parent": repair_parent,
+            "base_to_implementation_count": 1, "implementation_to_defective_count": 1,
+            "defective_to_repair_count": 1, "implementation_to_repair_count": 2, "base_to_repair_count": 3,
+        },
+        "repair_path_allowlist": {"path_count": 13, "sha256": REPAIR_PATH_ALLOWLIST_SHA256},
+        "repair_path_hashes": repair_path_records(root),
+        "repair_path_set_hash": repair_path_set_hash(root),
+        "framework_manifests": {
+            "r1": {"path": MANIFEST_PATH.as_posix(), "file_sha256": R1_MANIFEST_FILE_SHA256, "merkle_root": R1_MERKLE_ROOT, "record_count": R1_RECORD_COUNT},
+            "r2": {"path": R2_MANIFEST_PATH.as_posix(), "file_sha256": R2_MANIFEST_FILE_SHA256, "merkle_root": R2_MERKLE_ROOT, "record_count": R2_RECORD_COUNT},
+            "r3": {"path": R3_MANIFEST_PATH.as_posix(), "file_sha256": derived["manifest_file_sha256"], "merkle_root": derived["framework_merkle_root"], "record_count": 81, "semantic_path_content_record_set_hash": derived["semantic_path_content_record_set_hash"]},
+        },
+        "r3_transition": transition,
+        "schema_sets": _schema_set_summary(schemas),
+        "contracts": {
+            "closeout_envelope_v2_schema_path": "schemas/story-construction/precontent-activation-closeout-envelope-v2.schema.json",
+            "closeout_envelope_v2_schema_sha256": file_sha256(root / "schemas/story-construction/precontent-activation-closeout-envelope-v2.schema.json"),
+            "activation_owner_approval_v2_schema_path": "schemas/story-construction/precontent-activation-owner-approval-v2.schema.json",
+            "activation_owner_approval_v2_schema_sha256": file_sha256(root / "schemas/story-construction/precontent-activation-owner-approval-v2.schema.json"),
+            "final_receipt_v3_schema_path": "schemas/story-construction/precontent-final-receipt-v3.schema.json",
+            "final_receipt_v3_schema_sha256": file_sha256(root / "schemas/story-construction/precontent-final-receipt-v3.schema.json"),
+            "final_receipt_v3_path": R3_RECEIPT_PATH.as_posix(),
+            "final_receipt_v3_file_sha256": file_sha256(root / R3_RECEIPT_PATH),
+            "final_receipt_v3_payload_hash": receipt["payload_hash"],
+        },
+        "historical_activation": historical_activation_record(),
+        "fixed_preservation": fixed,
+        "proof_contract": {
+            "proof_tag_ref": proof_tag_ref, "authoritative_ref": authoritative_ref,
+            "remote_name": remote_name, "expected_remote_url": expected_remote_url,
+            "remote_authoritative_ref": remote_authoritative_ref,
+            "remote_proof_tag_ref": remote_proof_tag_ref,
+            "repair_accept_task_id": REPAIR_ACCEPT_TASK_ID,
+            "repair_accept_result": REPAIR_ACCEPT_RESULT,
+            "repair_accept_verifier": REPAIR_ACCEPT_VERIFIER,
+            "repair_accept_route": REPAIR_ACCEPT_ROUTE,
+            "repair_accept_route_digest": route_digest,
+        },
+    }
+
+
+def validate_repair_owner_approval(approval: Any, expected: dict[str, Any], schema: dict[str, Any]) -> list[str]:
+    errors = _schema_issues(approval, schema, "repair activation Owner approval")
+    if not isinstance(approval, dict):
+        return errors
+    for field, expected_value in expected.items():
+        if approval.get(field) != expected_value:
+            errors.append(f"repair activation Owner approval {field} mismatch")
+    if approval.get("approval_id") in {IMPLEMENTATION_OWNER_APPROVAL_ID, HISTORICAL_ACTIVATION_APPROVAL_ID}:
+        errors.append("historical or implementation approval cannot authorize repair Candidate")
+    expected_flags = {
+        "schema_version": "rules-residue.story-construction.precontent-activation-owner-approval/2.0.0",
+        "approval_status": "APPROVED", "single_use": True, "transferable": False,
+        "consumed": False, "revoked": False, "owner_id": "OWNER",
+    }
+    for field, expected_value in expected_flags.items():
+        if approval.get(field) != expected_value:
+            errors.append(f"repair activation Owner approval {field} mismatch")
+    if not approval.get("approved_at"):
+        errors.append("repair activation Owner approval approved_at is missing")
+    return errors
+
+
+def validate_repair_closeout_envelope(
+    envelope: Any,
+    *,
+    approval: dict[str, Any],
+    approval_raw_sha256: str,
+    approval_canonical_sha256: str,
+    expected_approval: dict[str, Any],
+    schema: dict[str, Any],
+) -> list[str]:
+    errors = _schema_issues(envelope, schema, "repair closeout envelope")
+    if not isinstance(envelope, dict) or not isinstance(envelope.get("payload"), dict):
+        return errors
+    payload = envelope["payload"]
+    if envelope.get("payload_hash") != canonical_sha256(payload):
+        errors.append("repair closeout envelope payload hash mismatch")
+    forbidden = {"envelope_file_sha256", "envelope_canonical_sha256", "tag_object_id"}
+    serialized_keys: set[str] = set()
+
+    def collect_keys(value: Any) -> None:
+        if isinstance(value, dict):
+            serialized_keys.update(value)
+            for child in value.values():
+                collect_keys(child)
+        elif isinstance(value, list):
+            for child in value:
+                collect_keys(child)
+
+    collect_keys(envelope)
+    if forbidden & serialized_keys:
+        errors.append(f"repair closeout envelope contains self-referential fields: {sorted(forbidden & serialized_keys)}")
+    lineage = expected_approval["lineage"]
+    transition = expected_approval["r3_transition"]
+    schema_sets = expected_approval["schema_sets"]
+    contracts = expected_approval["contracts"]
+    proof = expected_approval["proof_contract"]
+    expected_fields = {
+        "defect_id": DEFECT_ID,
+        "change_set_id": CHANGE_SET_ID,
+        "binding_strategy": "DETACHED_ANNOTATED_TAG_EXACT_COMMIT_TREE_REMOTE_REFS",
+        "repair_candidate": {
+            "commit": lineage["repair_commit"], "tree": lineage["repair_tree"], "parent": lineage["repair_parent"],
+            "defective_to_repair_count": 1, "implementation_to_repair_count": 2, "base_to_repair_count": 3,
+        },
+        "repair_path_set_hash": expected_approval["repair_path_set_hash"],
+        "framework_manifest_r3": {
+            "file_sha256": expected_approval["framework_manifests"]["r3"]["file_sha256"],
+            "merkle_root": expected_approval["framework_manifests"]["r3"]["merkle_root"],
+            "record_count": 81,
+            "semantic_path_content_record_set_hash": transition["r3_leaf_set_hash"],
+        },
+        "schema_sets": {
+            "original_schema_set_hash": schema_sets["original_schema_set_hash"],
+            "preserved_activation_v1_schema_set_hash": schema_sets["preserved_activation_v1_schema_set_hash"],
+            "repair_schema_set_hash": schema_sets["repair_schema_set_hash"],
+            "combined_schema_set_hash": schema_sets["combined_schema_set_hash"],
+        },
+        "final_receipt_v3": {
+            "path": contracts["final_receipt_v3_path"], "file_sha256": contracts["final_receipt_v3_file_sha256"],
+            "payload_hash": contracts["final_receipt_v3_payload_hash"],
+        },
+        "activation_owner_approval": {
+            "approval_id": approval.get("approval_id"), "raw_sha256": approval_raw_sha256,
+            "canonical_sha256": approval_canonical_sha256, "approval_issued_consumed": False,
+            "single_use": True, "transferable": False, "revoked": False,
+        },
+        "approval_consumption": {
+            "consumption_count": 1, "consumed_by_accept_task": REPAIR_ACCEPT_TASK_ID,
+            "events": [{
+                "approval_id": approval.get("approval_id"), "approval_raw_sha256": approval_raw_sha256,
+                "approval_canonical_sha256": approval_canonical_sha256,
+                "accept_task_id": REPAIR_ACCEPT_TASK_ID, "accept_result": REPAIR_ACCEPT_RESULT,
+                "accept_verifier": REPAIR_ACCEPT_VERIFIER, "accept_route": REPAIR_ACCEPT_ROUTE,
+                "accept_route_digest": proof["repair_accept_route_digest"],
+            }],
+        },
+        "repair_accept": {
+            "task_id": REPAIR_ACCEPT_TASK_ID, "result": REPAIR_ACCEPT_RESULT,
+            "verifier": REPAIR_ACCEPT_VERIFIER, "route": REPAIR_ACCEPT_ROUTE,
+            "route_digest": proof["repair_accept_route_digest"],
+        },
+        "proof_tag": {"ref": proof["proof_tag_ref"], "target_commit": lineage["repair_commit"], "target_tree": lineage["repair_tree"]},
+        "integration": {
+            "mode": "FAST_FORWARD_ONLY", "authoritative_ref": proof["authoritative_ref"],
+            "remote_name": proof["remote_name"], "expected_remote_url": proof["expected_remote_url"],
+            "remote_authoritative_ref": proof["remote_authoritative_ref"],
+            "remote_proof_tag_ref": proof["remote_proof_tag_ref"],
+            "authoritative_remote_before_repair": BASE_COMMIT,
+            "authoritative_remote_after_repair": lineage["repair_commit"],
+        },
+        "fixed_preservation": {
+            "canon_hash": BASE_CANON_HASH, "runtime_package_sha256": RUNTIME_PACKAGE_SHA256,
+            "provider_request_counts": {"deepseek": 0, "grok": 0, "opencode": 0, "story_m0": 0},
+        },
+        "verifier_id": REPAIR_ACCEPT_VERIFIER,
+        "verifier_worktree_state": "CLEAN",
+    }
+    for field, expected_value in expected_fields.items():
+        if payload.get(field) != expected_value:
+            errors.append(f"repair closeout envelope {field} mismatch")
+    if not payload.get("envelope_id"):
+        errors.append("repair closeout envelope ID is missing")
+    if not payload.get("producer_id") or payload.get("producer_id") == payload.get("verifier_id"):
+        errors.append("repair closeout envelope producer/verifier independence mismatch")
+    return errors
+
+
+def verify_authoritative_effect(
+    root: Path,
+    *,
+    activation_owner_approval_path: Path,
+    activation_closeout_envelope_path: Path,
+    expected_repair_commit: str,
+    expected_repair_tree: str,
+    expected_repair_parent: str,
+    proof_tag_ref: str,
+    authoritative_ref: str,
+    remote_name: str,
+    expected_remote_url: str,
+    remote_authoritative_ref: str,
+    remote_proof_tag_ref: str,
+) -> list[str]:
+    root = root.resolve()
+    errors: list[str] = []
+    if not re.fullmatch(r"[0-9a-f]{40}", expected_repair_commit):
+        errors.append("expected repair commit must be 40 lowercase hex")
+    if not re.fullmatch(r"[0-9a-f]{40}", expected_repair_tree):
+        errors.append("expected repair tree must be 40 lowercase hex")
+    if expected_repair_parent != DEFECTIVE_ACTIVATION_COMMIT:
+        errors.append("expected repair parent is not fixed d80 activation Candidate")
+    if proof_tag_ref != REPAIR_PROOF_TAG_REF or not _valid_full_ref(proof_tag_ref, "tags"):
+        errors.append("proof tag ref is invalid or not the fixed repair tag")
+    if authoritative_ref != "refs/heads/design/r1-story-architecture" or not _valid_full_ref(authoritative_ref, "heads"):
+        errors.append("authoritative ref is invalid")
+    if remote_authoritative_ref != authoritative_ref or not _valid_full_ref(remote_authoritative_ref, "heads"):
+        errors.append("remote authoritative ref is invalid")
+    if remote_proof_tag_ref != proof_tag_ref or not _valid_full_ref(remote_proof_tag_ref, "tags"):
+        errors.append("remote proof tag ref is invalid")
+    if not _valid_remote_name(remote_name):
+        errors.append("remote name must be the fixed safe name origin")
+    if not _valid_expected_remote_url(expected_remote_url):
+        errors.append("expected remote URL must be the fixed production origin or an absolute local-repository fixture")
+    if errors:
+        return errors
+    try:
+        approval, _approval_raw, approval_raw_sha256, approval_canonical_sha256 = load_external_proof_json(
+            activation_owner_approval_path, "activation Owner approval"
+        )
+        envelope, _envelope_raw, envelope_raw_sha256, envelope_canonical_sha256 = load_external_proof_json(
+            activation_closeout_envelope_path, "activation closeout envelope"
+        )
+        expected_approval = expected_repair_approval_fields(
+            root,
+            repair_commit=expected_repair_commit, repair_tree=expected_repair_tree,
+            repair_parent=expected_repair_parent, proof_tag_ref=proof_tag_ref,
+            authoritative_ref=authoritative_ref, remote_name=remote_name,
+            expected_remote_url=expected_remote_url, remote_authoritative_ref=remote_authoritative_ref,
+            remote_proof_tag_ref=remote_proof_tag_ref,
+        )
+        approval_schema = _schema(root, "precontent-activation-owner-approval-v2.schema.json")
+        envelope_schema = _schema(root, "precontent-activation-closeout-envelope-v2.schema.json")
+    except (OSError, json.JSONDecodeError, ValueError, RouteError, ExternalProofError) as exc:
+        return [str(exc)]
+    if approval_raw_sha256 != approval_canonical_sha256:
+        errors.append("activation Owner approval is not exact canonical JSON bytes")
+    if envelope_raw_sha256 != envelope_canonical_sha256:
+        errors.append("activation closeout envelope is not exact canonical JSON bytes")
+    errors.extend(validate_repair_owner_approval(approval, expected_approval, approval_schema))
+    errors.extend(validate_repair_closeout_envelope(
+        envelope,
+        approval=approval,
+        approval_raw_sha256=approval_raw_sha256,
+        approval_canonical_sha256=approval_canonical_sha256,
+        expected_approval=expected_approval,
+        schema=envelope_schema,
+    ))
+    if errors:
+        return errors
+
+    head = _git_proof_text(root, ["rev-parse", "HEAD"], "repair HEAD", errors)
+    tree = _git_proof_text(root, ["rev-parse", f"{expected_repair_commit}^{{tree}}"], "repair tree", errors)
+    parent = _git_proof_text(root, ["rev-parse", f"{expected_repair_commit}^"], "repair parent", errors)
+    symbolic_head = _git_proof_text(root, ["symbolic-ref", "-q", "HEAD"], "authoritative branch", errors)
+    authoritative_oid = _git_proof_text(root, ["show-ref", "--verify", "--hash", authoritative_ref], "authoritative ref", errors)
+    status = _git_proof_text(root, ["status", "--porcelain", "--untracked-files=all"], "repair worktree state", errors)
+    count_defective = _git_proof_text(root, ["rev-list", "--count", f"{DEFECTIVE_ACTIVATION_COMMIT}..{expected_repair_commit}"], "d80-to-repair lineage", errors)
+    count_implementation = _git_proof_text(root, ["rev-list", "--count", f"{IMPLEMENTATION_CANDIDATE_COMMIT}..{expected_repair_commit}"], "implementation-to-repair lineage", errors)
+    count_base = _git_proof_text(root, ["rev-list", "--count", f"{BASE_COMMIT}..{expected_repair_commit}"], "base-to-repair lineage", errors)
+    if head != expected_repair_commit:
+        errors.append("HEAD does not equal expected repair commit")
+    if tree != expected_repair_tree:
+        errors.append("repair tree mismatch")
+    if parent != expected_repair_parent:
+        errors.append("repair parent mismatch")
+    if symbolic_head != authoritative_ref or authoritative_oid != expected_repair_commit:
+        errors.append("local authoritative branch does not equal repair commit")
+    if status != "":
+        errors.append("authoritative-effect verifier worktree is not clean")
+    if (count_defective, count_implementation, count_base) != ("1", "2", "3"):
+        errors.append("repair lineage counts are not exactly 1/2/3")
+    remote_url = _git_proof_text(root, ["remote", "get-url", remote_name], "remote URL", errors)
+    if remote_url != expected_remote_url:
+        errors.append("configured remote URL mismatch")
+
+    tag_type = _git_proof_text(root, ["cat-file", "-t", proof_tag_ref], "proof tag type", errors)
+    tag_oid = _git_proof_text(root, ["rev-parse", proof_tag_ref], "proof tag object", errors)
+    tag_target = _git_proof_text(root, ["rev-parse", f"{proof_tag_ref}^{{commit}}"], "proof tag target", errors)
+    tag_tree = _git_proof_text(root, ["rev-parse", f"{proof_tag_ref}^{{commit}}^{{tree}}"], "proof tag tree", errors)
+    if tag_type != "tag":
+        errors.append("proof tag must be annotated")
+    if tag_target != expected_repair_commit or tag_tree != expected_repair_tree:
+        errors.append("proof tag target/tree mismatch")
+    if tag_oid is not None and tag_type == "tag":
+        try:
+            tag_result = _git_run(root, ["cat-file", "tag", tag_oid], text=False)
+        except (OSError, subprocess.TimeoutExpired) as exc:
+            errors.append(f"proof tag message failed: {exc}")
+        else:
+            if tag_result.returncode != 0:
+                errors.append("proof tag object cannot be read")
+            else:
+                headers, separator, message = tag_result.stdout.partition(b"\n\n")
+                header_lines = headers.splitlines()
+                direct_object = header_lines[0][7:].decode("ascii", errors="replace") if header_lines and header_lines[0].startswith(b"object ") else ""
+                object_type = header_lines[1] if len(header_lines) > 1 else b""
+                if not separator or direct_object != expected_repair_commit or object_type != b"type commit":
+                    errors.append("proof tag does not directly target repair commit")
+                if message != canonical_json_bytes(envelope):
+                    errors.append("proof tag message is not exact canonical envelope bytes")
+    if errors:
+        return errors
+
+    try:
+        remote_result = _git_run(
+            root,
+            ["ls-remote", "--exit-code", remote_name, remote_authoritative_ref, remote_proof_tag_ref, f"{remote_proof_tag_ref}^{{}}"],
+            timeout=20,
+            text=True,
+        )
+    except (OSError, subprocess.TimeoutExpired) as exc:
+        return [f"remote Git inspection failed: {exc}"]
+    if remote_result.returncode != 0:
+        detail = remote_result.stderr.strip() or remote_result.stdout.strip() or f"exit {remote_result.returncode}"
+        return [f"remote Git inspection failed: {detail}"]
+    remote_refs: dict[str, str] = {}
+    for line in remote_result.stdout.splitlines():
+        match = re.fullmatch(r"([0-9a-f]{40})\t([^\t\r\n]+)", line)
+        if match is None or match.group(2) in remote_refs:
+            errors.append("remote ls-remote output is malformed or duplicated")
+            continue
+        remote_refs[match.group(2)] = match.group(1)
+    expected_remote_refs = {
+        remote_authoritative_ref: expected_repair_commit,
+        remote_proof_tag_ref: tag_oid,
+        f"{remote_proof_tag_ref}^{{}}": expected_repair_commit,
+    }
+    if remote_refs != expected_remote_refs:
+        errors.append("remote branch/tag/tag-peel snapshot mismatch")
+    return errors
 
 
 def _validate_change_set(root: Path, errors: list[str]) -> None:
@@ -1402,7 +2442,7 @@ def _git_output(root: Path, *args: str) -> str:
 
 def changed_paths(root: Path) -> set[str]:
     head = _git_output(root, "rev-parse", "HEAD")
-    committed = set(filter(None, _git_output(root, "diff", "--name-only", f"{IMPLEMENTATION_CANDIDATE_COMMIT}..{head}").splitlines())) if head != IMPLEMENTATION_CANDIDATE_COMMIT else set()
+    committed = set(filter(None, _git_output(root, "diff", "--name-only", f"{DEFECTIVE_ACTIVATION_COMMIT}..{head}").splitlines())) if head != DEFECTIVE_ACTIVATION_COMMIT else set()
     status = _git_output(root, "status", "--porcelain", "--untracked-files=all")
     working: set[str] = set()
     for line in status.splitlines():
@@ -1421,11 +2461,28 @@ def _validate_git_and_runtime_boundary(root: Path, errors: list[str]) -> None:
     except (OSError, subprocess.CalledProcessError) as exc:
         errors.append(f"cannot compute changed paths: {exc}")
         return
-    expected = set(ACTIVATION_ALLOWLIST)
+    expected = set(REPAIR_ALLOWLIST)
     outside = sorted(actual - expected)
     missing = sorted(expected - actual)
     if outside or missing:
-        errors.append(f"activation diff is not the exact 18-path allowlist: missing={missing}, extra={outside}")
+        errors.append(f"repair diff is not the exact 13-path allowlist: missing={missing}, extra={outside}")
+    try:
+        defective_tree = _git_output(root, "rev-parse", f"{DEFECTIVE_ACTIVATION_COMMIT}^{{tree}}")
+        defective_parent = _git_output(root, "rev-parse", f"{DEFECTIVE_ACTIVATION_COMMIT}^")
+        head = _git_output(root, "rev-parse", "HEAD")
+        if defective_tree != DEFECTIVE_ACTIVATION_TREE or defective_parent != DEFECTIVE_ACTIVATION_PARENT:
+            errors.append("fixed defective activation commit/tree/parent mismatch")
+        if head != DEFECTIVE_ACTIVATION_COMMIT:
+            parent = _git_output(root, "rev-parse", "HEAD^")
+            counts = (
+                _git_output(root, "rev-list", "--count", f"{DEFECTIVE_ACTIVATION_COMMIT}..HEAD"),
+                _git_output(root, "rev-list", "--count", f"{IMPLEMENTATION_CANDIDATE_COMMIT}..HEAD"),
+                _git_output(root, "rev-list", "--count", f"{BASE_COMMIT}..HEAD"),
+            )
+            if parent != DEFECTIVE_ACTIVATION_COMMIT or counts != ("1", "2", "3"):
+                errors.append("repair lineage must be exactly d80 -> one repair commit")
+    except (OSError, subprocess.CalledProcessError) as exc:
+        errors.append(f"cannot verify repair lineage: {exc}")
     runtime_paths = runtime_relative_paths(root / "game-package")
     leaked = sorted(path for path in runtime_paths if "precontent" in path.lower() or "test-scg-m0" in path.lower())
     if leaked:
@@ -1440,61 +2497,68 @@ def _validate_git_and_runtime_boundary(root: Path, errors: list[str]) -> None:
 def _validate_derived(root: Path, errors: list[str]) -> None:
     _validate_immutable_r1(root, errors)
     try:
-        derived = derive_activation_documents(root)
+        derived = derive_repair_documents(root)
     except (OSError, json.JSONDecodeError, ValueError) as exc:
-        errors.append(f"cannot derive deterministic activation outputs: {exc}")
+        errors.append(f"cannot derive deterministic R3 repair outputs: {exc}")
         return
     try:
-        actual_manifest = read_json(root / R2_MANIFEST_PATH)
-        actual_receipt = read_json(root / FINAL_RECEIPT_PATH)
+        r1_manifest = read_json(root / MANIFEST_PATH)
+        r2_manifest = read_json(root / R2_MANIFEST_PATH)
+        old_receipt = read_json(root / FINAL_RECEIPT_PATH)
+        actual_manifest = read_json(root / R3_MANIFEST_PATH)
+        actual_receipt = read_json(root / R3_RECEIPT_PATH)
         consumption = read_json(root / APPROVAL_CONSUMPTION_PATH)
     except (OSError, json.JSONDecodeError) as exc:
-        errors.append(f"activation manifest/receipt/consumption missing or invalid: {exc}")
+        errors.append(f"repair manifest/receipt/predecessor missing or invalid: {exc}")
+        return
+    if not all(isinstance(value, dict) for value in (r1_manifest, r2_manifest, old_receipt, actual_manifest, actual_receipt, consumption)):
+        errors.append("repair manifest/receipt/predecessor roots must all be objects")
         return
     if actual_manifest != derived["manifest"]:
-        errors.append("R2 framework manifest is stale or nondeterministic")
+        errors.append("R3 framework manifest is stale or nondeterministic")
     if actual_receipt != derived["receipt"]:
-        errors.append("final inner receipt is stale or nondeterministic")
-    errors.extend(validate_framework_manifest_transition(actual_manifest, derive_framework_documents(root)["manifest"]))
-    errors.extend(validate_final_receipt_binding(actual_receipt, derived["receipt"]))
+        errors.append("R3 repair receipt is stale or nondeterministic")
+    errors.extend(validate_framework_manifest_transition(r2_manifest, r1_manifest))
+    errors.extend(validate_final_receipt_binding(old_receipt))
+    errors.extend(validate_repair_manifest_transition(actual_manifest, r2_manifest))
+    errors.extend(validate_repair_receipt_binding(actual_receipt, derived["receipt"]))
     errors.extend(validate_implementation_approval_consumption(consumption))
     records = actual_manifest.get("records", [])
     record_paths = [item.get("path") for item in records if isinstance(item, dict)]
-    if R2_MANIFEST_PATH.as_posix() in record_paths or any(path in record_paths for path in AUDIT_PATHS[1:]):
-        errors.append("R2 manifest contains a self/audit Merkle leaf")
+    if R3_MANIFEST_PATH.as_posix() in record_paths or R3_RECEIPT_PATH.as_posix() in record_paths:
+        errors.append("R3 manifest contains a self/audit Merkle leaf")
     transition = actual_manifest.get("transition", {})
     exact_counts = {
-        "old_record_count": 68,
-        "unchanged_old_count": 61,
-        "changed_old_count": 7,
-        "new_record_count": 8,
-        "total_record_count": 76,
+        "old_record_count": 76,
+        "unchanged_old_count": 70,
+        "changed_old_count": 6,
+        "new_record_count": 5,
+        "total_record_count": 81,
     }
     for field, value in exact_counts.items():
         if not isinstance(transition, dict) or transition.get(field) != value:
-            errors.append(f"R2 Merkle transition count drift: {field}")
-    if [item.get("path") for item in transition.get("changed_old_records", [])] != sorted(CHANGED_OLD_PATHS):
-        errors.append("R2 changed-old semantic leaf set drift")
-    if [item.get("path") for item in transition.get("new_records", [])] != sorted(NEW_SEMANTIC_PATHS):
-        errors.append("R2 new semantic leaf set drift")
+            errors.append(f"R3 Merkle transition count drift: {field}")
+    changed_records = transition.get("changed_old_records", []) if isinstance(transition, dict) else []
+    new_records = transition.get("new_records", []) if isinstance(transition, dict) else []
+    if not isinstance(changed_records, list) or [item.get("path") for item in changed_records if isinstance(item, dict)] != sorted(R3_CHANGED_OLD_PATHS):
+        errors.append("R3 changed-old semantic leaf set drift")
+    if not isinstance(new_records, list) or [item.get("path") for item in new_records if isinstance(item, dict)] != sorted(R3_NEW_SEMANTIC_PATHS):
+        errors.append("R3 new semantic leaf set drift")
     payload = actual_receipt.get("payload")
     if not isinstance(payload, dict) or actual_receipt.get("payload_hash") != canonical_sha256(payload):
-        errors.append("final inner receipt payload hash mismatch")
-    forbidden_receipt_tokens = (
-        "activation_candidate_commit", "activation_candidate_tree", "activation_owner_approval_id",
-        "activation_accept_task_id", "activation_accept_route_digest", "tag_object_id",
-        "authoritative_remote_after_activation", "integration_commit",
-    )
-    serialized = json.dumps(payload, sort_keys=True) if isinstance(payload, dict) else ""
-    for token in forbidden_receipt_tokens:
-        if token in serialized:
-            errors.append(f"final inner receipt contains future/self binding: {token}")
+        errors.append("R3 repair receipt payload hash mismatch")
+    if file_sha256(root / "governance/story-construction/generated/decisions.q001-q130.canonical.json") != Q001_Q130_HASH:
+        errors.append("fixed Q001-Q130 canonical hash drift")
+    if file_sha256(root / ".codex/state/MILESTONE_PLAN.yaml") != M2_PLAN_HASH:
+        errors.append("fixed M2 plan hash drift")
 
 
 def _validate_immutable_r1(root: Path, errors: list[str]) -> None:
     fixed_files = {
         MANIFEST_PATH: R1_MANIFEST_FILE_SHA256,
         RECEIPT_PATH: PENDING_RECEIPT_FILE_SHA256,
+        R2_MANIFEST_PATH: R2_MANIFEST_FILE_SHA256,
+        FINAL_RECEIPT_PATH: R1_FINAL_RECEIPT_FILE_SHA256,
         DECISION_PATH: DECISION_SET_HASH,
         SUPERSESSION_PATH: PARTIAL_SUPERSESSION_HASH,
         TRACEABILITY_PATH: TRACEABILITY_HASH,
@@ -1586,17 +2650,10 @@ def _validate_invalid_mixed_state(root: Path, errors: list[str]) -> None:
 
 def _validate_authoritative_effect(root: Path, errors: list[str]) -> None:
     change_set = read_json(root / CHANGE_SET_PATH)
-    tracked_active = not validate_precontent_lifecycle_state(change_set)
-    effective, proof_errors = authoritative_precontent_activation_status(
-        tracked_active=tracked_active,
-        activation_approval=None,
-        expected_activation_approval={},
-        envelope=None,
-        expected_envelope={},
-        integration=None,
-    )
-    if effective or len(proof_errors) < 3:
-        errors.append("authoritative activation did not fail closed without external proofs")
+    if validate_precontent_lifecycle_state(change_set):
+        errors.append("tracked B002 target is not valid APPROVED + ACTIVE + NOT_RELEASED")
+    if change_set.get("active_wip") is not True:
+        errors.append("tracked active_wip must remain true")
     if change_set.get("activation_state", {}).get("authoritative_activation_effective") is not False:
         errors.append("tracked ACTIVE incorrectly claims authoritative activation")
 
@@ -1617,7 +2674,7 @@ def collect_errors(
     if phase == "invalid-mixed-state":
         _validate_invalid_mixed_state(root, errors)
         return errors
-    for relative in tuple(dict.fromkeys(ALLOWLIST + ACTIVATION_ALLOWLIST)):
+    for relative in tuple(dict.fromkeys(ALLOWLIST + ACTIVATION_ALLOWLIST + REPAIR_ALLOWLIST)):
         if not (root / relative).is_file():
             errors.append(f"missing mandatory B002 artifact: {relative}")
     if errors:
@@ -1631,7 +2688,7 @@ def collect_errors(
     _validate_routes(root, errors)
     if check_derived:
         _validate_derived(root, errors)
-    if phase in {"all", "authoritative-effect"}:
+    if phase in {"all", "tracked-active-candidate", "authoritative-effect"}:
         _validate_authoritative_effect(root, errors)
     if check_git:
         _validate_git_and_runtime_boundary(root, errors)
@@ -1648,57 +2705,147 @@ def main(argv: list[str] | None = None) -> int:
     )
     parser.add_argument("--skip-derived", action="store_true")
     parser.add_argument("--print-hashes", action="store_true")
+    parser.add_argument("--activation-owner-approval", type=Path)
+    parser.add_argument("--activation-closeout-envelope", type=Path)
+    parser.add_argument("--expected-repair-commit")
+    parser.add_argument("--expected-repair-tree")
+    parser.add_argument("--expected-repair-parent")
+    parser.add_argument("--proof-tag-ref")
+    parser.add_argument("--authoritative-ref")
+    parser.add_argument("--remote-name")
+    parser.add_argument("--expected-remote-url")
+    parser.add_argument("--remote-authoritative-ref")
+    parser.add_argument("--remote-proof-tag-ref")
     args = parser.parse_args(argv)
     phase = "tracked-active-candidate" if args.phase == "framework" else args.phase
     errors = collect_errors(args.project_root, check_derived=not args.skip_derived, phase=phase)
+    proof_fields = {
+        "activation-owner-approval": args.activation_owner_approval,
+        "activation-closeout-envelope": args.activation_closeout_envelope,
+        "expected-repair-commit": args.expected_repair_commit,
+        "expected-repair-tree": args.expected_repair_tree,
+        "expected-repair-parent": args.expected_repair_parent,
+        "proof-tag-ref": args.proof_tag_ref,
+        "authoritative-ref": args.authoritative_ref,
+        "remote-name": args.remote_name,
+        "expected-remote-url": args.expected_remote_url,
+        "remote-authoritative-ref": args.remote_authoritative_ref,
+        "remote-proof-tag-ref": args.remote_proof_tag_ref,
+    }
+    supplied = [name for name, value in proof_fields.items() if value is not None]
+    authoritative_effective = False
+    if args.phase == "authoritative-effect":
+        missing = [name for name, value in proof_fields.items() if value is None]
+        if missing:
+            if not supplied:
+                errors.append("complete external authoritative-effect proof argument set is required")
+            else:
+                errors.append(f"partial external proof argument set: missing={missing}")
+        elif not errors:
+            proof_errors = verify_authoritative_effect(
+                args.project_root,
+                activation_owner_approval_path=args.activation_owner_approval,
+                activation_closeout_envelope_path=args.activation_closeout_envelope,
+                expected_repair_commit=args.expected_repair_commit,
+                expected_repair_tree=args.expected_repair_tree,
+                expected_repair_parent=args.expected_repair_parent,
+                proof_tag_ref=args.proof_tag_ref,
+                authoritative_ref=args.authoritative_ref,
+                remote_name=args.remote_name,
+                expected_remote_url=args.expected_remote_url,
+                remote_authoritative_ref=args.remote_authoritative_ref,
+                remote_proof_tag_ref=args.remote_proof_tag_ref,
+            )
+            errors.extend(proof_errors)
+            authoritative_effective = not proof_errors
+    elif supplied:
+        errors.append("external proof arguments are allowed only for --phase authoritative-effect")
     if errors:
         print("PRECONTENT_READINESS: FAIL")
         for error in errors:
             print(f"- {error}")
+        if args.phase == "authoritative-effect":
+            print("TRACKED_B002_TARGET_STATE_ACTIVE=true")
+            print("tracked_active_wip=true")
+            print("tracked_authoritative_activation_effective=false")
+            print("AUTHORITATIVE_M3_B002_EFFECTIVE=false")
+            print("effective_active_wip=true")
+            print("global_active_WIP=1")
         return 1
-    derived = derive_activation_documents(args.project_root)
+    derived = derive_repair_documents(args.project_root)
     print("PRECONTENT_READINESS: PASS")
     print(f"- phase={args.phase}: PASS")
     print("- 21 Owner decisions and three partial supersessions: PASS")
     print("- TEST namespace, non-promotion, routes, Reveal/NPC and cross-modal boundaries: PASS")
     print("- closed schemas, context/omission hashes and M2 capability isolation: PASS")
     print("- Provider profiles, data/rights controls and request counts=0: PASS")
-    print("- immutable R1/pending plus deterministic R2/final receipt and runtime exclusion: PASS")
-    print("- tracked_active_wip=true")
-    print("- authoritative_activation_effective=false")
+    print("- immutable R1/R2 predecessors plus deterministic R3 repair receipt and runtime exclusion: PASS")
+    print("TRACKED_B002_TARGET_STATE_ACTIVE=true")
+    print("tracked_active_wip=true")
+    print("tracked_authoritative_activation_effective=false")
+    if args.phase == "authoritative-effect":
+        print(f"AUTHORITATIVE_M3_B002_EFFECTIVE={'true' if authoritative_effective else 'false'}")
+        print(f"effective_active_wip={'false' if authoritative_effective else 'true'}")
+        print(f"global_active_WIP={0 if authoritative_effective else 1}")
+    else:
+        print("AUTHORITATIVE_M3_B002_EFFECTIVE=false")
     if args.print_hashes:
         receipt = derived["receipt"]
         transition = derived["transition"]
         schemas = derived["schemas"]
-        print(f"activation_allowlist_sha256={activation_allowlist_hash()}")
-        print(f"activation_path_set_hash={activation_path_set_hash(args.project_root)}")
+        print(f"repair_path_count={len(REPAIR_ALLOWLIST)}")
+        print(f"repair_path_allowlist_sha256={repair_allowlist_hash()}")
+        print(f"repair_path_set_hash={repair_path_set_hash(args.project_root)}")
         print(f"framework_manifest_r1_file_sha256={R1_MANIFEST_FILE_SHA256}")
         print(f"framework_manifest_r1_merkle_root={R1_MERKLE_ROOT}")
         print(f"framework_manifest_r1_record_count={R1_RECORD_COUNT}")
-        print(f"framework_manifest_r2_file_sha256={derived['manifest_file_sha256']}")
-        print(f"framework_manifest_r2_merkle_root={derived['framework_merkle_root']}")
+        print(f"framework_manifest_r2_file_sha256={R2_MANIFEST_FILE_SHA256}")
+        print(f"framework_manifest_r2_merkle_root={R2_MERKLE_ROOT}")
+        print(f"framework_manifest_r2_record_count={R2_RECORD_COUNT}")
+        print(f"framework_manifest_r3_file_sha256={derived['manifest_file_sha256']}")
+        print(f"framework_manifest_r3_merkle_root={derived['framework_merkle_root']}")
+        print("framework_manifest_r3_record_count=81")
+        print(f"semantic_path_content_record_set_hash={derived['semantic_path_content_record_set_hash']}")
         for field in (
             "old_record_count", "unchanged_old_count", "changed_old_count", "new_record_count",
             "total_record_count", "unchanged_old_leaf_set_hash", "changed_old_leaf_transition_hash",
-            "new_leaf_set_hash", "r1_leaf_set_hash", "r2_leaf_set_hash",
+            "new_leaf_set_hash", "r2_leaf_set_hash", "r3_leaf_set_hash",
         ):
             print(f"{field}={transition[field]}")
+        for index, record in enumerate(transition["changed_old_records"], start=1):
+            print(f"changed_old_{index}_path={record['path']}")
+            print(f"changed_old_{index}_old_sha256={record['old_sha256']}")
+            print(f"changed_old_{index}_new_sha256={record['new_sha256']}")
+        for index, record in enumerate(transition["new_records"], start=1):
+            print(f"new_semantic_{index}_path={record['path']}")
+            print(f"new_semantic_{index}_sha256={record['sha256']}")
         print(f"original_schema_count={schemas['original_count']}")
         print(f"original_schema_set_hash={schemas['original_set_hash']}")
-        print(f"activation_schema_count={schemas['activation_count']}")
-        print(f"activation_schema_set_hash={schemas['activation_set_hash']}")
+        print(f"preserved_activation_v1_schema_count={schemas['preserved_activation_v1_count']}")
+        print(f"preserved_activation_v1_schema_set_hash={schemas['preserved_activation_v1_set_hash']}")
+        print(f"repair_schema_count={schemas['repair_count']}")
+        print(f"repair_schema_set_hash={schemas['repair_set_hash']}")
         print(f"combined_schema_count={schemas['combined_count']}")
         print(f"combined_schema_set_hash={schemas['combined_set_hash']}")
-        print(f"approval_consumption_record_sha256={derived['consumption_sha256']}")
-        print(f"final_receipt_file_sha256={hashlib.sha256(derived['receipt_bytes']).hexdigest()}")
-        print(f"final_receipt_payload_hash={receipt['payload_hash']}")
+        for name in REPAIR_SCHEMA_FILES:
+            print(f"{name}_sha256={file_sha256(args.project_root / 'schemas/story-construction' / name)}")
+        print(f"r3_receipt_file_sha256={hashlib.sha256(derived['receipt_bytes']).hexdigest()}")
+        print(f"r3_receipt_payload_sha256={receipt['payload_hash']}")
         print(f"pending_receipt_file_sha256={PENDING_RECEIPT_FILE_SHA256}")
         print(f"pending_receipt_payload_hash={PENDING_RECEIPT_PAYLOAD_HASH}")
+        print(f"r1_final_receipt_file_sha256={R1_FINAL_RECEIPT_FILE_SHA256}")
         print(f"decision_set_hash={DECISION_SET_HASH}")
         print(f"partial_supersession_hash={PARTIAL_SUPERSESSION_HASH}")
         print(f"traceability_hash={TRACEABILITY_HASH}")
+        print(f"q001_q130_hash={Q001_Q130_HASH}")
+        print(f"m2_plan_hash={M2_PLAN_HASH}")
+        print("m2_state=M2_B001_ACCEPTED_WITH_DOWNSTREAM_BLOCKERS_B002_NOT_STARTED")
         print(f"canon_hash={BASE_CANON_HASH}")
         print(f"runtime_package_sha256={RUNTIME_PACKAGE_SHA256}")
+        print(f"provider_contract_set_hash={PROVIDER_PROFILE_CONTRACT_SET_HASH}")
+        print(f"provider_zero_call_evidence_hash={PROVIDER_ZERO_CALL_EVIDENCE_HASH}")
+        print(f"historical_activation_approval_sha256={HISTORICAL_ACTIVATION_APPROVAL_SHA256}")
+        print(f"repair_accept_route_digest={repair_accept_route_digest(args.project_root)}")
     return 0
 
 
