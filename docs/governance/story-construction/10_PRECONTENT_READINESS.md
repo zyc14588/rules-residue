@@ -37,6 +37,32 @@ repurpose—the five activation-v1 schemas, yielding the fixed `20 + 5 + 3 = 28`
 The R3 manifest, R3 receipt, future repair approval/ACCEPT, detached envelope/tag, and local or
 remote ref state remain outside the semantic Merkle.
 
+The `B003-BLK-002` acceptance regression is repaired by additive Model R4. R3 and its receipt stay
+byte-for-byte immutable. R4 carries exactly 75 unchanged R3 leaves, six changed R3 leaves, seven new
+semantic leaves, and 88 total leaves. Its manifest and receipt are audit artifacts outside that
+Merkle, and neither artifact contains a self-reference. The schema topology is exactly 28 preserved
+predecessor schemas plus four new R4 schemas, for 32 combined schemas. The tracked R4 state is
+`CANDIDATE / PENDING_OWNER_EXACT_HASH_APPROVAL_M3_B003_P0_B_R4 / NOT_RUN`; it does not claim a
+future Owner approval, independent ACCEPT, closeout, tag, remote state, integration, or release.
+
+The B002 logical proof remains permanently bound to commit
+`2d7f78f5b24623729cb64a798b59d6f469e6de2b` and production ref
+`refs/tags/scg-precontent-m3-b002-authoritative-effect-repair-accepted`. Synthetic test executions
+may substitute a physical ref only under
+`refs/tags/test-fixtures/scg-precontent-authoritative-effect/<digest>`, where the digest binds the
+test ID and resolved temporary repository path. That exception requires an explicitly supplied
+fixture identity and an absolute local bare remote; it fails closed against the production origin,
+namespace escape, or any arbitrary ref. The logical contract never changes, and the production tag
+must remain installed throughout ordinary acceptance.
+
+Historical B002 authority is successor-aware but not ancestry-trusting. Exact B002 HEAD plus the
+complete B002 proof is effective. A descendant is effective only when B002 is its ancestor and an
+independent successor chain additionally binds the exact direct-parent Candidate, R4 manifest and
+receipt, new single-use Owner approval, separate ACCEPT result and route digest, canonical closeout
+envelope, annotated tag, exact local and remote refs, and fixed Canon/Q001-Q130/M2/runtime/Provider
+preservation. An arbitrary descendant, non-descendant, replayed evidence, invalid preservation, or
+ancestry without that chain is ineffective.
+
 Tracked state remains `APPROVED + ACTIVE + NOT_RELEASED`, `active_wip=true`, and
 `authoritative_activation_effective=false`. The repository-native `authoritative-effect` phase is
 the only interface that may compute the external projection. It fails closed unless an explicit

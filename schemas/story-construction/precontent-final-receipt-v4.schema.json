@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://rules-residue.invalid/schemas/story-construction/precontent-final-receipt-v4.schema.json",
+  "title": "Pre-Content Acceptance Regression R4 Tracked Receipt",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "receipt_kind", "outer_envelope_schema", "payload", "payload_hash"],
+  "properties": {
+    "schema_version": {"const": "rules-residue.story-construction.precontent-final-receipt/4.0.0"},
+    "receipt_kind": {"const": "TRACKED_INNER_ACCEPTANCE_REGRESSION_R4_RECEIPT"},
+    "outer_envelope_schema": {"const": "schemas/story-construction/precontent-acceptance-regression-closeout-envelope-v1.schema.json"},
+    "payload": {
+      "type": "object", "additionalProperties": false,
+      "required": ["schema_version", "receipt_id", "receipt_status", "manifest_model", "finding_id", "change_set_id", "repair_task_id", "machine_milestone", "machine_batch_id", "machine_phase", "successor_state", "fixed_predecessor", "framework_manifests", "r4_transition", "schema_sets", "r4_path_allowlist", "fixed_preservation", "provider_request_counts"],
+      "properties": {
+        "schema_version": {"const": "rules-residue.story-construction.precontent-final-receipt/4.0.0"},
+        "receipt_id": {"const": "SCG-PRECONTENT-READINESS-R4-FINAL-001"},
+        "receipt_status": {"const": "PENDING_OWNER_EXACT_HASH_APPROVAL_M3_B003_P0_B_R4"},
+        "manifest_model": {"const": "MODEL_R4_ADDITIVE_ACCEPTANCE_REGRESSION"},
+        "finding_id": {"const": "B003-BLK-002"},
+        "change_set_id": {"const": "CS-SCG-PRECONTENT-M3-B003-P0-ACCEPTANCE-REGRESSION-R4-001"},
+        "repair_task_id": {"const": "SCG-PRECONTENT-M3-B003-P0-B-R4-ACCEPTANCE-REGRESSION-REPAIR-IMPLEMENT-001"},
+        "machine_milestone": {"const": "M3"}, "machine_batch_id": {"const": "M3-B003"}, "machine_phase": {"const": "B003-P0-B"},
+        "successor_state": {"type": "object", "additionalProperties": false, "required": ["lifecycle_stage", "approval_status", "independent_accept_status", "authoritative_successor_effective", "ancestry_alone_sufficient"], "properties": {"lifecycle_stage": {"const": "CANDIDATE"}, "approval_status": {"const": "PENDING_OWNER_EXACT_HASH_APPROVAL_M3_B003_P0_B_R4"}, "independent_accept_status": {"const": "NOT_RUN"}, "authoritative_successor_effective": {"const": false}, "ancestry_alone_sufficient": {"const": false}}},
+        "fixed_predecessor": {"type": "object", "additionalProperties": false, "required": ["commit", "tree", "parent", "logical_proof_tag_ref", "proof_tag_object", "framework_manifest_r3_file_sha256", "framework_manifest_r3_merkle_root", "framework_manifest_r3_record_count", "framework_manifest_r3_semantic_record_set_sha256", "final_receipt_r3_file_sha256", "final_receipt_r3_payload_sha256"], "properties": {"commit": {"const": "2d7f78f5b24623729cb64a798b59d6f469e6de2b"}, "tree": {"const": "f0fdf751d7532097926d36f3ac723f563e82cfd3"}, "parent": {"const": "d80aae8d1dfede85d91ff0367f4c6a18d62bb2a7"}, "logical_proof_tag_ref": {"const": "refs/tags/scg-precontent-m3-b002-authoritative-effect-repair-accepted"}, "proof_tag_object": {"const": "421e36ce08076d5eb9ef43049c8bdf9edafa16d3"}, "framework_manifest_r3_file_sha256": {"const": "836fbaf57137d31429e5f54aa52035edc10c2768480c73ab9e55631cbcc2cae4"}, "framework_manifest_r3_merkle_root": {"const": "48d8a22fed2142228d2ca5233ff894f0e3cb182fa1899ce73af8366d45078474"}, "framework_manifest_r3_record_count": {"const": 81}, "framework_manifest_r3_semantic_record_set_sha256": {"const": "3f6071050644d5fe4cbfc39fc689383f55c9d874f7af87d9aecdf639ea4bd0ab"}, "final_receipt_r3_file_sha256": {"const": "1598688eab7beb93aa6497dc01ba71e0c20df07aa4a3976ebb511ecf31d02443"}, "final_receipt_r3_payload_sha256": {"const": "d793b0aa4d84acfbc94fe41f4980e41a282e9ef5dc9110344f9053f9999aadc7"}}},
+        "framework_manifests": {"type": "object", "additionalProperties": false, "required": ["r3", "r4"], "properties": {"r3": {"$ref": "#/$defs/manifest_r3"}, "r4": {"$ref": "#/$defs/manifest_r4"}}},
+        "r4_transition": {"$ref": "#/$defs/r4_transition"},
+        "schema_sets": {"$ref": "#/$defs/schema_sets"},
+        "r4_path_allowlist": {"type": "object", "additionalProperties": false, "required": ["path_count", "sha256"], "properties": {"path_count": {"const": 15}, "sha256": {"const": "98b6869eaeb0013c7abe1fb66625282c55321e7eafdf277228f28bbfdb6d2859"}}},
+        "fixed_preservation": {"$ref": "#/$defs/fixed_preservation"},
+        "provider_request_counts": {"$ref": "#/$defs/provider_counts"}
+      }
+    },
+    "payload_hash": {"$ref": "#/$defs/hash"}
+  },
+  "$defs": {
+    "hash": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "provider_counts": {"type": "object", "additionalProperties": false, "required": ["deepseek", "grok", "opencode", "story_m0"], "properties": {"deepseek": {"const": 0}, "grok": {"const": 0}, "opencode": {"const": 0}, "story_m0": {"const": 0}}},
+    "manifest_r3": {"type": "object", "additionalProperties": false, "required": ["path", "file_sha256", "merkle_root", "record_count", "semantic_path_content_record_set_hash"], "properties": {"path": {"const": "governance/story-construction/precontent/manifests/framework-manifest.r3.json"}, "file_sha256": {"const": "836fbaf57137d31429e5f54aa52035edc10c2768480c73ab9e55631cbcc2cae4"}, "merkle_root": {"const": "48d8a22fed2142228d2ca5233ff894f0e3cb182fa1899ce73af8366d45078474"}, "record_count": {"const": 81}, "semantic_path_content_record_set_hash": {"const": "3f6071050644d5fe4cbfc39fc689383f55c9d874f7af87d9aecdf639ea4bd0ab"}}},
+    "manifest_r4": {"type": "object", "additionalProperties": false, "required": ["path", "file_sha256", "merkle_root", "record_count", "semantic_path_content_record_set_hash"], "properties": {"path": {"const": "governance/story-construction/precontent/manifests/framework-manifest.r4.json"}, "file_sha256": {"$ref": "#/$defs/hash"}, "merkle_root": {"$ref": "#/$defs/hash"}, "record_count": {"const": 88}, "semantic_path_content_record_set_hash": {"$ref": "#/$defs/hash"}}},
+    "r4_transition": {"type": "object", "additionalProperties": false, "required": ["old_record_count", "unchanged_old_count", "changed_old_count", "new_record_count", "total_record_count", "unchanged_old_leaf_set_hash", "changed_old_leaf_transition_hash", "new_leaf_set_hash", "r3_leaf_set_hash", "r4_leaf_set_hash"], "properties": {"old_record_count": {"const": 81}, "unchanged_old_count": {"const": 75}, "changed_old_count": {"const": 6}, "new_record_count": {"const": 7}, "total_record_count": {"const": 88}, "unchanged_old_leaf_set_hash": {"$ref": "#/$defs/hash"}, "changed_old_leaf_transition_hash": {"$ref": "#/$defs/hash"}, "new_leaf_set_hash": {"$ref": "#/$defs/hash"}, "r3_leaf_set_hash": {"const": "3f6071050644d5fe4cbfc39fc689383f55c9d874f7af87d9aecdf639ea4bd0ab"}, "r4_leaf_set_hash": {"$ref": "#/$defs/hash"}}},
+    "schema_sets": {"type": "object", "additionalProperties": false, "required": ["original_schema_count", "original_schema_set_hash", "preserved_activation_v1_schema_count", "preserved_activation_v1_schema_set_hash", "r3_repair_schema_count", "r3_repair_schema_set_hash", "predecessor_schema_count", "predecessor_schema_set_hash", "r4_schema_count", "r4_schema_set_hash", "combined_schema_count", "combined_schema_set_hash"], "properties": {"original_schema_count": {"const": 20}, "original_schema_set_hash": {"const": "77c8d831c2fd4b79edc597215135ca111fd76b1e00b9d126fda5a4d1a7fcdc50"}, "preserved_activation_v1_schema_count": {"const": 5}, "preserved_activation_v1_schema_set_hash": {"const": "86d86a286fd1bbd3810720b943d61c1e00c3a63c9e6aed714f6e40d072b90b7f"}, "r3_repair_schema_count": {"const": 3}, "r3_repair_schema_set_hash": {"const": "4823a2a02676d001e8840961747dc3f36e8535ea148271930ebbee99bdb61592"}, "predecessor_schema_count": {"const": 28}, "predecessor_schema_set_hash": {"const": "c26c1a568f3f74346bbca6f7f56c4e359406d04aeadc4ee9259e8e91d5ef4ef6"}, "r4_schema_count": {"const": 4}, "r4_schema_set_hash": {"$ref": "#/$defs/hash"}, "combined_schema_count": {"const": 32}, "combined_schema_set_hash": {"$ref": "#/$defs/hash"}}},
+    "fixed_preservation": {"type": "object", "additionalProperties": false, "required": ["canon_sha256", "q001_q130_sha256", "m2_sha256", "runtime_sha256", "provider_zero_call_sha256"], "properties": {"canon_sha256": {"const": "d7ceea75615b57970f3b9712b73ed4c9f65a9c4406c877e9013470cb53a6141a"}, "q001_q130_sha256": {"const": "01fdebbd338a8abdbc0226d0290b1bc2b02366cb615a22182f0df0a5f75fa7b2"}, "m2_sha256": {"const": "74da7cc866e0b3b1f3580d86df18c8c6d9724ff6131e5d35c155fc33a2f71c17"}, "runtime_sha256": {"const": "29ea1e0278e37d183d4c0ff396437088b4873c58c5e9a9c857093f6c552a6314"}, "provider_zero_call_sha256": {"const": "e6536a180aeb21b20ca9b65594610e65c50d72bf388b513533bed799366214f5"}}}
+  }
+}

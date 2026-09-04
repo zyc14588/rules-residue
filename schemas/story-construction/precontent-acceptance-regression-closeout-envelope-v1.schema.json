@@ -1,0 +1,61 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://rules-residue.invalid/schemas/story-construction/precontent-acceptance-regression-closeout-envelope-v1.schema.json",
+  "title": "Pre-Content Acceptance Regression R4 Detached Closeout Envelope",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "envelope_kind", "payload", "payload_hash"],
+  "properties": {
+    "schema_version": {"const": "rules-residue.story-construction.precontent-acceptance-regression-closeout-envelope/1.0.0"},
+    "envelope_kind": {"const": "DETACHED_ACCEPTED_GOVERNANCE_SUCCESSOR_ENVELOPE"},
+    "payload": {
+      "type": "object", "additionalProperties": false,
+      "required": ["envelope_id", "finding_id", "change_set_id", "binding_strategy", "predecessor_proof", "successor_candidate", "r4_path_set_hash", "framework_manifest_r4", "final_receipt_v4", "schema_sets", "owner_approval", "approval_consumption", "successor_accept", "proof_tag", "integration", "fixed_preservation", "producer_id", "verifier_id", "verifier_worktree_state"],
+      "properties": {
+        "envelope_id": {"type": "string", "minLength": 1},
+        "finding_id": {"const": "B003-BLK-002"},
+        "change_set_id": {"const": "CS-SCG-PRECONTENT-M3-B003-P0-ACCEPTANCE-REGRESSION-R4-001"},
+        "binding_strategy": {"const": "B002_PROOF_PLUS_DETACHED_ACCEPTED_SUCCESSOR_EXACT_COMMIT_TREE_REMOTE_REFS"},
+        "predecessor_proof": {"$ref": "#/$defs/predecessor_proof"},
+        "successor_candidate": {"$ref": "#/$defs/successor_candidate"},
+        "r4_path_set_hash": {"$ref": "#/$defs/hash"},
+        "framework_manifest_r4": {"$ref": "#/$defs/manifest_r4"},
+        "final_receipt_v4": {"$ref": "#/$defs/receipt_v4"},
+        "schema_sets": {"$ref": "#/$defs/schema_sets"},
+        "owner_approval": {
+          "type": "object", "additionalProperties": false,
+          "required": ["approval_id", "raw_sha256", "canonical_sha256", "approval_issued_consumed", "single_use", "transferable", "revoked"],
+          "properties": {"approval_id": {"type": "string", "pattern": "^OWNER-APPROVAL-SCG-PRECONTENT-M3-B003-P0-B-R4-CANDIDATE-[0-9A-F]{8}-R1$"}, "raw_sha256": {"$ref": "#/$defs/hash"}, "canonical_sha256": {"$ref": "#/$defs/hash"}, "approval_issued_consumed": {"const": false}, "single_use": {"const": true}, "transferable": {"const": false}, "revoked": {"const": false}}
+        },
+        "approval_consumption": {
+          "type": "object", "additionalProperties": false, "required": ["consumption_count", "consumed_by_accept_task"],
+          "properties": {"consumption_count": {"const": 1}, "consumed_by_accept_task": {"const": "SCG-PRECONTENT-M3-B003-P0-B-R4-ACCEPT-001"}}
+        },
+        "successor_accept": {"$ref": "#/$defs/accept_summary"},
+        "proof_tag": {
+          "type": "object", "additionalProperties": false, "required": ["logical_ref", "target_commit", "target_tree"],
+          "properties": {"logical_ref": {"const": "refs/tags/scg-precontent-m3-b003-p0-acceptance-regression-r4-accepted"}, "target_commit": {"$ref": "#/$defs/commit"}, "target_tree": {"$ref": "#/$defs/commit"}}
+        },
+        "integration": {
+          "type": "object", "additionalProperties": false,
+          "required": ["mode", "authoritative_ref", "remote_name", "expected_remote_url", "remote_authoritative_ref", "remote_logical_proof_tag_ref", "authoritative_remote_before_successor", "authoritative_remote_after_successor"],
+          "properties": {"mode": {"const": "FAST_FORWARD_ONLY"}, "authoritative_ref": {"const": "refs/heads/design/r1-story-architecture"}, "remote_name": {"const": "origin"}, "expected_remote_url": {"type": "string", "minLength": 1}, "remote_authoritative_ref": {"const": "refs/heads/design/r1-story-architecture"}, "remote_logical_proof_tag_ref": {"const": "refs/tags/scg-precontent-m3-b003-p0-acceptance-regression-r4-accepted"}, "authoritative_remote_before_successor": {"const": "2d7f78f5b24623729cb64a798b59d6f469e6de2b"}, "authoritative_remote_after_successor": {"$ref": "#/$defs/commit"}}
+        },
+        "fixed_preservation": {"$ref": "#/$defs/fixed_preservation"},
+        "producer_id": {"type": "string", "minLength": 1}, "verifier_id": {"const": "CODEX-INDEPENDENT-VERIFIER-SCG-PRECONTENT-M3-B003-P0-B-R4-ACCEPT-001"}, "verifier_worktree_state": {"const": "CLEAN"}
+      }
+    },
+    "payload_hash": {"$ref": "#/$defs/hash"}
+  },
+  "$defs": {
+    "hash": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "commit": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+    "predecessor_proof": {"type": "object", "additionalProperties": false, "required": ["commit", "tree", "parent", "owner_approval_raw_sha256", "owner_approval_canonical_sha256", "closeout_envelope_raw_sha256", "closeout_envelope_canonical_sha256", "closeout_payload_hash", "logical_proof_tag_ref"], "properties": {"commit": {"const": "2d7f78f5b24623729cb64a798b59d6f469e6de2b"}, "tree": {"const": "f0fdf751d7532097926d36f3ac723f563e82cfd3"}, "parent": {"const": "d80aae8d1dfede85d91ff0367f4c6a18d62bb2a7"}, "owner_approval_raw_sha256": {"$ref": "#/$defs/hash"}, "owner_approval_canonical_sha256": {"$ref": "#/$defs/hash"}, "closeout_envelope_raw_sha256": {"$ref": "#/$defs/hash"}, "closeout_envelope_canonical_sha256": {"$ref": "#/$defs/hash"}, "closeout_payload_hash": {"$ref": "#/$defs/hash"}, "logical_proof_tag_ref": {"const": "refs/tags/scg-precontent-m3-b002-authoritative-effect-repair-accepted"}}},
+    "successor_candidate": {"type": "object", "additionalProperties": false, "required": ["commit", "tree", "parent"], "properties": {"commit": {"$ref": "#/$defs/commit"}, "tree": {"$ref": "#/$defs/commit"}, "parent": {"const": "2d7f78f5b24623729cb64a798b59d6f469e6de2b"}}},
+    "manifest_r4": {"type": "object", "additionalProperties": false, "required": ["path", "file_sha256", "merkle_root", "record_count", "semantic_path_content_record_set_hash"], "properties": {"path": {"const": "governance/story-construction/precontent/manifests/framework-manifest.r4.json"}, "file_sha256": {"$ref": "#/$defs/hash"}, "merkle_root": {"$ref": "#/$defs/hash"}, "record_count": {"const": 88}, "semantic_path_content_record_set_hash": {"$ref": "#/$defs/hash"}}},
+    "receipt_v4": {"type": "object", "additionalProperties": false, "required": ["path", "file_sha256", "payload_hash"], "properties": {"path": {"const": "governance/story-construction/receipts/scg-precontent-readiness-r4.final.json"}, "file_sha256": {"$ref": "#/$defs/hash"}, "payload_hash": {"$ref": "#/$defs/hash"}}},
+    "schema_sets": {"type": "object", "additionalProperties": false, "required": ["predecessor_schema_count", "predecessor_schema_set_hash", "r4_schema_count", "r4_schema_set_hash", "combined_schema_count", "combined_schema_set_hash"], "properties": {"predecessor_schema_count": {"const": 28}, "predecessor_schema_set_hash": {"const": "c26c1a568f3f74346bbca6f7f56c4e359406d04aeadc4ee9259e8e91d5ef4ef6"}, "r4_schema_count": {"const": 4}, "r4_schema_set_hash": {"$ref": "#/$defs/hash"}, "combined_schema_count": {"const": 32}, "combined_schema_set_hash": {"$ref": "#/$defs/hash"}}},
+    "accept_summary": {"type": "object", "additionalProperties": false, "required": ["schema_version", "task_id", "result", "verifier", "route", "route_digest", "candidate_commit", "candidate_tree", "candidate_parent", "owner_approval_id", "owner_approval_raw_sha256", "owner_approval_canonical_sha256", "raw_sha256", "canonical_sha256", "verifier_worktree_state"], "properties": {"schema_version": {"const": "rules-residue.story-construction.precontent-acceptance-regression-accept-result/1.0.0"}, "task_id": {"const": "SCG-PRECONTENT-M3-B003-P0-B-R4-ACCEPT-001"}, "result": {"const": "PASS_FIXED_M3_B003_P0_B_R4_ACCEPTANCE_REGRESSION_REPAIR_CANDIDATE_ACCEPTED"}, "verifier": {"const": "CODEX-INDEPENDENT-VERIFIER-SCG-PRECONTENT-M3-B003-P0-B-R4-ACCEPT-001"}, "route": {"const": "SCG-PRECONTENT-M3-B003-P0-B-R4-ACCEPTANCE-REGRESSION-REPAIR-ACCEPT"}, "route_digest": {"$ref": "#/$defs/hash"}, "candidate_commit": {"$ref": "#/$defs/commit"}, "candidate_tree": {"$ref": "#/$defs/commit"}, "candidate_parent": {"const": "2d7f78f5b24623729cb64a798b59d6f469e6de2b"}, "owner_approval_id": {"type": "string", "minLength": 1}, "owner_approval_raw_sha256": {"$ref": "#/$defs/hash"}, "owner_approval_canonical_sha256": {"$ref": "#/$defs/hash"}, "raw_sha256": {"$ref": "#/$defs/hash"}, "canonical_sha256": {"$ref": "#/$defs/hash"}, "verifier_worktree_state": {"const": "CLEAN"}}},
+    "fixed_preservation": {"type": "object", "additionalProperties": false, "required": ["canon_sha256", "q001_q130_sha256", "m2_sha256", "runtime_sha256", "provider_zero_call_sha256", "provider_request_counts"], "properties": {"canon_sha256": {"const": "d7ceea75615b57970f3b9712b73ed4c9f65a9c4406c877e9013470cb53a6141a"}, "q001_q130_sha256": {"const": "01fdebbd338a8abdbc0226d0290b1bc2b02366cb615a22182f0df0a5f75fa7b2"}, "m2_sha256": {"const": "74da7cc866e0b3b1f3580d86df18c8c6d9724ff6131e5d35c155fc33a2f71c17"}, "runtime_sha256": {"const": "29ea1e0278e37d183d4c0ff396437088b4873c58c5e9a9c857093f6c552a6314"}, "provider_zero_call_sha256": {"const": "e6536a180aeb21b20ca9b65594610e65c50d72bf388b513533bed799366214f5"}, "provider_request_counts": {"type": "object", "additionalProperties": false, "required": ["deepseek", "grok", "opencode", "story_m0"], "properties": {"deepseek": {"const": 0}, "grok": {"const": 0}, "opencode": {"const": 0}, "story_m0": {"const": 0}}}}}
+  }
+}

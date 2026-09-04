@@ -65,6 +65,16 @@ REPAIR_ACCEPT_RESULT = "PASS_FIXED_M3_B002_AUTHORITATIVE_EFFECT_REPAIR_CANDIDATE
 REPAIR_ACCEPT_VERIFIER = "CODEX-INDEPENDENT-VERIFIER-SCG-PRECONTENT-M3-B002-AUTHORITATIVE-EFFECT-REPAIR-ACCEPT-001"
 REPAIR_ACCEPT_ROUTE = "SCG-PRECONTENT-M3-B002-AUTHORITATIVE-EFFECT-REPAIR-ACCEPT"
 REPAIR_PROOF_TAG_REF = "refs/tags/scg-precontent-m3-b002-authoritative-effect-repair-accepted"
+B002_PROOF_TARGET_COMMIT = "2d7f78f5b24623729cb64a798b59d6f469e6de2b"
+B002_PROOF_TARGET_TREE = "f0fdf751d7532097926d36f3ac723f563e82cfd3"
+B002_PROOF_TAG_OBJECT = "421e36ce08076d5eb9ef43049c8bdf9edafa16d3"
+B002_OWNER_APPROVAL_SHA256 = "678554b3b7b00f555bd0b3a9808ed3d46125f037d150fef98891795cc0354e96"
+B002_CLOSEOUT_ENVELOPE_SHA256 = "caf5056709d870fab60c24d9077f515374cbc5abaf9fb54c3effd8314c0a6ac7"
+B002_CLOSEOUT_PAYLOAD_HASH = "0f28dc64448944684fb5263a9c93f7799c391f1dd5344c6e9c30d30838f28e24"
+B002_REPAIR_PATH_SET_HASH = "ee87409218ac9a71829722912fc47edba741e5a7617057037a3795993d11865a"
+B002_ACCEPT_ROUTE_DIGEST = "9b83dfc93a0186f8eb8b10026294bf3df70cec72a62a8a547dd45a0be4955880"
+PRODUCTION_REMOTE_URL = "git@github.com:zyc14588/rules-residue.git"
+TEST_PROOF_TAG_PREFIX = "refs/tags/test-fixtures/scg-precontent-authoritative-effect/"
 DEFECTIVE_ACTIVATION_COMMIT = "d80aae8d1dfede85d91ff0367f4c6a18d62bb2a7"
 DEFECTIVE_ACTIVATION_TREE = "f6e5eaabd5bcbc66666d54f2cb389f2c96e643c0"
 DEFECTIVE_ACTIVATION_PARENT = IMPLEMENTATION_CANDIDATE_COMMIT
@@ -93,6 +103,25 @@ OMISSION_REPORT_SET_HASH = "1c8a3d062d89fe49830bb0ad43fa13e04d7fed9b997046b09a92
 STATIC_GATE_RESULT_HASH = "a5acc295f30d1b81739b4c2064ea57356900cc375736b9a20e1feb2177f07dc5"
 PROVIDER_PROFILE_CONTRACT_SET_HASH = "dc1a5b37bc42f0d9f97ceac9f34460138009a79499304ac1844ef77e21ceb3e5"
 PROVIDER_ZERO_CALL_EVIDENCE_HASH = "e6536a180aeb21b20ca9b65594610e65c50d72bf388b513533bed799366214f5"
+R3_MANIFEST_FILE_SHA256 = "836fbaf57137d31429e5f54aa52035edc10c2768480c73ab9e55631cbcc2cae4"
+R3_MERKLE_ROOT = "48d8a22fed2142228d2ca5233ff894f0e3cb182fa1899ce73af8366d45078474"
+R3_RECORD_COUNT = 81
+R3_SEMANTIC_RECORD_SET_HASH = "3f6071050644d5fe4cbfc39fc689383f55c9d874f7af87d9aecdf639ea4bd0ab"
+R3_RECEIPT_FILE_SHA256 = "1598688eab7beb93aa6497dc01ba71e0c20df07aa4a3976ebb511ecf31d02443"
+R3_RECEIPT_PAYLOAD_HASH = "d793b0aa4d84acfbc94fe41f4980e41a282e9ef5dc9110344f9053f9999aadc7"
+R3_REPAIR_SCHEMA_SET_HASH = "4823a2a02676d001e8840961747dc3f36e8535ea148271930ebbee99bdb61592"
+R3_COMBINED_SCHEMA_SET_HASH = "c26c1a568f3f74346bbca6f7f56c4e359406d04aeadc4ee9259e8e91d5ef4ef6"
+
+ACCEPTANCE_REGRESSION_FINDING_ID = "B003-BLK-002"
+R4_TASK_ID = "SCG-PRECONTENT-M3-B003-P0-B-R4-ACCEPTANCE-REGRESSION-REPAIR-IMPLEMENT-001"
+R4_MODEL = "MODEL_R4_ADDITIVE_ACCEPTANCE_REGRESSION"
+R4_CHANGE_SET_ID = "CS-SCG-PRECONTENT-M3-B003-P0-ACCEPTANCE-REGRESSION-R4-001"
+R4_PATH_ALLOWLIST_SHA256 = "98b6869eaeb0013c7abe1fb66625282c55321e7eafdf277228f28bbfdb6d2859"
+R4_ACCEPT_TASK_ID = "SCG-PRECONTENT-M3-B003-P0-B-R4-ACCEPT-001"
+R4_ACCEPT_RESULT = "PASS_FIXED_M3_B003_P0_B_R4_ACCEPTANCE_REGRESSION_REPAIR_CANDIDATE_ACCEPTED"
+R4_ACCEPT_VERIFIER = "CODEX-INDEPENDENT-VERIFIER-SCG-PRECONTENT-M3-B003-P0-B-R4-ACCEPT-001"
+R4_ACCEPT_ROUTE = "SCG-PRECONTENT-M3-B003-P0-B-R4-ACCEPTANCE-REGRESSION-REPAIR-ACCEPT"
+R4_PROOF_TAG_REF = "refs/tags/scg-precontent-m3-b003-p0-acceptance-regression-r4-accepted"
 
 REQUIRED_EXTERNAL_PROOFS = (
     "ACTIVATION_SPECIFIC_OWNER_FULL_HASH_APPROVAL",
@@ -211,6 +240,43 @@ REPAIR_ALLOWLIST = (
     "tools/validate_story_construction_governance.py",
 )
 
+R4_ALLOWLIST = (
+    ".codex/prompts/m3/PRECONTENT/ACCEPTANCE_REGRESSION_REPAIR_ACCEPT.md",
+    ".codex/prompts/m3/PRECONTENT/README.md",
+    ".codex/routes/m3-precontent-b003-p0-acceptance-regression-repair-accept-request.json",
+    "docs/governance/story-construction/10_PRECONTENT_READINESS.md",
+    "governance/story-construction/change-sets/CS-SCG-PRECONTENT-M3-B003-P0-ACCEPTANCE-REGRESSION-R4-001.yaml",
+    "governance/story-construction/precontent/manifests/framework-manifest.r4.json",
+    "governance/story-construction/receipts/scg-precontent-readiness-r4.final.json",
+    "schemas/story-construction/precontent-acceptance-regression-change-set-v1.schema.json",
+    "schemas/story-construction/precontent-acceptance-regression-closeout-envelope-v1.schema.json",
+    "schemas/story-construction/precontent-acceptance-regression-owner-approval-v1.schema.json",
+    "schemas/story-construction/precontent-final-receipt-v4.schema.json",
+    "tests/test_precontent_readiness.py",
+    "tools/build_precontent_readiness_bundle.py",
+    "tools/validate_precontent_readiness.py",
+    "tools/validate_story_construction_governance.py",
+)
+
+R4_CHANGED_OLD_PATHS = (
+    ".codex/prompts/m3/PRECONTENT/README.md",
+    "docs/governance/story-construction/10_PRECONTENT_READINESS.md",
+    "tests/test_precontent_readiness.py",
+    "tools/build_precontent_readiness_bundle.py",
+    "tools/validate_precontent_readiness.py",
+    "tools/validate_story_construction_governance.py",
+)
+
+R4_NEW_SEMANTIC_PATHS = (
+    ".codex/prompts/m3/PRECONTENT/ACCEPTANCE_REGRESSION_REPAIR_ACCEPT.md",
+    ".codex/routes/m3-precontent-b003-p0-acceptance-regression-repair-accept-request.json",
+    "governance/story-construction/change-sets/CS-SCG-PRECONTENT-M3-B003-P0-ACCEPTANCE-REGRESSION-R4-001.yaml",
+    "schemas/story-construction/precontent-acceptance-regression-change-set-v1.schema.json",
+    "schemas/story-construction/precontent-acceptance-regression-closeout-envelope-v1.schema.json",
+    "schemas/story-construction/precontent-acceptance-regression-owner-approval-v1.schema.json",
+    "schemas/story-construction/precontent-final-receipt-v4.schema.json",
+)
+
 R3_CHANGED_OLD_PATHS = (
     ".codex/prompts/m3/PRECONTENT/README.md",
     "docs/governance/story-construction/10_PRECONTENT_READINESS.md",
@@ -292,7 +358,14 @@ REPAIR_SCHEMA_FILES = (
     "precontent-final-receipt-v3.schema.json",
 )
 
-COMBINED_SCHEMA_FILES = SCHEMA_FILES + ACTIVATION_SCHEMA_FILES + REPAIR_SCHEMA_FILES
+R4_SCHEMA_FILES = (
+    "precontent-acceptance-regression-change-set-v1.schema.json",
+    "precontent-acceptance-regression-closeout-envelope-v1.schema.json",
+    "precontent-acceptance-regression-owner-approval-v1.schema.json",
+    "precontent-final-receipt-v4.schema.json",
+)
+
+COMBINED_SCHEMA_FILES = SCHEMA_FILES + ACTIVATION_SCHEMA_FILES + REPAIR_SCHEMA_FILES + R4_SCHEMA_FILES
 
 FIXTURE_ROOT = Path("tests/fixtures/story-construction/precontent-m0")
 TEST_FIXTURE_FILES = (
@@ -313,6 +386,9 @@ R2_MANIFEST_PATH = Path("governance/story-construction/precontent/manifests/fram
 FINAL_RECEIPT_PATH = Path("governance/story-construction/receipts/scg-precontent-readiness-r1.final.json")
 R3_MANIFEST_PATH = Path("governance/story-construction/precontent/manifests/framework-manifest.r3.json")
 R3_RECEIPT_PATH = Path("governance/story-construction/receipts/scg-precontent-readiness-r3.final.json")
+R4_MANIFEST_PATH = Path("governance/story-construction/precontent/manifests/framework-manifest.r4.json")
+R4_RECEIPT_PATH = Path("governance/story-construction/receipts/scg-precontent-readiness-r4.final.json")
+R4_CHANGE_SET_PATH = Path("governance/story-construction/change-sets/CS-SCG-PRECONTENT-M3-B003-P0-ACCEPTANCE-REGRESSION-R4-001.yaml")
 APPROVAL_CONSUMPTION_PATH = Path("governance/story-construction/approvals/OWNER-APPROVAL-SCG-PRECONTENT-M3-B002-CANDIDATE-74FECBE6-R1.consumption.json")
 DECISION_PATH = Path("governance/story-construction/precontent/decisions.scg-pre-q001-q021.yaml")
 TRACEABILITY_PATH = Path("governance/story-construction/precontent/traceability.scg-pre-r1.yaml")
@@ -342,6 +418,9 @@ ROUTE_SPECS = {
     ),
     ".codex/routes/m3-precontent-b002-authoritative-effect-repair-accept-request.json": (
         REPAIR_ACCEPT_ROUTE, "ACCEPT", "M3-B002"
+    ),
+    ".codex/routes/m3-precontent-b003-p0-acceptance-regression-repair-accept-request.json": (
+        R4_ACCEPT_ROUTE, "ACCEPT", "M3-B003"
     ),
 }
 
@@ -391,6 +470,31 @@ def repair_path_records(root: Path = PROJECT_ROOT) -> list[dict[str, str]]:
 
 def repair_path_set_hash(root: Path = PROJECT_ROOT) -> str:
     return _record_set_hash(repair_path_records(root))
+
+
+def r4_allowlist_hash() -> str:
+    payload = "".join(f"{path}\n" for path in sorted(R4_ALLOWLIST)).encode("utf-8")
+    return hashlib.sha256(payload).hexdigest()
+
+
+def r4_path_records(root: Path = PROJECT_ROOT) -> list[dict[str, str]]:
+    root = root.resolve()
+    return [
+        {"path": path, "sha256": file_sha256(root / path)}
+        for path in sorted(R4_ALLOWLIST)
+    ]
+
+
+def r4_path_set_hash(root: Path = PROJECT_ROOT) -> str:
+    return _record_set_hash(r4_path_records(root))
+
+
+def synthetic_proof_tag_ref(test_id: str, repository: Path) -> str:
+    if not isinstance(test_id, str) or not re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9._:-]{0,127}", test_id):
+        raise ValueError("isolated test fixture id is invalid")
+    resolved = repository.resolve(strict=True)
+    digest = hashlib.sha256(test_id.encode("utf-8") + b"\0" + str(resolved).encode("utf-8")).hexdigest()
+    return f"{TEST_PROOF_TAG_PREFIX}{digest}"
 
 
 def _schema(root: Path, name: str) -> dict[str, Any]:
@@ -1212,6 +1316,121 @@ def validate_repair_receipt_binding(receipt: Any, expected: Any | None = None) -
     return errors
 
 
+def validate_r4_manifest_transition(manifest: Any, r3_manifest: Any) -> list[str]:
+    if not isinstance(manifest, dict) or not isinstance(r3_manifest, dict):
+        return ["R3 and R4 framework manifests must be objects"]
+    records = manifest.get("records")
+    old_records = r3_manifest.get("records")
+    if not isinstance(records, list) or not isinstance(old_records, list):
+        return ["R4 framework manifest records must be arrays"]
+    errors: list[str] = []
+    paths = [item.get("path") for item in records if isinstance(item, dict)]
+    if len(records) != 88 or len(paths) != 88 or len(set(paths)) != 88:
+        errors.append("R4 framework manifest must contain 88 unique records")
+    forbidden = {R4_MANIFEST_PATH.as_posix(), R4_RECEIPT_PATH.as_posix()}
+    if forbidden & set(paths):
+        errors.append("R4 framework manifest contains self/audit record")
+    try:
+        computed_root = merkle_root((item["path"], item["sha256"]) for item in records)
+        computed_set_hash = _record_set_hash(records)
+    except (KeyError, TypeError, ValueError):
+        errors.append("R4 framework manifest contains malformed leaf records")
+        computed_root = None
+        computed_set_hash = None
+    if manifest.get("merkle", {}).get("root") != computed_root:
+        errors.append("R4 framework manifest Merkle root mismatch")
+    if manifest.get("semantic_path_content_record_set_hash") != computed_set_hash:
+        errors.append("R4 semantic path-content record-set hash mismatch")
+    expected_previous = {
+        "path": R3_MANIFEST_PATH.as_posix(),
+        "file_sha256": R3_MANIFEST_FILE_SHA256,
+        "merkle_root": R3_MERKLE_ROOT,
+        "record_count": R3_RECORD_COUNT,
+        "semantic_path_content_record_set_hash": R3_SEMANTIC_RECORD_SET_HASH,
+    }
+    if manifest.get("previous_manifest") != expected_previous:
+        errors.append("R4 predecessor manifest binding mismatch")
+    transition = manifest.get("transition")
+    if not isinstance(transition, dict):
+        return errors + ["R4 framework manifest transition is missing"]
+    for field, value in {
+        "old_record_count": 81,
+        "unchanged_old_count": 75,
+        "changed_old_count": 6,
+        "new_record_count": 7,
+        "total_record_count": 88,
+    }.items():
+        if transition.get(field) != value:
+            errors.append(f"R4 Merkle transition count mismatch: {field}")
+    changed = transition.get("changed_old_records", [])
+    new = transition.get("new_records", [])
+    if not isinstance(changed, list) or not isinstance(new, list):
+        return errors + ["R4 changed-old and new transition records must be arrays"]
+    if any(not isinstance(item, dict) or set(item) != {"path", "old_sha256", "new_sha256"} for item in changed):
+        return errors + ["R4 changed-old transition records are malformed"]
+    if any(not isinstance(item, dict) or set(item) != {"path", "sha256"} for item in new):
+        return errors + ["R4 new transition records are malformed"]
+    if [item.get("path") for item in changed] != sorted(R4_CHANGED_OLD_PATHS):
+        errors.append("R4 changed-old path set mismatch")
+    if [item.get("path") for item in new] != sorted(R4_NEW_SEMANTIC_PATHS):
+        errors.append("R4 new semantic path set mismatch")
+    old_by_path = {item.get("path"): item.get("sha256") for item in old_records if isinstance(item, dict)}
+    new_by_path = {item.get("path"): item.get("sha256") for item in records if isinstance(item, dict)}
+    expected_unchanged = [
+        {"path": path, "sha256": digest}
+        for path, digest in sorted(old_by_path.items())
+        if path not in R4_CHANGED_OLD_PATHS
+    ]
+    aggregates = {
+        "unchanged_old_leaf_set_hash": _record_set_hash(expected_unchanged),
+        "changed_old_leaf_transition_hash": canonical_sha256(changed),
+        "new_leaf_set_hash": _record_set_hash(new),
+        "r3_leaf_set_hash": _record_set_hash(old_records),
+        "r4_leaf_set_hash": computed_set_hash,
+    }
+    for field, value in aggregates.items():
+        if transition.get(field) != value:
+            errors.append(f"R4 transition aggregate mismatch: {field}")
+    for item in changed:
+        path = item.get("path")
+        if item.get("old_sha256") != old_by_path.get(path) or item.get("new_sha256") != new_by_path.get(path):
+            errors.append(f"R4 changed-old leaf binding mismatch: {path}")
+    return errors
+
+
+def validate_r4_receipt_binding(receipt: Any, expected: Any | None = None) -> list[str]:
+    if not isinstance(receipt, dict):
+        return ["R4 receipt must be an object"]
+    payload = receipt.get("payload")
+    if not isinstance(payload, dict):
+        return ["R4 receipt payload must be an object"]
+    errors: list[str] = []
+    if receipt.get("payload_hash") != canonical_sha256(payload):
+        errors.append("R4 receipt payload hash mismatch")
+    forbidden_keys = {
+        "candidate_commit", "candidate_tree", "owner_approval_id", "accept_result",
+        "tag_object_id", "authoritative_remote_after_successor", "integration_commit",
+        "receipt_file_sha256", "payload_hash",
+    }
+    found: set[str] = set()
+
+    def visit(value: Any) -> None:
+        if isinstance(value, dict):
+            found.update(forbidden_keys & set(value))
+            for child in value.values():
+                visit(child)
+        elif isinstance(value, list):
+            for child in value:
+                visit(child)
+
+    visit(payload)
+    if found:
+        errors.append(f"R4 receipt contains future/self fields: {sorted(found)}")
+    if expected is not None and receipt != expected:
+        errors.append("R4 receipt differs from deterministic derivation")
+    return errors
+
+
 def write_framework_documents(root: Path = PROJECT_ROOT) -> dict[str, Any]:
     """Compatibility entry: R1 is immutable, so this performs no write."""
 
@@ -1311,117 +1530,261 @@ def _schema_set_summary(schemas: dict[str, Any]) -> dict[str, Any]:
 
 
 def derive_repair_documents(root: Path = PROJECT_ROOT) -> dict[str, Any]:
+    """Load and verify the immutable accepted R3 snapshot.
+
+    R4 deliberately changes six files that were R3 Merkle leaves.  Re-deriving
+    R3 from the current worktree would therefore rewrite history.  Historical
+    proof consumers must use the accepted R3 bytes and records instead.
+    """
+
     root = root.resolve()
     if repair_allowlist_hash() != REPAIR_PATH_ALLOWLIST_SHA256:
         raise ValueError("13-path repair allowlist identity drift")
-    if file_sha256(root / R2_MANIFEST_PATH) != R2_MANIFEST_FILE_SHA256:
-        raise ValueError("immutable R2 manifest file hash drift")
-    if file_sha256(root / FINAL_RECEIPT_PATH) != R1_FINAL_RECEIPT_FILE_SHA256:
-        raise ValueError("immutable R1 final receipt file hash drift")
+    fixed_files = {
+        R2_MANIFEST_PATH: R2_MANIFEST_FILE_SHA256,
+        FINAL_RECEIPT_PATH: R1_FINAL_RECEIPT_FILE_SHA256,
+        R3_MANIFEST_PATH: R3_MANIFEST_FILE_SHA256,
+        R3_RECEIPT_PATH: R3_RECEIPT_FILE_SHA256,
+    }
+    for relative, expected_hash in fixed_files.items():
+        if file_sha256(root / relative) != expected_hash:
+            raise ValueError(f"immutable predecessor file hash drift: {relative.as_posix()}")
     r1_manifest = read_json(root / MANIFEST_PATH)
     r2_manifest = read_json(root / R2_MANIFEST_PATH)
+    manifest = read_json(root / R3_MANIFEST_PATH)
+    receipt = read_json(root / R3_RECEIPT_PATH)
+    records = manifest.get("records")
+    if not isinstance(records, list) or len(records) != R3_RECORD_COUNT:
+        raise ValueError("immutable R3 manifest record count drift")
+    if manifest.get("merkle", {}).get("root") != R3_MERKLE_ROOT:
+        raise ValueError("immutable R3 manifest root drift")
+    if merkle_root((item["path"], item["sha256"]) for item in records) != R3_MERKLE_ROOT:
+        raise ValueError("immutable R3 manifest leaf/root mismatch")
+    if _record_set_hash(records) != R3_SEMANTIC_RECORD_SET_HASH:
+        raise ValueError("immutable R3 semantic record-set drift")
+    if receipt.get("payload_hash") != R3_RECEIPT_PAYLOAD_HASH:
+        raise ValueError("immutable R3 receipt payload hash drift")
     r1_records = r1_manifest.get("records")
     r2_records = r2_manifest.get("records")
-    if not isinstance(r1_records, list) or len(r1_records) != R1_RECORD_COUNT:
-        raise ValueError("immutable R1 manifest record count drift")
-    if not isinstance(r2_records, list) or len(r2_records) != R2_RECORD_COUNT:
-        raise ValueError("immutable R2 manifest record count drift")
-    if r2_manifest.get("merkle", {}).get("root") != R2_MERKLE_ROOT:
-        raise ValueError("immutable R2 manifest root drift")
-    if merkle_root((item["path"], item["sha256"]) for item in r2_records) != R2_MERKLE_ROOT:
-        raise ValueError("immutable R2 manifest leaf/root mismatch")
-    if len({item.get("path") for item in r2_records if isinstance(item, dict)}) != R2_RECORD_COUNT:
-        raise ValueError("immutable R2 manifest records are missing or duplicated")
-    r2_by_path = {item["path"]: item for item in r2_records}
-    if not set(R3_CHANGED_OLD_PATHS).issubset(r2_by_path):
-        raise ValueError("R3 changed-old path is absent from R2")
+    if not isinstance(r1_records, list) or not isinstance(r2_records, list):
+        raise ValueError("immutable predecessor manifest records are invalid")
+    schemas = _r3_schema_sets(root, r1_records, r2_records)
+    manifest_bytes = (root / R3_MANIFEST_PATH).read_bytes()
+    receipt_bytes = (root / R3_RECEIPT_PATH).read_bytes()
+    return {
+        "manifest": manifest,
+        "manifest_bytes": manifest_bytes,
+        "manifest_file_sha256": R3_MANIFEST_FILE_SHA256,
+        "framework_merkle_root": R3_MERKLE_ROOT,
+        "semantic_path_content_record_set_hash": R3_SEMANTIC_RECORD_SET_HASH,
+        "transition": manifest["transition"],
+        "schemas": schemas,
+        "receipt": receipt,
+        "receipt_bytes": receipt_bytes,
+        "receipt_payload_hash": R3_RECEIPT_PAYLOAD_HASH,
+    }
+
+
+def write_repair_documents(root: Path = PROJECT_ROOT) -> dict[str, Any]:
+    """Compatibility entry: accepted R3 is immutable, so perform no write."""
+
+    return derive_repair_documents(root)
+
+
+def fixed_r4_preservation() -> dict[str, Any]:
+    return {
+        "canon_sha256": BASE_CANON_HASH,
+        "q001_q130_sha256": Q001_Q130_HASH,
+        "m2_sha256": M2_PLAN_HASH,
+        "runtime_sha256": RUNTIME_PACKAGE_SHA256,
+        "provider_zero_call_sha256": PROVIDER_ZERO_CALL_EVIDENCE_HASH,
+    }
+
+
+def _r4_schema_sets(root: Path, r3_records: list[dict[str, str]]) -> dict[str, Any]:
+    predecessor_paths = {
+        f"schemas/story-construction/{name}"
+        for name in SCHEMA_FILES + ACTIVATION_SCHEMA_FILES + REPAIR_SCHEMA_FILES
+    }
+    predecessor = sorted(
+        (item for item in r3_records if item.get("path") in predecessor_paths),
+        key=lambda item: item["path"],
+    )
+    if len(predecessor) != 28 or {item["path"] for item in predecessor} != predecessor_paths:
+        raise ValueError("R3 manifest does not contain the exact predecessor 28-schema set")
+    if _record_set_hash(predecessor) != R3_COMBINED_SCHEMA_SET_HASH:
+        raise ValueError("R3 predecessor 28-schema set hash drift")
+    for record in predecessor:
+        if file_sha256(root / record["path"]) != record["sha256"]:
+            raise ValueError(f"preserved predecessor schema drift: {record['path']}")
+    r4 = [
+        {
+            "path": f"schemas/story-construction/{name}",
+            "sha256": file_sha256(root / "schemas/story-construction" / name),
+        }
+        for name in sorted(R4_SCHEMA_FILES)
+    ]
+    combined = sorted(predecessor + r4, key=lambda item: item["path"])
+    original_paths = {f"schemas/story-construction/{name}" for name in SCHEMA_FILES}
+    activation_paths = {f"schemas/story-construction/{name}" for name in ACTIVATION_SCHEMA_FILES}
+    repair_paths = {f"schemas/story-construction/{name}" for name in REPAIR_SCHEMA_FILES}
+    original = [item for item in predecessor if item["path"] in original_paths]
+    activation = [item for item in predecessor if item["path"] in activation_paths]
+    repair = [item for item in predecessor if item["path"] in repair_paths]
+    result = {
+        "original_records": original,
+        "original_count": 20,
+        "original_set_hash": _record_set_hash(original),
+        "preserved_activation_v1_records": activation,
+        "preserved_activation_v1_count": 5,
+        "preserved_activation_v1_set_hash": _record_set_hash(activation),
+        "r3_repair_records": repair,
+        "r3_repair_count": 3,
+        "r3_repair_set_hash": _record_set_hash(repair),
+        "predecessor_records": predecessor,
+        "predecessor_count": 28,
+        "predecessor_set_hash": _record_set_hash(predecessor),
+        "r4_records": r4,
+        "r4_count": 4,
+        "r4_set_hash": _record_set_hash(r4),
+        "combined_records": combined,
+        "combined_count": 32,
+        "combined_set_hash": _record_set_hash(combined),
+    }
+    fixed = (
+        (result["original_set_hash"], ORIGINAL_SCHEMA_SET_HASH, "original 20-schema"),
+        (result["preserved_activation_v1_set_hash"], "86d86a286fd1bbd3810720b943d61c1e00c3a63c9e6aed714f6e40d072b90b7f", "activation-v1 5-schema"),
+        (result["r3_repair_set_hash"], R3_REPAIR_SCHEMA_SET_HASH, "R3 repair 3-schema"),
+        (result["predecessor_set_hash"], R3_COMBINED_SCHEMA_SET_HASH, "predecessor 28-schema"),
+    )
+    for actual, expected, label in fixed:
+        if actual != expected:
+            raise ValueError(f"{label} set hash drift")
+    return result
+
+
+def _r4_schema_set_summary(schemas: dict[str, Any]) -> dict[str, Any]:
+    return {
+        "original_schema_count": schemas["original_count"],
+        "original_schema_set_hash": schemas["original_set_hash"],
+        "preserved_activation_v1_schema_count": schemas["preserved_activation_v1_count"],
+        "preserved_activation_v1_schema_set_hash": schemas["preserved_activation_v1_set_hash"],
+        "r3_repair_schema_count": schemas["r3_repair_count"],
+        "r3_repair_schema_set_hash": schemas["r3_repair_set_hash"],
+        "predecessor_schema_count": schemas["predecessor_count"],
+        "predecessor_schema_set_hash": schemas["predecessor_set_hash"],
+        "r4_schema_count": schemas["r4_count"],
+        "r4_schema_set_hash": schemas["r4_set_hash"],
+        "combined_schema_count": schemas["combined_count"],
+        "combined_schema_set_hash": schemas["combined_set_hash"],
+    }
+
+
+def derive_r4_documents(root: Path = PROJECT_ROOT) -> dict[str, Any]:
+    root = root.resolve()
+    if r4_allowlist_hash() != R4_PATH_ALLOWLIST_SHA256:
+        raise ValueError("15-path R4 allowlist identity drift")
+    r3 = derive_repair_documents(root)
+    r3_records = r3["manifest"].get("records")
+    if not isinstance(r3_records, list) or len(r3_records) != R3_RECORD_COUNT:
+        raise ValueError("immutable R3 manifest records are invalid")
+    r3_by_path = {item["path"]: item for item in r3_records}
+    if len(r3_by_path) != R3_RECORD_COUNT or not set(R4_CHANGED_OLD_PATHS).issubset(r3_by_path):
+        raise ValueError("R4 changed-old paths are absent or duplicated in R3")
 
     unchanged_old: list[dict[str, str]] = []
     changed_old: list[dict[str, str]] = []
-    r3_records: list[dict[str, str]] = []
-    for old in sorted(r2_records, key=lambda item: item["path"]):
+    r4_records: list[dict[str, str]] = []
+    for old in sorted(r3_records, key=lambda item: item["path"]):
         path = old["path"]
         actual_sha256 = file_sha256(root / path)
-        if path in R3_CHANGED_OLD_PATHS:
+        if path in R4_CHANGED_OLD_PATHS:
             if actual_sha256 == old["sha256"]:
-                raise ValueError(f"approved R3 changed-old path did not change: {path}")
+                raise ValueError(f"approved R4 changed-old path did not change: {path}")
             changed_old.append({"path": path, "old_sha256": old["sha256"], "new_sha256": actual_sha256})
-            r3_records.append({"path": path, "sha256": actual_sha256})
+            r4_records.append({"path": path, "sha256": actual_sha256})
         else:
             if actual_sha256 != old["sha256"]:
-                raise ValueError(f"unapproved R2 semantic leaf drift: {path}")
+                raise ValueError(f"unapproved R3 semantic leaf drift: {path}")
             unchanged_old.append({"path": path, "sha256": old["sha256"]})
-            r3_records.append({"path": path, "sha256": old["sha256"]})
+            r4_records.append({"path": path, "sha256": old["sha256"]})
     new_records = [
         {"path": path, "sha256": file_sha256(root / path)}
-        for path in sorted(R3_NEW_SEMANTIC_PATHS)
+        for path in sorted(R4_NEW_SEMANTIC_PATHS)
     ]
-    r3_records = sorted(r3_records + new_records, key=lambda item: item["path"])
-    if (len(unchanged_old), len(changed_old), len(new_records), len(r3_records)) != (70, 6, 5, 81):
-        raise ValueError("R3 semantic transition must be exactly 70 unchanged / 6 changed / 5 new / 81 total")
-    semantic_set_hash = _record_set_hash(r3_records)
-    r3_root = merkle_root((item["path"], item["sha256"]) for item in r3_records)
+    r4_records = sorted(r4_records + new_records, key=lambda item: item["path"])
+    if (len(unchanged_old), len(changed_old), len(new_records), len(r4_records)) != (75, 6, 7, 88):
+        raise ValueError("R4 semantic transition must be exactly 75 unchanged / 6 changed / 7 new / 88 total")
+    semantic_set_hash = _record_set_hash(r4_records)
+    r4_root = merkle_root((item["path"], item["sha256"]) for item in r4_records)
     transition = {
-        "old_record_count": 76,
-        "unchanged_old_count": 70,
+        "old_record_count": 81,
+        "unchanged_old_count": 75,
         "changed_old_count": 6,
-        "new_record_count": 5,
-        "total_record_count": 81,
+        "new_record_count": 7,
+        "total_record_count": 88,
         "unchanged_old_leaf_set_hash": _record_set_hash(unchanged_old),
         "changed_old_leaf_transition_hash": canonical_sha256(changed_old),
         "new_leaf_set_hash": _record_set_hash(new_records),
-        "r2_leaf_set_hash": _record_set_hash(r2_records),
-        "r3_leaf_set_hash": semantic_set_hash,
+        "r3_leaf_set_hash": R3_SEMANTIC_RECORD_SET_HASH,
+        "r4_leaf_set_hash": semantic_set_hash,
         "changed_old_records": changed_old,
         "new_records": new_records,
     }
-    schemas = _r3_schema_sets(root, r1_records, r2_records)
-    schema_summary = _schema_set_summary(schemas)
+    schemas = _r4_schema_sets(root, r3_records)
+    schema_summary = _r4_schema_set_summary(schemas)
     provider_counts = {"deepseek": 0, "grok": 0, "opencode": 0, "story_m0": 0}
+    fixed_predecessor = {
+        "commit": B002_PROOF_TARGET_COMMIT,
+        "tree": B002_PROOF_TARGET_TREE,
+        "parent": DEFECTIVE_ACTIVATION_COMMIT,
+        "logical_proof_tag_ref": REPAIR_PROOF_TAG_REF,
+        "proof_tag_object": B002_PROOF_TAG_OBJECT,
+        "framework_manifest_r3_file_sha256": R3_MANIFEST_FILE_SHA256,
+        "framework_manifest_r3_merkle_root": R3_MERKLE_ROOT,
+        "framework_manifest_r3_record_count": R3_RECORD_COUNT,
+        "framework_manifest_r3_semantic_record_set_sha256": R3_SEMANTIC_RECORD_SET_HASH,
+        "final_receipt_r3_file_sha256": R3_RECEIPT_FILE_SHA256,
+        "final_receipt_r3_payload_sha256": R3_RECEIPT_PAYLOAD_HASH,
+    }
     manifest = {
-        "schema_version": "rules-residue.story-construction.precontent-framework-manifest/3.0.0",
-        "manifest_id": "SCG-PRECONTENT-FRAMEWORK-MANIFEST-R3",
-        "manifest_model": REPAIR_APPROVAL_MODEL,
-        "defect_id": DEFECT_ID,
-        "change_set_id": CHANGE_SET_ID,
-        "repair_task_id": REPAIR_TASK_ID,
+        "schema_version": "rules-residue.story-construction.precontent-framework-manifest/4.0.0",
+        "manifest_id": "SCG-PRECONTENT-FRAMEWORK-MANIFEST-R4",
+        "manifest_model": R4_MODEL,
+        "finding_id": ACCEPTANCE_REGRESSION_FINDING_ID,
+        "change_set_id": R4_CHANGE_SET_ID,
+        "repair_task_id": R4_TASK_ID,
         "machine_milestone": "M3",
-        "machine_batch_id": "M3-B002",
-        "lifecycle_stage": "APPROVED",
-        "disposition": "ACTIVE",
-        "release": "NOT_RELEASED",
-        "tracked_active_wip": True,
-        "tracked_authoritative_activation_effective": False,
+        "machine_batch_id": "M3-B003",
+        "machine_phase": "B003-P0-B",
+        "lifecycle_stage": "CANDIDATE",
+        "approval_status": "PENDING_OWNER_EXACT_HASH_APPROVAL_M3_B003_P0_B_R4",
+        "independent_accept_status": "NOT_RUN",
+        "authoritative_successor_effective": False,
         "authority_scope": "CONSTRUCTION_GOVERNANCE_ONLY",
-        "r2_canon_precedence": "HIGHER",
         "base_canon_hash": BASE_CANON_HASH,
         "proposed_canon_hash": BASE_CANON_HASH,
         "canonicalization": "UTF8_NFC_SORTED_KEYS_FINITE_NUMBERS_V1",
-        "defective_activation_candidate": {
-            "commit": DEFECTIVE_ACTIVATION_COMMIT,
-            "tree": DEFECTIVE_ACTIVATION_TREE,
-            "parent": DEFECTIVE_ACTIVATION_PARENT,
-            "authoritative_effect_established": False,
-        },
+        "fixed_predecessor": fixed_predecessor,
         "previous_manifest": {
-            "path": R2_MANIFEST_PATH.as_posix(),
-            "file_sha256": R2_MANIFEST_FILE_SHA256,
-            "merkle_root": R2_MERKLE_ROOT,
-            "record_count": R2_RECORD_COUNT,
+            "path": R3_MANIFEST_PATH.as_posix(),
+            "file_sha256": R3_MANIFEST_FILE_SHA256,
+            "merkle_root": R3_MERKLE_ROOT,
+            "record_count": R3_RECORD_COUNT,
+            "semantic_path_content_record_set_hash": R3_SEMANTIC_RECORD_SET_HASH,
         },
-        "records": r3_records,
+        "records": r4_records,
         "semantic_path_content_record_set_hash": semantic_set_hash,
-        "merkle": {"algorithm": "SHA-256-BINARY-PAIR-DUPLICATE-ODD-V1", "leaf_order": "path_lexical", "root": r3_root},
+        "merkle": {"algorithm": "SHA-256-BINARY-PAIR-DUPLICATE-ODD-V1", "leaf_order": "path_lexical", "root": r4_root},
         "transition": transition,
         "schema_sets": schema_summary,
-        "historical_activation": historical_activation_record(),
-        "fixed_preservation": fixed_repair_preservation(),
+        "fixed_preservation": fixed_r4_preservation(),
         "excluded_from_merkle": [
-            R3_MANIFEST_PATH.as_posix(),
-            R3_RECEIPT_PATH.as_posix(),
-            "FUTURE_REPAIR_OWNER_APPROVAL",
-            "FUTURE_REPAIR_INDEPENDENT_ACCEPT_EVENT",
-            "FUTURE_REPAIR_CLOSEOUT_ENVELOPE_AND_PROOF_TAG",
+            R4_MANIFEST_PATH.as_posix(),
+            R4_RECEIPT_PATH.as_posix(),
+            "FUTURE_R4_OWNER_APPROVAL",
+            "FUTURE_R4_INDEPENDENT_ACCEPT_RESULT",
+            "FUTURE_R4_CLOSEOUT_ENVELOPE_AND_PROOF_TAG",
             "FUTURE_LOCAL_AND_REMOTE_REF_STATE",
         ],
         "provider_request_counts": provider_counts,
@@ -1430,50 +1793,55 @@ def derive_repair_documents(root: Path = PROJECT_ROOT) -> dict[str, Any]:
     }
     manifest_bytes = canonical_json_bytes(manifest)
     manifest_file_sha256 = hashlib.sha256(manifest_bytes).hexdigest()
-    receipt_transition = {key: transition[key] for key in (
-        "old_record_count", "unchanged_old_count", "changed_old_count", "new_record_count",
-        "total_record_count", "unchanged_old_leaf_set_hash", "changed_old_leaf_transition_hash",
-        "new_leaf_set_hash", "r2_leaf_set_hash", "r3_leaf_set_hash",
-    )}
+    receipt_transition = {
+        key: transition[key]
+        for key in (
+            "old_record_count", "unchanged_old_count", "changed_old_count", "new_record_count",
+            "total_record_count", "unchanged_old_leaf_set_hash", "changed_old_leaf_transition_hash",
+            "new_leaf_set_hash", "r3_leaf_set_hash", "r4_leaf_set_hash",
+        )
+    }
     receipt_payload = {
-        "schema_version": "rules-residue.story-construction.precontent-final-receipt/3.0.0",
-        "receipt_id": "SCG-PRECONTENT-READINESS-R3-FINAL-001",
-        "receipt_status": "PENDING_OWNER_AUTHORITATIVE_EFFECT_REPAIR_HASH_APPROVAL_M3_B002",
-        "manifest_model": REPAIR_APPROVAL_MODEL,
-        "defect_id": DEFECT_ID,
-        "change_set_id": CHANGE_SET_ID,
-        "repair_task_id": REPAIR_TASK_ID,
+        "schema_version": "rules-residue.story-construction.precontent-final-receipt/4.0.0",
+        "receipt_id": "SCG-PRECONTENT-READINESS-R4-FINAL-001",
+        "receipt_status": "PENDING_OWNER_EXACT_HASH_APPROVAL_M3_B003_P0_B_R4",
+        "manifest_model": R4_MODEL,
+        "finding_id": ACCEPTANCE_REGRESSION_FINDING_ID,
+        "change_set_id": R4_CHANGE_SET_ID,
+        "repair_task_id": R4_TASK_ID,
         "machine_milestone": "M3",
-        "machine_batch_id": "M3-B002",
-        "tracked_state": {
-            "lifecycle_stage": "APPROVED", "disposition": "ACTIVE", "release": "NOT_RELEASED",
-            "tracked_target_state": "TRACKED_B002_TARGET_STATE_ACTIVE", "active_wip": True,
-            "authoritative_activation_effective": False,
+        "machine_batch_id": "M3-B003",
+        "machine_phase": "B003-P0-B",
+        "successor_state": {
+            "lifecycle_stage": "CANDIDATE",
+            "approval_status": "PENDING_OWNER_EXACT_HASH_APPROVAL_M3_B003_P0_B_R4",
+            "independent_accept_status": "NOT_RUN",
+            "authoritative_successor_effective": False,
+            "ancestry_alone_sufficient": False,
         },
-        "fixed_lineage": {
-            "base_commit": BASE_COMMIT, "base_tree": BASE_TREE,
-            "implementation_commit": IMPLEMENTATION_CANDIDATE_COMMIT,
-            "implementation_tree": IMPLEMENTATION_CANDIDATE_TREE,
-            "defective_activation_commit": DEFECTIVE_ACTIVATION_COMMIT,
-            "defective_activation_tree": DEFECTIVE_ACTIVATION_TREE,
-            "defective_activation_parent": DEFECTIVE_ACTIVATION_PARENT,
-        },
-        "historical_activation": historical_activation_record(),
+        "fixed_predecessor": fixed_predecessor,
         "framework_manifests": {
-            "r1": {"path": MANIFEST_PATH.as_posix(), "file_sha256": R1_MANIFEST_FILE_SHA256, "merkle_root": R1_MERKLE_ROOT, "record_count": R1_RECORD_COUNT},
-            "r2": {"path": R2_MANIFEST_PATH.as_posix(), "file_sha256": R2_MANIFEST_FILE_SHA256, "merkle_root": R2_MERKLE_ROOT, "record_count": R2_RECORD_COUNT},
-            "r3": {"path": R3_MANIFEST_PATH.as_posix(), "file_sha256": manifest_file_sha256, "merkle_root": r3_root, "record_count": 81, "semantic_path_content_record_set_hash": semantic_set_hash},
+            "r3": {
+                "path": R3_MANIFEST_PATH.as_posix(), "file_sha256": R3_MANIFEST_FILE_SHA256,
+                "merkle_root": R3_MERKLE_ROOT, "record_count": R3_RECORD_COUNT,
+                "semantic_path_content_record_set_hash": R3_SEMANTIC_RECORD_SET_HASH,
+            },
+            "r4": {
+                "path": R4_MANIFEST_PATH.as_posix(), "file_sha256": manifest_file_sha256,
+                "merkle_root": r4_root, "record_count": 88,
+                "semantic_path_content_record_set_hash": semantic_set_hash,
+            },
         },
-        "r3_transition": receipt_transition,
+        "r4_transition": receipt_transition,
         "schema_sets": schema_summary,
-        "repair_path_allowlist": {"path_count": 13, "sha256": REPAIR_PATH_ALLOWLIST_SHA256},
-        "fixed_preservation": fixed_repair_preservation(),
+        "r4_path_allowlist": {"path_count": 15, "sha256": R4_PATH_ALLOWLIST_SHA256},
+        "fixed_preservation": fixed_r4_preservation(),
         "provider_request_counts": provider_counts,
     }
     receipt = {
-        "schema_version": "rules-residue.story-construction.precontent-final-receipt/3.0.0",
-        "receipt_kind": "TRACKED_INNER_AUTHORITATIVE_EFFECT_REPAIR_RECEIPT",
-        "outer_envelope_schema": "schemas/story-construction/precontent-activation-closeout-envelope-v2.schema.json",
+        "schema_version": "rules-residue.story-construction.precontent-final-receipt/4.0.0",
+        "receipt_kind": "TRACKED_INNER_ACCEPTANCE_REGRESSION_R4_RECEIPT",
+        "outer_envelope_schema": "schemas/story-construction/precontent-acceptance-regression-closeout-envelope-v1.schema.json",
         "payload": receipt_payload,
         "payload_hash": canonical_sha256(receipt_payload),
     }
@@ -1481,7 +1849,7 @@ def derive_repair_documents(root: Path = PROJECT_ROOT) -> dict[str, Any]:
         "manifest": manifest,
         "manifest_bytes": manifest_bytes,
         "manifest_file_sha256": manifest_file_sha256,
-        "framework_merkle_root": r3_root,
+        "framework_merkle_root": r4_root,
         "semantic_path_content_record_set_hash": semantic_set_hash,
         "transition": transition,
         "schemas": schemas,
@@ -1491,11 +1859,11 @@ def derive_repair_documents(root: Path = PROJECT_ROOT) -> dict[str, Any]:
     }
 
 
-def write_repair_documents(root: Path = PROJECT_ROOT) -> dict[str, Any]:
+def write_r4_documents(root: Path = PROJECT_ROOT) -> dict[str, Any]:
     root = root.resolve()
-    derived = derive_repair_documents(root)
-    (root / R3_MANIFEST_PATH).write_bytes(derived["manifest_bytes"])
-    (root / R3_RECEIPT_PATH).write_bytes(derived["receipt_bytes"])
+    derived = derive_r4_documents(root)
+    (root / R4_MANIFEST_PATH).write_bytes(derived["manifest_bytes"])
+    (root / R4_RECEIPT_PATH).write_bytes(derived["receipt_bytes"])
     return derived
 
 
@@ -1515,6 +1883,7 @@ def _validate_schemas_and_instances(root: Path, errors: list[str]) -> None:
             "precontent-activation-owner-approval-v2.schema.json",
             "precontent-activation-closeout-envelope-v2.schema.json",
             "precontent-final-receipt-v3.schema.json",
+            "precontent-final-receipt-v4.schema.json",
         }:
             errors.append(f"{name}: schema filename is not versioned")
         if schema.get("additionalProperties") is not False:
@@ -1533,6 +1902,8 @@ def _validate_schemas_and_instances(root: Path, errors: list[str]) -> None:
         "precontent-change-set-v2.schema.json": [CHANGE_SET_PATH],
         "precontent-final-receipt-v2.schema.json": [FINAL_RECEIPT_PATH],
         "precontent-final-receipt-v3.schema.json": [R3_RECEIPT_PATH],
+        "precontent-acceptance-regression-change-set-v1.schema.json": [R4_CHANGE_SET_PATH],
+        "precontent-final-receipt-v4.schema.json": [R4_RECEIPT_PATH],
         "precontent-owner-approval-consumption-v1.schema.json": [APPROVAL_CONSUMPTION_PATH],
     }
     for schema_name, paths in bindings.items():
@@ -1875,7 +2246,7 @@ def _valid_remote_name(value: str) -> bool:
 
 
 def _valid_expected_remote_url(value: str) -> bool:
-    if value == "git@github.com:zyc14588/rules-residue.git":
+    if value == PRODUCTION_REMOTE_URL:
         return True
     try:
         path = Path(value)
@@ -1885,12 +2256,79 @@ def _valid_expected_remote_url(value: str) -> bool:
     return path.is_absolute() and resolved == path and path.is_dir() and (path / "HEAD").is_file()
 
 
+def _valid_local_bare_remote(value: str) -> bool:
+    try:
+        path = Path(value)
+        resolved = path.resolve(strict=True)
+    except (OSError, RuntimeError, ValueError):
+        return False
+    if not path.is_absolute() or resolved != path or not path.is_dir() or (path / ".git").exists():
+        return False
+    try:
+        result = subprocess.run(
+            ["git", "--git-dir", str(path), "rev-parse", "--is-bare-repository"],
+            shell=False,
+            check=False,
+            capture_output=True,
+            text=True,
+            timeout=5,
+        )
+    except (OSError, subprocess.TimeoutExpired):
+        return False
+    return result.returncode == 0 and result.stdout.strip() == "true"
+
+
+def _physical_proof_ref(
+    root: Path,
+    *,
+    logical_ref: str,
+    expected_remote_url: str,
+    test_fixture_id: str | None,
+    physical_ref: str | None,
+    label: str,
+) -> tuple[str | None, list[str]]:
+    errors: list[str] = []
+    if test_fixture_id is None and physical_ref is None:
+        return logical_ref, errors
+    if test_fixture_id is None or physical_ref is None:
+        return None, [f"{label} isolated fixture id and physical proof tag ref must be supplied together"]
+    if expected_remote_url == PRODUCTION_REMOTE_URL:
+        errors.append(f"{label} synthetic physical proof ref is forbidden against production origin")
+    if not _valid_local_bare_remote(expected_remote_url):
+        errors.append(f"{label} synthetic physical proof ref requires an absolute local bare remote")
+    try:
+        expected_ref = synthetic_proof_tag_ref(test_fixture_id, root)
+    except (OSError, RuntimeError, ValueError) as exc:
+        errors.append(f"{label} invalid isolated fixture identity: {exc}")
+        expected_ref = None
+    if not _valid_full_ref(physical_ref, "tags") or not physical_ref.startswith(TEST_PROOF_TAG_PREFIX):
+        errors.append(f"{label} physical proof tag ref is outside the exact test namespace")
+    if expected_ref is not None and physical_ref != expected_ref:
+        errors.append(f"{label} physical proof tag ref digest mismatch")
+    return (physical_ref if not errors else None), errors
+
+
 def repair_accept_route_digest(root: Path = PROJECT_ROOT) -> str:
-    route_path = root.resolve() / ".codex/routes/m3-precontent-b002-authoritative-effect-repair-accept-request.json"
-    request = read_json(route_path)
-    validate_request(request)
-    reading_map = generate_reading_map(request, repo_root=root.resolve())
-    return str(reading_map["binding_digest"])
+    """Return the accepted B002 route digest, never a successor re-derivation."""
+
+    del root
+    return B002_ACCEPT_ROUTE_DIGEST
+
+
+def _git_blob_sha256(root: Path, revision: str, relative: str) -> str:
+    result = _git_run(root, ["show", f"{revision}:{relative}"], text=False)
+    if result.returncode != 0:
+        detail = result.stderr.decode("utf-8", errors="replace").strip()
+        raise ValueError(f"cannot read historical proof path {relative}: {detail}")
+    return hashlib.sha256(result.stdout).hexdigest()
+
+
+def b002_repair_path_records(root: Path = PROJECT_ROOT) -> list[dict[str, str]]:
+    root = root.resolve()
+    return [
+        {"path": path, "sha256": _git_blob_sha256(root, B002_PROOF_TARGET_COMMIT, path)}
+        for path in sorted(REPAIR_ALLOWLIST)
+    ]
 
 
 def expected_repair_approval_fields(
@@ -1912,7 +2350,8 @@ def expected_repair_approval_fields(
     receipt = derived["receipt"]
     fixed = fixed_repair_preservation()
     fixed["provider_request_counts"] = {"deepseek": 0, "grok": 0, "opencode": 0, "story_m0": 0}
-    route_digest = repair_accept_route_digest(root)
+    historical_path_records = b002_repair_path_records(root)
+    route_digest = B002_ACCEPT_ROUTE_DIGEST
     return {
         "approval_model": REPAIR_APPROVAL_MODEL,
         "defect_id": DEFECT_ID,
@@ -1931,8 +2370,8 @@ def expected_repair_approval_fields(
             "defective_to_repair_count": 1, "implementation_to_repair_count": 2, "base_to_repair_count": 3,
         },
         "repair_path_allowlist": {"path_count": 13, "sha256": REPAIR_PATH_ALLOWLIST_SHA256},
-        "repair_path_hashes": repair_path_records(root),
-        "repair_path_set_hash": repair_path_set_hash(root),
+        "repair_path_hashes": historical_path_records,
+        "repair_path_set_hash": _record_set_hash(historical_path_records),
         "framework_manifests": {
             "r1": {"path": MANIFEST_PATH.as_posix(), "file_sha256": R1_MANIFEST_FILE_SHA256, "merkle_root": R1_MERKLE_ROOT, "record_count": R1_RECORD_COUNT},
             "r2": {"path": R2_MANIFEST_PATH.as_posix(), "file_sha256": R2_MANIFEST_FILE_SHA256, "merkle_root": R2_MERKLE_ROOT, "record_count": R2_RECORD_COUNT},
@@ -2095,6 +2534,477 @@ def validate_repair_closeout_envelope(
     return errors
 
 
+def r4_accept_route_digest(root: Path = PROJECT_ROOT) -> str:
+    root = root.resolve()
+    request = read_json(root / ".codex/routes/m3-precontent-b003-p0-acceptance-regression-repair-accept-request.json")
+    validate_request(request)
+    reading_map = generate_reading_map(request, repo_root=root)
+    return str(reading_map["binding_digest"])
+
+
+def expected_successor_approval_fields(
+    root: Path,
+    *,
+    successor_commit: str,
+    successor_tree: str,
+    successor_parent: str,
+    predecessor_owner_raw_sha256: str,
+    predecessor_owner_canonical_sha256: str,
+    predecessor_envelope_raw_sha256: str,
+    predecessor_envelope_canonical_sha256: str,
+    predecessor_envelope_payload_hash: str,
+    authoritative_ref: str,
+    remote_name: str,
+    expected_remote_url: str,
+    remote_authoritative_ref: str,
+) -> dict[str, Any]:
+    root = root.resolve()
+    derived = derive_r4_documents(root)
+    actual_manifest = read_json(root / R4_MANIFEST_PATH)
+    actual_receipt = read_json(root / R4_RECEIPT_PATH)
+    if actual_manifest != derived["manifest"] or actual_receipt != derived["receipt"]:
+        raise ValueError("successor R4 manifest/receipt do not match deterministic derivation")
+    transition = derived["transition"]
+    schemas = derived["schemas"]
+    fixed = fixed_r4_preservation()
+    fixed["provider_request_counts"] = {"deepseek": 0, "grok": 0, "opencode": 0, "story_m0": 0}
+    return {
+        "approval_model": R4_MODEL,
+        "finding_id": ACCEPTANCE_REGRESSION_FINDING_ID,
+        "change_set_id": R4_CHANGE_SET_ID,
+        "repair_task_id": R4_TASK_ID,
+        "predecessor_proof": {
+            "commit": B002_PROOF_TARGET_COMMIT,
+            "tree": B002_PROOF_TARGET_TREE,
+            "parent": DEFECTIVE_ACTIVATION_COMMIT,
+            "owner_approval_raw_sha256": predecessor_owner_raw_sha256,
+            "owner_approval_canonical_sha256": predecessor_owner_canonical_sha256,
+            "closeout_envelope_raw_sha256": predecessor_envelope_raw_sha256,
+            "closeout_envelope_canonical_sha256": predecessor_envelope_canonical_sha256,
+            "closeout_payload_hash": predecessor_envelope_payload_hash,
+            "logical_proof_tag_ref": REPAIR_PROOF_TAG_REF,
+        },
+        "successor_candidate": {
+            "commit": successor_commit,
+            "tree": successor_tree,
+            "parent": successor_parent,
+        },
+        "r4_path_allowlist": {"path_count": 15, "sha256": R4_PATH_ALLOWLIST_SHA256},
+        "r4_path_hashes": r4_path_records(root),
+        "r4_path_set_hash": r4_path_set_hash(root),
+        "framework_manifest_r4": {
+            "path": R4_MANIFEST_PATH.as_posix(),
+            "file_sha256": derived["manifest_file_sha256"],
+            "merkle_root": derived["framework_merkle_root"],
+            "record_count": 88,
+            "semantic_path_content_record_set_hash": derived["semantic_path_content_record_set_hash"],
+        },
+        "final_receipt_v4": {
+            "path": R4_RECEIPT_PATH.as_posix(),
+            "file_sha256": file_sha256(root / R4_RECEIPT_PATH),
+            "payload_hash": derived["receipt_payload_hash"],
+        },
+        "r4_transition": {
+            key: transition[key]
+            for key in (
+                "old_record_count", "unchanged_old_count", "changed_old_count", "new_record_count",
+                "total_record_count", "unchanged_old_leaf_set_hash", "changed_old_leaf_transition_hash",
+                "new_leaf_set_hash", "r3_leaf_set_hash", "r4_leaf_set_hash",
+            )
+        },
+        "schema_sets": {
+            "predecessor_schema_count": schemas["predecessor_count"],
+            "predecessor_schema_set_hash": schemas["predecessor_set_hash"],
+            "r4_schema_count": schemas["r4_count"],
+            "r4_schema_set_hash": schemas["r4_set_hash"],
+            "combined_schema_count": schemas["combined_count"],
+            "combined_schema_set_hash": schemas["combined_set_hash"],
+        },
+        "fixed_preservation": fixed,
+        "proof_contract": {
+            "logical_proof_tag_ref": R4_PROOF_TAG_REF,
+            "authoritative_ref": authoritative_ref,
+            "remote_name": remote_name,
+            "expected_remote_url": expected_remote_url,
+            "remote_authoritative_ref": remote_authoritative_ref,
+            "remote_logical_proof_tag_ref": R4_PROOF_TAG_REF,
+            "accept_task_id": R4_ACCEPT_TASK_ID,
+            "accept_result": R4_ACCEPT_RESULT,
+            "accept_verifier": R4_ACCEPT_VERIFIER,
+            "accept_route": R4_ACCEPT_ROUTE,
+            "accept_route_digest": r4_accept_route_digest(root),
+        },
+    }
+
+
+def validate_successor_owner_approval(approval: Any, expected: dict[str, Any], schema: dict[str, Any]) -> list[str]:
+    errors = _schema_issues(approval, schema, "R4 successor Owner approval")
+    if not isinstance(approval, dict):
+        return errors
+    for field, expected_value in expected.items():
+        if approval.get(field) != expected_value:
+            errors.append(f"R4 successor Owner approval {field} mismatch")
+    for field, expected_value in {
+        "schema_version": "rules-residue.story-construction.precontent-acceptance-regression-owner-approval/1.0.0",
+        "approval_status": "APPROVED",
+        "single_use": True,
+        "transferable": False,
+        "consumed": False,
+        "revoked": False,
+        "owner_id": "OWNER",
+    }.items():
+        if approval.get(field) != expected_value:
+            errors.append(f"R4 successor Owner approval {field} mismatch")
+    if not approval.get("approved_at"):
+        errors.append("R4 successor Owner approval approved_at is missing")
+    return errors
+
+
+def expected_successor_accept_result(
+    expected_approval: dict[str, Any],
+    approval: dict[str, Any],
+    approval_raw_sha256: str,
+    approval_canonical_sha256: str,
+) -> dict[str, Any]:
+    candidate = expected_approval["successor_candidate"]
+    proof = expected_approval["proof_contract"]
+    payload = {
+        "schema_version": "rules-residue.story-construction.precontent-acceptance-regression-accept-result/1.0.0",
+        "task_id": R4_ACCEPT_TASK_ID,
+        "result": R4_ACCEPT_RESULT,
+        "verifier": R4_ACCEPT_VERIFIER,
+        "route": R4_ACCEPT_ROUTE,
+        "route_digest": proof["accept_route_digest"],
+        "candidate_commit": candidate["commit"],
+        "candidate_tree": candidate["tree"],
+        "candidate_parent": candidate["parent"],
+        "owner_approval_id": approval.get("approval_id"),
+        "owner_approval_raw_sha256": approval_raw_sha256,
+        "owner_approval_canonical_sha256": approval_canonical_sha256,
+        "verifier_worktree_state": "CLEAN",
+    }
+    evidence_hash = canonical_sha256(payload)
+    return {**payload, "raw_sha256": evidence_hash, "canonical_sha256": evidence_hash}
+
+
+def validate_successor_accept_result(result: Any, expected: dict[str, Any]) -> list[str]:
+    if not isinstance(result, dict):
+        return ["R4 independent ACCEPT result must be an object"]
+    errors: list[str] = []
+    if result != expected:
+        errors.append("R4 independent ACCEPT result binding mismatch")
+    if set(result) != set(expected):
+        errors.append("R4 independent ACCEPT result field set mismatch")
+    unhashed = {key: value for key, value in result.items() if key not in {"raw_sha256", "canonical_sha256"}}
+    digest = canonical_sha256(unhashed)
+    if result.get("raw_sha256") != digest or result.get("canonical_sha256") != digest:
+        errors.append("R4 independent ACCEPT evidence digest mismatch")
+    return errors
+
+
+def expected_successor_closeout_envelope(
+    expected_approval: dict[str, Any],
+    approval: dict[str, Any],
+    approval_raw_sha256: str,
+    approval_canonical_sha256: str,
+    accept_result: dict[str, Any],
+) -> dict[str, Any]:
+    candidate = expected_approval["successor_candidate"]
+    proof = expected_approval["proof_contract"]
+    payload = {
+        "envelope_id": f"SCG-PRECONTENT-M3-B003-P0-B-R4-ACCEPTED-SUCCESSOR-{candidate['commit'][:8].upper()}",
+        "finding_id": ACCEPTANCE_REGRESSION_FINDING_ID,
+        "change_set_id": R4_CHANGE_SET_ID,
+        "binding_strategy": "B002_PROOF_PLUS_DETACHED_ACCEPTED_SUCCESSOR_EXACT_COMMIT_TREE_REMOTE_REFS",
+        "predecessor_proof": expected_approval["predecessor_proof"],
+        "successor_candidate": candidate,
+        "r4_path_set_hash": expected_approval["r4_path_set_hash"],
+        "framework_manifest_r4": expected_approval["framework_manifest_r4"],
+        "final_receipt_v4": expected_approval["final_receipt_v4"],
+        "schema_sets": expected_approval["schema_sets"],
+        "owner_approval": {
+            "approval_id": approval.get("approval_id"),
+            "raw_sha256": approval_raw_sha256,
+            "canonical_sha256": approval_canonical_sha256,
+            "approval_issued_consumed": False,
+            "single_use": True,
+            "transferable": False,
+            "revoked": False,
+        },
+        "approval_consumption": {
+            "consumption_count": 1,
+            "consumed_by_accept_task": R4_ACCEPT_TASK_ID,
+        },
+        "successor_accept": accept_result,
+        "proof_tag": {
+            "logical_ref": R4_PROOF_TAG_REF,
+            "target_commit": candidate["commit"],
+            "target_tree": candidate["tree"],
+        },
+        "integration": {
+            "mode": "FAST_FORWARD_ONLY",
+            "authoritative_ref": proof["authoritative_ref"],
+            "remote_name": proof["remote_name"],
+            "expected_remote_url": proof["expected_remote_url"],
+            "remote_authoritative_ref": proof["remote_authoritative_ref"],
+            "remote_logical_proof_tag_ref": R4_PROOF_TAG_REF,
+            "authoritative_remote_before_successor": B002_PROOF_TARGET_COMMIT,
+            "authoritative_remote_after_successor": candidate["commit"],
+        },
+        "fixed_preservation": expected_approval["fixed_preservation"],
+        "producer_id": "R4-INDEPENDENT-ACCEPT-PRODUCER",
+        "verifier_id": R4_ACCEPT_VERIFIER,
+        "verifier_worktree_state": "CLEAN",
+    }
+    return {
+        "schema_version": "rules-residue.story-construction.precontent-acceptance-regression-closeout-envelope/1.0.0",
+        "envelope_kind": "DETACHED_ACCEPTED_GOVERNANCE_SUCCESSOR_ENVELOPE",
+        "payload": payload,
+        "payload_hash": canonical_sha256(payload),
+    }
+
+
+def validate_successor_closeout_envelope(envelope: Any, expected: dict[str, Any], schema: dict[str, Any]) -> list[str]:
+    errors = _schema_issues(envelope, schema, "R4 successor closeout envelope")
+    if not isinstance(envelope, dict) or not isinstance(envelope.get("payload"), dict):
+        return errors
+    if envelope.get("payload_hash") != canonical_sha256(envelope["payload"]):
+        errors.append("R4 successor closeout envelope payload hash mismatch")
+    if envelope != expected:
+        errors.append("R4 successor closeout envelope binding mismatch")
+    forbidden = {"envelope_file_sha256", "envelope_canonical_sha256", "tag_object_id"}
+    found: set[str] = set()
+
+    def visit(value: Any) -> None:
+        if isinstance(value, dict):
+            found.update(forbidden & set(value))
+            for child in value.values():
+                visit(child)
+        elif isinstance(value, list):
+            for child in value:
+                visit(child)
+
+    visit(envelope)
+    if found:
+        errors.append(f"R4 successor closeout envelope contains self-reference: {sorted(found)}")
+    payload = envelope["payload"]
+    if payload.get("producer_id") == payload.get("verifier_id"):
+        errors.append("R4 successor producer/verifier independence mismatch")
+    return errors
+
+
+def _validate_annotated_tag(
+    root: Path,
+    *,
+    tag_ref: str,
+    target_commit: str,
+    target_tree: str,
+    message_document: dict[str, Any],
+    label: str,
+    errors: list[str],
+) -> str | None:
+    tag_type = _git_proof_text(root, ["cat-file", "-t", tag_ref], f"{label} tag type", errors)
+    tag_oid = _git_proof_text(root, ["rev-parse", tag_ref], f"{label} tag object", errors)
+    tag_target = _git_proof_text(root, ["rev-parse", f"{tag_ref}^{{commit}}"], f"{label} tag target", errors)
+    tag_tree = _git_proof_text(root, ["rev-parse", f"{tag_ref}^{{commit}}^{{tree}}"], f"{label} tag tree", errors)
+    if tag_type != "tag":
+        errors.append(f"{label} proof tag must be annotated")
+    if tag_target != target_commit or tag_tree != target_tree:
+        errors.append(f"{label} proof tag target/tree mismatch")
+    if tag_oid is not None and tag_type == "tag":
+        try:
+            tag_result = _git_run(root, ["cat-file", "tag", tag_oid], text=False)
+        except (OSError, subprocess.TimeoutExpired) as exc:
+            errors.append(f"{label} proof tag message failed: {exc}")
+        else:
+            if tag_result.returncode != 0:
+                errors.append(f"{label} proof tag object cannot be read")
+            else:
+                headers, separator, message = tag_result.stdout.partition(b"\n\n")
+                header_lines = headers.splitlines()
+                direct_object = header_lines[0][7:].decode("ascii", errors="replace") if header_lines and header_lines[0].startswith(b"object ") else ""
+                object_type = header_lines[1] if len(header_lines) > 1 else b""
+                if not separator or direct_object != target_commit or object_type != b"type commit":
+                    errors.append(f"{label} proof tag does not directly target Candidate")
+                if message != canonical_json_bytes(message_document):
+                    errors.append(f"{label} proof tag message is not exact canonical envelope bytes")
+    return tag_oid
+
+
+def _verify_successor_proof(
+    root: Path,
+    *,
+    predecessor_approval_raw_sha256: str,
+    predecessor_approval_canonical_sha256: str,
+    predecessor_envelope_raw_sha256: str,
+    predecessor_envelope_canonical_sha256: str,
+    predecessor_envelope_payload_hash: str,
+    successor_owner_approval_path: Path,
+    successor_accept_result_path: Path,
+    successor_closeout_envelope_path: Path,
+    expected_successor_commit: str,
+    expected_successor_tree: str,
+    expected_successor_parent: str,
+    successor_proof_tag_ref: str,
+    authoritative_ref: str,
+    remote_name: str,
+    expected_remote_url: str,
+    remote_authoritative_ref: str,
+    successor_remote_proof_tag_ref: str,
+    successor_test_fixture_id: str | None,
+    successor_physical_proof_tag_ref: str | None,
+) -> list[str]:
+    errors: list[str] = []
+    if not re.fullmatch(r"[0-9a-f]{40}", expected_successor_commit):
+        errors.append("expected successor commit must be 40 lowercase hex")
+    if not re.fullmatch(r"[0-9a-f]{40}", expected_successor_tree):
+        errors.append("expected successor tree must be 40 lowercase hex")
+    if expected_successor_parent != B002_PROOF_TARGET_COMMIT:
+        errors.append("expected successor parent is not the fixed B002 proof target")
+    if successor_proof_tag_ref != R4_PROOF_TAG_REF or not _valid_full_ref(successor_proof_tag_ref, "tags"):
+        errors.append("successor logical proof tag ref is invalid")
+    if successor_remote_proof_tag_ref != R4_PROOF_TAG_REF:
+        errors.append("successor remote logical proof tag ref is invalid")
+    active_tag_ref, physical_errors = _physical_proof_ref(
+        root,
+        logical_ref=successor_proof_tag_ref,
+        expected_remote_url=expected_remote_url,
+        test_fixture_id=successor_test_fixture_id,
+        physical_ref=successor_physical_proof_tag_ref,
+        label="R4 successor",
+    )
+    errors.extend(physical_errors)
+    if errors:
+        return errors
+    assert active_tag_ref is not None
+    try:
+        approval, _approval_raw, approval_raw_sha256, approval_canonical_sha256 = load_external_proof_json(
+            successor_owner_approval_path, "R4 successor Owner approval"
+        )
+        accept_result, _accept_raw, accept_raw_sha256, accept_canonical_sha256 = load_external_proof_json(
+            successor_accept_result_path, "R4 independent ACCEPT result"
+        )
+        envelope, _envelope_raw, envelope_raw_sha256, envelope_canonical_sha256 = load_external_proof_json(
+            successor_closeout_envelope_path, "R4 successor closeout envelope"
+        )
+        expected_approval = expected_successor_approval_fields(
+            root,
+            successor_commit=expected_successor_commit,
+            successor_tree=expected_successor_tree,
+            successor_parent=expected_successor_parent,
+            predecessor_owner_raw_sha256=predecessor_approval_raw_sha256,
+            predecessor_owner_canonical_sha256=predecessor_approval_canonical_sha256,
+            predecessor_envelope_raw_sha256=predecessor_envelope_raw_sha256,
+            predecessor_envelope_canonical_sha256=predecessor_envelope_canonical_sha256,
+            predecessor_envelope_payload_hash=predecessor_envelope_payload_hash,
+            authoritative_ref=authoritative_ref,
+            remote_name=remote_name,
+            expected_remote_url=expected_remote_url,
+            remote_authoritative_ref=remote_authoritative_ref,
+        )
+        approval_schema = _schema(root, "precontent-acceptance-regression-owner-approval-v1.schema.json")
+        envelope_schema = _schema(root, "precontent-acceptance-regression-closeout-envelope-v1.schema.json")
+    except (OSError, json.JSONDecodeError, ValueError, RouteError, ExternalProofError) as exc:
+        return [str(exc)]
+    for label, raw_hash, canonical_hash in (
+        ("R4 successor Owner approval", approval_raw_sha256, approval_canonical_sha256),
+        ("R4 independent ACCEPT result", accept_raw_sha256, accept_canonical_sha256),
+        ("R4 successor closeout envelope", envelope_raw_sha256, envelope_canonical_sha256),
+    ):
+        if raw_hash != canonical_hash:
+            errors.append(f"{label} is not exact canonical JSON bytes")
+    errors.extend(validate_successor_owner_approval(approval, expected_approval, approval_schema))
+    expected_accept = expected_successor_accept_result(
+        expected_approval, approval, approval_raw_sha256, approval_canonical_sha256
+    )
+    errors.extend(validate_successor_accept_result(accept_result, expected_accept))
+    expected_envelope = expected_successor_closeout_envelope(
+        expected_approval, approval, approval_raw_sha256, approval_canonical_sha256, accept_result
+    )
+    errors.extend(validate_successor_closeout_envelope(envelope, expected_envelope, envelope_schema))
+    if errors:
+        return errors
+
+    tree = _git_proof_text(root, ["rev-parse", f"{expected_successor_commit}^{{tree}}"], "successor tree", errors)
+    parent = _git_proof_text(root, ["rev-parse", f"{expected_successor_commit}^"], "successor parent", errors)
+    ancestry_result = _git_run(
+        root, ["merge-base", "--is-ancestor", B002_PROOF_TARGET_COMMIT, expected_successor_commit]
+    )
+    if tree != expected_successor_tree:
+        errors.append("successor tree mismatch")
+    if parent != expected_successor_parent:
+        errors.append("successor parent mismatch")
+    if ancestry_result.returncode != 0:
+        errors.append("B002 proof target is not an ancestor of successor")
+    committed_paths = _git_proof_text(
+        root, ["diff", "--name-only", f"{B002_PROOF_TARGET_COMMIT}..{expected_successor_commit}"],
+        "successor scope", errors,
+    )
+    if committed_paths is not None and set(filter(None, committed_paths.splitlines())) != set(R4_ALLOWLIST):
+        errors.append("successor Candidate diff is not the exact approved 15-path scope")
+    if file_sha256(root / "governance/story-construction/generated/decisions.q001-q130.canonical.json") != Q001_Q130_HASH:
+        errors.append("successor Q001-Q130 preservation hash drift")
+    if file_sha256(root / ".codex/state/MILESTONE_PLAN.yaml") != M2_PLAN_HASH:
+        errors.append("successor M2 preservation hash drift")
+    try:
+        canon_manifest = read_json(root / "governance/story-construction/canonical-manifest.json")
+    except (OSError, json.JSONDecodeError):
+        errors.append("successor Canon preservation evidence is unreadable")
+    else:
+        canon = canon_manifest.get("canon", {}) if isinstance(canon_manifest, dict) else {}
+        if not isinstance(canon, dict) or {
+            canon.get("base_canon_hash"), canon.get("proposed_canon_hash"), canon.get("source_index_sha256")
+        } != {BASE_CANON_HASH}:
+            errors.append("successor Canon preservation hash drift")
+    if canonical_sha256({"deepseek": 0, "grok": 0, "opencode": 0, "story_m0": 0}) != PROVIDER_ZERO_CALL_EVIDENCE_HASH:
+        errors.append("successor Provider zero-call evidence hash drift")
+    if errors:
+        return errors
+
+    tag_oid = _validate_annotated_tag(
+        root,
+        tag_ref=active_tag_ref,
+        target_commit=expected_successor_commit,
+        target_tree=expected_successor_tree,
+        message_document=envelope,
+        label="R4 successor",
+        errors=errors,
+    )
+    if errors:
+        return errors
+    try:
+        remote_result = _git_run(
+            root,
+            [
+                "ls-remote", "--exit-code", remote_name,
+                remote_authoritative_ref,
+                active_tag_ref,
+                f"{active_tag_ref}^{{}}",
+            ],
+            timeout=20,
+            text=True,
+        )
+    except (OSError, subprocess.TimeoutExpired) as exc:
+        return [f"successor remote Git inspection failed: {exc}"]
+    if remote_result.returncode != 0:
+        detail = remote_result.stderr.strip() or remote_result.stdout.strip() or f"exit {remote_result.returncode}"
+        return [f"successor remote Git inspection failed: {detail}"]
+    remote_refs: dict[str, str] = {}
+    for line in remote_result.stdout.splitlines():
+        match = re.fullmatch(r"([0-9a-f]{40})\t([^\t\r\n]+)", line)
+        if match is None or match.group(2) in remote_refs:
+            errors.append("successor remote ls-remote output is malformed or duplicated")
+            continue
+        remote_refs[match.group(2)] = match.group(1)
+    if remote_refs != {
+        remote_authoritative_ref: expected_successor_commit,
+        active_tag_ref: tag_oid,
+        f"{active_tag_ref}^{{}}": expected_successor_commit,
+    }:
+        errors.append("successor remote branch/tag/tag-peel snapshot mismatch")
+    return errors
+
+
 def verify_authoritative_effect(
     root: Path,
     *,
@@ -2109,13 +3019,25 @@ def verify_authoritative_effect(
     expected_remote_url: str,
     remote_authoritative_ref: str,
     remote_proof_tag_ref: str,
+    test_fixture_id: str | None = None,
+    physical_proof_tag_ref: str | None = None,
+    successor_owner_approval_path: Path | None = None,
+    successor_accept_result_path: Path | None = None,
+    successor_closeout_envelope_path: Path | None = None,
+    expected_successor_commit: str | None = None,
+    expected_successor_tree: str | None = None,
+    expected_successor_parent: str | None = None,
+    successor_proof_tag_ref: str | None = None,
+    successor_remote_proof_tag_ref: str | None = None,
+    successor_test_fixture_id: str | None = None,
+    successor_physical_proof_tag_ref: str | None = None,
 ) -> list[str]:
     root = root.resolve()
     errors: list[str] = []
-    if not re.fullmatch(r"[0-9a-f]{40}", expected_repair_commit):
-        errors.append("expected repair commit must be 40 lowercase hex")
-    if not re.fullmatch(r"[0-9a-f]{40}", expected_repair_tree):
-        errors.append("expected repair tree must be 40 lowercase hex")
+    if expected_repair_commit != B002_PROOF_TARGET_COMMIT:
+        errors.append("expected repair commit is not the fixed B002 proof target")
+    if expected_repair_tree != B002_PROOF_TARGET_TREE:
+        errors.append("expected repair tree is not the fixed B002 proof tree")
     if expected_repair_parent != DEFECTIVE_ACTIVATION_COMMIT:
         errors.append("expected repair parent is not fixed d80 activation Candidate")
     if proof_tag_ref != REPAIR_PROOF_TAG_REF or not _valid_full_ref(proof_tag_ref, "tags"):
@@ -2130,8 +3052,37 @@ def verify_authoritative_effect(
         errors.append("remote name must be the fixed safe name origin")
     if not _valid_expected_remote_url(expected_remote_url):
         errors.append("expected remote URL must be the fixed production origin or an absolute local-repository fixture")
+    active_proof_tag_ref, physical_errors = _physical_proof_ref(
+        root,
+        logical_ref=proof_tag_ref,
+        expected_remote_url=expected_remote_url,
+        test_fixture_id=test_fixture_id,
+        physical_ref=physical_proof_tag_ref,
+        label="B002",
+    )
+    errors.extend(physical_errors)
+    successor_fields = {
+        "successor-owner-approval": successor_owner_approval_path,
+        "successor-accept-result": successor_accept_result_path,
+        "successor-closeout-envelope": successor_closeout_envelope_path,
+        "expected-successor-commit": expected_successor_commit,
+        "expected-successor-tree": expected_successor_tree,
+        "expected-successor-parent": expected_successor_parent,
+        "successor-proof-tag-ref": successor_proof_tag_ref,
+        "successor-remote-proof-tag-ref": successor_remote_proof_tag_ref,
+    }
+    successor_supplied = [name for name, value in successor_fields.items() if value is not None]
+    successor_missing = [name for name, value in successor_fields.items() if value is None]
+    if successor_supplied and successor_missing:
+        errors.append(f"partial successor proof argument set: missing={successor_missing}")
+    if (successor_test_fixture_id is None) != (successor_physical_proof_tag_ref is None):
+        errors.append("partial successor synthetic-tag argument set")
     if errors:
         return errors
+    assert active_proof_tag_ref is not None
+    successor_mode = not successor_missing
+    authoritative_commit = expected_successor_commit if successor_mode else expected_repair_commit
+    assert authoritative_commit is not None
     try:
         approval, _approval_raw, approval_raw_sha256, approval_canonical_sha256 = load_external_proof_json(
             activation_owner_approval_path, "activation Owner approval"
@@ -2176,14 +3127,14 @@ def verify_authoritative_effect(
     count_defective = _git_proof_text(root, ["rev-list", "--count", f"{DEFECTIVE_ACTIVATION_COMMIT}..{expected_repair_commit}"], "d80-to-repair lineage", errors)
     count_implementation = _git_proof_text(root, ["rev-list", "--count", f"{IMPLEMENTATION_CANDIDATE_COMMIT}..{expected_repair_commit}"], "implementation-to-repair lineage", errors)
     count_base = _git_proof_text(root, ["rev-list", "--count", f"{BASE_COMMIT}..{expected_repair_commit}"], "base-to-repair lineage", errors)
-    if head != expected_repair_commit:
-        errors.append("HEAD does not equal expected repair commit")
+    if head != authoritative_commit:
+        errors.append("HEAD does not equal the exact accepted authoritative commit")
     if tree != expected_repair_tree:
         errors.append("repair tree mismatch")
     if parent != expected_repair_parent:
         errors.append("repair parent mismatch")
-    if symbolic_head != authoritative_ref or authoritative_oid != expected_repair_commit:
-        errors.append("local authoritative branch does not equal repair commit")
+    if symbolic_head != authoritative_ref or authoritative_oid != authoritative_commit:
+        errors.append("local authoritative branch does not equal the exact accepted authoritative commit")
     if status != "":
         errors.append("authoritative-effect verifier worktree is not clean")
     if (count_defective, count_implementation, count_base) != ("1", "2", "3"):
@@ -2192,10 +3143,16 @@ def verify_authoritative_effect(
     if remote_url != expected_remote_url:
         errors.append("configured remote URL mismatch")
 
-    tag_type = _git_proof_text(root, ["cat-file", "-t", proof_tag_ref], "proof tag type", errors)
-    tag_oid = _git_proof_text(root, ["rev-parse", proof_tag_ref], "proof tag object", errors)
-    tag_target = _git_proof_text(root, ["rev-parse", f"{proof_tag_ref}^{{commit}}"], "proof tag target", errors)
-    tag_tree = _git_proof_text(root, ["rev-parse", f"{proof_tag_ref}^{{commit}}^{{tree}}"], "proof tag tree", errors)
+    logical_tag_type = _git_proof_text(root, ["cat-file", "-t", REPAIR_PROOF_TAG_REF], "production B002 proof tag type", errors)
+    logical_tag_oid = _git_proof_text(root, ["rev-parse", REPAIR_PROOF_TAG_REF], "production B002 proof tag object", errors)
+    logical_tag_target = _git_proof_text(root, ["rev-parse", f"{REPAIR_PROOF_TAG_REF}^{{commit}}"], "production B002 proof tag target", errors)
+    if logical_tag_type != "tag" or logical_tag_oid != B002_PROOF_TAG_OBJECT or logical_tag_target != B002_PROOF_TARGET_COMMIT:
+        errors.append("production B002 proof tag identity/target drift")
+
+    tag_type = _git_proof_text(root, ["cat-file", "-t", active_proof_tag_ref], "proof tag type", errors)
+    tag_oid = _git_proof_text(root, ["rev-parse", active_proof_tag_ref], "proof tag object", errors)
+    tag_target = _git_proof_text(root, ["rev-parse", f"{active_proof_tag_ref}^{{commit}}"], "proof tag target", errors)
+    tag_tree = _git_proof_text(root, ["rev-parse", f"{active_proof_tag_ref}^{{commit}}^{{tree}}"], "proof tag tree", errors)
     if tag_type != "tag":
         errors.append("proof tag must be annotated")
     if tag_target != expected_repair_commit or tag_tree != expected_repair_tree:
@@ -2223,7 +3180,14 @@ def verify_authoritative_effect(
     try:
         remote_result = _git_run(
             root,
-            ["ls-remote", "--exit-code", remote_name, remote_authoritative_ref, remote_proof_tag_ref, f"{remote_proof_tag_ref}^{{}}"],
+            [
+                "ls-remote", "--exit-code", remote_name,
+                remote_authoritative_ref,
+                REPAIR_PROOF_TAG_REF,
+                f"{REPAIR_PROOF_TAG_REF}^{{}}",
+                active_proof_tag_ref,
+                f"{active_proof_tag_ref}^{{}}",
+            ],
             timeout=20,
             text=True,
         )
@@ -2239,13 +3203,48 @@ def verify_authoritative_effect(
             errors.append("remote ls-remote output is malformed or duplicated")
             continue
         remote_refs[match.group(2)] = match.group(1)
-    expected_remote_refs = {
-        remote_authoritative_ref: expected_repair_commit,
-        remote_proof_tag_ref: tag_oid,
-        f"{remote_proof_tag_ref}^{{}}": expected_repair_commit,
+    expected_remote_refs: dict[str, str | None] = {
+        remote_authoritative_ref: authoritative_commit,
+        REPAIR_PROOF_TAG_REF: B002_PROOF_TAG_OBJECT,
+        f"{REPAIR_PROOF_TAG_REF}^{{}}": B002_PROOF_TARGET_COMMIT,
+        active_proof_tag_ref: tag_oid,
+        f"{active_proof_tag_ref}^{{}}": expected_repair_commit,
     }
     if remote_refs != expected_remote_refs:
         errors.append("remote branch/tag/tag-peel snapshot mismatch")
+    if errors:
+        return errors
+    if successor_mode:
+        assert successor_owner_approval_path is not None
+        assert successor_accept_result_path is not None
+        assert successor_closeout_envelope_path is not None
+        assert expected_successor_commit is not None
+        assert expected_successor_tree is not None
+        assert expected_successor_parent is not None
+        assert successor_proof_tag_ref is not None
+        assert successor_remote_proof_tag_ref is not None
+        errors.extend(_verify_successor_proof(
+            root,
+            predecessor_approval_raw_sha256=approval_raw_sha256,
+            predecessor_approval_canonical_sha256=approval_canonical_sha256,
+            predecessor_envelope_raw_sha256=envelope_raw_sha256,
+            predecessor_envelope_canonical_sha256=envelope_canonical_sha256,
+            predecessor_envelope_payload_hash=str(envelope.get("payload_hash")),
+            successor_owner_approval_path=successor_owner_approval_path,
+            successor_accept_result_path=successor_accept_result_path,
+            successor_closeout_envelope_path=successor_closeout_envelope_path,
+            expected_successor_commit=expected_successor_commit,
+            expected_successor_tree=expected_successor_tree,
+            expected_successor_parent=expected_successor_parent,
+            successor_proof_tag_ref=successor_proof_tag_ref,
+            authoritative_ref=authoritative_ref,
+            remote_name=remote_name,
+            expected_remote_url=expected_remote_url,
+            remote_authoritative_ref=remote_authoritative_ref,
+            successor_remote_proof_tag_ref=successor_remote_proof_tag_ref,
+            successor_test_fixture_id=successor_test_fixture_id,
+            successor_physical_proof_tag_ref=successor_physical_proof_tag_ref,
+        ))
     return errors
 
 
@@ -2292,6 +3291,63 @@ def _validate_change_set(root: Path, errors: list[str]) -> None:
     ):
         if forbidden in serialized:
             errors.append(f"tracked Change Set predicts future external proof: {forbidden}")
+
+
+def _validate_r4_change_set(root: Path, errors: list[str]) -> None:
+    change_set = read_json(root / R4_CHANGE_SET_PATH)
+    expected_top = {
+        "schema_version": "rules-residue.story-construction.precontent-acceptance-regression-change-set/1.0.0",
+        "change_set_id": R4_CHANGE_SET_ID,
+        "finding_id": ACCEPTANCE_REGRESSION_FINDING_ID,
+        "repair_model": R4_MODEL,
+        "task_id": R4_TASK_ID,
+        "mode": "REPAIR",
+        "machine_milestone": "M3",
+        "machine_batch_id": "M3-B003",
+        "machine_phase": "B003-P0-B",
+        "authority_scope": "CONSTRUCTION_GOVERNANCE_ONLY",
+        "owner_scope_approved": True,
+    }
+    for field, value in expected_top.items():
+        if change_set.get(field) != value:
+            errors.append(f"R4 acceptance-regression Change Set drift: {field}")
+    scope = change_set.get("scope")
+    if not isinstance(scope, dict) or scope != {
+        "path_count": 15,
+        "path_allowlist_sha256": R4_PATH_ALLOWLIST_SHA256,
+        "paths": list(R4_ALLOWLIST),
+    }:
+        errors.append("R4 acceptance-regression exact scope binding drift")
+    transition = change_set.get("semantic_transition")
+    if not isinstance(transition, dict):
+        errors.append("R4 acceptance-regression transition is missing")
+    else:
+        expected_transition = {
+            "old_record_count": 81,
+            "unchanged_old_count": 75,
+            "changed_old_count": 6,
+            "new_record_count": 7,
+            "total_record_count": 88,
+            "changed_old_paths": list(R4_CHANGED_OLD_PATHS),
+            "new_semantic_paths": list(R4_NEW_SEMANTIC_PATHS),
+            "merkle_excluded_paths": [R4_MANIFEST_PATH.as_posix(), R4_RECEIPT_PATH.as_posix()],
+        }
+        if transition != expected_transition:
+            errors.append("R4 acceptance-regression transition contract drift")
+    fixed_parent = change_set.get("fixed_parent")
+    if not isinstance(fixed_parent, dict) or fixed_parent.get("commit") != B002_PROOF_TARGET_COMMIT or fixed_parent.get("tree") != B002_PROOF_TARGET_TREE:
+        errors.append("R4 acceptance-regression fixed parent drift")
+    candidate_binding = change_set.get("candidate_binding")
+    if candidate_binding != {
+        "strategy": "EXACT_HEAD_AT_VALIDATION",
+        "candidate_identity_location": "EXTERNAL_OWNER_APPROVAL_AFTER_CANDIDATE",
+        "self_referential_candidate_identity": False,
+    }:
+        errors.append("R4 acceptance-regression Candidate binding drift")
+    serialized = json.dumps(change_set, sort_keys=True)
+    for forbidden in ("candidate_commit", "candidate_tree", "tag_object_id", "integration_commit"):
+        if forbidden in serialized:
+            errors.append(f"R4 tracked Change Set predicts future external proof: {forbidden}")
 
 
 def _validate_test_fixtures(root: Path, errors: list[str]) -> None:
@@ -2442,7 +3498,7 @@ def _git_output(root: Path, *args: str) -> str:
 
 def changed_paths(root: Path) -> set[str]:
     head = _git_output(root, "rev-parse", "HEAD")
-    committed = set(filter(None, _git_output(root, "diff", "--name-only", f"{DEFECTIVE_ACTIVATION_COMMIT}..{head}").splitlines())) if head != DEFECTIVE_ACTIVATION_COMMIT else set()
+    committed = set(filter(None, _git_output(root, "diff", "--name-only", f"{B002_PROOF_TARGET_COMMIT}..{head}").splitlines())) if head != B002_PROOF_TARGET_COMMIT else set()
     status = _git_output(root, "status", "--porcelain", "--untracked-files=all")
     working: set[str] = set()
     for line in status.splitlines():
@@ -2461,26 +3517,22 @@ def _validate_git_and_runtime_boundary(root: Path, errors: list[str]) -> None:
     except (OSError, subprocess.CalledProcessError) as exc:
         errors.append(f"cannot compute changed paths: {exc}")
         return
-    expected = set(REPAIR_ALLOWLIST)
+    expected = set(R4_ALLOWLIST)
     outside = sorted(actual - expected)
     missing = sorted(expected - actual)
     if outside or missing:
-        errors.append(f"repair diff is not the exact 13-path allowlist: missing={missing}, extra={outside}")
+        errors.append(f"R4 repair diff is not the exact 15-path allowlist: missing={missing}, extra={outside}")
     try:
-        defective_tree = _git_output(root, "rev-parse", f"{DEFECTIVE_ACTIVATION_COMMIT}^{{tree}}")
-        defective_parent = _git_output(root, "rev-parse", f"{DEFECTIVE_ACTIVATION_COMMIT}^")
+        predecessor_tree = _git_output(root, "rev-parse", f"{B002_PROOF_TARGET_COMMIT}^{{tree}}")
+        predecessor_parent = _git_output(root, "rev-parse", f"{B002_PROOF_TARGET_COMMIT}^")
         head = _git_output(root, "rev-parse", "HEAD")
-        if defective_tree != DEFECTIVE_ACTIVATION_TREE or defective_parent != DEFECTIVE_ACTIVATION_PARENT:
-            errors.append("fixed defective activation commit/tree/parent mismatch")
-        if head != DEFECTIVE_ACTIVATION_COMMIT:
+        if predecessor_tree != B002_PROOF_TARGET_TREE or predecessor_parent != DEFECTIVE_ACTIVATION_COMMIT:
+            errors.append("fixed B002 predecessor commit/tree/parent mismatch")
+        if head != B002_PROOF_TARGET_COMMIT:
             parent = _git_output(root, "rev-parse", "HEAD^")
-            counts = (
-                _git_output(root, "rev-list", "--count", f"{DEFECTIVE_ACTIVATION_COMMIT}..HEAD"),
-                _git_output(root, "rev-list", "--count", f"{IMPLEMENTATION_CANDIDATE_COMMIT}..HEAD"),
-                _git_output(root, "rev-list", "--count", f"{BASE_COMMIT}..HEAD"),
-            )
-            if parent != DEFECTIVE_ACTIVATION_COMMIT or counts != ("1", "2", "3"):
-                errors.append("repair lineage must be exactly d80 -> one repair commit")
+            count = _git_output(root, "rev-list", "--count", f"{B002_PROOF_TARGET_COMMIT}..HEAD")
+            if parent != B002_PROOF_TARGET_COMMIT or count != "1":
+                errors.append("R4 repair lineage must be exactly B002 -> one Candidate commit")
     except (OSError, subprocess.CalledProcessError) as exc:
         errors.append(f"cannot verify repair lineage: {exc}")
     runtime_paths = runtime_relative_paths(root / "game-package")
@@ -2551,6 +3603,38 @@ def _validate_derived(root: Path, errors: list[str]) -> None:
         errors.append("fixed Q001-Q130 canonical hash drift")
     if file_sha256(root / ".codex/state/MILESTONE_PLAN.yaml") != M2_PLAN_HASH:
         errors.append("fixed M2 plan hash drift")
+    try:
+        r4_derived = derive_r4_documents(root)
+        r4_manifest = read_json(root / R4_MANIFEST_PATH)
+        r4_receipt = read_json(root / R4_RECEIPT_PATH)
+    except (OSError, json.JSONDecodeError, ValueError) as exc:
+        errors.append(f"cannot derive deterministic R4 acceptance-regression outputs: {exc}")
+        return
+    if r4_manifest != r4_derived["manifest"]:
+        errors.append("R4 framework manifest is stale or nondeterministic")
+    if r4_receipt != r4_derived["receipt"]:
+        errors.append("R4 acceptance-regression receipt is stale or nondeterministic")
+    errors.extend(validate_r4_manifest_transition(r4_manifest, actual_manifest))
+    errors.extend(validate_r4_receipt_binding(r4_receipt, r4_derived["receipt"]))
+    record_paths = [item.get("path") for item in r4_manifest.get("records", []) if isinstance(item, dict)]
+    if R4_MANIFEST_PATH.as_posix() in record_paths or R4_RECEIPT_PATH.as_posix() in record_paths:
+        errors.append("R4 manifest contains a self/audit Merkle leaf")
+    transition = r4_manifest.get("transition", {})
+    for field, value in {
+        "old_record_count": 81,
+        "unchanged_old_count": 75,
+        "changed_old_count": 6,
+        "new_record_count": 7,
+        "total_record_count": 88,
+    }.items():
+        if not isinstance(transition, dict) or transition.get(field) != value:
+            errors.append(f"R4 Merkle transition count drift: {field}")
+    changed_records = transition.get("changed_old_records", []) if isinstance(transition, dict) else []
+    new_records = transition.get("new_records", []) if isinstance(transition, dict) else []
+    if [item.get("path") for item in changed_records if isinstance(item, dict)] != sorted(R4_CHANGED_OLD_PATHS):
+        errors.append("R4 changed-old semantic leaf set drift")
+    if [item.get("path") for item in new_records if isinstance(item, dict)] != sorted(R4_NEW_SEMANTIC_PATHS):
+        errors.append("R4 new semantic leaf set drift")
 
 
 def _validate_immutable_r1(root: Path, errors: list[str]) -> None:
@@ -2658,6 +3742,35 @@ def _validate_authoritative_effect(root: Path, errors: list[str]) -> None:
         errors.append("tracked ACTIVE incorrectly claims authoritative activation")
 
 
+def _validate_b002_historical_snapshot(root: Path, errors: list[str]) -> None:
+    """Validate an exact accepted B002 checkout without requiring successor files."""
+
+    for relative in tuple(dict.fromkeys(ALLOWLIST + ACTIVATION_ALLOWLIST + REPAIR_ALLOWLIST)):
+        if not (root / relative).is_file():
+            errors.append(f"missing mandatory historical B002 artifact: {relative}")
+    if errors:
+        return
+    try:
+        head = _git_output(root, "rev-parse", "HEAD")
+        tree = _git_output(root, "rev-parse", "HEAD^{tree}")
+        status = _git_output(root, "status", "--porcelain", "--untracked-files=all")
+        derived = derive_repair_documents(root)
+        r2_manifest = read_json(root / R2_MANIFEST_PATH)
+    except (OSError, subprocess.CalledProcessError, json.JSONDecodeError, ValueError) as exc:
+        errors.append(f"cannot validate historical B002 snapshot: {exc}")
+        return
+    if head != B002_PROOF_TARGET_COMMIT or tree != B002_PROOF_TARGET_TREE:
+        errors.append("historical B002 checkout commit/tree mismatch")
+    if status:
+        errors.append("historical B002 checkout is not clean")
+    if derived["manifest_file_sha256"] != R3_MANIFEST_FILE_SHA256 or derived["receipt_payload_hash"] != R3_RECEIPT_PAYLOAD_HASH:
+        errors.append("historical B002 R3 identities drift")
+    errors.extend(validate_repair_manifest_transition(derived["manifest"], r2_manifest))
+    errors.extend(validate_repair_receipt_binding(derived["receipt"]))
+    _validate_immutable_r1(root, errors)
+    _validate_authoritative_effect(root, errors)
+
+
 def collect_errors(
     project_root: Path = PROJECT_ROOT,
     *,
@@ -2674,14 +3787,15 @@ def collect_errors(
     if phase == "invalid-mixed-state":
         _validate_invalid_mixed_state(root, errors)
         return errors
-    for relative in tuple(dict.fromkeys(ALLOWLIST + ACTIVATION_ALLOWLIST + REPAIR_ALLOWLIST)):
+    for relative in tuple(dict.fromkeys(ALLOWLIST + ACTIVATION_ALLOWLIST + REPAIR_ALLOWLIST + R4_ALLOWLIST)):
         if not (root / relative).is_file():
-            errors.append(f"missing mandatory B002 artifact: {relative}")
+            errors.append(f"missing mandatory pre-content artifact: {relative}")
     if errors:
         return errors
     _validate_schemas_and_instances(root, errors)
     _validate_decision_binding(root, errors)
     _validate_change_set(root, errors)
+    _validate_r4_change_set(root, errors)
     _validate_test_fixtures(root, errors)
     _validate_context_orders_and_packets(root, errors)
     _validate_profiles_and_controls(root, errors)
@@ -2716,9 +3830,31 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--expected-remote-url")
     parser.add_argument("--remote-authoritative-ref")
     parser.add_argument("--remote-proof-tag-ref")
+    parser.add_argument("--test-fixture-id")
+    parser.add_argument("--physical-proof-tag-ref")
+    parser.add_argument("--successor-owner-approval", type=Path)
+    parser.add_argument("--successor-accept-result", type=Path)
+    parser.add_argument("--successor-closeout-envelope", type=Path)
+    parser.add_argument("--expected-successor-commit")
+    parser.add_argument("--expected-successor-tree")
+    parser.add_argument("--expected-successor-parent")
+    parser.add_argument("--successor-proof-tag-ref")
+    parser.add_argument("--successor-remote-proof-tag-ref")
+    parser.add_argument("--successor-test-fixture-id")
+    parser.add_argument("--successor-physical-proof-tag-ref")
     args = parser.parse_args(argv)
     phase = "tracked-active-candidate" if args.phase == "framework" else args.phase
-    errors = collect_errors(args.project_root, check_derived=not args.skip_derived, phase=phase)
+    historical_b002 = False
+    if args.phase == "authoritative-effect":
+        try:
+            historical_b002 = _git_output(args.project_root.resolve(), "rev-parse", "HEAD") == B002_PROOF_TARGET_COMMIT
+        except (OSError, subprocess.CalledProcessError):
+            historical_b002 = False
+    if historical_b002:
+        errors: list[str] = []
+        _validate_b002_historical_snapshot(args.project_root.resolve(), errors)
+    else:
+        errors = collect_errors(args.project_root, check_derived=not args.skip_derived, phase=phase)
     proof_fields = {
         "activation-owner-approval": args.activation_owner_approval,
         "activation-closeout-envelope": args.activation_closeout_envelope,
@@ -2731,6 +3867,20 @@ def main(argv: list[str] | None = None) -> int:
         "expected-remote-url": args.expected_remote_url,
         "remote-authoritative-ref": args.remote_authoritative_ref,
         "remote-proof-tag-ref": args.remote_proof_tag_ref,
+    }
+    optional_external_fields = {
+        "test-fixture-id": args.test_fixture_id,
+        "physical-proof-tag-ref": args.physical_proof_tag_ref,
+        "successor-owner-approval": args.successor_owner_approval,
+        "successor-accept-result": args.successor_accept_result,
+        "successor-closeout-envelope": args.successor_closeout_envelope,
+        "expected-successor-commit": args.expected_successor_commit,
+        "expected-successor-tree": args.expected_successor_tree,
+        "expected-successor-parent": args.expected_successor_parent,
+        "successor-proof-tag-ref": args.successor_proof_tag_ref,
+        "successor-remote-proof-tag-ref": args.successor_remote_proof_tag_ref,
+        "successor-test-fixture-id": args.successor_test_fixture_id,
+        "successor-physical-proof-tag-ref": args.successor_physical_proof_tag_ref,
     }
     supplied = [name for name, value in proof_fields.items() if value is not None]
     authoritative_effective = False
@@ -2755,10 +3905,22 @@ def main(argv: list[str] | None = None) -> int:
                 expected_remote_url=args.expected_remote_url,
                 remote_authoritative_ref=args.remote_authoritative_ref,
                 remote_proof_tag_ref=args.remote_proof_tag_ref,
+                test_fixture_id=args.test_fixture_id,
+                physical_proof_tag_ref=args.physical_proof_tag_ref,
+                successor_owner_approval_path=args.successor_owner_approval,
+                successor_accept_result_path=args.successor_accept_result,
+                successor_closeout_envelope_path=args.successor_closeout_envelope,
+                expected_successor_commit=args.expected_successor_commit,
+                expected_successor_tree=args.expected_successor_tree,
+                expected_successor_parent=args.expected_successor_parent,
+                successor_proof_tag_ref=args.successor_proof_tag_ref,
+                successor_remote_proof_tag_ref=args.successor_remote_proof_tag_ref,
+                successor_test_fixture_id=args.successor_test_fixture_id,
+                successor_physical_proof_tag_ref=args.successor_physical_proof_tag_ref,
             )
             errors.extend(proof_errors)
             authoritative_effective = not proof_errors
-    elif supplied:
+    elif supplied or any(value is not None for value in optional_external_fields.values()):
         errors.append("external proof arguments are allowed only for --phase authoritative-effect")
     if errors:
         print("PRECONTENT_READINESS: FAIL")
@@ -2772,14 +3934,14 @@ def main(argv: list[str] | None = None) -> int:
             print("effective_active_wip=true")
             print("global_active_WIP=1")
         return 1
-    derived = derive_repair_documents(args.project_root)
+    derived = derive_repair_documents(args.project_root) if historical_b002 else derive_r4_documents(args.project_root)
     print("PRECONTENT_READINESS: PASS")
     print(f"- phase={args.phase}: PASS")
     print("- 21 Owner decisions and three partial supersessions: PASS")
     print("- TEST namespace, non-promotion, routes, Reveal/NPC and cross-modal boundaries: PASS")
     print("- closed schemas, context/omission hashes and M2 capability isolation: PASS")
     print("- Provider profiles, data/rights controls and request counts=0: PASS")
-    print("- immutable R1/R2 predecessors plus deterministic R3 repair receipt and runtime exclusion: PASS")
+    print("- immutable R1/R2/R3 predecessors plus deterministic R4 receipt and runtime exclusion: PASS")
     print("TRACKED_B002_TARGET_STATE_ACTIVE=true")
     print("tracked_active_wip=true")
     print("tracked_authoritative_activation_effective=false")
@@ -2790,47 +3952,60 @@ def main(argv: list[str] | None = None) -> int:
     else:
         print("AUTHORITATIVE_M3_B002_EFFECTIVE=false")
     if args.print_hashes:
-        receipt = derived["receipt"]
-        transition = derived["transition"]
-        schemas = derived["schemas"]
-        print(f"repair_path_count={len(REPAIR_ALLOWLIST)}")
-        print(f"repair_path_allowlist_sha256={repair_allowlist_hash()}")
-        print(f"repair_path_set_hash={repair_path_set_hash(args.project_root)}")
         print(f"framework_manifest_r1_file_sha256={R1_MANIFEST_FILE_SHA256}")
         print(f"framework_manifest_r1_merkle_root={R1_MERKLE_ROOT}")
         print(f"framework_manifest_r1_record_count={R1_RECORD_COUNT}")
         print(f"framework_manifest_r2_file_sha256={R2_MANIFEST_FILE_SHA256}")
         print(f"framework_manifest_r2_merkle_root={R2_MERKLE_ROOT}")
         print(f"framework_manifest_r2_record_count={R2_RECORD_COUNT}")
-        print(f"framework_manifest_r3_file_sha256={derived['manifest_file_sha256']}")
-        print(f"framework_manifest_r3_merkle_root={derived['framework_merkle_root']}")
-        print("framework_manifest_r3_record_count=81")
-        print(f"semantic_path_content_record_set_hash={derived['semantic_path_content_record_set_hash']}")
-        for field in (
-            "old_record_count", "unchanged_old_count", "changed_old_count", "new_record_count",
-            "total_record_count", "unchanged_old_leaf_set_hash", "changed_old_leaf_transition_hash",
-            "new_leaf_set_hash", "r2_leaf_set_hash", "r3_leaf_set_hash",
-        ):
-            print(f"{field}={transition[field]}")
-        for index, record in enumerate(transition["changed_old_records"], start=1):
-            print(f"changed_old_{index}_path={record['path']}")
-            print(f"changed_old_{index}_old_sha256={record['old_sha256']}")
-            print(f"changed_old_{index}_new_sha256={record['new_sha256']}")
-        for index, record in enumerate(transition["new_records"], start=1):
-            print(f"new_semantic_{index}_path={record['path']}")
-            print(f"new_semantic_{index}_sha256={record['sha256']}")
-        print(f"original_schema_count={schemas['original_count']}")
-        print(f"original_schema_set_hash={schemas['original_set_hash']}")
-        print(f"preserved_activation_v1_schema_count={schemas['preserved_activation_v1_count']}")
-        print(f"preserved_activation_v1_schema_set_hash={schemas['preserved_activation_v1_set_hash']}")
-        print(f"repair_schema_count={schemas['repair_count']}")
-        print(f"repair_schema_set_hash={schemas['repair_set_hash']}")
-        print(f"combined_schema_count={schemas['combined_count']}")
-        print(f"combined_schema_set_hash={schemas['combined_set_hash']}")
-        for name in REPAIR_SCHEMA_FILES:
-            print(f"{name}_sha256={file_sha256(args.project_root / 'schemas/story-construction' / name)}")
-        print(f"r3_receipt_file_sha256={hashlib.sha256(derived['receipt_bytes']).hexdigest()}")
-        print(f"r3_receipt_payload_sha256={receipt['payload_hash']}")
+        print(f"framework_manifest_r3_file_sha256={R3_MANIFEST_FILE_SHA256}")
+        print(f"framework_manifest_r3_merkle_root={R3_MERKLE_ROOT}")
+        print(f"framework_manifest_r3_record_count={R3_RECORD_COUNT}")
+        print(f"framework_manifest_r3_semantic_record_set_sha256={R3_SEMANTIC_RECORD_SET_HASH}")
+        print(f"r3_receipt_file_sha256={R3_RECEIPT_FILE_SHA256}")
+        print(f"r3_receipt_payload_sha256={R3_RECEIPT_PAYLOAD_HASH}")
+        if not historical_b002:
+            receipt = derived["receipt"]
+            transition = derived["transition"]
+            schemas = derived["schemas"]
+            print(f"r4_path_count={len(R4_ALLOWLIST)}")
+            print(f"r4_path_allowlist_sha256={r4_allowlist_hash()}")
+            print(f"r4_path_set_hash={r4_path_set_hash(args.project_root)}")
+            for index, record in enumerate(r4_path_records(args.project_root), start=1):
+                print(f"r4_path_{index}={record['path']}")
+                print(f"r4_path_{index}_sha256={record['sha256']}")
+            print(f"framework_manifest_r4_file_sha256={derived['manifest_file_sha256']}")
+            print(f"framework_manifest_r4_merkle_root={derived['framework_merkle_root']}")
+            print("framework_manifest_r4_record_count=88")
+            print(f"framework_manifest_r4_semantic_record_set_sha256={derived['semantic_path_content_record_set_hash']}")
+            for field in (
+                "old_record_count", "unchanged_old_count", "changed_old_count", "new_record_count",
+                "total_record_count", "unchanged_old_leaf_set_hash", "changed_old_leaf_transition_hash",
+                "new_leaf_set_hash", "r3_leaf_set_hash", "r4_leaf_set_hash",
+            ):
+                print(f"{field}={transition[field]}")
+            for index, record in enumerate(transition["changed_old_records"], start=1):
+                print(f"changed_old_{index}_path={record['path']}")
+                print(f"changed_old_{index}_old_sha256={record['old_sha256']}")
+                print(f"changed_old_{index}_new_sha256={record['new_sha256']}")
+            for index, record in enumerate(transition["new_records"], start=1):
+                print(f"new_semantic_{index}_path={record['path']}")
+                print(f"new_semantic_{index}_sha256={record['sha256']}")
+            for name, key in (
+                ("original", "original"),
+                ("preserved_activation_v1", "preserved_activation_v1"),
+                ("r3_repair", "r3_repair"),
+                ("predecessor", "predecessor"),
+                ("r4", "r4"),
+                ("combined", "combined"),
+            ):
+                print(f"{name}_schema_count={schemas[f'{key}_count']}")
+                print(f"{name}_schema_set_hash={schemas[f'{key}_set_hash']}")
+            for name in R4_SCHEMA_FILES:
+                print(f"{name}_sha256={file_sha256(args.project_root / 'schemas/story-construction' / name)}")
+            print(f"r4_receipt_file_sha256={hashlib.sha256(derived['receipt_bytes']).hexdigest()}")
+            print(f"r4_receipt_payload_sha256={receipt['payload_hash']}")
+            print(f"r4_accept_route_digest={r4_accept_route_digest(args.project_root)}")
         print(f"pending_receipt_file_sha256={PENDING_RECEIPT_FILE_SHA256}")
         print(f"pending_receipt_payload_hash={PENDING_RECEIPT_PAYLOAD_HASH}")
         print(f"r1_final_receipt_file_sha256={R1_FINAL_RECEIPT_FILE_SHA256}")

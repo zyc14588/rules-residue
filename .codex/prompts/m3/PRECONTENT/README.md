@@ -30,10 +30,23 @@ authoritative ref, and remote refs to compute the effective projection. Normal a
 offline. The repair ACCEPT contract is discovered through
 `AUTHORITATIVE_EFFECT_REPAIR_ACCEPT.md` and its candidate-bound route.
 
+Finding `B003-BLK-002` is repaired additively by R4 without changing the accepted B002 proof.
+Ordinary tests use unique digest-derived physical refs only inside explicit isolated repositories
+with absolute local bare remotes; their logical proof contracts still name the production tag.
+The production B002 tag is never deleted, moved, hidden, or retargeted. The authoritative-effect
+oracle accepts either the exact B002 target with its full proof, or a direct governance successor
+only when the original proof and an independent successor Owner approval, ACCEPT result, closeout
+envelope, annotated tag, exact refs, and preservation gates all validate. Ancestry alone fails.
+
+R4 is a pending Candidate with an exact 15-path scope and an R3-to-R4 `75/6/7/88` Merkle
+transition. Its future Owner approval, independent ACCEPT, production closeout envelope, proof tag,
+integration, and push are not created by implementation. The future verifier contract is
+`ACCEPTANCE_REGRESSION_REPAIR_ACCEPT.md` and its Candidate-bound ACCEPT route.
+
 <!-- SECTION-ID: M3-CODEX-PRECONTENT-B003-PLAN -->
 # M3-B003 PLAN boundary
 
-B003 is a separate future batch. PLAN must prove B002 authoritative activation/integration and WIP closure,
+B003 remains a separately gated batch. PLAN must prove B002 authoritative activation/integration and WIP closure,
 DeepSeek bridge doctor and host resources, `/usr/bin/prlimit` integrity, actual Provider and
 Profile identity, Grok alias resolution, Consumer-session data controls, external evidence-root
 permissions/retention, and a new Owner Provider data-boundary approval. Missing proof blocks.

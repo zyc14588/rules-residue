@@ -1,0 +1,95 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://rules-residue.invalid/schemas/story-construction/precontent-acceptance-regression-change-set-v1.schema.json",
+  "title": "Pre-Content Acceptance Regression R4 Change Set",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "change_set_id", "finding_id", "repair_model", "task_id", "mode", "machine_milestone", "machine_batch_id", "machine_phase", "authority_scope", "owner_scope_approved", "fixed_parent", "scope", "semantic_transition", "candidate_binding", "lifecycle", "successor_proof_contract", "fixed_preservation", "prohibited_actions"],
+  "properties": {
+    "schema_version": {"const": "rules-residue.story-construction.precontent-acceptance-regression-change-set/1.0.0"},
+    "change_set_id": {"const": "CS-SCG-PRECONTENT-M3-B003-P0-ACCEPTANCE-REGRESSION-R4-001"},
+    "finding_id": {"const": "B003-BLK-002"},
+    "repair_model": {"const": "MODEL_R4_ADDITIVE_ACCEPTANCE_REGRESSION"},
+    "task_id": {"const": "SCG-PRECONTENT-M3-B003-P0-B-R4-ACCEPTANCE-REGRESSION-REPAIR-IMPLEMENT-001"},
+    "mode": {"const": "REPAIR"},
+    "machine_milestone": {"const": "M3"},
+    "machine_batch_id": {"const": "M3-B003"},
+    "machine_phase": {"const": "B003-P0-B"},
+    "authority_scope": {"const": "CONSTRUCTION_GOVERNANCE_ONLY"},
+    "owner_scope_approved": {"const": true},
+    "fixed_parent": {
+      "type": "object", "additionalProperties": false,
+      "required": ["commit", "tree", "authoritative_branch", "framework_manifest_r3_file_sha256", "framework_manifest_r3_merkle_root", "framework_manifest_r3_record_count", "framework_manifest_r3_semantic_record_set_sha256", "final_receipt_r3_file_sha256", "final_receipt_r3_payload_sha256", "proof_tag_ref", "proof_tag_object"],
+      "properties": {
+        "commit": {"const": "2d7f78f5b24623729cb64a798b59d6f469e6de2b"},
+        "tree": {"const": "f0fdf751d7532097926d36f3ac723f563e82cfd3"},
+        "authoritative_branch": {"const": "design/r1-story-architecture"},
+        "framework_manifest_r3_file_sha256": {"const": "836fbaf57137d31429e5f54aa52035edc10c2768480c73ab9e55631cbcc2cae4"},
+        "framework_manifest_r3_merkle_root": {"const": "48d8a22fed2142228d2ca5233ff894f0e3cb182fa1899ce73af8366d45078474"},
+        "framework_manifest_r3_record_count": {"const": 81},
+        "framework_manifest_r3_semantic_record_set_sha256": {"const": "3f6071050644d5fe4cbfc39fc689383f55c9d874f7af87d9aecdf639ea4bd0ab"},
+        "final_receipt_r3_file_sha256": {"const": "1598688eab7beb93aa6497dc01ba71e0c20df07aa4a3976ebb511ecf31d02443"},
+        "final_receipt_r3_payload_sha256": {"const": "d793b0aa4d84acfbc94fe41f4980e41a282e9ef5dc9110344f9053f9999aadc7"},
+        "proof_tag_ref": {"const": "refs/tags/scg-precontent-m3-b002-authoritative-effect-repair-accepted"},
+        "proof_tag_object": {"const": "421e36ce08076d5eb9ef43049c8bdf9edafa16d3"}
+      }
+    },
+    "scope": {
+      "type": "object", "additionalProperties": false,
+      "required": ["path_count", "path_allowlist_sha256", "paths"],
+      "properties": {
+        "path_count": {"const": 15},
+        "path_allowlist_sha256": {"const": "98b6869eaeb0013c7abe1fb66625282c55321e7eafdf277228f28bbfdb6d2859"},
+        "paths": {"type": "array", "minItems": 15, "maxItems": 15, "uniqueItems": true, "items": {"enum": [".codex/prompts/m3/PRECONTENT/ACCEPTANCE_REGRESSION_REPAIR_ACCEPT.md", ".codex/prompts/m3/PRECONTENT/README.md", ".codex/routes/m3-precontent-b003-p0-acceptance-regression-repair-accept-request.json", "docs/governance/story-construction/10_PRECONTENT_READINESS.md", "governance/story-construction/change-sets/CS-SCG-PRECONTENT-M3-B003-P0-ACCEPTANCE-REGRESSION-R4-001.yaml", "governance/story-construction/precontent/manifests/framework-manifest.r4.json", "governance/story-construction/receipts/scg-precontent-readiness-r4.final.json", "schemas/story-construction/precontent-acceptance-regression-change-set-v1.schema.json", "schemas/story-construction/precontent-acceptance-regression-closeout-envelope-v1.schema.json", "schemas/story-construction/precontent-acceptance-regression-owner-approval-v1.schema.json", "schemas/story-construction/precontent-final-receipt-v4.schema.json", "tests/test_precontent_readiness.py", "tools/build_precontent_readiness_bundle.py", "tools/validate_precontent_readiness.py", "tools/validate_story_construction_governance.py"]}}
+      }
+    },
+    "semantic_transition": {
+      "type": "object", "additionalProperties": false,
+      "required": ["old_record_count", "unchanged_old_count", "changed_old_count", "new_record_count", "total_record_count", "changed_old_paths", "new_semantic_paths", "merkle_excluded_paths"],
+      "properties": {
+        "old_record_count": {"const": 81}, "unchanged_old_count": {"const": 75}, "changed_old_count": {"const": 6}, "new_record_count": {"const": 7}, "total_record_count": {"const": 88},
+        "changed_old_paths": {"type": "array", "minItems": 6, "maxItems": 6, "uniqueItems": true, "items": {"enum": [".codex/prompts/m3/PRECONTENT/README.md", "docs/governance/story-construction/10_PRECONTENT_READINESS.md", "tests/test_precontent_readiness.py", "tools/build_precontent_readiness_bundle.py", "tools/validate_precontent_readiness.py", "tools/validate_story_construction_governance.py"]}},
+        "new_semantic_paths": {"type": "array", "minItems": 7, "maxItems": 7, "uniqueItems": true, "items": {"enum": [".codex/prompts/m3/PRECONTENT/ACCEPTANCE_REGRESSION_REPAIR_ACCEPT.md", ".codex/routes/m3-precontent-b003-p0-acceptance-regression-repair-accept-request.json", "governance/story-construction/change-sets/CS-SCG-PRECONTENT-M3-B003-P0-ACCEPTANCE-REGRESSION-R4-001.yaml", "schemas/story-construction/precontent-acceptance-regression-change-set-v1.schema.json", "schemas/story-construction/precontent-acceptance-regression-closeout-envelope-v1.schema.json", "schemas/story-construction/precontent-acceptance-regression-owner-approval-v1.schema.json", "schemas/story-construction/precontent-final-receipt-v4.schema.json"]}},
+        "merkle_excluded_paths": {"type": "array", "minItems": 2, "maxItems": 2, "uniqueItems": true, "items": {"enum": ["governance/story-construction/precontent/manifests/framework-manifest.r4.json", "governance/story-construction/receipts/scg-precontent-readiness-r4.final.json"]}}
+      }
+    },
+    "candidate_binding": {
+      "type": "object", "additionalProperties": false,
+      "required": ["strategy", "candidate_identity_location", "self_referential_candidate_identity"],
+      "properties": {"strategy": {"const": "EXACT_HEAD_AT_VALIDATION"}, "candidate_identity_location": {"const": "EXTERNAL_OWNER_APPROVAL_AFTER_CANDIDATE"}, "self_referential_candidate_identity": {"const": false}}
+    },
+    "lifecycle": {
+      "type": "object", "additionalProperties": false,
+      "required": ["stage", "approval_status", "independent_accept_status", "authoritative_successor_effective"],
+      "properties": {"stage": {"const": "CANDIDATE"}, "approval_status": {"const": "PENDING_OWNER_EXACT_HASH_APPROVAL_M3_B003_P0_B_R4"}, "independent_accept_status": {"const": "NOT_RUN"}, "authoritative_successor_effective": {"const": false}}
+    },
+    "successor_proof_contract": {
+      "type": "object", "additionalProperties": false,
+      "required": ["owner_approval_schema", "accept_route", "closeout_envelope_schema", "final_receipt_schema", "proof_tag_ref", "independent_accept_required", "ancestry_alone_sufficient", "external_instances_tracked"],
+      "properties": {
+        "owner_approval_schema": {"const": "schemas/story-construction/precontent-acceptance-regression-owner-approval-v1.schema.json"},
+        "accept_route": {"const": "SCG-PRECONTENT-M3-B003-P0-B-R4-ACCEPTANCE-REGRESSION-REPAIR-ACCEPT"},
+        "closeout_envelope_schema": {"const": "schemas/story-construction/precontent-acceptance-regression-closeout-envelope-v1.schema.json"},
+        "final_receipt_schema": {"const": "schemas/story-construction/precontent-final-receipt-v4.schema.json"},
+        "proof_tag_ref": {"const": "refs/tags/scg-precontent-m3-b003-p0-acceptance-regression-r4-accepted"},
+        "independent_accept_required": {"const": true}, "ancestry_alone_sufficient": {"const": false}, "external_instances_tracked": {"const": false}
+      }
+    },
+    "fixed_preservation": {"$ref": "#/$defs/fixed_preservation"},
+    "prohibited_actions": {"type": "array", "minItems": 9, "maxItems": 9, "uniqueItems": true, "items": {"enum": ["PROVIDER_CALL", "STORY_M0", "R4_OWNER_APPROVAL_CREATION", "R4_INDEPENDENT_ACCEPT_CREATION", "R4_CLOSEOUT_ENVELOPE_CREATION", "R4_PROOF_TAG_CREATION", "INTEGRATION", "PUSH", "R5_IMPLEMENTATION"]}}
+  },
+  "$defs": {
+    "fixed_preservation": {
+      "type": "object", "additionalProperties": false,
+      "required": ["canon_sha256", "q001_q130_sha256", "m2_sha256", "runtime_sha256", "provider_zero_call_sha256", "provider_request_counts"],
+      "properties": {
+        "canon_sha256": {"const": "d7ceea75615b57970f3b9712b73ed4c9f65a9c4406c877e9013470cb53a6141a"},
+        "q001_q130_sha256": {"const": "01fdebbd338a8abdbc0226d0290b1bc2b02366cb615a22182f0df0a5f75fa7b2"},
+        "m2_sha256": {"const": "74da7cc866e0b3b1f3580d86df18c8c6d9724ff6131e5d35c155fc33a2f71c17"},
+        "runtime_sha256": {"const": "29ea1e0278e37d183d4c0ff396437088b4873c58c5e9a9c857093f6c552a6314"},
+        "provider_zero_call_sha256": {"const": "e6536a180aeb21b20ca9b65594610e65c50d72bf388b513533bed799366214f5"},
+        "provider_request_counts": {"type": "object", "additionalProperties": false, "required": ["deepseek", "grok", "opencode", "story_m0"], "properties": {"deepseek": {"const": 0}, "grok": {"const": 0}, "opencode": {"const": 0}, "story_m0": {"const": 0}}}
+      }
+    }
+  }
+}

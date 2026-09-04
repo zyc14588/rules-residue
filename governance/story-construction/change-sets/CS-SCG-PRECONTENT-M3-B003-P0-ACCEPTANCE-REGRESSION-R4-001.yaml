@@ -1,0 +1,115 @@
+{
+  "schema_version": "rules-residue.story-construction.precontent-acceptance-regression-change-set/1.0.0",
+  "change_set_id": "CS-SCG-PRECONTENT-M3-B003-P0-ACCEPTANCE-REGRESSION-R4-001",
+  "finding_id": "B003-BLK-002",
+  "repair_model": "MODEL_R4_ADDITIVE_ACCEPTANCE_REGRESSION",
+  "task_id": "SCG-PRECONTENT-M3-B003-P0-B-R4-ACCEPTANCE-REGRESSION-REPAIR-IMPLEMENT-001",
+  "mode": "REPAIR",
+  "machine_milestone": "M3",
+  "machine_batch_id": "M3-B003",
+  "machine_phase": "B003-P0-B",
+  "authority_scope": "CONSTRUCTION_GOVERNANCE_ONLY",
+  "owner_scope_approved": true,
+  "fixed_parent": {
+    "commit": "2d7f78f5b24623729cb64a798b59d6f469e6de2b",
+    "tree": "f0fdf751d7532097926d36f3ac723f563e82cfd3",
+    "authoritative_branch": "design/r1-story-architecture",
+    "framework_manifest_r3_file_sha256": "836fbaf57137d31429e5f54aa52035edc10c2768480c73ab9e55631cbcc2cae4",
+    "framework_manifest_r3_merkle_root": "48d8a22fed2142228d2ca5233ff894f0e3cb182fa1899ce73af8366d45078474",
+    "framework_manifest_r3_record_count": 81,
+    "framework_manifest_r3_semantic_record_set_sha256": "3f6071050644d5fe4cbfc39fc689383f55c9d874f7af87d9aecdf639ea4bd0ab",
+    "final_receipt_r3_file_sha256": "1598688eab7beb93aa6497dc01ba71e0c20df07aa4a3976ebb511ecf31d02443",
+    "final_receipt_r3_payload_sha256": "d793b0aa4d84acfbc94fe41f4980e41a282e9ef5dc9110344f9053f9999aadc7",
+    "proof_tag_ref": "refs/tags/scg-precontent-m3-b002-authoritative-effect-repair-accepted",
+    "proof_tag_object": "421e36ce08076d5eb9ef43049c8bdf9edafa16d3"
+  },
+  "scope": {
+    "path_count": 15,
+    "path_allowlist_sha256": "98b6869eaeb0013c7abe1fb66625282c55321e7eafdf277228f28bbfdb6d2859",
+    "paths": [
+      ".codex/prompts/m3/PRECONTENT/ACCEPTANCE_REGRESSION_REPAIR_ACCEPT.md",
+      ".codex/prompts/m3/PRECONTENT/README.md",
+      ".codex/routes/m3-precontent-b003-p0-acceptance-regression-repair-accept-request.json",
+      "docs/governance/story-construction/10_PRECONTENT_READINESS.md",
+      "governance/story-construction/change-sets/CS-SCG-PRECONTENT-M3-B003-P0-ACCEPTANCE-REGRESSION-R4-001.yaml",
+      "governance/story-construction/precontent/manifests/framework-manifest.r4.json",
+      "governance/story-construction/receipts/scg-precontent-readiness-r4.final.json",
+      "schemas/story-construction/precontent-acceptance-regression-change-set-v1.schema.json",
+      "schemas/story-construction/precontent-acceptance-regression-closeout-envelope-v1.schema.json",
+      "schemas/story-construction/precontent-acceptance-regression-owner-approval-v1.schema.json",
+      "schemas/story-construction/precontent-final-receipt-v4.schema.json",
+      "tests/test_precontent_readiness.py",
+      "tools/build_precontent_readiness_bundle.py",
+      "tools/validate_precontent_readiness.py",
+      "tools/validate_story_construction_governance.py"
+    ]
+  },
+  "semantic_transition": {
+    "old_record_count": 81,
+    "unchanged_old_count": 75,
+    "changed_old_count": 6,
+    "new_record_count": 7,
+    "total_record_count": 88,
+    "changed_old_paths": [
+      ".codex/prompts/m3/PRECONTENT/README.md",
+      "docs/governance/story-construction/10_PRECONTENT_READINESS.md",
+      "tests/test_precontent_readiness.py",
+      "tools/build_precontent_readiness_bundle.py",
+      "tools/validate_precontent_readiness.py",
+      "tools/validate_story_construction_governance.py"
+    ],
+    "new_semantic_paths": [
+      ".codex/prompts/m3/PRECONTENT/ACCEPTANCE_REGRESSION_REPAIR_ACCEPT.md",
+      ".codex/routes/m3-precontent-b003-p0-acceptance-regression-repair-accept-request.json",
+      "governance/story-construction/change-sets/CS-SCG-PRECONTENT-M3-B003-P0-ACCEPTANCE-REGRESSION-R4-001.yaml",
+      "schemas/story-construction/precontent-acceptance-regression-change-set-v1.schema.json",
+      "schemas/story-construction/precontent-acceptance-regression-closeout-envelope-v1.schema.json",
+      "schemas/story-construction/precontent-acceptance-regression-owner-approval-v1.schema.json",
+      "schemas/story-construction/precontent-final-receipt-v4.schema.json"
+    ],
+    "merkle_excluded_paths": [
+      "governance/story-construction/precontent/manifests/framework-manifest.r4.json",
+      "governance/story-construction/receipts/scg-precontent-readiness-r4.final.json"
+    ]
+  },
+  "candidate_binding": {
+    "strategy": "EXACT_HEAD_AT_VALIDATION",
+    "candidate_identity_location": "EXTERNAL_OWNER_APPROVAL_AFTER_CANDIDATE",
+    "self_referential_candidate_identity": false
+  },
+  "lifecycle": {
+    "stage": "CANDIDATE",
+    "approval_status": "PENDING_OWNER_EXACT_HASH_APPROVAL_M3_B003_P0_B_R4",
+    "independent_accept_status": "NOT_RUN",
+    "authoritative_successor_effective": false
+  },
+  "successor_proof_contract": {
+    "owner_approval_schema": "schemas/story-construction/precontent-acceptance-regression-owner-approval-v1.schema.json",
+    "accept_route": "SCG-PRECONTENT-M3-B003-P0-B-R4-ACCEPTANCE-REGRESSION-REPAIR-ACCEPT",
+    "closeout_envelope_schema": "schemas/story-construction/precontent-acceptance-regression-closeout-envelope-v1.schema.json",
+    "final_receipt_schema": "schemas/story-construction/precontent-final-receipt-v4.schema.json",
+    "proof_tag_ref": "refs/tags/scg-precontent-m3-b003-p0-acceptance-regression-r4-accepted",
+    "independent_accept_required": true,
+    "ancestry_alone_sufficient": false,
+    "external_instances_tracked": false
+  },
+  "fixed_preservation": {
+    "canon_sha256": "d7ceea75615b57970f3b9712b73ed4c9f65a9c4406c877e9013470cb53a6141a",
+    "q001_q130_sha256": "01fdebbd338a8abdbc0226d0290b1bc2b02366cb615a22182f0df0a5f75fa7b2",
+    "m2_sha256": "74da7cc866e0b3b1f3580d86df18c8c6d9724ff6131e5d35c155fc33a2f71c17",
+    "runtime_sha256": "29ea1e0278e37d183d4c0ff396437088b4873c58c5e9a9c857093f6c552a6314",
+    "provider_zero_call_sha256": "e6536a180aeb21b20ca9b65594610e65c50d72bf388b513533bed799366214f5",
+    "provider_request_counts": {"deepseek": 0, "grok": 0, "opencode": 0, "story_m0": 0}
+  },
+  "prohibited_actions": [
+    "PROVIDER_CALL",
+    "STORY_M0",
+    "R4_OWNER_APPROVAL_CREATION",
+    "R4_INDEPENDENT_ACCEPT_CREATION",
+    "R4_CLOSEOUT_ENVELOPE_CREATION",
+    "R4_PROOF_TAG_CREATION",
+    "INTEGRATION",
+    "PUSH",
+    "R5_IMPLEMENTATION"
+  ]
+}

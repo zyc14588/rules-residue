@@ -25,6 +25,9 @@ from tools.validate_precontent_readiness import (
     BASE_CANON_HASH,
     BASE_COMMIT,
     BASE_TREE,
+    B002_PROOF_TAG_OBJECT,
+    B002_PROOF_TARGET_COMMIT,
+    B002_PROOF_TARGET_TREE,
     CANDIDATE_APPROVAL_STATUS,
     CHANGED_OLD_PATHS,
     CHANGE_SET_ID,
@@ -38,6 +41,15 @@ from tools.validate_precontent_readiness import (
     REPAIR_ALLOWLIST,
     REPAIR_PATH_ALLOWLIST_SHA256,
     REPAIR_PROOF_TAG_REF,
+    R4_ACCEPT_RESULT,
+    R4_ACCEPT_ROUTE,
+    R4_ACCEPT_TASK_ID,
+    R4_ACCEPT_VERIFIER,
+    R4_ALLOWLIST,
+    R4_CHANGED_OLD_PATHS,
+    R4_NEW_SEMANTIC_PATHS,
+    R4_PATH_ALLOWLIST_SHA256,
+    R4_PROOF_TAG_REF,
     R2_MANIFEST_FILE_SHA256,
     R2_MANIFEST_PATH,
     R3_CHANGED_OLD_PATHS,
@@ -52,11 +64,19 @@ from tools.validate_precontent_readiness import (
     collect_errors,
     compute_region_score,
     derive_repair_documents,
+    derive_r4_documents,
     derive_framework_documents,
     expected_repair_approval_fields,
+    expected_successor_accept_result,
+    expected_successor_approval_fields,
+    expected_successor_closeout_envelope,
     expected_approval_consumption,
     load_external_proof_json,
     repair_allowlist_hash,
+    r4_allowlist_hash,
+    r4_path_records,
+    r4_path_set_hash,
+    synthetic_proof_tag_ref,
     validate_b003_authorization,
     validate_activation_closeout_envelope,
     validate_activation_owner_approval,
@@ -71,6 +91,11 @@ from tools.validate_precontent_readiness import (
     validate_repair_manifest_transition,
     validate_repair_owner_approval,
     validate_repair_receipt_binding,
+    validate_r4_manifest_transition,
+    validate_r4_receipt_binding,
+    validate_successor_accept_result,
+    validate_successor_closeout_envelope,
+    validate_successor_owner_approval,
     validate_readiness_bundle,
     validate_test_boundary,
 )
@@ -191,7 +216,7 @@ def build_repair_envelope(expected: dict, approval: dict, raw_sha256: str, canon
     }
 
 
-def create_authoritative_fixture(temporary: Path) -> dict:
+def create_authoritative_fixture(temporary: Path, *, test_id: str = "exact-b002-positive") -> dict:
     repository = temporary / "candidate"
     remote = temporary / "remote.git"
     proof_root = temporary / "proofs"
@@ -203,16 +228,9 @@ def create_authoritative_fixture(temporary: Path) -> dict:
     )
     run_git(repository, "config", "user.name", "PreContent Test")
     run_git(repository, "config", "user.email", "precontent-test@invalid.example")
-    run_git(repository, "switch", "-C", "design/r1-story-architecture", "d80aae8d1dfede85d91ff0367f4c6a18d62bb2a7")
-    for relative in REPAIR_ALLOWLIST:
-        source = ROOT / relative
-        target = repository / relative
-        target.parent.mkdir(parents=True, exist_ok=True)
-        shutil.copy2(source, target)
-    run_git(repository, "add", "--", *REPAIR_ALLOWLIST)
-    run_git(repository, "commit", "-m", "test: synthetic authoritative-effect repair candidate")
-    repair_commit = run_git(repository, "rev-parse", "HEAD")
-    repair_tree = run_git(repository, "rev-parse", "HEAD^{tree}")
+    run_git(repository, "switch", "-C", "design/r1-story-architecture", B002_PROOF_TARGET_COMMIT)
+    repair_commit = B002_PROOF_TARGET_COMMIT
+    repair_tree = B002_PROOF_TARGET_TREE
     subprocess.run(
         ["git", "init", "--bare", "--quiet", str(remote)],
         check=True,
@@ -224,7 +242,7 @@ def create_authoritative_fixture(temporary: Path) -> dict:
         repository,
         "push",
         "origin",
-        f"{BASE_COMMIT}:refs/heads/design/r1-story-architecture",
+        f"{repair_commit}:refs/heads/design/r1-story-architecture",
     )
     expected = expected_repair_approval_fields(
         repository,
@@ -258,7 +276,8 @@ def create_authoritative_fixture(temporary: Path) -> dict:
     envelope = build_repair_envelope(expected, approval, approval_sha256, approval_sha256)
     envelope_path = (proof_root / "closeout-envelope.json").resolve()
     envelope_path.write_bytes(canonical_json_bytes(envelope))
-    tag_name = REPAIR_PROOF_TAG_REF.removeprefix("refs/tags/")
+    physical_tag_ref = synthetic_proof_tag_ref(test_id, repository)
+    tag_name = physical_tag_ref.removeprefix("refs/tags/")
     run_git(repository, "tag", "--annotate", "--cleanup=verbatim", "--file", str(envelope_path), tag_name, repair_commit)
     run_git(
         repository,
@@ -267,10 +286,11 @@ def create_authoritative_fixture(temporary: Path) -> dict:
         "origin",
         "refs/heads/design/r1-story-architecture",
         REPAIR_PROOF_TAG_REF,
+        physical_tag_ref,
     )
     base_cli = [
         sys.executable,
-        "tools/validate_precontent_readiness.py",
+        str(ROOT / "tools/validate_precontent_readiness.py"),
         "--project-root", str(repository),
         "--phase", "authoritative-effect",
     ]
@@ -286,6 +306,8 @@ def create_authoritative_fixture(temporary: Path) -> dict:
         "--expected-remote-url", str(remote),
         "--remote-authoritative-ref", "refs/heads/design/r1-story-architecture",
         "--remote-proof-tag-ref", REPAIR_PROOF_TAG_REF,
+        "--test-fixture-id", test_id,
+        "--physical-proof-tag-ref", physical_tag_ref,
     ]
     return {
         "repository": repository,
@@ -298,9 +320,104 @@ def create_authoritative_fixture(temporary: Path) -> dict:
         "expected": expected,
         "repair_commit": repair_commit,
         "repair_tree": repair_tree,
+        "test_id": test_id,
+        "physical_tag_ref": physical_tag_ref,
         "base_cli": base_cli,
         "proof_cli": proof_cli,
     }
+
+
+def create_successor_fixture(temporary: Path, *, test_id: str = "accepted-r4-successor") -> dict:
+    fixture = create_authoritative_fixture(temporary, test_id=f"{test_id}-b002")
+    repository = fixture["repository"]
+    for relative in R4_ALLOWLIST:
+        source = ROOT / relative
+        target = repository / relative
+        target.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copy2(source, target)
+    run_git(repository, "add", "--", *R4_ALLOWLIST)
+    run_git(repository, "commit", "-m", "test: synthetic accepted R4-like governance successor")
+    successor_commit = run_git(repository, "rev-parse", "HEAD")
+    successor_tree = run_git(repository, "rev-parse", "HEAD^{tree}")
+    run_git(repository, "push", "origin", "refs/heads/design/r1-story-architecture")
+
+    predecessor_approval_sha256 = hashlib.sha256(fixture["approval_bytes"]).hexdigest()
+    predecessor_envelope_bytes = canonical_json_bytes(fixture["envelope"])
+    predecessor_envelope_sha256 = hashlib.sha256(predecessor_envelope_bytes).hexdigest()
+    expected = expected_successor_approval_fields(
+        repository,
+        successor_commit=successor_commit,
+        successor_tree=successor_tree,
+        successor_parent=B002_PROOF_TARGET_COMMIT,
+        predecessor_owner_raw_sha256=predecessor_approval_sha256,
+        predecessor_owner_canonical_sha256=predecessor_approval_sha256,
+        predecessor_envelope_raw_sha256=predecessor_envelope_sha256,
+        predecessor_envelope_canonical_sha256=predecessor_envelope_sha256,
+        predecessor_envelope_payload_hash=fixture["envelope"]["payload_hash"],
+        authoritative_ref="refs/heads/design/r1-story-architecture",
+        remote_name="origin",
+        expected_remote_url=str(fixture["remote"]),
+        remote_authoritative_ref="refs/heads/design/r1-story-architecture",
+    )
+    approval = {
+        "schema_version": "rules-residue.story-construction.precontent-acceptance-regression-owner-approval/1.0.0",
+        "approval_id": f"OWNER-APPROVAL-SCG-PRECONTENT-M3-B003-P0-B-R4-CANDIDATE-{successor_commit[:8].upper()}-R1",
+        **expected,
+        "approval_status": "APPROVED",
+        "single_use": True,
+        "transferable": False,
+        "consumed": False,
+        "revoked": False,
+        "owner_id": "OWNER",
+        "approved_at": "2030-01-01T00:00:00Z",
+    }
+    approval_bytes = canonical_json_bytes(approval)
+    approval_sha256 = hashlib.sha256(approval_bytes).hexdigest()
+    approval_path = (fixture["approval_path"].parent / "successor-owner-approval.json").resolve()
+    approval_path.write_bytes(approval_bytes)
+    accept_result = expected_successor_accept_result(expected, approval, approval_sha256, approval_sha256)
+    accept_path = (fixture["approval_path"].parent / "successor-accept-result.json").resolve()
+    accept_path.write_bytes(canonical_json_bytes(accept_result))
+    envelope = expected_successor_closeout_envelope(
+        expected, approval, approval_sha256, approval_sha256, accept_result
+    )
+    envelope_path = (fixture["approval_path"].parent / "successor-closeout-envelope.json").resolve()
+    envelope_path.write_bytes(canonical_json_bytes(envelope))
+    physical_tag_ref = synthetic_proof_tag_ref(test_id, repository)
+    run_git(
+        repository, "tag", "--annotate", "--cleanup=verbatim", "--file", str(envelope_path),
+        physical_tag_ref.removeprefix("refs/tags/"), successor_commit,
+    )
+    run_git(repository, "push", "origin", physical_tag_ref)
+    successor_cli = [
+        "--successor-owner-approval", str(approval_path),
+        "--successor-accept-result", str(accept_path),
+        "--successor-closeout-envelope", str(envelope_path),
+        "--expected-successor-commit", successor_commit,
+        "--expected-successor-tree", successor_tree,
+        "--expected-successor-parent", B002_PROOF_TARGET_COMMIT,
+        "--successor-proof-tag-ref", R4_PROOF_TAG_REF,
+        "--successor-remote-proof-tag-ref", R4_PROOF_TAG_REF,
+        "--successor-test-fixture-id", test_id,
+        "--successor-physical-proof-tag-ref", physical_tag_ref,
+    ]
+    fixture.update({
+        "successor_expected": expected,
+        "successor_approval": approval,
+        "successor_approval_bytes": approval_bytes,
+        "successor_approval_path": approval_path,
+        "successor_accept": accept_result,
+        "successor_accept_path": accept_path,
+        "successor_envelope": envelope,
+        "successor_envelope_path": envelope_path,
+        "successor_commit": successor_commit,
+        "successor_tree": successor_tree,
+        "successor_test_id": test_id,
+        "successor_physical_tag_ref": physical_tag_ref,
+        "successor_cli": successor_cli,
+        "proof_cli": fixture["proof_cli"] + successor_cli,
+    })
+    return fixture
 
 
 def run_authoritative_cli(fixture: dict, proof_args: list[str] | None = None) -> subprocess.CompletedProcess[str]:
@@ -315,6 +432,18 @@ def run_authoritative_cli(fixture: dict, proof_args: list[str] | None = None) ->
 
 
 class PreContentReadinessTests(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls) -> None:
+        cls.production_tag_object = run_git(ROOT, "rev-parse", REPAIR_PROOF_TAG_REF)
+        if cls.production_tag_object != B002_PROOF_TAG_OBJECT:
+            raise AssertionError("production B002 proof tag missing or moved before suite")
+
+    def setUp(self) -> None:
+        self.assertEqual(run_git(ROOT, "rev-parse", REPAIR_PROOF_TAG_REF), B002_PROOF_TAG_OBJECT)
+
+    def tearDown(self) -> None:
+        self.assertEqual(run_git(ROOT, "rev-parse", REPAIR_PROOF_TAG_REF), B002_PROOF_TAG_OBJECT)
+
     def test_repository_framework_validates(self):
         self.assertEqual(collect_errors(ROOT, check_git=False), [])
 
@@ -550,6 +679,50 @@ class PreContentReadinessTests(unittest.TestCase):
         self.assertEqual(derived["schemas"]["combined_count"], 28)
         self.assertEqual(validate_repair_manifest_transition(derived["manifest"], load(R2_MANIFEST_PATH.as_posix())), [])
 
+    def test_exact_r4_merkle_transition_schema_counts_and_nonself_receipt(self):
+        derived = derive_r4_documents(ROOT)
+        transition = derived["transition"]
+        self.assertEqual(
+            tuple(transition[key] for key in (
+                "old_record_count", "unchanged_old_count", "changed_old_count",
+                "new_record_count", "total_record_count",
+            )),
+            (81, 75, 6, 7, 88),
+        )
+        self.assertEqual([item["path"] for item in transition["changed_old_records"]], sorted(R4_CHANGED_OLD_PATHS))
+        self.assertEqual([item["path"] for item in transition["new_records"]], sorted(R4_NEW_SEMANTIC_PATHS))
+        self.assertEqual(derived["schemas"]["predecessor_count"], 28)
+        self.assertEqual(derived["schemas"]["r4_count"], 4)
+        self.assertEqual(derived["schemas"]["combined_count"], 32)
+        self.assertEqual(r4_allowlist_hash(), R4_PATH_ALLOWLIST_SHA256)
+        self.assertEqual(len(r4_path_records(ROOT)), 15)
+        self.assertEqual(r4_path_set_hash(ROOT), canonical_sha256(r4_path_records(ROOT)))
+        r3_manifest = load("governance/story-construction/precontent/manifests/framework-manifest.r3.json")
+        self.assertEqual(validate_r4_manifest_transition(derived["manifest"], r3_manifest), [])
+        self.assertEqual(validate_r4_receipt_binding(derived["receipt"], derived["receipt"]), [])
+        record_paths = {item["path"] for item in derived["manifest"]["records"]}
+        self.assertNotIn("governance/story-construction/precontent/manifests/framework-manifest.r4.json", record_paths)
+        self.assertNotIn("governance/story-construction/precontent/receipts/scg-precontent-readiness-r4.final.json", record_paths)
+        receipt_bytes = derived["receipt_bytes"]
+        for forbidden in (
+            b'"candidate_commit"', b'"candidate_tree"', b'"owner_approval_id"',
+            b'"tag_object_id"', b'"authoritative_remote_after_successor"', b'"receipt_file_sha256"',
+        ):
+            self.assertNotIn(forbidden, receipt_bytes)
+
+    def test_synthetic_tag_ref_is_exact_repo_bound_namespace(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            repository = Path(temporary).resolve()
+            expected_digest = hashlib.sha256(
+                b"fixture-id\0" + str(repository).encode("utf-8")
+            ).hexdigest()
+            self.assertEqual(
+                synthetic_proof_tag_ref("fixture-id", repository),
+                f"refs/tags/test-fixtures/scg-precontent-authoritative-effect/{expected_digest}",
+            )
+            with self.assertRaises(ValueError):
+                synthetic_proof_tag_ref("../escape", repository)
+
     def test_implementation_approval_consumption_and_accept_evidence_are_exact(self):
         record = load("governance/story-construction/approvals/OWNER-APPROVAL-SCG-PRECONTENT-M3-B002-CANDIDATE-74FECBE6-R1.consumption.json")
         self.assertEqual(record, expected_approval_consumption())
@@ -612,7 +785,11 @@ class PreContentReadinessTests(unittest.TestCase):
             self.assertIn("global_active_WIP=0", result.stdout)
             self.assertEqual(run_git(fixture["repository"], "cat-file", "-t", REPAIR_PROOF_TAG_REF), "tag")
             self.assertEqual(
-                run_git(fixture["repository"], "rev-parse", f"{REPAIR_PROOF_TAG_REF}^{{commit}}"),
+                run_git(fixture["repository"], "rev-parse", REPAIR_PROOF_TAG_REF),
+                B002_PROOF_TAG_OBJECT,
+            )
+            self.assertEqual(
+                run_git(fixture["repository"], "rev-parse", f"{fixture['physical_tag_ref']}^{{commit}}"),
                 fixture["repair_commit"],
             )
 
@@ -725,6 +902,20 @@ class PreContentReadinessTests(unittest.TestCase):
             unsafe_remote_args = list(fixture["proof_cli"])
             unsafe_remote_args[unsafe_remote_args.index("--expected-remote-url") + 1] = "ext::arbitrary-command"
             assert_cli_fail(run_authoritative_cli(fixture, unsafe_remote_args), "unsafe remote transport")
+            production_synthetic_args = list(fixture["proof_cli"])
+            production_synthetic_args[production_synthetic_args.index("--expected-remote-url") + 1] = "git@github.com:zyc14588/rules-residue.git"
+            assert_cli_fail(run_authoritative_cli(fixture, production_synthetic_args), "synthetic ref against production origin")
+            escaped_ref_args = list(fixture["proof_cli"])
+            escaped_ref_args[escaped_ref_args.index("--physical-proof-tag-ref") + 1] = (
+                "refs/tags/test-fixtures/scg-precontent-authoritative-effect/../escape"
+            )
+            assert_cli_fail(run_authoritative_cli(fixture, escaped_ref_args), "test namespace escape")
+            arbitrary_ref_args = list(fixture["proof_cli"])
+            arbitrary_ref_args[arbitrary_ref_args.index("--physical-proof-tag-ref") + 1] = "refs/tags/arbitrary-proof"
+            assert_cli_fail(run_authoritative_cli(fixture, arbitrary_ref_args), "unapproved arbitrary tag ref")
+            wrong_fixture_id_args = list(fixture["proof_cli"])
+            wrong_fixture_id_args[wrong_fixture_id_args.index("--test-fixture-id") + 1] = "transferred-fixture"
+            assert_cli_fail(run_authoritative_cli(fixture, wrong_fixture_id_args), "physical proof replay/transfer")
 
             fixture["approval_path"].write_text(json.dumps(fixture["approval"], indent=2), encoding="utf-8")
             assert_cli_fail(run_authoritative_cli(fixture), "non-canonical approval transport")
@@ -762,17 +953,18 @@ class PreContentReadinessTests(unittest.TestCase):
                 text=True,
             )
 
-            tag_name = REPAIR_PROOF_TAG_REF.removeprefix("refs/tags/")
-            local_tag_object = run_git(fixture["repository"], "rev-parse", REPAIR_PROOF_TAG_REF)
+            physical_tag_ref = fixture["physical_tag_ref"]
+            tag_name = physical_tag_ref.removeprefix("refs/tags/")
+            local_tag_object = run_git(fixture["repository"], "rev-parse", physical_tag_ref)
             subprocess.run(
-                ["git", "--git-dir", str(fixture["remote"]), "update-ref", REPAIR_PROOF_TAG_REF, fixture["repair_commit"]],
+                ["git", "--git-dir", str(fixture["remote"]), "update-ref", physical_tag_ref, fixture["repair_commit"]],
                 check=True,
                 capture_output=True,
                 text=True,
             )
             assert_cli_fail(run_authoritative_cli(fixture), "remote annotated tag/peel mismatch")
             subprocess.run(
-                ["git", "--git-dir", str(fixture["remote"]), "update-ref", REPAIR_PROOF_TAG_REF, local_tag_object],
+                ["git", "--git-dir", str(fixture["remote"]), "update-ref", physical_tag_ref, local_tag_object],
                 check=True,
                 capture_output=True,
                 text=True,
@@ -790,6 +982,162 @@ class PreContentReadinessTests(unittest.TestCase):
             run_git(fixture["repository"], "tag", "--delete", tag_name)
             run_git(fixture["repository"], "tag", tag_name, fixture["repair_commit"])
             assert_cli_fail(run_authoritative_cli(fixture), "lightweight proof tag")
+
+    def test_authoritative_effect_accepts_independently_proven_r4_successor(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            fixture = create_successor_fixture(Path(temporary))
+            result = run_authoritative_cli(fixture)
+            self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+            self.assertIn("AUTHORITATIVE_M3_B002_EFFECTIVE=true", result.stdout)
+            self.assertIn("effective_active_wip=false", result.stdout)
+            self.assertIn("global_active_WIP=0", result.stdout)
+            self.assertEqual(run_git(fixture["repository"], "rev-parse", REPAIR_PROOF_TAG_REF), B002_PROOF_TAG_OBJECT)
+            self.assertEqual(
+                run_git(fixture["repository"], "rev-parse", f"{fixture['successor_physical_tag_ref']}^{{commit}}"),
+                fixture["successor_commit"],
+            )
+
+    def test_successor_proof_matrix_fails_closed(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            fixture = create_successor_fixture(Path(temporary), test_id="successor-negative-matrix")
+
+            def assert_cli_fail(result: subprocess.CompletedProcess[str], label: str) -> None:
+                self.assertNotEqual(result.returncode, 0, label + "\n" + result.stdout + result.stderr)
+                self.assertIn("PRECONTENT_READINESS: FAIL", result.stdout, label)
+                self.assertIn("AUTHORITATIVE_M3_B002_EFFECTIVE=false", result.stdout, label)
+
+            def mutate_canonical(path: Path, document: dict, mutation) -> None:
+                attack = copy.deepcopy(document)
+                mutation(attack)
+                path.write_bytes(canonical_json_bytes(attack))
+
+            approval_schema = load("schemas/story-construction/precontent-acceptance-regression-owner-approval-v1.schema.json")
+            envelope_schema = load("schemas/story-construction/precontent-acceptance-regression-closeout-envelope-v1.schema.json")
+            approval_sha256 = hashlib.sha256(fixture["successor_approval_bytes"]).hexdigest()
+            self.assertEqual(
+                validate_successor_owner_approval(
+                    fixture["successor_approval"], fixture["successor_expected"], approval_schema
+                ),
+                [],
+            )
+            expected_accept = expected_successor_accept_result(
+                fixture["successor_expected"], fixture["successor_approval"], approval_sha256, approval_sha256
+            )
+            self.assertEqual(validate_successor_accept_result(fixture["successor_accept"], expected_accept), [])
+            expected_envelope = expected_successor_closeout_envelope(
+                fixture["successor_expected"], fixture["successor_approval"], approval_sha256,
+                approval_sha256, fixture["successor_accept"],
+            )
+            self.assertEqual(
+                validate_successor_closeout_envelope(
+                    fixture["successor_envelope"], expected_envelope, envelope_schema
+                ),
+                [],
+            )
+
+            assert_cli_fail(
+                run_authoritative_cli(fixture, fixture["proof_cli"][:-len(fixture["successor_cli"])]),
+                "arbitrary descendant without successor proof",
+            )
+            partial = fixture["proof_cli"][:-len(fixture["successor_cli"])] + fixture["successor_cli"][:2]
+            assert_cli_fail(run_authoritative_cli(fixture, partial), "partial successor proof")
+
+            wrong_candidate = list(fixture["proof_cli"])
+            wrong_candidate[wrong_candidate.index("--expected-successor-commit") + 1] = B002_PROOF_TARGET_COMMIT
+            assert_cli_fail(run_authoritative_cli(fixture, wrong_candidate), "wrong successor Candidate")
+            wrong_tree = list(fixture["proof_cli"])
+            wrong_tree[wrong_tree.index("--expected-successor-tree") + 1] = "0" * 40
+            assert_cli_fail(run_authoritative_cli(fixture, wrong_tree), "wrong successor tree")
+            wrong_parent = list(fixture["proof_cli"])
+            wrong_parent[wrong_parent.index("--expected-successor-parent") + 1] = "0" * 40
+            assert_cli_fail(run_authoritative_cli(fixture, wrong_parent), "wrong successor parent")
+            replay = list(fixture["proof_cli"])
+            replay[replay.index("--successor-test-fixture-id") + 1] = "transferred-successor"
+            assert_cli_fail(run_authoritative_cli(fixture, replay), "successor proof replay/transfer")
+
+            mutate_canonical(
+                fixture["successor_approval_path"], fixture["successor_approval"],
+                lambda value: value.__setitem__("consumed", True),
+            )
+            assert_cli_fail(run_authoritative_cli(fixture), "invalid successor Owner approval")
+            fixture["successor_approval_path"].write_bytes(fixture["successor_approval_bytes"])
+
+            for label, field in (("wrong successor manifest", "framework_manifest_r4"), ("wrong successor receipt", "final_receipt_v4")):
+                def change_hash(value, field=field):
+                    value[field]["file_sha256"] = "0" * 64
+                mutate_canonical(fixture["successor_approval_path"], fixture["successor_approval"], change_hash)
+                assert_cli_fail(run_authoritative_cli(fixture), label)
+                fixture["successor_approval_path"].write_bytes(fixture["successor_approval_bytes"])
+
+            for label, field, bad in (
+                ("wrong ACCEPT result", "result", "FAIL"),
+                ("wrong ACCEPT verifier", "verifier", "WRONG-VERIFIER"),
+                ("wrong ACCEPT route", "route", "WRONG-ROUTE"),
+                ("wrong ACCEPT route digest", "route_digest", "0" * 64),
+            ):
+                mutate_canonical(
+                    fixture["successor_accept_path"], fixture["successor_accept"],
+                    lambda value, field=field, bad=bad: value.__setitem__(field, bad),
+                )
+                assert_cli_fail(run_authoritative_cli(fixture), label)
+                fixture["successor_accept_path"].write_bytes(canonical_json_bytes(fixture["successor_accept"]))
+
+            remote_ref = "refs/heads/design/r1-story-architecture"
+            subprocess.run(
+                ["git", "--git-dir", str(fixture["remote"]), "update-ref", remote_ref, B002_PROOF_TARGET_COMMIT],
+                check=True,
+            )
+            assert_cli_fail(run_authoritative_cli(fixture), "wrong successor remote branch")
+            subprocess.run(
+                ["git", "--git-dir", str(fixture["remote"]), "update-ref", remote_ref, fixture["successor_commit"]],
+                check=True,
+            )
+            successor_tag = fixture["successor_physical_tag_ref"]
+            local_tag_object = run_git(fixture["repository"], "rev-parse", successor_tag)
+            subprocess.run(
+                ["git", "--git-dir", str(fixture["remote"]), "update-ref", successor_tag, fixture["successor_commit"]],
+                check=True,
+            )
+            assert_cli_fail(run_authoritative_cli(fixture), "wrong successor remote tag")
+            subprocess.run(
+                ["git", "--git-dir", str(fixture["remote"]), "update-ref", successor_tag, local_tag_object],
+                check=True,
+            )
+
+            preservation_attacks = (
+                ("Canon drift", fixture["repository"] / "governance/story-construction/canonical-manifest.json"),
+                ("runtime drift", fixture["repository"] / "game-package/manifest.json"),
+                ("M2 drift", fixture["repository"] / ".codex/state/MILESTONE_PLAN.yaml"),
+                ("Provider zero-call drift", fixture["repository"] / "tests/fixtures/story-construction/precontent-m0/expected-static-gates.json"),
+            )
+            for label, path in preservation_attacks:
+                original = path.read_bytes()
+                path.write_bytes(original + b"\n")
+                assert_cli_fail(run_authoritative_cli(fixture), label)
+                path.write_bytes(original)
+
+            non_descendant = list(fixture["proof_cli"])
+            non_descendant[non_descendant.index("--expected-successor-commit") + 1] = BASE_COMMIT
+            assert_cli_fail(run_authoritative_cli(fixture, non_descendant), "non-descendant")
+
+            tag_name = successor_tag.removeprefix("refs/tags/")
+            run_git(fixture["repository"], "tag", "--delete", tag_name)
+            run_git(fixture["repository"], "tag", tag_name, fixture["successor_commit"])
+            assert_cli_fail(run_authoritative_cli(fixture), "lightweight successor tag")
+            run_git(fixture["repository"], "tag", "--delete", tag_name)
+            run_git(
+                fixture["repository"], "tag", "--annotate", "--cleanup=verbatim", "--file",
+                str(fixture["successor_envelope_path"]), tag_name, B002_PROOF_TARGET_COMMIT,
+            )
+            assert_cli_fail(run_authoritative_cli(fixture), "wrong successor tag target")
+            run_git(fixture["repository"], "tag", "--delete", tag_name)
+            wrong_message = fixture["successor_envelope_path"].parent / "wrong-successor-message.txt"
+            wrong_message.write_text("wrong successor envelope\n", encoding="utf-8")
+            run_git(
+                fixture["repository"], "tag", "--annotate", "--cleanup=verbatim", "--file",
+                str(wrong_message), tag_name, fixture["successor_commit"],
+            )
+            assert_cli_fail(run_authoritative_cli(fixture), "wrong successor tag message/object")
 
     def test_activation_owner_approval_replay_and_transfer_are_rejected(self):
         records = activation_path_records(ROOT)
