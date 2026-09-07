@@ -8,6 +8,7 @@ import hashlib
 import json
 import os
 import re
+import stat
 import subprocess
 import sys
 from datetime import datetime
@@ -151,6 +152,16 @@ DESCENDANT_PROTECTED_PATHS = [
     "docs/implementation/m2/probes",
     "reports/m2/probes",
 ]
+
+AUTHORIZED_ADDITIVE_EVIDENCE_BUNDLE_PATHS = (
+    "docs/implementation/m2/probes/r2-int-010-platform-identity-rebind-v1.schema.json",
+    "reports/m2/probes/external/r2-int-010-platform-identity-rebind/platform-acceptance.json",
+    "reports/m2/probes/external/r2-int-010-platform-identity-rebind/rebind.json",
+    "reports/m2/probes/external/r2-int-010-platform-identity-rebind/evidence-manifest.json",
+    "reports/m2/probes/external/r2-int-010-platform-identity-rebind/execution-records.json",
+    "reports/m2/probes/external-evidence-index-v3.json",
+)
+REGULAR_FILE_MODES = {"100644", "100755"}
 
 EVOLVABLE_HISTORICAL_ARTIFACT_PATHS = {
     VALIDATOR_PATH_TEXT,
@@ -1299,10 +1310,12 @@ def collect_descendant_protected_changes(
         _git(
             root,
             [
-                "diff",
+                "log",
+                "--format=",
                 "--name-only",
-                LIFECYCLE_CLOSEOUT_COMMIT,
-                target,
+                "--no-renames",
+                "--full-history",
+                f"{LIFECYCLE_CLOSEOUT_COMMIT}..{target}",
                 "--",
                 *DESCENDANT_PROTECTED_PATHS,
             ],
@@ -1334,6 +1347,253 @@ def collect_descendant_protected_changes(
             ).splitlines()
         )
     return sorted(path for path in changes if path)
+
+
+def _tree_entry(
+    root: Path,
+    revision: str,
+    path_text: str,
+) -> tuple[str, str, str] | None:
+    output = _git(root, ["ls-tree", revision, "--", path_text])
+    if not output:
+        return None
+    lines = output.splitlines()
+    require(len(lines) == 1, f"ambiguous Git tree entry for {path_text}")
+    try:
+        metadata, actual_path = lines[0].split("\t", 1)
+        mode, object_type, object_id = metadata.split()
+    except ValueError as exc:
+        raise RecoveryValidationError(
+            f"malformed Git tree entry for {path_text}"
+        ) from exc
+    require(actual_path == path_text, f"Git tree entry path mismatch for {path_text}")
+    return mode, object_type, object_id
+
+
+def _require_regular_blob_entry(
+    entry: tuple[str, str, str] | None,
+    path_text: str,
+    context: str,
+) -> tuple[str, str, str]:
+    require(entry is not None, f"{context} is missing bundle path: {path_text}")
+    mode, object_type, _ = entry
+    require(object_type == "blob", f"{context} bundle path is not a blob: {path_text}")
+    require(mode in REGULAR_FILE_MODES, f"{context} bundle path is not a regular file: {path_text}")
+    return entry
+
+
+def _require_bundle_absent_at_lifecycle_anchor(root: Path) -> None:
+    for path_text in AUTHORIZED_ADDITIVE_EVIDENCE_BUNDLE_PATHS:
+        require(
+            _tree_entry(root, LIFECYCLE_CLOSEOUT_COMMIT, path_text) is None,
+            f"authorized additive evidence path already exists at lifecycle anchor: {path_text}",
+        )
+
+
+def _first_bundle_add_commit(root: Path, target: str, path_text: str) -> str:
+    commits = _git(
+        root,
+        [
+            "log",
+            "--reverse",
+            "--format=%H",
+            "--diff-filter=A",
+            f"{LIFECYCLE_CLOSEOUT_COMMIT}..{target}",
+            "--",
+            path_text,
+        ],
+    ).splitlines()
+    require(commits, f"bundle path has no add-only introduction commit: {path_text}")
+    return commits[0]
+
+
+def _validate_committed_additive_bundle(root: Path, target: str) -> None:
+    first_adds = {
+        path_text: _first_bundle_add_commit(root, target, path_text)
+        for path_text in AUTHORIZED_ADDITIVE_EVIDENCE_BUNDLE_PATHS
+    }
+    introduction_commits = set(first_adds.values())
+    require(
+        len(introduction_commits) == 1,
+        f"six-path evidence bundle was introduced across multiple commits: {sorted(introduction_commits)}",
+    )
+    introduction = next(iter(introduction_commits))
+    lineage = _git(root, ["rev-list", "--parents", "-n", "1", introduction]).split()
+    require(
+        len(lineage) == 2,
+        "six-path evidence bundle introduction must be a single-parent commit",
+    )
+    parent = lineage[1]
+    status_lines = _git(
+        root,
+        [
+            "diff-tree",
+            "--no-commit-id",
+            "--name-status",
+            "-r",
+            "--no-renames",
+            parent,
+            introduction,
+            "--",
+            *AUTHORIZED_ADDITIVE_EVIDENCE_BUNDLE_PATHS,
+        ],
+    ).splitlines()
+    statuses: dict[str, str] = {}
+    for line in status_lines:
+        try:
+            status_text, path_text = line.split("\t", 1)
+        except ValueError as exc:
+            raise RecoveryValidationError(
+                "malformed six-path evidence bundle introduction status"
+            ) from exc
+        require(path_text not in statuses, f"duplicate introduction status for {path_text}")
+        statuses[path_text] = status_text
+    require(
+        set(statuses) == set(AUTHORIZED_ADDITIVE_EVIDENCE_BUNDLE_PATHS),
+        "six-path evidence bundle introduction is incomplete",
+    )
+    require(
+        all(status == "A" for status in statuses.values()),
+        f"six-path evidence bundle introduction is not add-only: {statuses}",
+    )
+
+    for path_text in AUTHORIZED_ADDITIVE_EVIDENCE_BUNDLE_PATHS:
+        introduced_entry = _require_regular_blob_entry(
+            _tree_entry(root, introduction, path_text),
+            path_text,
+            "introduction commit",
+        )
+        target_entry = _require_regular_blob_entry(
+            _tree_entry(root, target, path_text),
+            path_text,
+            "target commit",
+        )
+        require(
+            target_entry == introduced_entry,
+            f"bundle blob or mode changed after introduction: {path_text}",
+        )
+
+    later_touches = _git(
+        root,
+        [
+            "log",
+            "--format=%H",
+            "--full-history",
+            f"{introduction}..{target}",
+            "--",
+            *AUTHORIZED_ADDITIVE_EVIDENCE_BUNDLE_PATHS,
+        ],
+    ).splitlines()
+    require(
+        not later_touches,
+        f"six-path evidence bundle was mutated after introduction: {later_touches}",
+    )
+
+
+def _validate_precommit_additive_bundle(root: Path, target: str) -> None:
+    for path_text in AUTHORIZED_ADDITIVE_EVIDENCE_BUNDLE_PATHS:
+        require(
+            _tree_entry(root, target, path_text) is None,
+            f"precommit bundle path already exists in target commit: {path_text}",
+        )
+    status_lines = _git(
+        root,
+        [
+            "status",
+            "--porcelain=v1",
+            "--untracked-files=all",
+            "--",
+            *AUTHORIZED_ADDITIVE_EVIDENCE_BUNDLE_PATHS,
+        ],
+    ).splitlines()
+    expected_statuses = {
+        f"?? {path_text}": (path_text, False)
+        for path_text in AUTHORIZED_ADDITIVE_EVIDENCE_BUNDLE_PATHS
+    }
+    expected_statuses.update(
+        {
+            f"A  {path_text}": (path_text, True)
+            for path_text in AUTHORIZED_ADDITIVE_EVIDENCE_BUNDLE_PATHS
+        }
+    )
+    require(
+        len(status_lines) == len(AUTHORIZED_ADDITIVE_EVIDENCE_BUNDLE_PATHS),
+        "precommit six-path evidence bundle is incomplete or has non-add-only status",
+    )
+    seen: set[str] = set()
+    for line in status_lines:
+        parsed = expected_statuses.get(line)
+        require(parsed is not None, f"precommit bundle path is not untracked/add-only: {line}")
+        path_text, staged = parsed
+        require(path_text not in seen, f"duplicate precommit bundle status: {path_text}")
+        seen.add(path_text)
+        try:
+            file_mode = (root / path_text).lstat().st_mode
+        except OSError as exc:
+            raise RecoveryValidationError(
+                f"cannot stat precommit bundle path {path_text}: {exc}"
+            ) from exc
+        require(
+            stat.S_ISREG(file_mode),
+            f"precommit bundle path is not a regular file: {path_text}",
+        )
+        if staged:
+            index_entry = _git(root, ["ls-files", "--stage", "--", path_text])
+            try:
+                metadata, index_path = index_entry.split("\t", 1)
+                mode, object_id, stage_number = metadata.split()
+            except ValueError as exc:
+                raise RecoveryValidationError(
+                    f"malformed staged bundle entry: {path_text}"
+                ) from exc
+            require(index_path == path_text, f"staged bundle path mismatch: {path_text}")
+            require(stage_number == "0", f"staged bundle path is unmerged: {path_text}")
+            require(mode in REGULAR_FILE_MODES, f"staged bundle path is not regular: {path_text}")
+            require(
+                _git(root, ["cat-file", "-t", object_id]) == "blob",
+                f"staged bundle path is not a blob: {path_text}",
+            )
+    require(
+        seen == set(AUTHORIZED_ADDITIVE_EVIDENCE_BUNDLE_PATHS),
+        "precommit six-path evidence bundle is incomplete",
+    )
+
+
+def validate_additive_evidence_bundle(
+    root: Path,
+    target: str,
+    *,
+    include_worktree: bool,
+) -> None:
+    _require_bundle_absent_at_lifecycle_anchor(root)
+    target_entries = {
+        path_text: _tree_entry(root, target, path_text)
+        for path_text in AUTHORIZED_ADDITIVE_EVIDENCE_BUNDLE_PATHS
+    }
+    committed_paths = {
+        path_text for path_text, entry in target_entries.items() if entry is not None
+    }
+    if committed_paths:
+        require(
+            committed_paths == set(AUTHORIZED_ADDITIVE_EVIDENCE_BUNDLE_PATHS),
+            f"committed six-path evidence bundle is partial: {sorted(committed_paths)}",
+        )
+        _validate_committed_additive_bundle(root, target)
+        if include_worktree:
+            status = _git(
+                root,
+                [
+                    "status",
+                    "--porcelain=v1",
+                    "--untracked-files=all",
+                    "--",
+                    *AUTHORIZED_ADDITIVE_EVIDENCE_BUNDLE_PATHS,
+                ],
+            )
+            require(not status, "committed six-path evidence bundle has worktree mutation")
+        return
+    require(include_worktree, "six-path evidence bundle is absent from committed target")
+    _validate_precommit_additive_bundle(root, target)
 
 
 def validate_candidate_checkout(
@@ -1399,10 +1659,20 @@ def validate_post_accepted_descendant(
         target,
         include_worktree=include_worktree,
     )
+    protected_change_set = set(protected_changes)
+    additive_bundle_set = set(AUTHORIZED_ADDITIVE_EVIDENCE_BUNDLE_PATHS)
     require(
-        not protected_changes,
-        f"post-accepted descendant changed protected M2 state/evidence: {protected_changes}",
+        not protected_change_set or protected_change_set == additive_bundle_set,
+        "post-accepted descendant changed protected M2 state/evidence outside the "
+        f"exact six-path additive bundle: {protected_changes}",
     )
+    _require_bundle_absent_at_lifecycle_anchor(root)
+    if protected_change_set:
+        validate_additive_evidence_bundle(
+            root,
+            target,
+            include_worktree=include_worktree,
+        )
     validate_lifecycle_preservation_state(root, artifact_reader=reader)
 
 

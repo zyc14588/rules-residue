@@ -1,0 +1,105 @@
+{
+  "schema_version": "rules-residue.m2.r2-int-010-platform-identity-rebind-manifest/2.0",
+  "evidence_set_id": "R2-INT-010-PLATFORM-IDENTITY-REBIND-B011-RETRY-002",
+  "task_id": "M1-B011-RULES-PLATFORM-IDENTITY-REBIND-RETRY-002",
+  "external_authority": {
+    "task_id": "M1-B011-PLATFORM-ACCEPTANCE-EVIDENCE-REISSUE-001",
+    "result": "PASS_M1_B011_PLATFORM_ACCEPTANCE_EVIDENCE_REISSUED",
+    "archive_path": "/home/zyc14588/secs/audit/TRPG_PLATFORM-M1-B011-PLATFORM-ACCEPTANCE-REISSUE-001/TRPG_PLATFORM-M1-B011-PLATFORM-ACCEPTANCE-REISSUE-001.zip",
+    "archive_sha256": "21ecfa011cee94197670e12f13c94201276585362e66fbed1c96a7c485f5d5dd",
+    "manifest_root_sha256": "865a244e234dadb0f919fd42645b44ee74129c1e01b81d4736615bbe0659ea40",
+    "validation_source": "PERSISTENT_ARCHIVE_ONLY"
+  },
+  "artifacts": [
+    {
+      "path": "docs/implementation/m2/probes/r2-int-010-platform-identity-rebind-v1.schema.json",
+      "sha256": "0273df7ac2b7de3980052e3c92ec29b2b8b1f8f6de2e4d29a82ba68bad4affad",
+      "size": 12457
+    },
+    {
+      "path": "reports/m2/probes/external/r2-int-010-platform-identity-rebind/platform-acceptance.json",
+      "sha256": "e26aef955b6336cbf3431067e5c46cbafbdf010216aeea8270bd1b2dc87ac521",
+      "size": 3067
+    },
+    {
+      "path": "reports/m2/probes/external/r2-int-010-platform-identity-rebind/rebind.json",
+      "sha256": "f219c7932e381fc086870c14e5737e81c95c892f287e5515518f26aecf00ae64",
+      "size": 4194
+    },
+    {
+      "path": "reports/m2/probes/external/r2-int-010-platform-identity-rebind/execution-records.json",
+      "sha256": "f2d790c148edc4026e0d3921dc641294d1b781c844b9fda6daee3726cdca4fe0",
+      "size": 7852
+    },
+    {
+      "path": "reports/m2/probes/external-evidence-index-v3.json",
+      "sha256": "1417d9f911ea5bc9015565b707598e18413af9431b14a4e8b64d0fafb1ecf609",
+      "size": 7801
+    },
+    {
+      "path": "tests/m2/probes/validate_r2_int_010_platform_identity_rebind.py",
+      "sha256": "b4c1c4b5d3544335f1ba0d7d318a3d12a359e66d1dd8c54cd9c57f0b57ae9d4a",
+      "size": 53544
+    },
+    {
+      "path": "tests/m2/probes/test_r2_int_010_platform_identity_rebind.py",
+      "sha256": "823205f2994145a883686a5ed43a6fef55cd979288f1a24bd10fa4792f523ce4",
+      "size": 18979
+    }
+  ],
+  "immutable_historical_artifacts": [
+    {
+      "path": "reports/m2/probes/external-evidence-index-v2.json",
+      "sha256": "0dd20ad375a40eb3854b3a5426b6666d7eca93ffd75cfb3a9be99c47f21c2627",
+      "disposition": "IMMUTABLE_PREDECESSOR"
+    },
+    {
+      "path": "reports/m2/probes/external/r2-int-010-platform-acceptance/platform-acceptance.json",
+      "sha256": "bba1b6f68f30143938c2e22b7bc4a0366549ca1f90a0b81af477f13bd142841e",
+      "disposition": "IMMUTABLE_PREDECESSOR"
+    },
+    {
+      "path": "reports/m2/probes/external/r2-int-010-platform-acceptance/evidence-manifest.json",
+      "sha256": "bfa8cd4c45f9ea183883798f5e3e35bed36306a44972ee807ac1248f345e988e",
+      "disposition": "IMMUTABLE_PREDECESSOR"
+    },
+    {
+      "path": "reports/m2/probes/remediations/r2-int-010-post-platform-transition/cross-accept-verdict.json",
+      "sha256": "099aaa7244b4a443e31bcdb733bbef2728de11b5129382328b4274ffe2534185",
+      "disposition": "IMMUTABLE_PREDECESSOR"
+    },
+    {
+      "path": "reports/m2/probes/remediations/r2-int-010-post-platform-transition/cross-accept-verdict.manifest.json",
+      "sha256": "11e484b44776af6f5f845e5082185ee8fa61868e7610b4947013de9252aac060",
+      "disposition": "IMMUTABLE_PREDECESSOR"
+    },
+    {
+      "path": "reports/m2/probes/remediations/r2-int-010-post-platform-transition/evidence.json",
+      "sha256": "f2e9c48517cd9437aa464041f28b15e8ff96c8df8533c58fa8afb001d22fdd18",
+      "disposition": "IMMUTABLE_PREDECESSOR"
+    },
+    {
+      "path": "reports/m2/probes/remediations/r2-int-010-post-platform-transition/evidence-manifest.json",
+      "sha256": "02c10c84c64959e3c186c4aabde3fb82f129ce1c30f788eeaa13b8ff6745c480",
+      "disposition": "IMMUTABLE_PREDECESSOR"
+    },
+    {
+      "path": "reports/m2/probes/remediations/r2-int-010-post-platform-transition/execution-records.json",
+      "sha256": "dc98a5c7f48a8325ba7312c9082f0d514d121e4dba4f931ae66d7c59b1f0db06",
+      "disposition": "IMMUTABLE_PREDECESSOR"
+    },
+    {
+      "path": ".codex/state/MILESTONE_PLAN.yaml",
+      "sha256": "74da7cc866e0b3b1f3580d86df18c8c6d9724ff6131e5d35c155fc33a2f71c17",
+      "disposition": "IMMUTABLE_PREDECESSOR"
+    }
+  ],
+  "policies": {
+    "historical_mutation": "REJECT_ANY_CURRENT_BYTE_MISMATCH",
+    "evidence_evolution": "ADDITIVE_ONLY",
+    "formal_batch_reopened": false,
+    "fresh_exact_pair_acceptance": "NOT_RUN",
+    "cross_repository_acceptance": "NOT_RUN",
+    "m1_b011_completion": "NOT_AUTHORIZED"
+  }
+}

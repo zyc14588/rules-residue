@@ -1,0 +1,216 @@
+{
+  "schema_version": "rules-residue.m2.r2-int-010-platform-identity-rebind-execution/2.0",
+  "evidence_set_id": "R2-INT-010-PLATFORM-IDENTITY-REBIND-B011-RETRY-002",
+  "task_id": "M1-B011-RULES-PLATFORM-IDENTITY-REBIND-RETRY-002",
+  "source_binding": {
+    "commit": "1aede3667cd9bebee759ca8edab4289f5129e43e",
+    "tree": "5cab85e4a1d7547288982b03e0a65f20c51d65c2"
+  },
+  "route_binding": {
+    "route_id": "M2-B001-EXTERNAL-PROBE-UPDATE-001",
+    "mode": "IMPLEMENT",
+    "milestone": "M2",
+    "batch_id": "M2-B001",
+    "source_commit": "1aede3667cd9bebee759ca8edab4289f5129e43e",
+    "source_tree": "5cab85e4a1d7547288982b03e0a65f20c51d65c2",
+    "binding_digest": "df9b03d0fbbdbcfbf330b43b8f40640b9ce1053135798c4c7b5b05c8c7185dac",
+    "check": "PASS"
+  },
+  "platform_archive_authority": {
+    "task_id": "M1-B011-PLATFORM-ACCEPTANCE-EVIDENCE-REISSUE-001",
+    "result": "PASS_M1_B011_PLATFORM_ACCEPTANCE_EVIDENCE_REISSUED",
+    "archive_path": "/home/zyc14588/secs/audit/TRPG_PLATFORM-M1-B011-PLATFORM-ACCEPTANCE-REISSUE-001/TRPG_PLATFORM-M1-B011-PLATFORM-ACCEPTANCE-REISSUE-001.zip",
+    "archive_sha256": "21ecfa011cee94197670e12f13c94201276585362e66fbed1c96a7c485f5d5dd",
+    "manifest_root_sha256": "865a244e234dadb0f919fd42645b44ee74129c1e01b81d4736615bbe0659ea40",
+    "validation_source": "PERSISTENT_ARCHIVE_ONLY"
+  },
+  "artifact_bindings": {
+    "platform_acceptance_path": "reports/m2/probes/external/r2-int-010-platform-identity-rebind/platform-acceptance.json",
+    "platform_acceptance_sha256": "e26aef955b6336cbf3431067e5c46cbafbdf010216aeea8270bd1b2dc87ac521",
+    "rebind_path": "reports/m2/probes/external/r2-int-010-platform-identity-rebind/rebind.json",
+    "rebind_sha256": "f219c7932e381fc086870c14e5737e81c95c892f287e5515518f26aecf00ae64"
+  },
+  "records": [
+    {
+      "evidence_id": "REBIND-R001",
+      "operation": "VERIFY_RETRY_WORKTREE_IDENTITY",
+      "command": "git rev-parse HEAD; git rev-parse HEAD^{tree}; git status --porcelain=v1 --untracked-files=all",
+      "exit_code": 0,
+      "execution_status": "PASS",
+      "observed": {
+        "commit": "1aede3667cd9bebee759ca8edab4289f5129e43e",
+        "tree": "5cab85e4a1d7547288982b03e0a65f20c51d65c2",
+        "clean_before_construction": true
+      }
+    },
+    {
+      "evidence_id": "REBIND-R002",
+      "operation": "VERIFY_FRESH_ARCHIVE_SHA_AND_REPORTED_ROOT",
+      "command": "test -f $archive; sha256sum $archive; tr -d '[:space:]' < $audit_root/ROOT_SHA256",
+      "exit_code": 0,
+      "execution_status": "PASS",
+      "observed": {
+        "archive_sha256": "21ecfa011cee94197670e12f13c94201276585362e66fbed1c96a7c485f5d5dd",
+        "reported_root_sha256": "865a244e234dadb0f919fd42645b44ee74129c1e01b81d4736615bbe0659ea40"
+      }
+    },
+    {
+      "evidence_id": "REBIND-R003",
+      "operation": "VERIFY_ARCHIVE_ONLY_EVIDENCE_ROOT_AND_PAYLOAD",
+      "command": "python3 tests/m2/probes/validate_r2_int_010_platform_identity_rebind.py --verify-platform-archive",
+      "exit_code": 0,
+      "execution_status": "PASS",
+      "observed": {
+        "artifact_count": 60,
+        "manifest_root_sha256": "865a244e234dadb0f919fd42645b44ee74129c1e01b81d4736615bbe0659ea40",
+        "product_creator_determinism_identity": "PASS"
+      }
+    },
+    {
+      "evidence_id": "REBIND-R004",
+      "operation": "VERIFY_NATIVE_RULES_IMPLEMENT_ROUTE",
+      "command": "python3 tools/codex_route.py generate --request .codex/routes/m2-b001-external-probe-update-request.json --output /tmp/M1-B011-RULES-PLATFORM-IDENTITY-REBIND-RETRY-002-route.json --repo-root .; python3 tools/codex_route.py check --map /tmp/M1-B011-RULES-PLATFORM-IDENTITY-REBIND-RETRY-002-route.json --route-id M2-B001-EXTERNAL-PROBE-UPDATE-001 --mode IMPLEMENT --milestone M2 --batch-id M2-B001 --repo-root .; just codex-check",
+      "exit_code": 0,
+      "execution_status": "PASS",
+      "observed": {
+        "binding_digest": "df9b03d0fbbdbcfbf330b43b8f40640b9ce1053135798c4c7b5b05c8c7185dac",
+        "route_check": "PASS",
+        "codex_check": "PASS"
+      }
+    },
+    {
+      "evidence_id": "REBIND-R005",
+      "operation": "VERIFY_CURRENT_R4_AUTHORITY_BASELINE",
+      "command": "python3 tools/run_acceptance.py",
+      "exit_code": 0,
+      "execution_status": "PASS",
+      "observed": {
+        "tests_run": 247,
+        "failures": 0,
+        "errors": 0,
+        "r4_acceptance_regression_proof": "PASS",
+        "prior_relevant_defect": "REPAIRED_BY_CURRENT_R4_AUTHORITY"
+      }
+    },
+    {
+      "evidence_id": "REBIND-R006",
+      "operation": "VALIDATE_REBIND_CANDIDATE",
+      "command": "python3 tests/m2/probes/validate_r2_int_010_platform_identity_rebind.py --validate",
+      "exit_code": 0,
+      "execution_status": "PASS",
+      "observed": {
+        "validation_status": "PASS",
+        "fresh_exact_pair_acceptance": "NOT_RUN"
+      }
+    },
+    {
+      "evidence_id": "REBIND-R007",
+      "operation": "RUN_REBIND_ADVERSARIAL_SUITE",
+      "command": "python3 tests/m2/probes/test_r2_int_010_platform_identity_rebind.py",
+      "exit_code": 0,
+      "execution_status": "PASS",
+      "observed": {
+        "tests_run": 61,
+        "failures": 0,
+        "errors": 0
+      }
+    },
+    {
+      "evidence_id": "REBIND-R008",
+      "operation": "VALIDATE_HISTORICAL_TRANSITION",
+      "command": "python3 tests/m2/probes/validate_r2_int_010_post_platform_transition.py --validate",
+      "exit_code": 0,
+      "execution_status": "PASS",
+      "observed": {
+        "effective_R2_INT_010": "RESOLVED_ADAPTER",
+        "result": "PASS"
+      }
+    },
+    {
+      "evidence_id": "REBIND-R009",
+      "operation": "RUN_M2_CLOSEOUT_PROBE_SUITE",
+      "command": "python3 tests/m2/probes/test_m2_b001_recovery_closeout.py",
+      "exit_code": 0,
+      "execution_status": "PASS",
+      "observed": {
+        "tests_run": 104,
+        "failures": 0,
+        "errors": 0,
+        "six_file_bundle": "ATOMIC"
+      }
+    },
+    {
+      "evidence_id": "REBIND-R010",
+      "operation": "RUN_DIRTY_REPOSITORY_BRIDGE",
+      "command": "python3 -m unittest tests.test_m2_b001_recovery_closeout -v",
+      "exit_code": 0,
+      "execution_status": "PASS",
+      "observed": {
+        "tests_run": 1,
+        "failures": 0,
+        "errors": 0,
+        "exact_six_dirty_additive_bundle": "RECOGNIZED"
+      }
+    },
+    {
+      "evidence_id": "REBIND-R011",
+      "operation": "VALIDATE_STORY_GOVERNANCE",
+      "command": "python3 tools/validate_story_construction_governance.py",
+      "exit_code": 0,
+      "execution_status": "PASS",
+      "observed": {
+        "result": "PASS",
+        "activation_lineage_deadlock": false
+      }
+    },
+    {
+      "evidence_id": "REBIND-R012",
+      "operation": "RUN_JUST_VALIDATE",
+      "command": "just validate",
+      "exit_code": 0,
+      "execution_status": "PASS",
+      "observed": {
+        "result": "PASS"
+      }
+    },
+    {
+      "evidence_id": "REBIND-R013",
+      "operation": "RUN_JUST_TEST",
+      "command": "just test",
+      "exit_code": 0,
+      "execution_status": "PASS",
+      "observed": {
+        "tests_run": 256,
+        "failures": 0,
+        "errors": 0
+      }
+    },
+    {
+      "evidence_id": "REBIND-R014",
+      "operation": "RUN_JUST_CODEX_CHECK",
+      "command": "just codex-check",
+      "exit_code": 0,
+      "execution_status": "PASS",
+      "observed": {
+        "result": "PASS",
+        "negative_route_tests": 26
+      }
+    },
+    {
+      "evidence_id": "REBIND-R015",
+      "operation": "RUN_GIT_DIFF_CHECK",
+      "command": "git diff --check",
+      "exit_code": 0,
+      "execution_status": "PASS",
+      "observed": {
+        "result": "PASS"
+      }
+    }
+  ],
+  "non_executions": {
+    "fresh_exact_pair_acceptance": "NOT_RUN",
+    "cross_repository_acceptance": "NOT_RUN",
+    "m1_b011_completion": "NOT_AUTHORIZED",
+    "formal_M2_B001_reopened": false
+  }
+}

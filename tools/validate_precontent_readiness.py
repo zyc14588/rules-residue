@@ -67,6 +67,9 @@ REPAIR_ACCEPT_ROUTE = "SCG-PRECONTENT-M3-B002-AUTHORITATIVE-EFFECT-REPAIR-ACCEPT
 REPAIR_PROOF_TAG_REF = "refs/tags/scg-precontent-m3-b002-authoritative-effect-repair-accepted"
 B002_PROOF_TARGET_COMMIT = "2d7f78f5b24623729cb64a798b59d6f469e6de2b"
 B002_PROOF_TARGET_TREE = "f0fdf751d7532097926d36f3ac723f563e82cfd3"
+R4_CANDIDATE_COMMIT = "1aede3667cd9bebee759ca8edab4289f5129e43e"
+R4_CANDIDATE_TREE = "5cab85e4a1d7547288982b03e0a65f20c51d65c2"
+R4_CANDIDATE_PARENT = B002_PROOF_TARGET_COMMIT
 B002_PROOF_TAG_OBJECT = "421e36ce08076d5eb9ef43049c8bdf9edafa16d3"
 B002_OWNER_APPROVAL_SHA256 = "678554b3b7b00f555bd0b3a9808ed3d46125f037d150fef98891795cc0354e96"
 B002_CLOSEOUT_ENVELOPE_SHA256 = "caf5056709d870fab60c24d9077f515374cbc5abaf9fb54c3effd8314c0a6ac7"
@@ -275,6 +278,14 @@ R4_NEW_SEMANTIC_PATHS = (
     "schemas/story-construction/precontent-acceptance-regression-closeout-envelope-v1.schema.json",
     "schemas/story-construction/precontent-acceptance-regression-owner-approval-v1.schema.json",
     "schemas/story-construction/precontent-final-receipt-v4.schema.json",
+)
+
+# These R4 Merkle leaves may evolve after the fixed R4 authority commit.  R4
+# itself remains bound to the exact bytes in R4_CANDIDATE_COMMIT; later tasks
+# must enforce their own path and byte allowlists independently.
+POST_R4_EVOLVABLE_PATHS = (
+    "tools/validate_precontent_readiness.py",
+    "tools/validate_story_construction_governance.py",
 )
 
 R3_CHANGED_OLD_PATHS = (
@@ -1680,6 +1691,21 @@ def _r4_schema_set_summary(schemas: dict[str, Any]) -> dict[str, Any]:
     }
 
 
+def _fixed_r4_file_sha256(root: Path, relative: str) -> str:
+    environment = os.environ.copy()
+    environment["GIT_NO_REPLACE_OBJECTS"] = "1"
+    result = subprocess.run(
+        ["git", "-C", str(root), "show", f"{R4_CANDIDATE_COMMIT}:{relative}"],
+        check=False,
+        capture_output=True,
+        env=environment,
+    )
+    if result.returncode != 0:
+        detail = result.stderr.decode("utf-8", errors="replace").strip()
+        raise ValueError(f"cannot read fixed R4 snapshot for {relative}: {detail}")
+    return hashlib.sha256(result.stdout).hexdigest()
+
+
 def derive_r4_documents(root: Path = PROJECT_ROOT) -> dict[str, Any]:
     root = root.resolve()
     if r4_allowlist_hash() != R4_PATH_ALLOWLIST_SHA256:
@@ -1697,7 +1723,11 @@ def derive_r4_documents(root: Path = PROJECT_ROOT) -> dict[str, Any]:
     r4_records: list[dict[str, str]] = []
     for old in sorted(r3_records, key=lambda item: item["path"]):
         path = old["path"]
-        actual_sha256 = file_sha256(root / path)
+        actual_sha256 = (
+            _fixed_r4_file_sha256(root, path)
+            if path in POST_R4_EVOLVABLE_PATHS
+            else file_sha256(root / path)
+        )
         if path in R4_CHANGED_OLD_PATHS:
             if actual_sha256 == old["sha256"]:
                 raise ValueError(f"approved R4 changed-old path did not change: {path}")
@@ -2201,6 +2231,7 @@ def _git_run(
         if name in blocked_environment or name == "GIT_CONFIG_COUNT" or name.startswith(("GIT_CONFIG_KEY_", "GIT_CONFIG_VALUE_")):
             environment.pop(name, None)
     environment["GIT_TERMINAL_PROMPT"] = "0"
+    environment["GIT_NO_REPLACE_OBJECTS"] = "1"
     return subprocess.run(
         [
             "git",
@@ -3492,13 +3523,33 @@ def _validate_routes(root: Path, errors: list[str]) -> None:
 
 
 def _git_output(root: Path, *args: str) -> str:
-    result = subprocess.run(["git", "-C", str(root), *args], check=True, capture_output=True, text=True)
+    result = subprocess.run(
+        ["git", "-C", str(root), *args],
+        check=True,
+        capture_output=True,
+        text=True,
+        env={**os.environ, "GIT_NO_REPLACE_OBJECTS": "1"},
+    )
     return result.stdout.rstrip("\n")
 
 
-def changed_paths(root: Path) -> set[str]:
+def changed_paths(root: Path, source_ref: str = R4_CANDIDATE_COMMIT) -> set[str]:
     head = _git_output(root, "rev-parse", "HEAD")
-    committed = set(filter(None, _git_output(root, "diff", "--name-only", f"{B002_PROOF_TARGET_COMMIT}..{head}").splitlines())) if head != B002_PROOF_TARGET_COMMIT else set()
+    committed = (
+        set(
+            filter(
+                None,
+                _git_output(
+                    root,
+                    "diff",
+                    "--name-only",
+                    f"{source_ref}..{head}",
+                ).splitlines(),
+            )
+        )
+        if head != source_ref
+        else set()
+    )
     status = _git_output(root, "status", "--porcelain", "--untracked-files=all")
     working: set[str] = set()
     for line in status.splitlines():
@@ -3511,28 +3562,102 @@ def changed_paths(root: Path) -> set[str]:
     return committed | working
 
 
-def _validate_git_and_runtime_boundary(root: Path, errors: list[str]) -> None:
+def _validate_git_and_runtime_boundary(
+    root: Path,
+    errors: list[str],
+    *,
+    require_fixed_head: bool = True,
+) -> None:
     try:
-        actual = changed_paths(root)
+        actual = changed_paths(
+            root,
+            R4_CANDIDATE_COMMIT if require_fixed_head else B002_PROOF_TARGET_COMMIT,
+        )
     except (OSError, subprocess.CalledProcessError) as exc:
         errors.append(f"cannot compute changed paths: {exc}")
         return
-    expected = set(R4_ALLOWLIST)
-    outside = sorted(actual - expected)
-    missing = sorted(expected - actual)
-    if outside or missing:
-        errors.append(f"R4 repair diff is not the exact 15-path allowlist: missing={missing}, extra={outside}")
+    if require_fixed_head:
+        protected_changes = actual & set(R4_ALLOWLIST)
+        forbidden_r4_changes = sorted(
+            protected_changes - set(POST_R4_EVOLVABLE_PATHS)
+        )
+        if forbidden_r4_changes:
+            errors.append(
+                "fixed R4 snapshot changed outside post-R4 validator evolution: "
+                f"{forbidden_r4_changes}"
+            )
+    else:
+        outside = sorted(actual - set(R4_ALLOWLIST))
+        missing = sorted(set(R4_ALLOWLIST) - actual)
+        if outside or missing:
+            errors.append(
+                "synthetic R4 Candidate diff is not the exact 15-path allowlist: "
+                f"missing={missing}, extra={outside}"
+            )
     try:
         predecessor_tree = _git_output(root, "rev-parse", f"{B002_PROOF_TARGET_COMMIT}^{{tree}}")
         predecessor_parent = _git_output(root, "rev-parse", f"{B002_PROOF_TARGET_COMMIT}^")
+        r4_tree = _git_output(root, "rev-parse", f"{R4_CANDIDATE_COMMIT}^{{tree}}")
+        r4_parent = _git_output(root, "rev-parse", f"{R4_CANDIDATE_COMMIT}^")
+        r4_paths = set(
+            filter(
+                None,
+                _git_output(
+                    root,
+                    "diff",
+                    "--name-only",
+                    B002_PROOF_TARGET_COMMIT,
+                    R4_CANDIDATE_COMMIT,
+                    "--",
+                ).splitlines(),
+            )
+        )
+        r4_count = _git_output(
+            root,
+            "rev-list",
+            "--count",
+            f"{B002_PROOF_TARGET_COMMIT}..{R4_CANDIDATE_COMMIT}",
+        )
         head = _git_output(root, "rev-parse", "HEAD")
         if predecessor_tree != B002_PROOF_TARGET_TREE or predecessor_parent != DEFECTIVE_ACTIVATION_COMMIT:
             errors.append("fixed B002 predecessor commit/tree/parent mismatch")
-        if head != B002_PROOF_TARGET_COMMIT:
+        if r4_tree != R4_CANDIDATE_TREE or r4_parent != R4_CANDIDATE_PARENT:
+            errors.append("fixed R4 authority commit/tree/parent mismatch")
+        if r4_paths != set(R4_ALLOWLIST) or r4_count != "1":
+            errors.append("fixed R4 authority is not the exact one-commit 15-path transition")
+        if require_fixed_head and head != R4_CANDIDATE_COMMIT:
+            ancestry = subprocess.run(
+                [
+                    "git",
+                    "-C",
+                    str(root),
+                    "merge-base",
+                    "--is-ancestor",
+                    R4_CANDIDATE_COMMIT,
+                    head,
+                ],
+                check=False,
+                capture_output=True,
+                text=True,
+                env={**os.environ, "GIT_NO_REPLACE_OBJECTS": "1"},
+            )
+            if ancestry.returncode == 1:
+                errors.append("current HEAD is not the fixed R4 authority or its descendant")
+            elif ancestry.returncode != 0:
+                errors.append(
+                    "cannot verify fixed R4 descendant lineage: "
+                    f"{ancestry.stderr.strip()}"
+                )
+        elif not require_fixed_head and head != B002_PROOF_TARGET_COMMIT:
             parent = _git_output(root, "rev-parse", "HEAD^")
-            count = _git_output(root, "rev-list", "--count", f"{B002_PROOF_TARGET_COMMIT}..HEAD")
+            count = _git_output(
+                root,
+                "rev-list",
+                "--count",
+                f"{B002_PROOF_TARGET_COMMIT}..HEAD",
+            )
             if parent != B002_PROOF_TARGET_COMMIT or count != "1":
-                errors.append("R4 repair lineage must be exactly B002 -> one Candidate commit")
+                errors.append("synthetic R4 lineage must be exactly B002 -> one Candidate commit")
     except (OSError, subprocess.CalledProcessError) as exc:
         errors.append(f"cannot verify repair lineage: {exc}")
     runtime_paths = runtime_relative_paths(root / "game-package")
@@ -3805,7 +3930,11 @@ def collect_errors(
     if phase in {"all", "tracked-active-candidate", "authoritative-effect"}:
         _validate_authoritative_effect(root, errors)
     if check_git:
-        _validate_git_and_runtime_boundary(root, errors)
+        _validate_git_and_runtime_boundary(
+            root,
+            errors,
+            require_fixed_head=phase != "authoritative-effect",
+        )
     return errors
 
 

@@ -3,6 +3,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import os
 import re
 import subprocess
 import sys
@@ -70,12 +71,14 @@ from tools.validate_precontent_readiness import (
     REPAIR_ALLOWLIST as PRECONTENT_REPAIR_ALLOWLIST,
     R4_ALLOWLIST as PRECONTENT_R4_ALLOWLIST,
     B002_PROOF_TARGET_COMMIT as PRECONTENT_B002_PROOF_TARGET_COMMIT,
+    R4_CANDIDATE_COMMIT as PRECONTENT_R4_CANDIDATE_COMMIT,
+    R4_CANDIDATE_PARENT as PRECONTENT_R4_CANDIDATE_PARENT,
+    R4_CANDIDATE_TREE as PRECONTENT_R4_CANDIDATE_TREE,
     R4_CHANGE_SET_PATH as PRECONTENT_R4_CHANGE_SET_PATH,
     R3_MANIFEST_PATH as PRECONTENT_R3_MANIFEST_PATH,
     R3_RECEIPT_PATH as PRECONTENT_R3_RECEIPT_PATH,
     R4_MANIFEST_PATH as PRECONTENT_R4_MANIFEST_PATH,
     R4_RECEIPT_PATH as PRECONTENT_R4_RECEIPT_PATH,
-    changed_paths as precontent_changed_paths,
     collect_errors as validate_precontent_readiness,
 )
 
@@ -307,6 +310,9 @@ EXPECTED_SUPERSESSION_DISPOSITIONS = {
 }
 
 EXPECTED_M2_BLOCKERS = ["R2-INT-011", "R2-INT-012", "DEFER-R2-C14-001"]
+ACTIVATION_CANDIDATE_COMMIT = "6f9f671401f5857d460ca8e0bd8a86ebe04bb0b6"
+ACTIVATION_CANDIDATE_TREE = "2dfa6553770f4eedbb4def358f661b9b16b79a4d"
+ACTIVATION_CANDIDATE_PARENT = "7305a9decacf4a6361692fe9359a1afa96801722"
 V1_SCHEMA_SHA256 = {
     "candidate-approval-v1.schema.json": "f317758d3eee1518b1921436643deb84b573d89aa28808617f7b487dc3885ab7",
     "change-set-v1.schema.json": "e0aa88c72e9b6b792740acfadbaf61f458fcee102bf5955c442fba1ad1b42dd0",
@@ -606,6 +612,7 @@ def _git_output(root: Path, args: list[str], errors: list[str], label: str) -> s
         capture_output=True,
         text=True,
         check=False,
+        env={**os.environ, "GIT_NO_REPLACE_OBJECTS": "1"},
     )
     if result.returncode != 0:
         errors.append(f"{label}: git command failed: {result.stderr.strip()}")
@@ -620,6 +627,7 @@ def _git_show_bytes(
         ["git", "-C", str(root), "show", f"{revision}:{relative.as_posix()}"],
         capture_output=True,
         check=False,
+        env={**os.environ, "GIT_NO_REPLACE_OBJECTS": "1"},
     )
     if result.returncode != 0:
         errors.append(f"{label}: cannot read fixed Git object")
@@ -709,60 +717,153 @@ def validate_activation_changed_paths(changed: set[str]) -> list[str]:
     return errors
 
 
-def _check_activation_git_scope(root: Path, errors: list[str]) -> None:
-    precontent_change_set = root / "governance/story-construction/change-sets/CS-SCG-PRECONTENT-READINESS-R1-001.yaml"
-    if precontent_change_set.is_file():
-        try:
-            changed = precontent_changed_paths(root)
-        except (OSError, subprocess.CalledProcessError) as exc:
-            errors.append(f"pre-content changed paths: {exc}")
-            return
-        expected = set(PRECONTENT_R4_ALLOWLIST)
-        outside = sorted(changed - expected)
-        missing = sorted(expected - changed)
-        if outside or missing:
-            errors.append(f"pre-content activation diff is not exact: missing={missing}, extra={outside}")
-        head = _git_output(root, ["rev-parse", "HEAD"], errors, "pre-content HEAD")
-        if head is not None and head != PRECONTENT_B002_PROOF_TARGET_COMMIT:
-            parent = _git_output(root, ["rev-parse", "HEAD^"], errors, "pre-content parent")
-            count = _git_output(
-                root,
-                ["rev-list", "--count", f"{PRECONTENT_B002_PROOF_TARGET_COMMIT}..HEAD"],
-                errors,
-                "pre-content lineage count",
-            )
-            if parent != PRECONTENT_B002_PROOF_TARGET_COMMIT or count != "1":
-                errors.append("pre-content R4 lineage is non-FF, rebased, amended, or multi-commit")
+def validate_activation_candidate_structure(
+    *,
+    tree: str | None,
+    parent: str | None,
+    commit_count: int | None,
+    changed_paths: set[str],
+) -> list[str]:
+    errors: list[str] = []
+    if tree is not None and tree != ACTIVATION_CANDIDATE_TREE:
+        errors.append("fixed activation candidate tree identity mismatch")
+    if parent is not None and parent != ACTIVATION_CANDIDATE_PARENT:
+        errors.append("fixed activation candidate parent identity mismatch")
+    if commit_count is not None and commit_count != 1:
+        errors.append("fixed activation transaction is not exactly one commit")
+    errors.extend(validate_activation_changed_paths(changed_paths))
+    return errors
+
+
+def _check_descendant(
+    root: Path,
+    ancestor: str,
+    head: str,
+    errors: list[str],
+    label: str,
+) -> None:
+    if head == ancestor:
         return
+    result = subprocess.run(
+        ["git", "-C", str(root), "merge-base", "--is-ancestor", ancestor, head],
+        capture_output=True,
+        text=True,
+        check=False,
+        env={**os.environ, "GIT_NO_REPLACE_OBJECTS": "1"},
+    )
+    if result.returncode == 1:
+        if label == "activation":
+            errors.append("activation HEAD is not the fixed activation candidate or its descendant")
+        else:
+            errors.append(f"{label} HEAD is not the fixed candidate or its descendant")
+    elif result.returncode != 0:
+        errors.append(f"{label} ancestry check failed: {result.stderr.strip()}")
+
+
+def _check_activation_git_scope(root: Path, errors: list[str]) -> None:
+    object_type = _git_output(
+        root,
+        ["cat-file", "-t", ACTIVATION_CANDIDATE_COMMIT],
+        errors,
+        "fixed activation candidate object",
+    )
+    tree = _git_output(
+        root,
+        ["rev-parse", f"{ACTIVATION_CANDIDATE_COMMIT}^{{tree}}"],
+        errors,
+        "fixed activation candidate tree",
+    )
+    parent = _git_output(
+        root,
+        ["rev-parse", f"{ACTIVATION_CANDIDATE_COMMIT}^"],
+        errors,
+        "fixed activation candidate parent",
+    )
+    count_text = _git_output(
+        root,
+        ["rev-list", "--count", f"{ACTIVATION_CANDIDATE_PARENT}..{ACTIVATION_CANDIDATE_COMMIT}"],
+        errors,
+        "fixed activation transaction count",
+    )
     changed_output = _git_output(
         root,
-        ["diff", "--name-only", IMPLEMENTATION_CANDIDATE_COMMIT, "--"],
+        ["diff", "--name-only", ACTIVATION_CANDIDATE_PARENT, ACTIVATION_CANDIDATE_COMMIT, "--"],
         errors,
-        "activation changed paths",
-    )
-    status_output = _git_output(
-        root,
-        ["status", "--porcelain", "--untracked-files=all"],
-        errors,
-        "activation worktree status",
+        "fixed activation changed paths",
     )
     changed = set(changed_output.splitlines()) if changed_output else set()
-    if status_output:
-        for line in status_output.splitlines():
-            if line.startswith("?? "):
-                changed.add(line[3:])
+    commit_count = int(count_text) if count_text is not None and count_text.isdigit() else None
+    if object_type is not None and object_type != "commit":
+        errors.append("fixed activation candidate object is not a commit")
+    if count_text is not None and commit_count is None:
+        errors.append("fixed activation transaction count is not numeric")
+    errors.extend(
+        validate_activation_candidate_structure(
+            tree=tree,
+            parent=parent,
+            commit_count=commit_count,
+            changed_paths=changed,
+        )
+    )
+
+    precontent_change_set = root / "governance/story-construction/change-sets/CS-SCG-PRECONTENT-READINESS-R1-001.yaml"
+    if precontent_change_set.is_file():
+        r4_object_type = _git_output(
+            root,
+            ["cat-file", "-t", PRECONTENT_R4_CANDIDATE_COMMIT],
+            errors,
+            "fixed pre-content R4 object",
+        )
+        r4_tree = _git_output(
+            root,
+            ["rev-parse", f"{PRECONTENT_R4_CANDIDATE_COMMIT}^{{tree}}"],
+            errors,
+            "fixed pre-content R4 tree",
+        )
+        r4_parent = _git_output(
+            root,
+            ["rev-parse", f"{PRECONTENT_R4_CANDIDATE_COMMIT}^"],
+            errors,
+            "fixed pre-content R4 parent",
+        )
+        r4_paths_output = _git_output(
+            root,
+            ["diff", "--name-only", PRECONTENT_R4_CANDIDATE_PARENT, PRECONTENT_R4_CANDIDATE_COMMIT, "--"],
+            errors,
+            "fixed pre-content R4 changed paths",
+        )
+        r4_count = _git_output(
+            root,
+            ["rev-list", "--count", f"{PRECONTENT_R4_CANDIDATE_PARENT}..{PRECONTENT_R4_CANDIDATE_COMMIT}"],
+            errors,
+            "fixed pre-content R4 lineage count",
+        )
+        r4_paths = set(r4_paths_output.splitlines()) if r4_paths_output else set()
+        if r4_object_type is not None and r4_object_type != "commit":
+            errors.append("fixed pre-content R4 object is not a commit")
+        if r4_tree is not None and r4_tree != PRECONTENT_R4_CANDIDATE_TREE:
+            errors.append("fixed pre-content R4 tree identity mismatch")
+        if r4_parent is not None and r4_parent != PRECONTENT_R4_CANDIDATE_PARENT:
+            errors.append("fixed pre-content R4 parent identity mismatch")
+        if r4_count != "1":
+            errors.append("fixed pre-content R4 lineage is not exactly one commit")
+        if r4_paths != set(PRECONTENT_R4_ALLOWLIST):
+            errors.append("fixed pre-content R4 path set is not the exact 15-path allowlist")
+        head = _git_output(root, ["rev-parse", "HEAD"], errors, "pre-content HEAD")
+        if head is not None:
+            _check_descendant(
+                root,
+                PRECONTENT_R4_CANDIDATE_COMMIT,
+                head,
+                errors,
+                "pre-content R4",
+            )
+        return
+
     errors.extend(validate_activation_changed_paths(changed))
     head = _git_output(root, ["rev-parse", "HEAD"], errors, "activation HEAD")
-    if head is not None and head != IMPLEMENTATION_CANDIDATE_COMMIT:
-        parent = _git_output(root, ["rev-parse", "HEAD^"], errors, "activation parent")
-        count = _git_output(
-            root,
-            ["rev-list", "--count", f"{IMPLEMENTATION_CANDIDATE_COMMIT}..HEAD"],
-            errors,
-            "activation lineage count",
-        )
-        if parent != IMPLEMENTATION_CANDIDATE_COMMIT or count != "1":
-            errors.append("activation lineage is non-FF, rebased, amended, or multi-commit")
+    if head is not None:
+        _check_descendant(root, ACTIVATION_CANDIDATE_COMMIT, head, errors, "activation")
 
 
 def _check_derived_and_instances(

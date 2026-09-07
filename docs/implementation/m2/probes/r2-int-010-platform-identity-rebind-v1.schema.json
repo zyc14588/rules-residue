@@ -1,0 +1,440 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://rules-residue.invalid/schemas/r2-int-010-platform-identity-rebind-v1.schema.json",
+  "title": "R2-INT-010 additive platform identity rebind evidence",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "record_id",
+    "task_id",
+    "nature",
+    "rules_governance_authority",
+    "formal_M2_B001",
+    "formal_batch_reopened",
+    "rules_adapter",
+    "effective_transition",
+    "previous_platform_identity",
+    "new_platform_identity",
+    "platform_verifying_governance",
+    "evidence_roots",
+    "creator_identities",
+    "deterministic_product",
+    "historical_exact_pair",
+    "effective_status_before",
+    "effective_status_after",
+    "platform_identity_rebind",
+    "fresh_exact_pair_acceptance",
+    "cross_repository_acceptance",
+    "m1_b011_completion",
+    "formal_B002",
+    "formal_B009",
+    "M2_B002",
+    "M2_B002_READY",
+    "aggregate_M2_pass",
+    "aggregate_external_capability_pass",
+    "blocking_ids"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "rules-residue.m2.r2-int-010-platform-identity-rebind/2.0"
+    },
+    "record_id": {
+      "const": "R2-INT-010-PLATFORM-IDENTITY-REBIND-B011-RETRY-002"
+    },
+    "task_id": {
+      "const": "M1-B011-RULES-PLATFORM-IDENTITY-REBIND-RETRY-002"
+    },
+    "nature": {
+      "const": "ADDITIVE_PLATFORM_IDENTITY_REBIND"
+    },
+    "rules_governance_authority": {
+      "$ref": "#/$defs/rulesGovernanceAuthority"
+    },
+    "formal_M2_B001": {
+      "enum": ["ACCEPTED_UNCHANGED"]
+    },
+    "formal_batch_reopened": {
+      "const": false
+    },
+    "rules_adapter": {
+      "$ref": "#/$defs/rulesAdapter"
+    },
+    "effective_transition": {
+      "$ref": "#/$defs/effectiveTransition"
+    },
+    "previous_platform_identity": {
+      "$ref": "#/$defs/previousPlatform"
+    },
+    "new_platform_identity": {
+      "$ref": "#/$defs/newPlatform"
+    },
+    "platform_verifying_governance": {
+      "$ref": "#/$defs/verifyingGovernance"
+    },
+    "evidence_roots": {
+      "$ref": "#/$defs/evidenceRoots"
+    },
+    "creator_identities": {
+      "$ref": "#/$defs/creatorIdentities"
+    },
+    "deterministic_product": {
+      "$ref": "#/$defs/deterministicProduct"
+    },
+    "historical_exact_pair": {
+      "$ref": "#/$defs/historicalExactPair"
+    },
+    "effective_status_before": {
+      "enum": ["RESOLVED_ADAPTER"]
+    },
+    "effective_status_after": {
+      "enum": ["RESOLVED_ADAPTER"]
+    },
+    "platform_identity_rebind": {
+      "enum": ["RECORDED_NOT_CROSS_ACCEPTED"]
+    },
+    "fresh_exact_pair_acceptance": {
+      "enum": ["NOT_RUN"]
+    },
+    "cross_repository_acceptance": {
+      "enum": ["NOT_RUN"]
+    },
+    "m1_b011_completion": {
+      "enum": ["NOT_AUTHORIZED"]
+    },
+    "formal_B002": {
+      "const": false
+    },
+    "formal_B009": {
+      "const": false
+    },
+    "M2_B002": {
+      "enum": ["NOT_STARTED"]
+    },
+    "M2_B002_READY": {
+      "enum": ["NO"]
+    },
+    "aggregate_M2_pass": {
+      "const": false
+    },
+    "aggregate_external_capability_pass": {
+      "const": false
+    },
+    "blocking_ids": {
+      "type": "array",
+      "minItems": 3,
+      "maxItems": 3,
+      "uniqueItems": true,
+      "prefixItems": [
+        {"const": "R2-INT-011"},
+        {"const": "R2-INT-012"},
+        {"const": "DEFER-R2-C14-001"}
+      ],
+      "items": false
+    }
+  },
+  "$defs": {
+    "sha1": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{40}$"
+    },
+    "sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "rulesGovernanceAuthority": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["commit", "tree", "interlock_repair"],
+      "properties": {
+        "commit": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{40}$",
+          "const": "1aede3667cd9bebee759ca8edab4289f5129e43e"
+        },
+        "tree": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{40}$",
+          "const": "5cab85e4a1d7547288982b03e0a65f20c51d65c2"
+        },
+        "interlock_repair": {
+          "enum": ["ACCEPTED_UNCHANGED"]
+        }
+      }
+    },
+    "rulesAdapter": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["commit", "tree", "identity_status", "signature_verified"],
+      "properties": {
+        "commit": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{40}$",
+          "const": "455cd5d66c683565a4aad7ef8d6523421d37db71"
+        },
+        "tree": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{40}$",
+          "const": "d74aae0baf791566a770ef1aaed2da7562f681d5"
+        },
+        "identity_status": {
+          "enum": ["UNCHANGED"]
+        },
+        "signature_verified": {
+          "const": true
+        }
+      }
+    },
+    "effectiveTransition": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["commit", "tree", "effective_status"],
+      "properties": {
+        "commit": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{40}$",
+          "const": "be1f8dca3c694c9b93a3193348772ae750fc77e1"
+        },
+        "tree": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{40}$",
+          "const": "e4ad6e4f5ad4f672c827b1f37c1980b7655353d6"
+        },
+        "effective_status": {
+          "enum": ["RESOLVED_ADAPTER"]
+        }
+      }
+    },
+    "previousPlatform": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["commit", "tree"],
+      "properties": {
+        "commit": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{40}$",
+          "const": "1339c490bd8cae1e2a6e6607fc0f1db019faab64"
+        },
+        "tree": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{40}$",
+          "const": "25d5645caf883a73f165db0179accbca48ddf526"
+        }
+      }
+    },
+    "newPlatform": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["commit", "tree"],
+      "properties": {
+        "commit": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{40}$",
+          "const": "b82d52571287d9d0ebcfa589fd575125ac578476"
+        },
+        "tree": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{40}$",
+          "const": "b9be959f22a8b15080a1035fba0fb46c256edf62"
+        }
+      }
+    },
+    "verifyingGovernance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["commit", "tree", "state"],
+      "properties": {
+        "commit": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{40}$",
+          "const": "412111c05c087ed066a297304bed728870f03fc8"
+        },
+        "tree": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{40}$",
+          "const": "a77015feee62564ec8ec9744391a3b5de83e4217"
+        },
+        "state": {
+          "enum": ["VERIFYING"]
+        }
+      }
+    },
+    "evidenceRoots": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "current_evidence_root",
+        "current_evidence_role",
+        "current_archive_sha256",
+        "current_archive_role",
+        "historical_prior_evidence_root",
+        "historical_prior_evidence_role",
+        "historical_original_payload_available",
+        "historical_reported_root_reverified",
+        "historical_acceptance_result",
+        "fresh_reissuance_task_id",
+        "fresh_reissuance_result"
+      ],
+      "properties": {
+        "current_evidence_root": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$",
+          "const": "865a244e234dadb0f919fd42645b44ee74129c1e01b81d4736615bbe0659ea40"
+        },
+        "current_evidence_role": {
+          "enum": ["FRESH_REISSUANCE_CURRENT_AUTHORITY"]
+        },
+        "current_archive_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$",
+          "const": "21ecfa011cee94197670e12f13c94201276585362e66fbed1c96a7c485f5d5dd"
+        },
+        "current_archive_role": {
+          "enum": ["FRESH_REISSUANCE_PERSISTENT_ARCHIVE"]
+        },
+        "historical_prior_evidence_root": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$",
+          "const": "112dfdd0d93ba936fba31108006c166ae21ea86a2e090b9dbac611fcca93e9a9"
+        },
+        "historical_prior_evidence_role": {
+          "enum": ["HISTORICAL_REFERENCE_ONLY"]
+        },
+        "historical_original_payload_available": {
+          "const": false
+        },
+        "historical_reported_root_reverified": {
+          "const": false
+        },
+        "historical_acceptance_result": {
+          "enum": ["PASS_M1_B011_PLATFORM_ACCEPTED"]
+        },
+        "fresh_reissuance_task_id": {
+          "const": "M1-B011-PLATFORM-ACCEPTANCE-EVIDENCE-REISSUE-001"
+        },
+        "fresh_reissuance_result": {
+          "enum": ["PASS_M1_B011_PLATFORM_ACCEPTANCE_EVIDENCE_REISSUED"]
+        }
+      }
+    },
+    "creatorIdentities": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "current_creator_sha",
+        "current_creator_role",
+        "historical_creator_sha",
+        "historical_creator_role",
+        "binary_reproducibility",
+        "source_identity_exact",
+        "fresh_behavioral_acceptance",
+        "creator_roundtrip"
+      ],
+      "properties": {
+        "current_creator_sha": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$",
+          "const": "5b54b2d5c9db302baf965da0e5061b427652e2a7c58a2f647bf5d8a98e36bb55"
+        },
+        "current_creator_role": {
+          "enum": ["FRESH_CURRENT_AUTHORITY"]
+        },
+        "historical_creator_sha": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$",
+          "const": "6158fe53646fc3d53f87f48ef675d0dc727806e24a0ee195d0992dd28681af87"
+        },
+        "historical_creator_role": {
+          "enum": ["HISTORICAL_REFERENCE_ONLY"]
+        },
+        "binary_reproducibility": {
+          "enum": ["DIFFERENT"]
+        },
+        "source_identity_exact": {
+          "const": true
+        },
+        "fresh_behavioral_acceptance": {
+          "enum": ["PASS"]
+        },
+        "creator_roundtrip": {
+          "enum": ["PASS"]
+        }
+      }
+    },
+    "deterministicProduct": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "run_1_sha256",
+        "run_2_sha256",
+        "historical_output_sha256",
+        "runs_byte_identical",
+        "historical_output_match"
+      ],
+      "properties": {
+        "run_1_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$",
+          "const": "35de290d80f307b19548595c6e26b160b34cda012e1dd0343aa88c522a0810cc"
+        },
+        "run_2_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$",
+          "const": "35de290d80f307b19548595c6e26b160b34cda012e1dd0343aa88c522a0810cc"
+        },
+        "historical_output_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$",
+          "const": "35de290d80f307b19548595c6e26b160b34cda012e1dd0343aa88c522a0810cc"
+        },
+        "runs_byte_identical": {
+          "const": true
+        },
+        "historical_output_match": {
+          "const": true
+        }
+      }
+    },
+    "historicalExactPair": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["rules", "platform", "verdict", "verdict_sha256", "immutable"],
+      "properties": {
+        "rules": {
+          "$ref": "#/$defs/previousRulesPair"
+        },
+        "platform": {
+          "$ref": "#/$defs/previousPlatform"
+        },
+        "verdict": {
+          "enum": ["PASS_EXACT_PAIR_CROSS_REPOSITORY_ACCEPTED"]
+        },
+        "verdict_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$",
+          "const": "099aaa7244b4a443e31bcdb733bbef2728de11b5129382328b4274ffe2534185"
+        },
+        "immutable": {
+          "const": true
+        }
+      }
+    },
+    "previousRulesPair": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["commit", "tree"],
+      "properties": {
+        "commit": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{40}$",
+          "const": "455cd5d66c683565a4aad7ef8d6523421d37db71"
+        },
+        "tree": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{40}$",
+          "const": "d74aae0baf791566a770ef1aaed2da7562f681d5"
+        }
+      }
+    }
+  }
+}

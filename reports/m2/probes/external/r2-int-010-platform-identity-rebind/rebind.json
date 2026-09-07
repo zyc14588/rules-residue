@@ -1,0 +1,97 @@
+{
+  "schema_version": "rules-residue.m2.r2-int-010-platform-identity-rebind/2.0",
+  "record_id": "R2-INT-010-PLATFORM-IDENTITY-REBIND-B011-RETRY-002",
+  "task_id": "M1-B011-RULES-PLATFORM-IDENTITY-REBIND-RETRY-002",
+  "nature": "ADDITIVE_PLATFORM_IDENTITY_REBIND",
+  "rules_governance_authority": {
+    "commit": "1aede3667cd9bebee759ca8edab4289f5129e43e",
+    "tree": "5cab85e4a1d7547288982b03e0a65f20c51d65c2",
+    "interlock_repair": "ACCEPTED_UNCHANGED"
+  },
+  "formal_M2_B001": "ACCEPTED_UNCHANGED",
+  "formal_batch_reopened": false,
+  "rules_adapter": {
+    "commit": "455cd5d66c683565a4aad7ef8d6523421d37db71",
+    "tree": "d74aae0baf791566a770ef1aaed2da7562f681d5",
+    "identity_status": "UNCHANGED",
+    "signature_verified": true
+  },
+  "effective_transition": {
+    "commit": "be1f8dca3c694c9b93a3193348772ae750fc77e1",
+    "tree": "e4ad6e4f5ad4f672c827b1f37c1980b7655353d6",
+    "effective_status": "RESOLVED_ADAPTER"
+  },
+  "previous_platform_identity": {
+    "commit": "1339c490bd8cae1e2a6e6607fc0f1db019faab64",
+    "tree": "25d5645caf883a73f165db0179accbca48ddf526"
+  },
+  "new_platform_identity": {
+    "commit": "b82d52571287d9d0ebcfa589fd575125ac578476",
+    "tree": "b9be959f22a8b15080a1035fba0fb46c256edf62"
+  },
+  "platform_verifying_governance": {
+    "commit": "412111c05c087ed066a297304bed728870f03fc8",
+    "tree": "a77015feee62564ec8ec9744391a3b5de83e4217",
+    "state": "VERIFYING"
+  },
+  "evidence_roots": {
+    "current_evidence_root": "865a244e234dadb0f919fd42645b44ee74129c1e01b81d4736615bbe0659ea40",
+    "current_evidence_role": "FRESH_REISSUANCE_CURRENT_AUTHORITY",
+    "current_archive_sha256": "21ecfa011cee94197670e12f13c94201276585362e66fbed1c96a7c485f5d5dd",
+    "current_archive_role": "FRESH_REISSUANCE_PERSISTENT_ARCHIVE",
+    "historical_prior_evidence_root": "112dfdd0d93ba936fba31108006c166ae21ea86a2e090b9dbac611fcca93e9a9",
+    "historical_prior_evidence_role": "HISTORICAL_REFERENCE_ONLY",
+    "historical_original_payload_available": false,
+    "historical_reported_root_reverified": false,
+    "historical_acceptance_result": "PASS_M1_B011_PLATFORM_ACCEPTED",
+    "fresh_reissuance_task_id": "M1-B011-PLATFORM-ACCEPTANCE-EVIDENCE-REISSUE-001",
+    "fresh_reissuance_result": "PASS_M1_B011_PLATFORM_ACCEPTANCE_EVIDENCE_REISSUED"
+  },
+  "creator_identities": {
+    "current_creator_sha": "5b54b2d5c9db302baf965da0e5061b427652e2a7c58a2f647bf5d8a98e36bb55",
+    "current_creator_role": "FRESH_CURRENT_AUTHORITY",
+    "historical_creator_sha": "6158fe53646fc3d53f87f48ef675d0dc727806e24a0ee195d0992dd28681af87",
+    "historical_creator_role": "HISTORICAL_REFERENCE_ONLY",
+    "binary_reproducibility": "DIFFERENT",
+    "source_identity_exact": true,
+    "fresh_behavioral_acceptance": "PASS",
+    "creator_roundtrip": "PASS"
+  },
+  "deterministic_product": {
+    "run_1_sha256": "35de290d80f307b19548595c6e26b160b34cda012e1dd0343aa88c522a0810cc",
+    "run_2_sha256": "35de290d80f307b19548595c6e26b160b34cda012e1dd0343aa88c522a0810cc",
+    "historical_output_sha256": "35de290d80f307b19548595c6e26b160b34cda012e1dd0343aa88c522a0810cc",
+    "runs_byte_identical": true,
+    "historical_output_match": true
+  },
+  "historical_exact_pair": {
+    "rules": {
+      "commit": "455cd5d66c683565a4aad7ef8d6523421d37db71",
+      "tree": "d74aae0baf791566a770ef1aaed2da7562f681d5"
+    },
+    "platform": {
+      "commit": "1339c490bd8cae1e2a6e6607fc0f1db019faab64",
+      "tree": "25d5645caf883a73f165db0179accbca48ddf526"
+    },
+    "verdict": "PASS_EXACT_PAIR_CROSS_REPOSITORY_ACCEPTED",
+    "verdict_sha256": "099aaa7244b4a443e31bcdb733bbef2728de11b5129382328b4274ffe2534185",
+    "immutable": true
+  },
+  "effective_status_before": "RESOLVED_ADAPTER",
+  "effective_status_after": "RESOLVED_ADAPTER",
+  "platform_identity_rebind": "RECORDED_NOT_CROSS_ACCEPTED",
+  "fresh_exact_pair_acceptance": "NOT_RUN",
+  "cross_repository_acceptance": "NOT_RUN",
+  "m1_b011_completion": "NOT_AUTHORIZED",
+  "formal_B002": false,
+  "formal_B009": false,
+  "M2_B002": "NOT_STARTED",
+  "M2_B002_READY": "NO",
+  "aggregate_M2_pass": false,
+  "aggregate_external_capability_pass": false,
+  "blocking_ids": [
+    "R2-INT-011",
+    "R2-INT-012",
+    "DEFER-R2-C14-001"
+  ]
+}

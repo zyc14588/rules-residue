@@ -54,12 +54,17 @@ from tools.validate_r2_install import (
     _check_installed_bytes,
 )
 from tools.validate_story_construction_governance import (
+    ACTIVATION_CANDIDATE_COMMIT,
+    ACTIVATION_CANDIDATE_PARENT,
+    ACTIVATION_CANDIDATE_TREE,
+    _check_activation_git_scope,
     _check_authority_and_supersession,
     _check_decisions_and_traceability,
     _check_m2_preservation,
     _check_package_and_roots,
     _check_source_intake,
     collect_errors,
+    validate_activation_candidate_structure,
     validate_activation_changed_paths,
 )
 
@@ -81,6 +86,53 @@ class StoryConstructionGovernanceTests(unittest.TestCase):
                 cwd=PROJECT_ROOT,
                 text=True,
             )
+        )
+
+    def _make_activation_checkout(self, temporary_root: Path) -> Path:
+        root = temporary_root / "checkout"
+        subprocess.run(
+            ["git", "clone", "-q", "--shared", str(PROJECT_ROOT), str(root)],
+            check=True,
+        )
+        subprocess.run(
+            ["git", "checkout", "-q", "--detach", ACTIVATION_CANDIDATE_COMMIT],
+            cwd=root,
+            check=True,
+        )
+        subprocess.run(
+            ["git", "config", "user.name", "Story Governance Tests"],
+            cwd=root,
+            check=True,
+        )
+        subprocess.run(
+            ["git", "config", "user.email", "story-governance@example.invalid"],
+            cwd=root,
+            check=True,
+        )
+        return root
+
+    def _commit_activation_descendant(
+        self,
+        root: Path,
+        relative: str,
+        content: str,
+    ) -> None:
+        path = root / relative
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text(content, encoding="utf-8")
+        subprocess.run(["git", "add", "--", relative], cwd=root, check=True)
+        subprocess.run(
+            [
+                "git",
+                "-c",
+                "commit.gpgsign=false",
+                "commit",
+                "-q",
+                "-m",
+                f"descendant {relative}",
+            ],
+            cwd=root,
+            check=True,
         )
 
     def _activation_approval(self) -> tuple[dict[str, object], dict[str, object]]:
@@ -200,6 +252,116 @@ class StoryConstructionGovernanceTests(unittest.TestCase):
 
     def test_repository_candidate_validates(self) -> None:
         self.assertEqual(collect_errors(PROJECT_ROOT), [])
+
+    def test_exact_fixed_activation_candidate_passes_git_scope(self) -> None:
+        errors: list[str] = []
+        _check_activation_git_scope(PROJECT_ROOT, errors)
+        self.assertEqual(errors, [])
+
+    def test_one_unrelated_activation_descendant_passes_lineage_layer(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = self._make_activation_checkout(Path(temporary))
+            self._commit_activation_descendant(
+                root,
+                "docs/unrelated-post-activation.md",
+                "unrelated descendant\n",
+            )
+            errors: list[str] = []
+            _check_activation_git_scope(root, errors)
+            self.assertEqual(errors, [])
+
+    def test_multiple_unrelated_activation_descendants_pass_lineage_layer(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = self._make_activation_checkout(Path(temporary))
+            self._commit_activation_descendant(
+                root,
+                "docs/unrelated-post-activation-1.md",
+                "first descendant\n",
+            )
+            self._commit_activation_descendant(
+                root,
+                "tests/unrelated_post_activation_2.txt",
+                "second descendant\n",
+            )
+            errors: list[str] = []
+            _check_activation_git_scope(root, errors)
+            self.assertEqual(errors, [])
+
+    def test_activation_descendant_does_not_make_authority_effective(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = self._make_activation_checkout(Path(temporary))
+            self._commit_activation_descendant(
+                root,
+                "docs/unrelated-post-activation.md",
+                "unrelated descendant\n",
+            )
+            scope_errors: list[str] = []
+            _check_activation_git_scope(root, scope_errors)
+            self.assertEqual(scope_errors, [])
+            _, expected_approval = self._activation_approval()
+            approval, _ = self._activation_approval()
+            _, expected_envelope = self._activation_envelope(approval)
+            effective, proof_errors = authoritative_activation_status(
+                tracked_target_state_active=True,
+                activation_approval=None,
+                expected_activation_approval=expected_approval,
+                envelope=None,
+                expected_envelope=expected_envelope,
+                integration=None,
+            )
+            self.assertFalse(effective)
+            self.assertTrue(proof_errors)
+
+    def test_fixed_activation_wrong_parent_fails(self) -> None:
+        errors = validate_activation_candidate_structure(
+            tree=ACTIVATION_CANDIDATE_TREE,
+            parent="0" * 40,
+            commit_count=1,
+            changed_paths=set(),
+        )
+        self.assertTrue(any("parent identity mismatch" in error for error in errors))
+
+    def test_fixed_activation_wrong_tree_fails(self) -> None:
+        errors = validate_activation_candidate_structure(
+            tree="0" * 40,
+            parent=ACTIVATION_CANDIDATE_PARENT,
+            commit_count=1,
+            changed_paths=set(),
+        )
+        self.assertTrue(any("tree identity mismatch" in error for error in errors))
+
+    def test_fixed_activation_wrong_commit_count_fails(self) -> None:
+        errors = validate_activation_candidate_structure(
+            tree=ACTIVATION_CANDIDATE_TREE,
+            parent=ACTIVATION_CANDIDATE_PARENT,
+            commit_count=2,
+            changed_paths=set(),
+        )
+        self.assertTrue(any("not exactly one commit" in error for error in errors))
+
+    def test_fixed_activation_unapproved_changed_path_fails(self) -> None:
+        errors = validate_activation_candidate_structure(
+            tree=ACTIVATION_CANDIDATE_TREE,
+            parent=ACTIVATION_CANDIDATE_PARENT,
+            commit_count=1,
+            changed_paths={"outside-activation-scope.txt"},
+        )
+        self.assertTrue(any("exceed approved scope" in error for error in errors))
+
+    def test_non_descendant_activation_head_fails(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = self._make_activation_checkout(Path(temporary))
+            subprocess.run(
+                ["git", "checkout", "-q", "--detach", ACTIVATION_CANDIDATE_PARENT],
+                cwd=root,
+                check=True,
+            )
+            errors: list[str] = []
+            _check_activation_git_scope(root, errors)
+            self.assertTrue(
+                any("not the fixed activation candidate or its descendant" in error for error in errors),
+                errors,
+            )
 
     def test_q001_q130_missing_duplicate_and_reordered_identity_are_rejected(self) -> None:
         decisions = read_json(PROJECT_ROOT / DECISIONS_PATH)

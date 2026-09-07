@@ -15,10 +15,12 @@ from validate_m2_b001_recovery_closeout import (
     _validate_lifecycle_anchor_structure,
     ALLOWED_CHANGED_PATHS,
     ARTIFACT_PATHS,
+    AUTHORIZED_ADDITIVE_EVIDENCE_BUNDLE_PATHS,
     BLOCKING_IDS,
     BRIDGE_TEST_PATH_TEXT,
     CANDIDATE_B_ALLOWED_CHANGED_PATHS,
     CURRENT_RECOVERY_CANDIDATE,
+    DESCENDANT_PROTECTED_PATHS,
     EVIDENCE_PATH_TEXT,
     EVOLVABLE_HISTORICAL_ARTIFACT_PATHS,
     EXECUTION_PATH_TEXT,
@@ -134,6 +136,28 @@ class RecoveryCloseoutTests(unittest.TestCase):
     def make_lifecycle_checkout(self, temporary_root: Path) -> tuple[Path, str, str]:
         root = self.make_checkout(temporary_root, LIFECYCLE_CLOSEOUT_COMMIT)
         return root, LIFECYCLE_CLOSEOUT_COMMIT, LIFECYCLE_CLOSEOUT_TREE
+
+    def materialize_additive_bundle(
+        self,
+        root: Path,
+        paths: tuple[str, ...] = AUTHORIZED_ADDITIVE_EVIDENCE_BUNDLE_PATHS,
+    ) -> None:
+        for index, relative in enumerate(paths):
+            path = root / relative
+            path.parent.mkdir(parents=True, exist_ok=True)
+            path.write_text(
+                json.dumps({"bundle_path": relative, "ordinal": index + 1}) + "\n",
+                encoding="utf-8",
+            )
+
+    def head_identity(self, root: Path) -> tuple[str, str]:
+        commit = subprocess.check_output(
+            ["git", "rev-parse", "HEAD"], cwd=root, text=True
+        ).strip()
+        tree = subprocess.check_output(
+            ["git", "rev-parse", "HEAD^{tree}"], cwd=root, text=True
+        ).strip()
+        return commit, tree
 
     def commit_non_m2_descendant(
         self,
@@ -351,6 +375,238 @@ class RecoveryCloseoutTests(unittest.TestCase):
                 candidate=commit,
                 candidate_tree=tree,
             )
+
+    def test_exact_six_uncommitted_add_only_files_pass(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root, _, _ = self.make_lifecycle_checkout(Path(temporary))
+            self.materialize_additive_bundle(root)
+            validate_recovery(
+                root,
+                mode=POST_ACCEPTED_NON_M2_DESCENDANT,
+            )
+
+    def test_exact_six_committed_in_one_commit_pass(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root, _, _ = self.make_lifecycle_checkout(Path(temporary))
+            self.materialize_additive_bundle(root)
+            commit, tree = self.commit_paths(
+                root,
+                list(AUTHORIZED_ADDITIVE_EVIDENCE_BUNDLE_PATHS),
+                "introduce exact additive evidence bundle",
+            )
+            validate_recovery(
+                root,
+                mode=POST_ACCEPTED_NON_M2_DESCENDANT,
+                candidate=commit,
+                candidate_tree=tree,
+            )
+
+    def test_later_descendant_with_unchanged_six_bundle_passes(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root, _, _ = self.make_lifecycle_checkout(Path(temporary))
+            self.materialize_additive_bundle(root)
+            self.commit_paths(
+                root,
+                list(AUTHORIZED_ADDITIVE_EVIDENCE_BUNDLE_PATHS),
+                "introduce exact additive evidence bundle",
+            )
+            commit, tree = self.commit_non_m2_descendant(root)
+            validate_recovery(
+                root,
+                mode=POST_ACCEPTED_NON_M2_DESCENDANT,
+                candidate=commit,
+                candidate_tree=tree,
+            )
+
+    def test_reject_partial_six_bundle(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root, _, _ = self.make_lifecycle_checkout(Path(temporary))
+            self.materialize_additive_bundle(
+                root,
+                AUTHORIZED_ADDITIVE_EVIDENCE_BUNDLE_PATHS[:-1],
+            )
+            with self.assertRaises(RecoveryValidationError):
+                validate_recovery(root, mode=POST_ACCEPTED_NON_M2_DESCENDANT)
+
+    def test_reject_six_bundle_plus_extra_protected_file(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root, _, _ = self.make_lifecycle_checkout(Path(temporary))
+            self.materialize_additive_bundle(root)
+            extra = (
+                root
+                / "reports/m2/probes/external/r2-int-010-platform-identity-rebind/extra.json"
+            )
+            extra.write_text("{}\n", encoding="utf-8")
+            with self.assertRaises(RecoveryValidationError):
+                validate_recovery(root, mode=POST_ACCEPTED_NON_M2_DESCENDANT)
+
+    def test_reject_six_bundle_plus_v2_index_mutation(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root, _, _ = self.make_lifecycle_checkout(Path(temporary))
+            self.materialize_additive_bundle(root)
+            path = root / INDEX_V2_PATH_TEXT
+            path.write_bytes(path.read_bytes() + b"\n")
+            changed = [*AUTHORIZED_ADDITIVE_EVIDENCE_BUNDLE_PATHS, INDEX_V2_PATH_TEXT]
+            commit, tree = self.commit_paths(root, changed, "tamper v2 with bundle")
+            with self.assertRaises(RecoveryValidationError):
+                validate_recovery(
+                    root,
+                    mode=POST_ACCEPTED_NON_M2_DESCENDANT,
+                    candidate=commit,
+                    candidate_tree=tree,
+                )
+
+    def test_reject_six_bundle_plus_old_transition_mutation(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root, _, _ = self.make_lifecycle_checkout(Path(temporary))
+            self.materialize_additive_bundle(root)
+            transition = (
+                "reports/m2/probes/remediations/"
+                "r2-int-010-post-platform-transition/evidence.json"
+            )
+            path = root / transition
+            path.write_bytes(path.read_bytes() + b"\n")
+            changed = [*AUTHORIZED_ADDITIVE_EVIDENCE_BUNDLE_PATHS, transition]
+            commit, tree = self.commit_paths(
+                root,
+                changed,
+                "tamper old transition with bundle",
+            )
+            with self.assertRaises(RecoveryValidationError):
+                validate_recovery(
+                    root,
+                    mode=POST_ACCEPTED_NON_M2_DESCENDANT,
+                    candidate=commit,
+                    candidate_tree=tree,
+                )
+
+    def test_reject_six_bundle_plus_lifecycle_state_mutation(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root, _, _ = self.make_lifecycle_checkout(Path(temporary))
+            self.materialize_additive_bundle(root)
+            lifecycle = ".codex/state/MILESTONE_PLAN.yaml"
+            path = root / lifecycle
+            path.write_bytes(path.read_bytes() + b"\n")
+            changed = [*AUTHORIZED_ADDITIVE_EVIDENCE_BUNDLE_PATHS, lifecycle]
+            commit, tree = self.commit_paths(
+                root,
+                changed,
+                "tamper lifecycle state with bundle",
+            )
+            with self.assertRaises(RecoveryValidationError):
+                validate_recovery(
+                    root,
+                    mode=POST_ACCEPTED_NON_M2_DESCENDANT,
+                    candidate=commit,
+                    candidate_tree=tree,
+                )
+
+    def test_reject_six_bundle_with_symlink(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root, _, _ = self.make_lifecycle_checkout(Path(temporary))
+            self.materialize_additive_bundle(
+                root,
+                AUTHORIZED_ADDITIVE_EVIDENCE_BUNDLE_PATHS[:-1],
+            )
+            symlink_path = root / AUTHORIZED_ADDITIVE_EVIDENCE_BUNDLE_PATHS[-1]
+            symlink_path.parent.mkdir(parents=True, exist_ok=True)
+            symlink_path.symlink_to("external-evidence-index-v2.json")
+            with self.assertRaises(RecoveryValidationError):
+                validate_recovery(root, mode=POST_ACCEPTED_NON_M2_DESCENDANT)
+
+    def test_reject_six_bundle_with_non_regular_git_object(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root, _, _ = self.make_lifecycle_checkout(Path(temporary))
+            regular_paths = AUTHORIZED_ADDITIVE_EVIDENCE_BUNDLE_PATHS[:-1]
+            self.materialize_additive_bundle(root, regular_paths)
+            subprocess.run(["git", "add", "--", *regular_paths], cwd=root, check=True)
+            gitlink_path = AUTHORIZED_ADDITIVE_EVIDENCE_BUNDLE_PATHS[-1]
+            gitlink_target = subprocess.check_output(
+                ["git", "rev-parse", "HEAD"], cwd=root, text=True
+            ).strip()
+            subprocess.run(
+                [
+                    "git",
+                    "update-index",
+                    "--add",
+                    "--cacheinfo",
+                    f"160000,{gitlink_target},{gitlink_path}",
+                ],
+                cwd=root,
+                check=True,
+            )
+            subprocess.run(
+                [
+                    "git",
+                    "-c",
+                    "commit.gpgsign=false",
+                    "commit",
+                    "-q",
+                    "-m",
+                    "introduce bundle with gitlink",
+                ],
+                cwd=root,
+                check=True,
+            )
+            commit, tree = self.head_identity(root)
+            with self.assertRaises(RecoveryValidationError):
+                validate_recovery(
+                    root,
+                    mode=POST_ACCEPTED_NON_M2_DESCENDANT,
+                    candidate=commit,
+                    candidate_tree=tree,
+                )
+
+    def test_reject_six_bundle_introduced_across_multiple_commits(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root, _, _ = self.make_lifecycle_checkout(Path(temporary))
+            first = AUTHORIZED_ADDITIVE_EVIDENCE_BUNDLE_PATHS[:3]
+            second = AUTHORIZED_ADDITIVE_EVIDENCE_BUNDLE_PATHS[3:]
+            self.materialize_additive_bundle(root, first)
+            self.commit_paths(root, list(first), "introduce first half of bundle")
+            self.materialize_additive_bundle(root, second)
+            commit, tree = self.commit_paths(
+                root,
+                list(second),
+                "introduce second half of bundle",
+            )
+            with self.assertRaises(RecoveryValidationError):
+                validate_recovery(
+                    root,
+                    mode=POST_ACCEPTED_NON_M2_DESCENDANT,
+                    candidate=commit,
+                    candidate_tree=tree,
+                )
+
+    def test_reject_later_mutation_of_one_six_file_blob(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root, _, _ = self.make_lifecycle_checkout(Path(temporary))
+            self.materialize_additive_bundle(root)
+            self.commit_paths(
+                root,
+                list(AUTHORIZED_ADDITIVE_EVIDENCE_BUNDLE_PATHS),
+                "introduce exact additive evidence bundle",
+            )
+            mutated = AUTHORIZED_ADDITIVE_EVIDENCE_BUNDLE_PATHS[0]
+            path = root / mutated
+            path.write_bytes(path.read_bytes() + b"mutated\n")
+            commit, tree = self.commit_paths(root, [mutated], "mutate bundle blob")
+            with self.assertRaises(RecoveryValidationError):
+                validate_recovery(
+                    root,
+                    mode=POST_ACCEPTED_NON_M2_DESCENDANT,
+                    candidate=commit,
+                    candidate_tree=tree,
+                )
+
+    def test_descendant_protected_roots_and_six_bundle_are_exact(self) -> None:
+        self.assertIn("docs/implementation/m2/probes", DESCENDANT_PROTECTED_PATHS)
+        self.assertIn("reports/m2/probes", DESCENDANT_PROTECTED_PATHS)
+        self.assertEqual(len(AUTHORIZED_ADDITIVE_EVIDENCE_BUNDLE_PATHS), 6)
+        self.assertEqual(
+            len(set(AUTHORIZED_ADDITIVE_EVIDENCE_BUNDLE_PATHS)),
+            6,
+        )
 
     def test_story_governance_style_descendant_is_not_given_m2_scope(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
