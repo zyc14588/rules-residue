@@ -1,0 +1,457 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://rule-residual.invalid/schemas/r2/exemption-protocol-v1.schema.json",
+  "title": "R2 per-rule exemption protocol, unregistered PLAN candidate",
+  "description": "Derived from the already approved C14 template boundary. Cross-reference authority and Typed Effect registration require independent validation. This additive schema does not replace installed rule-semantic-v1.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "protocol_id",
+    "rule_id",
+    "causal_source_refs",
+    "failure",
+    "precedence",
+    "visibility",
+    "audit_contract_ref",
+    "provenance_refs",
+    "exemption"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "1.0"
+    },
+    "protocol_id": {
+      "type": "string",
+      "pattern": "^[A-Z][A-Z0-9]*(?:-[A-Z0-9]+)+$",
+      "minLength": 3,
+      "maxLength": 128
+    },
+    "rule_id": {
+      "type": "string",
+      "pattern": "^[A-Z][A-Z0-9]*(?:-[A-Z0-9]+)+$",
+      "minLength": 3,
+      "maxLength": 128
+    },
+    "causal_source_refs": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^[A-Z][A-Z0-9]*(?:-[A-Z0-9]+)+$",
+        "minLength": 3,
+        "maxLength": 128
+      },
+      "minItems": 1,
+      "uniqueItems": true,
+      "maxItems": 16
+    },
+    "failure": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "immediate_effect_refs",
+        "long_term_effect_refs"
+      ],
+      "properties": {
+        "immediate_effect_refs": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[A-Z][A-Z0-9]*(?:-[A-Z0-9]+)+$",
+            "minLength": 3,
+            "maxLength": 128
+          },
+          "minItems": 1,
+          "uniqueItems": true,
+          "maxItems": 16
+        },
+        "long_term_effect_refs": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[A-Z][A-Z0-9]*(?:-[A-Z0-9]+)+$",
+            "minLength": 3,
+            "maxLength": 128
+          },
+          "minItems": 1,
+          "uniqueItems": true,
+          "maxItems": 16
+        }
+      }
+    },
+    "precedence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "collision_rule_ref",
+        "exception_refs"
+      ],
+      "properties": {
+        "collision_rule_ref": {
+          "type": "string",
+          "pattern": "^[A-Z][A-Z0-9]*(?:-[A-Z0-9]+)+$",
+          "minLength": 3,
+          "maxLength": 128
+        },
+        "exception_refs": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[A-Z][A-Z0-9]*(?:-[A-Z0-9]+)+$",
+            "minLength": 3,
+            "maxLength": 128
+          },
+          "minItems": 0,
+          "uniqueItems": true,
+          "maxItems": 16
+        }
+      }
+    },
+    "visibility": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "player_text_refs",
+        "host_explanation_ref",
+        "mechanical_only_fields"
+      ],
+      "properties": {
+        "player_text_refs": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[A-Z][A-Z0-9]*(?:-[A-Z0-9]+)+$",
+            "minLength": 3,
+            "maxLength": 128
+          },
+          "minItems": 0,
+          "uniqueItems": true,
+          "maxItems": 16
+        },
+        "host_explanation_ref": {
+          "type": "string",
+          "pattern": "^[A-Z][A-Z0-9]*(?:-[A-Z0-9]+)+$",
+          "minLength": 3,
+          "maxLength": 128
+        },
+        "mechanical_only_fields": {
+          "type": "array",
+          "items": {
+            "enum": [
+              "applicability",
+              "check",
+              "costs",
+              "success",
+              "failure",
+              "precedence",
+              "audit"
+            ]
+          },
+          "minItems": 1,
+          "uniqueItems": true,
+          "maxItems": 16
+        }
+      }
+    },
+    "audit_contract_ref": {
+      "type": "string",
+      "pattern": "^[A-Z][A-Z0-9]*(?:-[A-Z0-9]+)+$",
+      "minLength": 3,
+      "maxLength": 128
+    },
+    "provenance_refs": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^[A-Z][A-Z0-9]*(?:-[A-Z0-9]+)+$",
+        "minLength": 3,
+        "maxLength": 128
+      },
+      "minItems": 1,
+      "uniqueItems": true,
+      "maxItems": 16
+    },
+    "exemption": {
+      "type": "object",
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "kind",
+            "rule_classification",
+            "applicability",
+            "check",
+            "costs",
+            "success"
+          ],
+          "properties": {
+            "kind": {
+              "const": "PER_RULE"
+            },
+            "rule_classification": {
+              "const": "ORDINARY"
+            },
+            "applicability": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "scope_refs",
+                "eligibility_condition_refs"
+              ],
+              "properties": {
+                "scope_refs": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "pattern": "^[A-Z][A-Z0-9]*(?:-[A-Z0-9]+)+$",
+                    "minLength": 3,
+                    "maxLength": 128
+                  },
+                  "minItems": 1,
+                  "uniqueItems": true,
+                  "maxItems": 16
+                },
+                "eligibility_condition_refs": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "pattern": "^[A-Z][A-Z0-9]*(?:-[A-Z0-9]+)+$",
+                    "minLength": 3,
+                    "maxLength": 128
+                  },
+                  "minItems": 1,
+                  "uniqueItems": true,
+                  "maxItems": 16
+                }
+              }
+            },
+            "check": {
+              "oneOf": [
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "mode",
+                    "condition_refs"
+                  ],
+                  "properties": {
+                    "mode": {
+                      "const": "DETERMINISTIC"
+                    },
+                    "condition_refs": {
+                      "type": "array",
+                      "items": {
+                        "type": "string",
+                        "pattern": "^[A-Z][A-Z0-9]*(?:-[A-Z0-9]+)+$",
+                        "minLength": 3,
+                        "maxLength": 128
+                      },
+                      "minItems": 1,
+                      "uniqueItems": true,
+                      "maxItems": 16
+                    }
+                  }
+                },
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "mode",
+                    "authority",
+                    "random_request_ref",
+                    "random_result_event_ref"
+                  ],
+                  "properties": {
+                    "mode": {
+                      "const": "HOST_RANDOM"
+                    },
+                    "authority": {
+                      "const": "HOST"
+                    },
+                    "random_request_ref": {
+                      "type": "string",
+                      "pattern": "^[A-Z][A-Z0-9]*(?:-[A-Z0-9]+)+$",
+                      "minLength": 3,
+                      "maxLength": 128
+                    },
+                    "random_result_event_ref": {
+                      "type": "string",
+                      "pattern": "^[A-Z][A-Z0-9]*(?:-[A-Z0-9]+)+$",
+                      "minLength": 3,
+                      "maxLength": 128
+                    }
+                  }
+                }
+              ]
+            },
+            "costs": {
+              "type": "array",
+              "items": {
+                "oneOf": [
+                  {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "required": [
+                      "cost_ref",
+                      "authorization_required",
+                      "owner_subject_ref",
+                      "authorization_evidence_ref"
+                    ],
+                    "properties": {
+                      "cost_ref": {
+                        "type": "string",
+                        "pattern": "^[A-Z][A-Z0-9]*(?:-[A-Z0-9]+)+$",
+                        "minLength": 3,
+                        "maxLength": 128
+                      },
+                      "authorization_required": {
+                        "type": "boolean",
+                        "const": true
+                      },
+                      "owner_subject_ref": {
+                        "type": "string",
+                        "pattern": "^[A-Z][A-Z0-9]*(?:-[A-Z0-9]+)+$",
+                        "minLength": 3,
+                        "maxLength": 128
+                      },
+                      "authorization_evidence_ref": {
+                        "type": "string",
+                        "pattern": "^[A-Z][A-Z0-9]*(?:-[A-Z0-9]+)+$",
+                        "minLength": 3,
+                        "maxLength": 128
+                      }
+                    }
+                  },
+                  {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "required": [
+                      "cost_ref",
+                      "authorization_required",
+                      "authorization_basis_ref"
+                    ],
+                    "properties": {
+                      "cost_ref": {
+                        "type": "string",
+                        "pattern": "^[A-Z][A-Z0-9]*(?:-[A-Z0-9]+)+$",
+                        "minLength": 3,
+                        "maxLength": 128
+                      },
+                      "authorization_required": {
+                        "type": "boolean",
+                        "const": false
+                      },
+                      "authorization_basis_ref": {
+                        "type": "string",
+                        "pattern": "^[A-Z][A-Z0-9]*(?:-[A-Z0-9]+)+$",
+                        "minLength": 3,
+                        "maxLength": 128
+                      }
+                    }
+                  }
+                ]
+              },
+              "minItems": 0,
+              "uniqueItems": true,
+              "maxItems": 16
+            },
+            "success": {
+              "oneOf": [
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "outcome",
+                    "effect_refs"
+                  ],
+                  "properties": {
+                    "outcome": {
+                      "enum": [
+                        "AVOID",
+                        "WEAKEN"
+                      ]
+                    },
+                    "effect_refs": {
+                      "type": "array",
+                      "items": {
+                        "type": "string",
+                        "pattern": "^[A-Z][A-Z0-9]*(?:-[A-Z0-9]+)+$",
+                        "minLength": 3,
+                        "maxLength": 128
+                      },
+                      "minItems": 1,
+                      "uniqueItems": true,
+                      "maxItems": 16
+                    }
+                  }
+                },
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "outcome",
+                    "effect_refs",
+                    "activation_condition_refs"
+                  ],
+                  "properties": {
+                    "outcome": {
+                      "const": "POSTPONE"
+                    },
+                    "effect_refs": {
+                      "type": "array",
+                      "items": {
+                        "type": "string",
+                        "pattern": "^[A-Z][A-Z0-9]*(?:-[A-Z0-9]+)+$",
+                        "minLength": 3,
+                        "maxLength": 128
+                      },
+                      "minItems": 1,
+                      "uniqueItems": true,
+                      "maxItems": 16
+                    },
+                    "activation_condition_refs": {
+                      "type": "array",
+                      "items": {
+                        "type": "string",
+                        "pattern": "^[A-Z][A-Z0-9]*(?:-[A-Z0-9]+)+$",
+                        "minLength": 3,
+                        "maxLength": 128
+                      },
+                      "minItems": 1,
+                      "uniqueItems": true,
+                      "maxItems": 16
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "kind",
+            "rule_classification",
+            "absence_authority_ref"
+          ],
+          "properties": {
+            "kind": {
+              "const": "NONE_ABSOLUTE"
+            },
+            "rule_classification": {
+              "const": "ABSOLUTE"
+            },
+            "absence_authority_ref": {
+              "type": "string",
+              "pattern": "^[A-Z][A-Z0-9]*(?:-[A-Z0-9]+)+$",
+              "minLength": 3,
+              "maxLength": 128
+            }
+          }
+        }
+      ]
+    }
+  }
+}

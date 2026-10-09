@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import json
 import shutil
+import shutil
 import tempfile
 import unittest
 from pathlib import Path
@@ -10,7 +11,91 @@ from tools.validate_r2_install import (
     DEFAULT_PACKAGE_ROOT,
     PROJECT_ROOT,
     validate_r2_install,
+    _check_schemas_and_json,
+    R2_AUTHORITY_SCHEMA_PATHS,
+    UNREGISTERED_INTERFACE_ARTIFACTS,
+    INTERFACE_COMPATIBILITY_ARTIFACTS,
+    PUBLIC_BASELINE_CONTROL_ARTIFACTS,
 )
+
+
+class R2InterfaceAttachmentTests(unittest.TestCase):
+    def setUp(self) -> None:
+        temporary = tempfile.TemporaryDirectory(prefix="r2-interface-attachment-")
+        self.addCleanup(temporary.cleanup)
+        self.root = Path(temporary.name)
+        for relative in [*R2_AUTHORITY_SCHEMA_PATHS, *UNREGISTERED_INTERFACE_ARTIFACTS, *INTERFACE_COMPATIBILITY_ARTIFACTS, *PUBLIC_BASELINE_CONTROL_ARTIFACTS]:
+            target = self.root / relative
+            target.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copy2(PROJECT_ROOT / relative, target)
+
+    def errors(self):
+        errors = []
+        _check_schemas_and_json(self.root, errors)
+        return errors
+
+    def test_exact_attachment_uses_only_public_baseline_controls(self):
+        batches = json.loads((self.root / ".codex/plans/m2-vertical-slice/batches.json").read_text())
+        self.assertEqual([item["id"] for item in batches["batches"]],
+                         [f"M2-B{number:03}" for number in range(1, 17)])
+        self.assertEqual(self.errors(), [])
+
+    def test_current_repository_uses_real_attachment_bytes(self):
+        errors = []
+        _check_schemas_and_json(PROJECT_ROOT, errors)
+        self.assertEqual(errors, [])
+
+    def test_absent_attachment_keeps_original_authority_set(self):
+        for relative in UNREGISTERED_INTERFACE_ARTIFACTS:
+            (self.root / relative).unlink()
+        self.assertEqual(self.errors(), [])
+
+    def test_each_artifact_requires_exact_regular_bytes(self):
+        for relative in [*UNREGISTERED_INTERFACE_ARTIFACTS, *INTERFACE_COMPATIBILITY_ARTIFACTS, *PUBLIC_BASELINE_CONTROL_ARTIFACTS]:
+            target = self.root / relative
+            original = target.read_bytes()
+            for kind in ("missing", "drift", "symlink"):
+                with self.subTest(path=relative, kind=kind):
+                    target.unlink()
+                    if kind == "drift":
+                        target.write_bytes(original + b" ")
+                    elif kind == "symlink":
+                        external = self.root / "same-bytes"
+                        external.write_bytes(original)
+                        target.symlink_to(external)
+                    try:
+                        self.assertTrue(any("R2_SCHEMA_ATTACHMENT" in error for error in self.errors()))
+                    finally:
+                        if target.exists() or target.is_symlink():
+                            target.unlink()
+                        target.write_bytes(original)
+
+    def test_current_validator_sentinel_cannot_select_history(self):
+        target = self.root / "tests/m2/probes/validate_r2_int_010_platform_identity_rebind.py"
+        current = target.read_text()
+        needle = "    archive = archive_observation if archive_observation is not None else validate_platform_archive()"
+        self.assertIn(needle, current)
+        target.write_text(current.replace(needle, '    raise RebindValidationError("PUBLIC_EXPORT_CURRENT_VALIDATOR_SENTINEL")\n' + needle, 1))
+        self.assertTrue(any("artifact byte drift: tests/m2/probes/validate_r2_int_010_platform_identity_rebind.py" in error for error in self.errors()))
+
+    def test_other_extra_schema_is_rejected(self):
+        extra = self.root / "schemas/r2/other.schema.json"
+        extra.write_text(json.dumps({"$schema": "https://json-schema.org/draft/2020-12/schema",
+                                     "$id": "urn:test:other", "type": "object"}))
+        self.assertTrue(any("authoritative schema set drift" in error for error in self.errors()))
+
+    def test_same_count_authority_replacement_is_rejected(self):
+        (self.root / "schemas/r2/region-v1.schema.json").rename(self.root / "schemas/r2/replacement.schema.json")
+        self.assertTrue(any("authoritative schema set drift" in error for error in self.errors()))
+
+    def test_unregistered_schema_still_receives_meta_validation(self):
+        target = self.root / "schemas/r2/exemption-protocol-v1.schema.json"
+        schema = json.loads(target.read_text())
+        schema["type"] = "not-a-json-type"
+        target.write_text(json.dumps(schema))
+        errors = self.errors()
+        self.assertTrue(any("R2_SCHEMA_ATTACHMENT" in error for error in errors))
+        self.assertTrue(any("R2_SCHEMA_META" in error for error in errors))
 
 
 class R2InstallationValidationTests(unittest.TestCase):

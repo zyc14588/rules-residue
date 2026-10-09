@@ -41,6 +41,41 @@ DEFAULT_PACKAGE_ROOT = Path(
     "/home/zyc14588/RULE_RESIDUAL_R2_AUTHORITY_AND_PROGRESSIVE_DELIVERY_v1.0.0"
 )
 PINNED_SOURCE_COMMIT = "e8e536fe5c96c389736ffcf8d4855fa146a2b9c2"
+R2_AUTHORITY_SCHEMA_PATHS = frozenset({
+    "schemas/r2/acceptance-result-v1.schema.json",
+    "schemas/r2/campaign-seed-v1.schema.json",
+    "schemas/r2/content-provenance-v1.schema.json",
+    "schemas/r2/entangled-causality-v1.schema.json",
+    "schemas/r2/equipment-rule-v1.schema.json",
+    "schemas/r2/faction-v1.schema.json",
+    "schemas/r2/logical-anomaly-zone-v1.schema.json",
+    "schemas/r2/region-v1.schema.json",
+    "schemas/r2/rule-semantic-v1.schema.json",
+    ".codex/schemas/reading-map-v1.schema.json",
+})
+UNREGISTERED_INTERFACE_ARTIFACTS = {
+    "schemas/r2/exemption-protocol-v1.schema.json": "ec6688c7fe7a42b259e16c7e0353187fa6c00e597b04a2cbdc737f3223d228d4",
+    "tests/m2/fixtures/schema/exemption-protocol-v1.json": "1ecb0644d8c7b808b0d2c973ccb3769e3a9d7f1ab6bd90909fabb2593827ffce",
+    "tests/m2/schema/test_exemption_protocol.py": "1c4170fb1df23981bfd3e2e517303c58a8719d60db0bc73a8d34ef78ba71319b",
+    "docs/implementation/m2/semantics/EXEMPTION_PROTOCOL_V1.md": "fe1de12506df842b134dc6a9b8693d2fcbd6976ce1afb92a8a64d1a55fcd2534"
+}
+INTERFACE_COMPATIBILITY_ARTIFACTS = {
+    "docs/implementation/m2/probes/r2-int-010-platform-identity-rebind-v1.schema.json": "0273df7ac2b7de3980052e3c92ec29b2b8b1f8f6de2e4d29a82ba68bad4affad",
+    "reports/m2/probes/external/r2-int-010-platform-identity-rebind/platform-acceptance.json": "e26aef955b6336cbf3431067e5c46cbafbdf010216aeea8270bd1b2dc87ac521",
+    "reports/m2/probes/external/r2-int-010-platform-identity-rebind/rebind.json": "f219c7932e381fc086870c14e5737e81c95c892f287e5515518f26aecf00ae64",
+    "reports/m2/probes/external/r2-int-010-platform-identity-rebind/evidence-manifest.json": "04d1fc81d5873424d2fd7b3a0f4ce09cd4d51e0407481fc944ca20f0e6a6df61",
+    "reports/m2/probes/external/r2-int-010-platform-identity-rebind/execution-records.json": "f2d790c148edc4026e0d3921dc641294d1b781c844b9fda6daee3726cdca4fe0",
+    "reports/m2/probes/external-evidence-index-v3.json": "1417d9f911ea5bc9015565b707598e18413af9431b14a4e8b64d0fafb1ecf609",
+    "tests/m2/probes/validate_r2_int_010_platform_identity_rebind.py": "b4c1c4b5d3544335f1ba0d7d318a3d12a359e66d1dd8c54cd9c57f0b57ae9d4a",
+    "tests/m2/probes/test_r2_int_010_platform_identity_rebind.py": "a20933af248cafcdafeb598968e16c3245868383a53923443c3765e7624e0ea9"
+}
+PUBLIC_BASELINE_CONTROL_ARTIFACTS = {
+    ".codex/plans/m2-vertical-slice/M2_VERTICAL_SLICE_PLAN.md": "16efa3e4913e62283ebd5bfe000ac52ea00b35fb401a926f14c301973f417b7e",
+    ".codex/plans/m2-vertical-slice/batches.json": "bd905ca66ceadb57ded858e832673ffac9358b2aacdbb7a8d032eaf932919d88",
+    ".codex/plans/m2-vertical-slice/capability-probes.json": "35738750356634e1124c1b7ecd8cea4b4fc3928ec12859b26d6dda39d150a7ca",
+    ".codex/plans/m2-vertical-slice/controls.json": "26bcca731453eb211670e190e162fd52774d81b68096bb9c1dd337a1ce623186",
+    ".codex/state/MILESTONE_PLAN.yaml": "74da7cc866e0b3b1f3580d86df18c8c6d9724ff6131e5d35c155fc33a2f71c17"
+}
 EXPECTED_GROUP_COUNTS = {
     "R2-A": 10,
     "R2-B": 14,
@@ -627,6 +662,27 @@ def _walk_schema(node: Any, label: str, errors: list[str]) -> None:
             _walk_schema(value, f"{label}/{index}", errors)
 
 
+def _unregistered_interface_schema(root: Path, errors: list[str]) -> Path | None:
+    """Keep only the exact complete interface attachment outside authority."""
+    if not any((root / path).exists() or (root / path).is_symlink()
+               for path in UNREGISTERED_INTERFACE_ARTIFACTS):
+        return None
+    for relative, digest in {**UNREGISTERED_INTERFACE_ARTIFACTS, **INTERFACE_COMPATIBILITY_ARTIFACTS, **PUBLIC_BASELINE_CONTROL_ARTIFACTS}.items():
+        path = root / relative
+        if path.is_symlink() or not path.is_file():
+            errors.append(f"R2_SCHEMA_ATTACHMENT: missing or non-regular artifact: {relative}")
+            return None
+        try:
+            actual = hashlib.sha256(path.read_bytes()).hexdigest()
+        except OSError as exc:
+            errors.append(f"R2_SCHEMA_ATTACHMENT: unreadable artifact {relative}: {exc}")
+            return None
+        if actual != digest:
+            errors.append(f"R2_SCHEMA_ATTACHMENT: artifact byte drift: {relative}")
+            return None
+    return root / "schemas/r2/exemption-protocol-v1.schema.json"
+
+
 def _check_schemas_and_json(root: Path, errors: list[str]) -> None:
     json_roots = [
         root / "schemas/r2",
@@ -638,8 +694,17 @@ def _check_schemas_and_json(root: Path, errors: list[str]) -> None:
             _read_json(path, errors, "R2_JSON_PARSE")
     schema_paths = sorted((root / "schemas/r2").glob("*.schema.json"))
     schema_paths.append(root / ".codex/schemas/reading-map-v1.schema.json")
-    if len(schema_paths) != 10:
-        errors.append(f"R2_SCHEMA: expected 10 machine-authoritative schemas, found {len(schema_paths)}")
+    unregistered = _unregistered_interface_schema(root, errors)
+    authority_paths = {path.relative_to(root).as_posix() for path in schema_paths
+                       if path != unregistered}
+    if len(authority_paths) != 10:
+        errors.append(f"R2_SCHEMA: expected 10 machine-authoritative schemas, found {len(authority_paths)}")
+    if authority_paths != R2_AUTHORITY_SCHEMA_PATHS:
+        errors.append("R2_SCHEMA: authoritative schema set drift: "
+                      f"missing={sorted(R2_AUTHORITY_SCHEMA_PATHS - authority_paths)}, "
+                      f"extra={sorted(authority_paths - R2_AUTHORITY_SCHEMA_PATHS)}")
+    # Every schema, including the unregistered attachment, still receives all
+    # existing metadata, unique-ID and reference checks below.
     ids: dict[str, Path] = {}
     loaded: dict[Path, dict[str, Any]] = {}
     for path in schema_paths:

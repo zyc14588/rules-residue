@@ -1,0 +1,1499 @@
+{
+  "schema_version": "rules-residue.exemption-design-fixtures/1.0",
+  "status": "M2_TEST_ONLY_PLAN_CANDIDATE",
+  "source_game_commit": "6caf57cdc1127e84546459766949e0da664bb2f9",
+  "source_game_tree": "ec6cb5e7fdc0c93f09862fcf032dbb61393293a1",
+  "owner_approval_record": "OWNER-C14-TEMPLATE-APPROVAL-2026-10-07-001",
+  "scope": "Schema structure only; symbolic tutorial gate IDs are non-canon; no Lua, production numbers, or runtime registration.",
+  "cases": [
+    {
+      "case_id": "deterministic-token-avoid",
+      "expected_schema_valid": true,
+      "reason": "Rule-local deterministic exemption; no implicit universal save or production costs.",
+      "value": {
+        "schema_version": "1.0",
+        "protocol_id": "TEST-EXEMPTION-GATE",
+        "rule_id": "TEST-RULE-GATE",
+        "causal_source_refs": [
+          "TEST-CAUSAL-SOURCE"
+        ],
+        "failure": {
+          "immediate_effect_refs": [
+            "TEST-EFFECT-CROSS-BLOCKED"
+          ],
+          "long_term_effect_refs": [
+            "TEST-EFFECT-KNOWLEDGE-OBSERVED"
+          ]
+        },
+        "precedence": {
+          "collision_rule_ref": "TEST-COLLISION-GATE",
+          "exception_refs": [
+            "TEST-EXCEPTION-TOKEN"
+          ]
+        },
+        "visibility": {
+          "player_text_refs": [
+            "TEST-TEXT-GATE-OBSERVED"
+          ],
+          "host_explanation_ref": "TEST-HOST-GATE-TRACE",
+          "mechanical_only_fields": [
+            "check",
+            "failure",
+            "precedence",
+            "audit"
+          ]
+        },
+        "audit_contract_ref": "TEST-AUDIT-C14",
+        "provenance_refs": [
+          "R2-C14",
+          "R2-B08",
+          "OWNER-C14-TEMPLATE-APPROVAL-2026-10-07-001"
+        ],
+        "exemption": {
+          "kind": "PER_RULE",
+          "rule_classification": "ORDINARY",
+          "applicability": {
+            "scope_refs": [
+              "TEST-TUTORIAL-DOMAIN"
+            ],
+            "eligibility_condition_refs": [
+              "TEST-COND-PERMIT-TOKEN"
+            ]
+          },
+          "check": {
+            "mode": "DETERMINISTIC",
+            "condition_refs": [
+              "TEST-COND-PERMIT-TOKEN"
+            ]
+          },
+          "costs": [],
+          "success": {
+            "outcome": "AVOID",
+            "effect_refs": [
+              "TEST-EFFECT-CROSS-ALLOWED"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "case_id": "host-random-authorized-weaken",
+      "expected_schema_valid": true,
+      "reason": "Host random input and personal authorization are explicit refs, never new balance values.",
+      "value": {
+        "schema_version": "1.0",
+        "protocol_id": "TEST-EXEMPTION-GATE",
+        "rule_id": "TEST-RULE-GATE",
+        "causal_source_refs": [
+          "TEST-CAUSAL-SOURCE"
+        ],
+        "failure": {
+          "immediate_effect_refs": [
+            "TEST-EFFECT-CROSS-BLOCKED"
+          ],
+          "long_term_effect_refs": [
+            "TEST-EFFECT-KNOWLEDGE-OBSERVED"
+          ]
+        },
+        "precedence": {
+          "collision_rule_ref": "TEST-COLLISION-GATE",
+          "exception_refs": [
+            "TEST-EXCEPTION-TOKEN"
+          ]
+        },
+        "visibility": {
+          "player_text_refs": [
+            "TEST-TEXT-GATE-OBSERVED"
+          ],
+          "host_explanation_ref": "TEST-HOST-GATE-TRACE",
+          "mechanical_only_fields": [
+            "check",
+            "failure",
+            "precedence",
+            "audit"
+          ]
+        },
+        "audit_contract_ref": "TEST-AUDIT-C14",
+        "provenance_refs": [
+          "R2-C14",
+          "R2-B08",
+          "OWNER-C14-TEMPLATE-APPROVAL-2026-10-07-001"
+        ],
+        "exemption": {
+          "kind": "PER_RULE",
+          "rule_classification": "ORDINARY",
+          "applicability": {
+            "scope_refs": [
+              "TEST-TUTORIAL-DOMAIN"
+            ],
+            "eligibility_condition_refs": [
+              "TEST-COND-PERMIT-TOKEN"
+            ]
+          },
+          "check": {
+            "mode": "HOST_RANDOM",
+            "authority": "HOST",
+            "random_request_ref": "TEST-RANDOM-REQUEST",
+            "random_result_event_ref": "TEST-EVENT-RANDOM"
+          },
+          "costs": [
+            {
+              "cost_ref": "TEST-PERSONAL-COST",
+              "authorization_required": true,
+              "owner_subject_ref": "TEST-SEAT-OWNER",
+              "authorization_evidence_ref": "TEST-AUTHORIZATION-EXPLICIT"
+            }
+          ],
+          "success": {
+            "outcome": "WEAKEN",
+            "effect_refs": [
+              "TEST-EFFECT-WEAKEN"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "case_id": "deterministic-postpone",
+      "expected_schema_valid": true,
+      "reason": "Postponement has a deterministic activation condition.",
+      "value": {
+        "schema_version": "1.0",
+        "protocol_id": "TEST-EXEMPTION-GATE",
+        "rule_id": "TEST-RULE-GATE",
+        "causal_source_refs": [
+          "TEST-CAUSAL-SOURCE"
+        ],
+        "failure": {
+          "immediate_effect_refs": [
+            "TEST-EFFECT-CROSS-BLOCKED"
+          ],
+          "long_term_effect_refs": [
+            "TEST-EFFECT-KNOWLEDGE-OBSERVED"
+          ]
+        },
+        "precedence": {
+          "collision_rule_ref": "TEST-COLLISION-GATE",
+          "exception_refs": [
+            "TEST-EXCEPTION-TOKEN"
+          ]
+        },
+        "visibility": {
+          "player_text_refs": [
+            "TEST-TEXT-GATE-OBSERVED"
+          ],
+          "host_explanation_ref": "TEST-HOST-GATE-TRACE",
+          "mechanical_only_fields": [
+            "check",
+            "failure",
+            "precedence",
+            "audit"
+          ]
+        },
+        "audit_contract_ref": "TEST-AUDIT-C14",
+        "provenance_refs": [
+          "R2-C14",
+          "R2-B08",
+          "OWNER-C14-TEMPLATE-APPROVAL-2026-10-07-001"
+        ],
+        "exemption": {
+          "kind": "PER_RULE",
+          "rule_classification": "ORDINARY",
+          "applicability": {
+            "scope_refs": [
+              "TEST-TUTORIAL-DOMAIN"
+            ],
+            "eligibility_condition_refs": [
+              "TEST-COND-PERMIT-TOKEN"
+            ]
+          },
+          "check": {
+            "mode": "DETERMINISTIC",
+            "condition_refs": [
+              "TEST-COND-PERMIT-TOKEN"
+            ]
+          },
+          "costs": [],
+          "success": {
+            "outcome": "POSTPONE",
+            "effect_refs": [
+              "TEST-EFFECT-DEFERRED"
+            ],
+            "activation_condition_refs": [
+              "TEST-COND-LATER-EVENT"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "case_id": "explicit-absolute-absence",
+      "expected_schema_valid": true,
+      "reason": "Only structure is valid: resolving the absolute-rule authority is a separate mandatory check.",
+      "value": {
+        "schema_version": "1.0",
+        "protocol_id": "TEST-EXEMPTION-GATE",
+        "rule_id": "TEST-RULE-GATE",
+        "causal_source_refs": [
+          "TEST-CAUSAL-SOURCE"
+        ],
+        "failure": {
+          "immediate_effect_refs": [
+            "TEST-EFFECT-CROSS-BLOCKED"
+          ],
+          "long_term_effect_refs": [
+            "TEST-EFFECT-KNOWLEDGE-OBSERVED"
+          ]
+        },
+        "precedence": {
+          "collision_rule_ref": "TEST-COLLISION-GATE",
+          "exception_refs": [
+            "TEST-EXCEPTION-TOKEN"
+          ]
+        },
+        "visibility": {
+          "player_text_refs": [
+            "TEST-TEXT-GATE-OBSERVED"
+          ],
+          "host_explanation_ref": "TEST-HOST-GATE-TRACE",
+          "mechanical_only_fields": [
+            "check",
+            "failure",
+            "precedence",
+            "audit"
+          ]
+        },
+        "audit_contract_ref": "TEST-AUDIT-C14",
+        "provenance_refs": [
+          "R2-C14",
+          "R2-B08",
+          "OWNER-C14-TEMPLATE-APPROVAL-2026-10-07-001"
+        ],
+        "exemption": {
+          "kind": "NONE_ABSOLUTE",
+          "rule_classification": "ABSOLUTE",
+          "absence_authority_ref": "TEST-APPROVED-ABSOLUTE-RULE"
+        }
+      }
+    },
+    {
+      "case_id": "unknown-field",
+      "expected_schema_valid": false,
+      "reason": "Undeclared fields cannot add gameplay authority.",
+      "value": {
+        "schema_version": "1.0",
+        "protocol_id": "TEST-EXEMPTION-GATE",
+        "rule_id": "TEST-RULE-GATE",
+        "causal_source_refs": [
+          "TEST-CAUSAL-SOURCE"
+        ],
+        "failure": {
+          "immediate_effect_refs": [
+            "TEST-EFFECT-CROSS-BLOCKED"
+          ],
+          "long_term_effect_refs": [
+            "TEST-EFFECT-KNOWLEDGE-OBSERVED"
+          ]
+        },
+        "precedence": {
+          "collision_rule_ref": "TEST-COLLISION-GATE",
+          "exception_refs": [
+            "TEST-EXCEPTION-TOKEN"
+          ]
+        },
+        "visibility": {
+          "player_text_refs": [
+            "TEST-TEXT-GATE-OBSERVED"
+          ],
+          "host_explanation_ref": "TEST-HOST-GATE-TRACE",
+          "mechanical_only_fields": [
+            "check",
+            "failure",
+            "precedence",
+            "audit"
+          ]
+        },
+        "audit_contract_ref": "TEST-AUDIT-C14",
+        "provenance_refs": [
+          "R2-C14",
+          "R2-B08",
+          "OWNER-C14-TEMPLATE-APPROVAL-2026-10-07-001"
+        ],
+        "ad_hoc_gm_override": true,
+        "exemption": {
+          "kind": "PER_RULE",
+          "rule_classification": "ORDINARY",
+          "applicability": {
+            "scope_refs": [
+              "TEST-TUTORIAL-DOMAIN"
+            ],
+            "eligibility_condition_refs": [
+              "TEST-COND-PERMIT-TOKEN"
+            ]
+          },
+          "check": {
+            "mode": "DETERMINISTIC",
+            "condition_refs": [
+              "TEST-COND-PERMIT-TOKEN"
+            ]
+          },
+          "costs": [],
+          "success": {
+            "outcome": "AVOID",
+            "effect_refs": [
+              "TEST-EFFECT-CROSS-ALLOWED"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "case_id": "global-save",
+      "expected_schema_valid": false,
+      "reason": "No universal exemption.",
+      "value": {
+        "schema_version": "1.0",
+        "protocol_id": "TEST-EXEMPTION-GATE",
+        "rule_id": "TEST-RULE-GATE",
+        "causal_source_refs": [
+          "TEST-CAUSAL-SOURCE"
+        ],
+        "failure": {
+          "immediate_effect_refs": [
+            "TEST-EFFECT-CROSS-BLOCKED"
+          ],
+          "long_term_effect_refs": [
+            "TEST-EFFECT-KNOWLEDGE-OBSERVED"
+          ]
+        },
+        "precedence": {
+          "collision_rule_ref": "TEST-COLLISION-GATE",
+          "exception_refs": [
+            "TEST-EXCEPTION-TOKEN"
+          ]
+        },
+        "visibility": {
+          "player_text_refs": [
+            "TEST-TEXT-GATE-OBSERVED"
+          ],
+          "host_explanation_ref": "TEST-HOST-GATE-TRACE",
+          "mechanical_only_fields": [
+            "check",
+            "failure",
+            "precedence",
+            "audit"
+          ]
+        },
+        "audit_contract_ref": "TEST-AUDIT-C14",
+        "provenance_refs": [
+          "R2-C14",
+          "R2-B08",
+          "OWNER-C14-TEMPLATE-APPROVAL-2026-10-07-001"
+        ],
+        "exemption": {
+          "kind": "GLOBAL_SAVE",
+          "rule_classification": "ORDINARY",
+          "applicability": {
+            "scope_refs": [
+              "TEST-TUTORIAL-DOMAIN"
+            ],
+            "eligibility_condition_refs": [
+              "TEST-COND-PERMIT-TOKEN"
+            ]
+          },
+          "check": {
+            "mode": "DETERMINISTIC",
+            "condition_refs": [
+              "TEST-COND-PERMIT-TOKEN"
+            ]
+          },
+          "costs": [],
+          "success": {
+            "outcome": "AVOID",
+            "effect_refs": [
+              "TEST-EFFECT-CROSS-ALLOWED"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "case_id": "safe-investigation-is-not-exemption",
+      "expected_schema_valid": false,
+      "reason": "Investigation/talent and violation exemption remain distinct.",
+      "value": {
+        "schema_version": "1.0",
+        "protocol_id": "TEST-EXEMPTION-GATE",
+        "rule_id": "TEST-RULE-GATE",
+        "causal_source_refs": [
+          "TEST-CAUSAL-SOURCE"
+        ],
+        "failure": {
+          "immediate_effect_refs": [
+            "TEST-EFFECT-CROSS-BLOCKED"
+          ],
+          "long_term_effect_refs": [
+            "TEST-EFFECT-KNOWLEDGE-OBSERVED"
+          ]
+        },
+        "precedence": {
+          "collision_rule_ref": "TEST-COLLISION-GATE",
+          "exception_refs": [
+            "TEST-EXCEPTION-TOKEN"
+          ]
+        },
+        "visibility": {
+          "player_text_refs": [
+            "TEST-TEXT-GATE-OBSERVED"
+          ],
+          "host_explanation_ref": "TEST-HOST-GATE-TRACE",
+          "mechanical_only_fields": [
+            "check",
+            "failure",
+            "precedence",
+            "audit"
+          ]
+        },
+        "audit_contract_ref": "TEST-AUDIT-C14",
+        "provenance_refs": [
+          "R2-C14",
+          "R2-B08",
+          "OWNER-C14-TEMPLATE-APPROVAL-2026-10-07-001"
+        ],
+        "exemption": {
+          "kind": "PAID_SAFE_VERIFICATION",
+          "rule_classification": "ORDINARY",
+          "applicability": {
+            "scope_refs": [
+              "TEST-TUTORIAL-DOMAIN"
+            ],
+            "eligibility_condition_refs": [
+              "TEST-COND-PERMIT-TOKEN"
+            ]
+          },
+          "check": {
+            "mode": "DETERMINISTIC",
+            "condition_refs": [
+              "TEST-COND-PERMIT-TOKEN"
+            ]
+          },
+          "costs": [],
+          "success": {
+            "outcome": "AVOID",
+            "effect_refs": [
+              "TEST-EFFECT-CROSS-ALLOWED"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "case_id": "no-transfer-in-template-one",
+      "expected_schema_valid": false,
+      "reason": "The approved first template excludes transfer.",
+      "value": {
+        "schema_version": "1.0",
+        "protocol_id": "TEST-EXEMPTION-GATE",
+        "rule_id": "TEST-RULE-GATE",
+        "causal_source_refs": [
+          "TEST-CAUSAL-SOURCE"
+        ],
+        "failure": {
+          "immediate_effect_refs": [
+            "TEST-EFFECT-CROSS-BLOCKED"
+          ],
+          "long_term_effect_refs": [
+            "TEST-EFFECT-KNOWLEDGE-OBSERVED"
+          ]
+        },
+        "precedence": {
+          "collision_rule_ref": "TEST-COLLISION-GATE",
+          "exception_refs": [
+            "TEST-EXCEPTION-TOKEN"
+          ]
+        },
+        "visibility": {
+          "player_text_refs": [
+            "TEST-TEXT-GATE-OBSERVED"
+          ],
+          "host_explanation_ref": "TEST-HOST-GATE-TRACE",
+          "mechanical_only_fields": [
+            "check",
+            "failure",
+            "precedence",
+            "audit"
+          ]
+        },
+        "audit_contract_ref": "TEST-AUDIT-C14",
+        "provenance_refs": [
+          "R2-C14",
+          "R2-B08",
+          "OWNER-C14-TEMPLATE-APPROVAL-2026-10-07-001"
+        ],
+        "exemption": {
+          "kind": "PER_RULE",
+          "rule_classification": "ORDINARY",
+          "applicability": {
+            "scope_refs": [
+              "TEST-TUTORIAL-DOMAIN"
+            ],
+            "eligibility_condition_refs": [
+              "TEST-COND-PERMIT-TOKEN"
+            ]
+          },
+          "check": {
+            "mode": "DETERMINISTIC",
+            "condition_refs": [
+              "TEST-COND-PERMIT-TOKEN"
+            ]
+          },
+          "costs": [],
+          "success": {
+            "outcome": "TRANSFER",
+            "effect_refs": [
+              "TEST-EFFECT-CROSS-ALLOWED"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "case_id": "missing-check",
+      "expected_schema_valid": false,
+      "reason": "No inferred check.",
+      "value": {
+        "schema_version": "1.0",
+        "protocol_id": "TEST-EXEMPTION-GATE",
+        "rule_id": "TEST-RULE-GATE",
+        "causal_source_refs": [
+          "TEST-CAUSAL-SOURCE"
+        ],
+        "failure": {
+          "immediate_effect_refs": [
+            "TEST-EFFECT-CROSS-BLOCKED"
+          ],
+          "long_term_effect_refs": [
+            "TEST-EFFECT-KNOWLEDGE-OBSERVED"
+          ]
+        },
+        "precedence": {
+          "collision_rule_ref": "TEST-COLLISION-GATE",
+          "exception_refs": [
+            "TEST-EXCEPTION-TOKEN"
+          ]
+        },
+        "visibility": {
+          "player_text_refs": [
+            "TEST-TEXT-GATE-OBSERVED"
+          ],
+          "host_explanation_ref": "TEST-HOST-GATE-TRACE",
+          "mechanical_only_fields": [
+            "check",
+            "failure",
+            "precedence",
+            "audit"
+          ]
+        },
+        "audit_contract_ref": "TEST-AUDIT-C14",
+        "provenance_refs": [
+          "R2-C14",
+          "R2-B08",
+          "OWNER-C14-TEMPLATE-APPROVAL-2026-10-07-001"
+        ],
+        "exemption": {
+          "kind": "PER_RULE",
+          "rule_classification": "ORDINARY",
+          "applicability": {
+            "scope_refs": [
+              "TEST-TUTORIAL-DOMAIN"
+            ],
+            "eligibility_condition_refs": [
+              "TEST-COND-PERMIT-TOKEN"
+            ]
+          },
+          "costs": [],
+          "success": {
+            "outcome": "AVOID",
+            "effect_refs": [
+              "TEST-EFFECT-CROSS-ALLOWED"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "case_id": "empty-check-conditions",
+      "expected_schema_valid": false,
+      "reason": "An empty deterministic contract is not an automatic save.",
+      "value": {
+        "schema_version": "1.0",
+        "protocol_id": "TEST-EXEMPTION-GATE",
+        "rule_id": "TEST-RULE-GATE",
+        "causal_source_refs": [
+          "TEST-CAUSAL-SOURCE"
+        ],
+        "failure": {
+          "immediate_effect_refs": [
+            "TEST-EFFECT-CROSS-BLOCKED"
+          ],
+          "long_term_effect_refs": [
+            "TEST-EFFECT-KNOWLEDGE-OBSERVED"
+          ]
+        },
+        "precedence": {
+          "collision_rule_ref": "TEST-COLLISION-GATE",
+          "exception_refs": [
+            "TEST-EXCEPTION-TOKEN"
+          ]
+        },
+        "visibility": {
+          "player_text_refs": [
+            "TEST-TEXT-GATE-OBSERVED"
+          ],
+          "host_explanation_ref": "TEST-HOST-GATE-TRACE",
+          "mechanical_only_fields": [
+            "check",
+            "failure",
+            "precedence",
+            "audit"
+          ]
+        },
+        "audit_contract_ref": "TEST-AUDIT-C14",
+        "provenance_refs": [
+          "R2-C14",
+          "R2-B08",
+          "OWNER-C14-TEMPLATE-APPROVAL-2026-10-07-001"
+        ],
+        "exemption": {
+          "kind": "PER_RULE",
+          "rule_classification": "ORDINARY",
+          "applicability": {
+            "scope_refs": [
+              "TEST-TUTORIAL-DOMAIN"
+            ],
+            "eligibility_condition_refs": [
+              "TEST-COND-PERMIT-TOKEN"
+            ]
+          },
+          "check": {
+            "mode": "DETERMINISTIC",
+            "condition_refs": []
+          },
+          "costs": [],
+          "success": {
+            "outcome": "AVOID",
+            "effect_refs": [
+              "TEST-EFFECT-CROSS-ALLOWED"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "case_id": "lua-random-forbidden",
+      "expected_schema_valid": false,
+      "reason": "Random results belong to Host.",
+      "value": {
+        "schema_version": "1.0",
+        "protocol_id": "TEST-EXEMPTION-GATE",
+        "rule_id": "TEST-RULE-GATE",
+        "causal_source_refs": [
+          "TEST-CAUSAL-SOURCE"
+        ],
+        "failure": {
+          "immediate_effect_refs": [
+            "TEST-EFFECT-CROSS-BLOCKED"
+          ],
+          "long_term_effect_refs": [
+            "TEST-EFFECT-KNOWLEDGE-OBSERVED"
+          ]
+        },
+        "precedence": {
+          "collision_rule_ref": "TEST-COLLISION-GATE",
+          "exception_refs": [
+            "TEST-EXCEPTION-TOKEN"
+          ]
+        },
+        "visibility": {
+          "player_text_refs": [
+            "TEST-TEXT-GATE-OBSERVED"
+          ],
+          "host_explanation_ref": "TEST-HOST-GATE-TRACE",
+          "mechanical_only_fields": [
+            "check",
+            "failure",
+            "precedence",
+            "audit"
+          ]
+        },
+        "audit_contract_ref": "TEST-AUDIT-C14",
+        "provenance_refs": [
+          "R2-C14",
+          "R2-B08",
+          "OWNER-C14-TEMPLATE-APPROVAL-2026-10-07-001"
+        ],
+        "exemption": {
+          "kind": "PER_RULE",
+          "rule_classification": "ORDINARY",
+          "applicability": {
+            "scope_refs": [
+              "TEST-TUTORIAL-DOMAIN"
+            ],
+            "eligibility_condition_refs": [
+              "TEST-COND-PERMIT-TOKEN"
+            ]
+          },
+          "check": {
+            "mode": "HOST_RANDOM",
+            "authority": "LUA",
+            "random_request_ref": "TEST-RANDOM-REQUEST",
+            "random_result_event_ref": "TEST-EVENT-RANDOM"
+          },
+          "costs": [
+            {
+              "cost_ref": "TEST-PERSONAL-COST",
+              "authorization_required": true,
+              "owner_subject_ref": "TEST-SEAT-OWNER",
+              "authorization_evidence_ref": "TEST-AUTHORIZATION-EXPLICIT"
+            }
+          ],
+          "success": {
+            "outcome": "WEAKEN",
+            "effect_refs": [
+              "TEST-EFFECT-WEAKEN"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "case_id": "missing-random-event",
+      "expected_schema_valid": false,
+      "reason": "Host result must have event provenance.",
+      "value": {
+        "schema_version": "1.0",
+        "protocol_id": "TEST-EXEMPTION-GATE",
+        "rule_id": "TEST-RULE-GATE",
+        "causal_source_refs": [
+          "TEST-CAUSAL-SOURCE"
+        ],
+        "failure": {
+          "immediate_effect_refs": [
+            "TEST-EFFECT-CROSS-BLOCKED"
+          ],
+          "long_term_effect_refs": [
+            "TEST-EFFECT-KNOWLEDGE-OBSERVED"
+          ]
+        },
+        "precedence": {
+          "collision_rule_ref": "TEST-COLLISION-GATE",
+          "exception_refs": [
+            "TEST-EXCEPTION-TOKEN"
+          ]
+        },
+        "visibility": {
+          "player_text_refs": [
+            "TEST-TEXT-GATE-OBSERVED"
+          ],
+          "host_explanation_ref": "TEST-HOST-GATE-TRACE",
+          "mechanical_only_fields": [
+            "check",
+            "failure",
+            "precedence",
+            "audit"
+          ]
+        },
+        "audit_contract_ref": "TEST-AUDIT-C14",
+        "provenance_refs": [
+          "R2-C14",
+          "R2-B08",
+          "OWNER-C14-TEMPLATE-APPROVAL-2026-10-07-001"
+        ],
+        "exemption": {
+          "kind": "PER_RULE",
+          "rule_classification": "ORDINARY",
+          "applicability": {
+            "scope_refs": [
+              "TEST-TUTORIAL-DOMAIN"
+            ],
+            "eligibility_condition_refs": [
+              "TEST-COND-PERMIT-TOKEN"
+            ]
+          },
+          "check": {
+            "mode": "HOST_RANDOM",
+            "authority": "HOST",
+            "random_request_ref": "TEST-RANDOM-REQUEST"
+          },
+          "costs": [
+            {
+              "cost_ref": "TEST-PERSONAL-COST",
+              "authorization_required": true,
+              "owner_subject_ref": "TEST-SEAT-OWNER",
+              "authorization_evidence_ref": "TEST-AUTHORIZATION-EXPLICIT"
+            }
+          ],
+          "success": {
+            "outcome": "WEAKEN",
+            "effect_refs": [
+              "TEST-EFFECT-WEAKEN"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "case_id": "missing-personal-authorization",
+      "expected_schema_valid": false,
+      "reason": "A personal cost cannot be assigned without explicit owner authorization.",
+      "value": {
+        "schema_version": "1.0",
+        "protocol_id": "TEST-EXEMPTION-GATE",
+        "rule_id": "TEST-RULE-GATE",
+        "causal_source_refs": [
+          "TEST-CAUSAL-SOURCE"
+        ],
+        "failure": {
+          "immediate_effect_refs": [
+            "TEST-EFFECT-CROSS-BLOCKED"
+          ],
+          "long_term_effect_refs": [
+            "TEST-EFFECT-KNOWLEDGE-OBSERVED"
+          ]
+        },
+        "precedence": {
+          "collision_rule_ref": "TEST-COLLISION-GATE",
+          "exception_refs": [
+            "TEST-EXCEPTION-TOKEN"
+          ]
+        },
+        "visibility": {
+          "player_text_refs": [
+            "TEST-TEXT-GATE-OBSERVED"
+          ],
+          "host_explanation_ref": "TEST-HOST-GATE-TRACE",
+          "mechanical_only_fields": [
+            "check",
+            "failure",
+            "precedence",
+            "audit"
+          ]
+        },
+        "audit_contract_ref": "TEST-AUDIT-C14",
+        "provenance_refs": [
+          "R2-C14",
+          "R2-B08",
+          "OWNER-C14-TEMPLATE-APPROVAL-2026-10-07-001"
+        ],
+        "exemption": {
+          "kind": "PER_RULE",
+          "rule_classification": "ORDINARY",
+          "applicability": {
+            "scope_refs": [
+              "TEST-TUTORIAL-DOMAIN"
+            ],
+            "eligibility_condition_refs": [
+              "TEST-COND-PERMIT-TOKEN"
+            ]
+          },
+          "check": {
+            "mode": "HOST_RANDOM",
+            "authority": "HOST",
+            "random_request_ref": "TEST-RANDOM-REQUEST",
+            "random_result_event_ref": "TEST-EVENT-RANDOM"
+          },
+          "costs": [
+            {
+              "cost_ref": "TEST-PERSONAL-COST",
+              "authorization_required": true,
+              "owner_subject_ref": "TEST-SEAT-OWNER"
+            }
+          ],
+          "success": {
+            "outcome": "WEAKEN",
+            "effect_refs": [
+              "TEST-EFFECT-WEAKEN"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "case_id": "production-cost-number-out-of-scope",
+      "expected_schema_valid": false,
+      "reason": "This template does not decide production costs.",
+      "value": {
+        "schema_version": "1.0",
+        "protocol_id": "TEST-EXEMPTION-GATE",
+        "rule_id": "TEST-RULE-GATE",
+        "causal_source_refs": [
+          "TEST-CAUSAL-SOURCE"
+        ],
+        "failure": {
+          "immediate_effect_refs": [
+            "TEST-EFFECT-CROSS-BLOCKED"
+          ],
+          "long_term_effect_refs": [
+            "TEST-EFFECT-KNOWLEDGE-OBSERVED"
+          ]
+        },
+        "precedence": {
+          "collision_rule_ref": "TEST-COLLISION-GATE",
+          "exception_refs": [
+            "TEST-EXCEPTION-TOKEN"
+          ]
+        },
+        "visibility": {
+          "player_text_refs": [
+            "TEST-TEXT-GATE-OBSERVED"
+          ],
+          "host_explanation_ref": "TEST-HOST-GATE-TRACE",
+          "mechanical_only_fields": [
+            "check",
+            "failure",
+            "precedence",
+            "audit"
+          ]
+        },
+        "audit_contract_ref": "TEST-AUDIT-C14",
+        "provenance_refs": [
+          "R2-C14",
+          "R2-B08",
+          "OWNER-C14-TEMPLATE-APPROVAL-2026-10-07-001"
+        ],
+        "exemption": {
+          "kind": "PER_RULE",
+          "rule_classification": "ORDINARY",
+          "applicability": {
+            "scope_refs": [
+              "TEST-TUTORIAL-DOMAIN"
+            ],
+            "eligibility_condition_refs": [
+              "TEST-COND-PERMIT-TOKEN"
+            ]
+          },
+          "check": {
+            "mode": "HOST_RANDOM",
+            "authority": "HOST",
+            "random_request_ref": "TEST-RANDOM-REQUEST",
+            "random_result_event_ref": "TEST-EVENT-RANDOM"
+          },
+          "costs": [
+            {
+              "cost_ref": "TEST-PERSONAL-COST",
+              "authorization_required": true,
+              "owner_subject_ref": "TEST-SEAT-OWNER",
+              "authorization_evidence_ref": "TEST-AUTHORIZATION-EXPLICIT",
+              "amount": 3
+            }
+          ],
+          "success": {
+            "outcome": "WEAKEN",
+            "effect_refs": [
+              "TEST-EFFECT-WEAKEN"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "case_id": "postpone-without-activation",
+      "expected_schema_valid": false,
+      "reason": "Postponement requires a deterministic activation condition.",
+      "value": {
+        "schema_version": "1.0",
+        "protocol_id": "TEST-EXEMPTION-GATE",
+        "rule_id": "TEST-RULE-GATE",
+        "causal_source_refs": [
+          "TEST-CAUSAL-SOURCE"
+        ],
+        "failure": {
+          "immediate_effect_refs": [
+            "TEST-EFFECT-CROSS-BLOCKED"
+          ],
+          "long_term_effect_refs": [
+            "TEST-EFFECT-KNOWLEDGE-OBSERVED"
+          ]
+        },
+        "precedence": {
+          "collision_rule_ref": "TEST-COLLISION-GATE",
+          "exception_refs": [
+            "TEST-EXCEPTION-TOKEN"
+          ]
+        },
+        "visibility": {
+          "player_text_refs": [
+            "TEST-TEXT-GATE-OBSERVED"
+          ],
+          "host_explanation_ref": "TEST-HOST-GATE-TRACE",
+          "mechanical_only_fields": [
+            "check",
+            "failure",
+            "precedence",
+            "audit"
+          ]
+        },
+        "audit_contract_ref": "TEST-AUDIT-C14",
+        "provenance_refs": [
+          "R2-C14",
+          "R2-B08",
+          "OWNER-C14-TEMPLATE-APPROVAL-2026-10-07-001"
+        ],
+        "exemption": {
+          "kind": "PER_RULE",
+          "rule_classification": "ORDINARY",
+          "applicability": {
+            "scope_refs": [
+              "TEST-TUTORIAL-DOMAIN"
+            ],
+            "eligibility_condition_refs": [
+              "TEST-COND-PERMIT-TOKEN"
+            ]
+          },
+          "check": {
+            "mode": "DETERMINISTIC",
+            "condition_refs": [
+              "TEST-COND-PERMIT-TOKEN"
+            ]
+          },
+          "costs": [],
+          "success": {
+            "outcome": "POSTPONE",
+            "effect_refs": [
+              "TEST-EFFECT-DEFERRED"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "case_id": "missing-immediate-failure",
+      "expected_schema_valid": false,
+      "reason": "Failure must declare immediate and long-term outcomes.",
+      "value": {
+        "schema_version": "1.0",
+        "protocol_id": "TEST-EXEMPTION-GATE",
+        "rule_id": "TEST-RULE-GATE",
+        "causal_source_refs": [
+          "TEST-CAUSAL-SOURCE"
+        ],
+        "failure": {
+          "long_term_effect_refs": [
+            "TEST-EFFECT-KNOWLEDGE-OBSERVED"
+          ]
+        },
+        "precedence": {
+          "collision_rule_ref": "TEST-COLLISION-GATE",
+          "exception_refs": [
+            "TEST-EXCEPTION-TOKEN"
+          ]
+        },
+        "visibility": {
+          "player_text_refs": [
+            "TEST-TEXT-GATE-OBSERVED"
+          ],
+          "host_explanation_ref": "TEST-HOST-GATE-TRACE",
+          "mechanical_only_fields": [
+            "check",
+            "failure",
+            "precedence",
+            "audit"
+          ]
+        },
+        "audit_contract_ref": "TEST-AUDIT-C14",
+        "provenance_refs": [
+          "R2-C14",
+          "R2-B08",
+          "OWNER-C14-TEMPLATE-APPROVAL-2026-10-07-001"
+        ],
+        "exemption": {
+          "kind": "PER_RULE",
+          "rule_classification": "ORDINARY",
+          "applicability": {
+            "scope_refs": [
+              "TEST-TUTORIAL-DOMAIN"
+            ],
+            "eligibility_condition_refs": [
+              "TEST-COND-PERMIT-TOKEN"
+            ]
+          },
+          "check": {
+            "mode": "DETERMINISTIC",
+            "condition_refs": [
+              "TEST-COND-PERMIT-TOKEN"
+            ]
+          },
+          "costs": [],
+          "success": {
+            "outcome": "AVOID",
+            "effect_refs": [
+              "TEST-EFFECT-CROSS-ALLOWED"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "case_id": "missing-long-term-failure",
+      "expected_schema_valid": false,
+      "reason": "Both outcome layers must be explicit.",
+      "value": {
+        "schema_version": "1.0",
+        "protocol_id": "TEST-EXEMPTION-GATE",
+        "rule_id": "TEST-RULE-GATE",
+        "causal_source_refs": [
+          "TEST-CAUSAL-SOURCE"
+        ],
+        "failure": {
+          "immediate_effect_refs": [
+            "TEST-EFFECT-CROSS-BLOCKED"
+          ]
+        },
+        "precedence": {
+          "collision_rule_ref": "TEST-COLLISION-GATE",
+          "exception_refs": [
+            "TEST-EXCEPTION-TOKEN"
+          ]
+        },
+        "visibility": {
+          "player_text_refs": [
+            "TEST-TEXT-GATE-OBSERVED"
+          ],
+          "host_explanation_ref": "TEST-HOST-GATE-TRACE",
+          "mechanical_only_fields": [
+            "check",
+            "failure",
+            "precedence",
+            "audit"
+          ]
+        },
+        "audit_contract_ref": "TEST-AUDIT-C14",
+        "provenance_refs": [
+          "R2-C14",
+          "R2-B08",
+          "OWNER-C14-TEMPLATE-APPROVAL-2026-10-07-001"
+        ],
+        "exemption": {
+          "kind": "PER_RULE",
+          "rule_classification": "ORDINARY",
+          "applicability": {
+            "scope_refs": [
+              "TEST-TUTORIAL-DOMAIN"
+            ],
+            "eligibility_condition_refs": [
+              "TEST-COND-PERMIT-TOKEN"
+            ]
+          },
+          "check": {
+            "mode": "DETERMINISTIC",
+            "condition_refs": [
+              "TEST-COND-PERMIT-TOKEN"
+            ]
+          },
+          "costs": [],
+          "success": {
+            "outcome": "AVOID",
+            "effect_refs": [
+              "TEST-EFFECT-CROSS-ALLOWED"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "case_id": "missing-priority-binding",
+      "expected_schema_valid": false,
+      "reason": "Exemption cannot silently gain precedence.",
+      "value": {
+        "schema_version": "1.0",
+        "protocol_id": "TEST-EXEMPTION-GATE",
+        "rule_id": "TEST-RULE-GATE",
+        "causal_source_refs": [
+          "TEST-CAUSAL-SOURCE"
+        ],
+        "failure": {
+          "immediate_effect_refs": [
+            "TEST-EFFECT-CROSS-BLOCKED"
+          ],
+          "long_term_effect_refs": [
+            "TEST-EFFECT-KNOWLEDGE-OBSERVED"
+          ]
+        },
+        "precedence": {
+          "exception_refs": [
+            "TEST-EXCEPTION-TOKEN"
+          ]
+        },
+        "visibility": {
+          "player_text_refs": [
+            "TEST-TEXT-GATE-OBSERVED"
+          ],
+          "host_explanation_ref": "TEST-HOST-GATE-TRACE",
+          "mechanical_only_fields": [
+            "check",
+            "failure",
+            "precedence",
+            "audit"
+          ]
+        },
+        "audit_contract_ref": "TEST-AUDIT-C14",
+        "provenance_refs": [
+          "R2-C14",
+          "R2-B08",
+          "OWNER-C14-TEMPLATE-APPROVAL-2026-10-07-001"
+        ],
+        "exemption": {
+          "kind": "PER_RULE",
+          "rule_classification": "ORDINARY",
+          "applicability": {
+            "scope_refs": [
+              "TEST-TUTORIAL-DOMAIN"
+            ],
+            "eligibility_condition_refs": [
+              "TEST-COND-PERMIT-TOKEN"
+            ]
+          },
+          "check": {
+            "mode": "DETERMINISTIC",
+            "condition_refs": [
+              "TEST-COND-PERMIT-TOKEN"
+            ]
+          },
+          "costs": [],
+          "success": {
+            "outcome": "AVOID",
+            "effect_refs": [
+              "TEST-EFFECT-CROSS-ALLOWED"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "case_id": "player-seed-answer",
+      "expected_schema_valid": false,
+      "reason": "Unknown projected fields cannot carry hidden answers.",
+      "value": {
+        "schema_version": "1.0",
+        "protocol_id": "TEST-EXEMPTION-GATE",
+        "rule_id": "TEST-RULE-GATE",
+        "causal_source_refs": [
+          "TEST-CAUSAL-SOURCE"
+        ],
+        "failure": {
+          "immediate_effect_refs": [
+            "TEST-EFFECT-CROSS-BLOCKED"
+          ],
+          "long_term_effect_refs": [
+            "TEST-EFFECT-KNOWLEDGE-OBSERVED"
+          ]
+        },
+        "precedence": {
+          "collision_rule_ref": "TEST-COLLISION-GATE",
+          "exception_refs": [
+            "TEST-EXCEPTION-TOKEN"
+          ]
+        },
+        "visibility": {
+          "player_text_refs": [
+            "TEST-TEXT-GATE-OBSERVED"
+          ],
+          "host_explanation_ref": "TEST-HOST-GATE-TRACE",
+          "mechanical_only_fields": [
+            "check",
+            "failure",
+            "precedence",
+            "audit"
+          ],
+          "player_seed_answer": "HIDDEN"
+        },
+        "audit_contract_ref": "TEST-AUDIT-C14",
+        "provenance_refs": [
+          "R2-C14",
+          "R2-B08",
+          "OWNER-C14-TEMPLATE-APPROVAL-2026-10-07-001"
+        ],
+        "exemption": {
+          "kind": "PER_RULE",
+          "rule_classification": "ORDINARY",
+          "applicability": {
+            "scope_refs": [
+              "TEST-TUTORIAL-DOMAIN"
+            ],
+            "eligibility_condition_refs": [
+              "TEST-COND-PERMIT-TOKEN"
+            ]
+          },
+          "check": {
+            "mode": "DETERMINISTIC",
+            "condition_refs": [
+              "TEST-COND-PERMIT-TOKEN"
+            ]
+          },
+          "costs": [],
+          "success": {
+            "outcome": "AVOID",
+            "effect_refs": [
+              "TEST-EFFECT-CROSS-ALLOWED"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "case_id": "ordinary-rule-cannot-omit-exemption",
+      "expected_schema_valid": false,
+      "reason": "An ordinary rule is never absolute merely because the protocol is absent.",
+      "value": {
+        "schema_version": "1.0",
+        "protocol_id": "TEST-EXEMPTION-GATE",
+        "rule_id": "TEST-RULE-GATE",
+        "causal_source_refs": [
+          "TEST-CAUSAL-SOURCE"
+        ],
+        "failure": {
+          "immediate_effect_refs": [
+            "TEST-EFFECT-CROSS-BLOCKED"
+          ],
+          "long_term_effect_refs": [
+            "TEST-EFFECT-KNOWLEDGE-OBSERVED"
+          ]
+        },
+        "precedence": {
+          "collision_rule_ref": "TEST-COLLISION-GATE",
+          "exception_refs": [
+            "TEST-EXCEPTION-TOKEN"
+          ]
+        },
+        "visibility": {
+          "player_text_refs": [
+            "TEST-TEXT-GATE-OBSERVED"
+          ],
+          "host_explanation_ref": "TEST-HOST-GATE-TRACE",
+          "mechanical_only_fields": [
+            "check",
+            "failure",
+            "precedence",
+            "audit"
+          ]
+        },
+        "audit_contract_ref": "TEST-AUDIT-C14",
+        "provenance_refs": [
+          "R2-C14",
+          "R2-B08",
+          "OWNER-C14-TEMPLATE-APPROVAL-2026-10-07-001"
+        ],
+        "exemption": {
+          "kind": "NONE_ABSOLUTE",
+          "rule_classification": "ORDINARY",
+          "absence_authority_ref": "TEST-APPROVED-ABSOLUTE-RULE"
+        }
+      }
+    },
+    {
+      "case_id": "absolute-with-success",
+      "expected_schema_valid": false,
+      "reason": "No ordinary exemption fields on explicit absence.",
+      "value": {
+        "schema_version": "1.0",
+        "protocol_id": "TEST-EXEMPTION-GATE",
+        "rule_id": "TEST-RULE-GATE",
+        "causal_source_refs": [
+          "TEST-CAUSAL-SOURCE"
+        ],
+        "failure": {
+          "immediate_effect_refs": [
+            "TEST-EFFECT-CROSS-BLOCKED"
+          ],
+          "long_term_effect_refs": [
+            "TEST-EFFECT-KNOWLEDGE-OBSERVED"
+          ]
+        },
+        "precedence": {
+          "collision_rule_ref": "TEST-COLLISION-GATE",
+          "exception_refs": [
+            "TEST-EXCEPTION-TOKEN"
+          ]
+        },
+        "visibility": {
+          "player_text_refs": [
+            "TEST-TEXT-GATE-OBSERVED"
+          ],
+          "host_explanation_ref": "TEST-HOST-GATE-TRACE",
+          "mechanical_only_fields": [
+            "check",
+            "failure",
+            "precedence",
+            "audit"
+          ]
+        },
+        "audit_contract_ref": "TEST-AUDIT-C14",
+        "provenance_refs": [
+          "R2-C14",
+          "R2-B08",
+          "OWNER-C14-TEMPLATE-APPROVAL-2026-10-07-001"
+        ],
+        "exemption": {
+          "kind": "NONE_ABSOLUTE",
+          "rule_classification": "ABSOLUTE",
+          "absence_authority_ref": "TEST-APPROVED-ABSOLUTE-RULE",
+          "success": {
+            "outcome": "AVOID",
+            "effect_refs": [
+              "TEST-EFFECT-CROSS-ALLOWED"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "case_id": "absolute-without-authority-reference",
+      "expected_schema_valid": false,
+      "reason": "Explicit absolute-rule authority reference is required.",
+      "value": {
+        "schema_version": "1.0",
+        "protocol_id": "TEST-EXEMPTION-GATE",
+        "rule_id": "TEST-RULE-GATE",
+        "causal_source_refs": [
+          "TEST-CAUSAL-SOURCE"
+        ],
+        "failure": {
+          "immediate_effect_refs": [
+            "TEST-EFFECT-CROSS-BLOCKED"
+          ],
+          "long_term_effect_refs": [
+            "TEST-EFFECT-KNOWLEDGE-OBSERVED"
+          ]
+        },
+        "precedence": {
+          "collision_rule_ref": "TEST-COLLISION-GATE",
+          "exception_refs": [
+            "TEST-EXCEPTION-TOKEN"
+          ]
+        },
+        "visibility": {
+          "player_text_refs": [
+            "TEST-TEXT-GATE-OBSERVED"
+          ],
+          "host_explanation_ref": "TEST-HOST-GATE-TRACE",
+          "mechanical_only_fields": [
+            "check",
+            "failure",
+            "precedence",
+            "audit"
+          ]
+        },
+        "audit_contract_ref": "TEST-AUDIT-C14",
+        "provenance_refs": [
+          "R2-C14",
+          "R2-B08",
+          "OWNER-C14-TEMPLATE-APPROVAL-2026-10-07-001"
+        ],
+        "exemption": {
+          "kind": "NONE_ABSOLUTE",
+          "rule_classification": "ABSOLUTE"
+        }
+      }
+    }
+  ]
+}

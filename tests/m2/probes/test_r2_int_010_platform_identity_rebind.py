@@ -9,6 +9,7 @@ import importlib.util
 import json
 import shutil
 import stat
+import subprocess
 import sys
 import tempfile
 import unittest
@@ -31,6 +32,52 @@ SPEC.loader.exec_module(validator)
 class R2Int010PlatformIdentityRebindTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
+        global validator
+        from tools.validate_r2_install import (
+            UNREGISTERED_INTERFACE_ARTIFACTS, _unregistered_interface_schema,
+        )
+        if any((validator.ROOT / path).exists() or (validator.ROOT / path).is_symlink()
+               for path in UNREGISTERED_INTERFACE_ARTIFACTS):
+            errors = []
+            if _unregistered_interface_schema(validator.ROOT, errors) is None or errors:
+                raise AssertionError("current interface attachment cannot select historical rebind: " + "; ".join(errors))
+            # The historical suite keeps its original parent, signature and
+            # thirteen-path assertions. Current inputs and implementation bytes
+            # are checked above before this fixed historical checkout is used.
+            commit = "6caf57cdc1127e84546459766949e0da664bb2f9"
+            expected_tree = "ec6cb5e7fdc0c93f09862fcf032dbb61393293a1"
+            subprocess.run(
+                ["git", "--no-replace-objects", "-C", str(validator.ROOT), "merge-base", "--is-ancestor", commit, "HEAD"],
+                check=True, capture_output=True,
+            )
+            original_validator = validator
+            temporary = tempfile.TemporaryDirectory(prefix="rules-public-rebind-")
+            cls.addClassCleanup(temporary.cleanup)
+            def restore_validator() -> None:
+                global validator
+                validator = original_validator
+            cls.addClassCleanup(restore_validator)
+            repository = Path(temporary.name) / "repository"
+            subprocess.run(
+                ["git", "clone", "--quiet", "--no-hardlinks", "--no-checkout", str(validator.ROOT), str(repository)],
+                check=True, capture_output=True,
+            )
+            subprocess.run(
+                ["git", "-C", str(repository), "checkout", "--quiet", "--detach", commit],
+                check=True, capture_output=True,
+            )
+            tree = subprocess.check_output(
+                ["git", "--no-replace-objects", "-C", str(repository), "rev-parse", "HEAD^{tree}"], text=True,
+            ).strip()
+            if tree != expected_tree:
+                raise AssertionError("historical rebind fixture source tree changed")
+            specification = importlib.util.spec_from_file_location(
+                "r2_int_010_public_fixed_rebind_validator", repository / validator.VALIDATOR_PATH_TEXT,
+            )
+            assert specification and specification.loader
+            historical_validator = importlib.util.module_from_spec(specification)
+            specification.loader.exec_module(historical_validator)
+            validator = historical_validator
         cls.archive_observation = validator.validate_platform_archive()
 
     def load(self, path_text: str):
