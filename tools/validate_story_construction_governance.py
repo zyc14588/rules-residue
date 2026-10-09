@@ -5,6 +5,7 @@ import hashlib
 import json
 import os
 import re
+import stat
 import subprocess
 import sys
 from pathlib import Path
@@ -16,6 +17,7 @@ if __package__ in {None, ""}:
 from tools.codex_route import RouteError, generate_reading_map, validate_request
 from tools.lib.common import PROJECT_ROOT, read_json, runtime_relative_paths
 from tools.lib.schema_subset import validate
+from tools import validate_r2_install as r2_install
 from tools.story_construction import (
     ACTIVATION_CHANGED_LEAF_IDS,
     APPROVAL_CONSUMPTION_PATH,
@@ -84,6 +86,23 @@ from tools.validate_precontent_readiness import (
 
 
 SCHEMA_ROOT = Path("schemas/story-construction")
+CONTENT_SAFETY_SCHEMA_NAME = "content-safety-receipt-v1.schema.json"
+# These public technical attachment bytes do not extend SCG or R2 authority.
+PUBLIC_CONTENT_SAFETY_ARTIFACTS = {
+    "schemas/story-construction/content-safety-receipt-v1.schema.json": "fbfeacc563c54e3e204728afebf9a0aee98b85810e4f93d3671c2aed355a5aa8",
+    "tools/lib/content_safety_evidence.py": "fc67bbdd1ba5ec6b49d0db2c3c69f5c6a3f8388123f9f3ca4980db69a2ee2360",
+    "tools/content_safety_control.py": "9e8f9fab84603d5ced144d888651c073cb267f0020baa851ce2ef8dd40a2fbe3",
+    "tools/content_safety_consumers.py": "a110b22f5b9f96dbfcf6af325c4c7d228b1c9ec5be8e47892d76c1e90cf27ca9",
+    "tools/build_package.py": "28b0dd92887443c923dd37251d41923247a35e2c458bbe4ab885d06f800a846f",
+    "tools/run_acceptance.py": "8b3b5ebdcce8fa03a1851ed379df9a85210b58997b12ce576fcca3a4195dfad9",
+    "tests/test_content_safety_evidence.py": "c65f6b5621c0cb4fcee8a695912021e83a915a7ad9037cd11994e14475f35e3c",
+    "tests/test_content_safety_consumers.py": "972c71823cfb0f17e222dd9359613b3a90489f43d7a63342de5fa919f63f0451",
+    "tests/test_content_safety_entrypoints.py": "539fc37e125b7df5f60727dd3e4b108e874226019d012507a9bb5e1f784782a1",
+    "docs/implementation/m2/semantics/CONTENT_SAFETY_EVIDENCE_V1.md": "ff5036b5888fa3cbbcc01fa3088323964312087a46f63b253bd3dbd31b14974d",
+    "tests/test_package.py": "06fd6d3bbe012ec6d4e10d0cde4cb68053506f221cf381a2f43a6c19d23ae5d7",
+    "tests/test_module_registry.py": "c83d1b00b88511c455a7f4621555b34e15fc6f593ef72075b73beb60904a939b",
+    "tests/test_platform_v2_probe_adapter.py": "f9fae8b7561a3399e1cac37d4bde77ee7a7bde56c7a59a55d83832ed88a1d978",
+}
 SCHEMA_FILES = {
     "activation-closeout-envelope-v1.schema.json",
     "activation-owner-approval-v1.schema.json",
@@ -377,9 +396,121 @@ def _check_human_docs(root: Path, errors: list[str]) -> None:
             errors.append(f"{relative}: R2 precedence marker missing")
 
 
+def _check_public_attachment_file(
+    root: Path, relative: str, digest: str, errors: list[str]
+) -> bool:
+    path = root / relative
+    try:
+        current = root
+        for part in Path(relative).parts:
+            current = current / part
+            if current.is_symlink():
+                errors.append(f"SCG_SCHEMA_ATTACHMENT: symlink artifact path: {relative}")
+                return False
+        mode = path.lstat().st_mode
+        if not stat.S_ISREG(mode) or mode & 0o111:
+            errors.append(f"SCG_SCHEMA_ATTACHMENT: artifact must have regular Git mode 100644: {relative}")
+            return False
+        if hashlib.sha256(path.read_bytes()).hexdigest() != digest:
+            errors.append(f"SCG_SCHEMA_ATTACHMENT: artifact byte drift: {relative}")
+            return False
+    except OSError as exc:
+        errors.append(f"SCG_SCHEMA_ATTACHMENT: missing or unreadable artifact {relative}: {exc}")
+        return False
+    return True
+
+
+def _check_public_content_safety_attachment(root: Path, errors: list[str]) -> Path | None:
+    if not any((root / relative).exists() or (root / relative).is_symlink()
+               for relative in PUBLIC_CONTENT_SAFETY_ARTIFACTS):
+        return None
+    before = len(errors)
+    for relative, digest in PUBLIC_CONTENT_SAFETY_ARTIFACTS.items():
+        _check_public_attachment_file(root, relative, digest, errors)
+    # Reuse the existing public R2 closure, without recursing into project checks.
+    compatibility = r2_install._unregistered_interface_schema(root, errors)
+    if compatibility is None:
+        errors.append("SCG_SCHEMA_ATTACHMENT: exact public R2 compatibility attachment unavailable")
+    for relative, digest in {
+        **r2_install.UNREGISTERED_INTERFACE_ARTIFACTS,
+        **r2_install.INTERFACE_COMPATIBILITY_ARTIFACTS,
+        **r2_install.PUBLIC_BASELINE_CONTROL_ARTIFACTS,
+    }.items():
+        _check_public_attachment_file(root, relative, digest, errors)
+    if len(errors) != before:
+        return None
+    return root / SCHEMA_ROOT / CONTENT_SAFETY_SCHEMA_NAME
+
+
+def _check_content_safety_schema_metadata(
+    root: Path, schemas: dict[str, dict[str, Any]], errors: list[str]
+) -> None:
+    path = root / SCHEMA_ROOT / CONTENT_SAFETY_SCHEMA_NAME
+    if not path.exists() and not path.is_symlink():
+        return
+    label = f"SCG_SCHEMA_ATTACHMENT_META: {CONTENT_SAFETY_SCHEMA_NAME}"
+    if any((root.joinpath(*Path(SCHEMA_ROOT / CONTENT_SAFETY_SCHEMA_NAME).parts[:index])).is_symlink()
+           for index in range(1, len(Path(SCHEMA_ROOT / CONTENT_SAFETY_SCHEMA_NAME).parts) + 1)) or not path.is_file():
+        errors.append(f"{label}: schema must be a regular file")
+        return
+    try:
+        schema = read_json(path)
+    except (OSError, UnicodeError, json.JSONDecodeError) as exc:
+        errors.append(f"{label}: invalid JSON Schema: {exc}")
+        return
+    if not isinstance(schema, dict):
+        errors.append(f"{label}: schema must be an object")
+        return
+    if schema.get("$schema") != "https://json-schema.org/draft/2020-12/schema":
+        errors.append(f"{label}: must declare draft 2020-12")
+    if schema.get("$id") != "urn:rules-residue:content-safety-receipt:v1":
+        errors.append(f"{label}: exact receipt schema $id missing")
+    if any(original.get("$id") == schema.get("$id") for original in schemas.values()):
+        errors.append(f"{label}: duplicate $id")
+    if schema.get("additionalProperties") is not False:
+        errors.append(f"{label}: root unknown fields must be rejected")
+    properties = schema.get("properties")
+    version = properties.get("schema_version") if isinstance(properties, dict) else None
+    if not isinstance(version, dict) or version.get("const") != "1.0.0":
+        errors.append(f"{label}: explicit receipt schema_version const missing")
+    if r2_install.Draft202012Validator is None:
+        errors.append(f"{label}: full Draft 2020-12 metadata validator unavailable")
+    else:
+        try:
+            r2_install.Draft202012Validator.check_schema(schema)
+        except r2_install.SchemaError as exc:
+            errors.append(f"{label}: invalid Draft 2020-12 schema: {exc.message}")
+
+    def check_refs(node: Any) -> None:
+        if isinstance(node, dict):
+            reference = node.get("$ref")
+            if isinstance(reference, str):
+                target: Any = schema
+                if reference == "#":
+                    pass
+                elif reference.startswith("#/"):
+                    try:
+                        for part in reference[2:].split("/"):
+                            target = target[part.replace("~1", "/").replace("~0", "~")]
+                    except (KeyError, IndexError, TypeError):
+                        errors.append(f"{label}: unresolved local $ref: {reference}")
+                else:
+                    errors.append(f"{label}: receipt $ref must resolve locally: {reference}")
+            for value in node.values():
+                check_refs(value)
+        elif isinstance(node, list):
+            for value in node:
+                check_refs(value)
+
+    check_refs(schema)
+
+
 def _check_schemas(root: Path, errors: list[str]) -> dict[str, dict[str, Any]]:
     schemas: dict[str, dict[str, Any]] = {}
+    attachment = _check_public_content_safety_attachment(root, errors)
     actual = {path.name for path in (root / SCHEMA_ROOT).glob("*.schema.json")}
+    if attachment is not None:
+        actual.discard(attachment.name)
     if actual != SCHEMA_FILES:
         errors.append(
             f"Story Construction schema set mismatch: missing={sorted(SCHEMA_FILES-actual)}, extra={sorted(actual-SCHEMA_FILES)}"
@@ -410,6 +541,8 @@ def _check_schemas(root: Path, errors: list[str]) -> dict[str, dict[str, Any]]:
             ) is not None
         if not valid_version:
             errors.append(f"{name}: explicit SemVer schema_version const missing")
+    # Parse and validate the receipt even when its attachment hashes were rejected.
+    _check_content_safety_schema_metadata(root, schemas, errors)
     return schemas
 
 

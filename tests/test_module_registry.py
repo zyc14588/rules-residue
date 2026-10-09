@@ -4,7 +4,7 @@ import unittest
 import zipfile
 from pathlib import Path
 
-from tools.build_package import build_package
+from tools.build_package import _quarantine_encode as build_package
 from tools.lib.common import (
     GAME_PACKAGE_ROOT,
     NON_RUNTIME_MODULE_MARKER,

@@ -21,12 +21,13 @@ from tools.lib.common import (
 FIXED_ZIP_TIME = (1980, 1, 1, 0, 0, 0)
 
 
-def build_package(
+def _quarantine_encode(
     output: Path,
     validate_first: bool = True,
     *,
     game_package_root: Path = GAME_PACKAGE_ROOT,
 ) -> str:
+    """Encode structural test/quarantine bytes only; never grants admission."""
     if validate_first:
         from tools.validate_project import collect_errors, validate_module_registry
 
@@ -69,6 +70,37 @@ def build_package(
     return digest
 
 
+def build_package(output: Path, validate_first: bool = True, *,
+                  game_package_root: Path = GAME_PACKAGE_ROOT,
+                  execution_id: str | None = None, store=None) -> str:
+    """Production boundary. Skip-validation and alternate roots grant no bypass."""
+    from tools.content_safety_control import ControlStore
+    from tools.content_safety_consumers import admit
+    from tools.lib.content_safety_evidence import SafetyError, require, sha, durable_write
+    require(execution_id is not None, 'production build requires a control-issued operation and INPUT/OUTPUT evidence')
+    control = store or ControlStore.production()
+    control.assert_production()
+    operation = control.operation(execution_id)
+    expected = 'full-project' if game_package_root.resolve() == GAME_PACKAGE_ROOT.resolve() else 'module-registry'
+    require(operation['binding']['scope'] == {'consumer':'build','validation':expected}, 'build validation scope mismatch')
+    result = admit('build',game_package_root,execution_id,store=control)
+    # Exporting even a historical result is new consumption: require current
+    # authorization, unlike the read-only historical replay API.
+    control.replay(execution_id,current=True)
+    expected_sha = result['manifest']['details']['archive_sha256']
+    artifact = control.directory/'work'/execution_id/'archive.trpgpkg'
+    require(artifact.is_file() and not artifact.is_symlink() and artifact.stat().st_nlink == 1, 'committed archive missing/nonregular')
+    data = artifact.read_bytes(); require(sha(data) == expected_sha, 'committed archive bytes changed')
+    if output.exists():
+        require(not output.is_symlink() and output.read_bytes() == data, 'output exists with different bytes')
+    else: durable_write(output,data)
+    digest_path = output.with_suffix(output.suffix+'.sha256')
+    digest_bytes = f'{expected_sha}  {output.name}\n'.encode()
+    if digest_path.exists(): require(not digest_path.is_symlink() and digest_path.read_bytes()==digest_bytes, 'digest output conflict')
+    else: durable_write(digest_path,digest_bytes)
+    return expected_sha
+
+
 def default_output() -> Path:
     manifest = read_json(GAME_PACKAGE_ROOT / "manifest.json")
     return DIST_ROOT / f"{manifest['id']}-{manifest['version']}.trpgpkg"
@@ -78,9 +110,14 @@ def main() -> int:
     parser = argparse.ArgumentParser(description="Build deterministic Rules Residue Game Package")
     parser.add_argument("--output", type=Path, default=default_output())
     parser.add_argument("--skip-validation", action="store_true")
+    parser.add_argument("--execution", help="control-issued build operation UUID")
     args = parser.parse_args()
     output = args.output if args.output.is_absolute() else PROJECT_ROOT / args.output
-    digest = build_package(output, validate_first=not args.skip_validation)
+    try:
+        digest = build_package(output, validate_first=not args.skip_validation, execution_id=args.execution)
+    except (RuntimeError, OSError, ValueError) as exc:
+        print(f"CONTENT_SAFETY_BUILD: DENY: {exc}")
+        return 1
     print(f"built: {output}")
     print(f"sha256: {digest}")
     return 0

@@ -8,7 +8,9 @@ import subprocess
 import tempfile
 import unittest
 from pathlib import Path
+from unittest.mock import patch
 
+from tools import validate_r2_install as r2_install
 from tools.lib.common import PROJECT_ROOT, read_json, write_json
 from tools.lib.schema_subset import validate
 from tools.story_construction import (
@@ -57,6 +59,12 @@ from tools.validate_story_construction_governance import (
     ACTIVATION_CANDIDATE_COMMIT,
     ACTIVATION_CANDIDATE_PARENT,
     ACTIVATION_CANDIDATE_TREE,
+    CONTENT_SAFETY_SCHEMA_NAME,
+    PUBLIC_CONTENT_SAFETY_ARTIFACTS,
+    SCHEMA_FILES,
+    SCHEMA_ROOT,
+    _check_public_content_safety_attachment,
+    _check_schemas,
     _check_activation_git_scope,
     _check_authority_and_supersession,
     _check_decisions_and_traceability,
@@ -1032,6 +1040,219 @@ class StoryConstructionGovernanceTests(unittest.TestCase):
         errors = validate_dab(bundle, "C1")
         self.assertTrue(any("FORENSIC" in error for error in errors), errors)
         self.assertTrue(any("chain-of-thought" in error for error in errors), errors)
+
+
+class PublicContentSafetyAttachmentTests(unittest.TestCase):
+    def setUp(self) -> None:
+        temporary = tempfile.TemporaryDirectory(prefix="scg-public-attachment-")
+        self.addCleanup(temporary.cleanup)
+        self.root = Path(temporary.name)
+        self.r2_artifacts = {
+            **r2_install.UNREGISTERED_INTERFACE_ARTIFACTS,
+            **r2_install.INTERFACE_COMPATIBILITY_ARTIFACTS,
+            **r2_install.PUBLIC_BASELINE_CONTROL_ARTIFACTS,
+        }
+        paths = (
+            set(PUBLIC_CONTENT_SAFETY_ARTIFACTS)
+            | set(self.r2_artifacts)
+            | set(r2_install.R2_AUTHORITY_SCHEMA_PATHS)
+            | {(SCHEMA_ROOT / name).as_posix() for name in SCHEMA_FILES}
+        )
+        for relative in sorted(paths):
+            target = self.root / relative
+            target.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copy2(PROJECT_ROOT / relative, target)
+
+    def _schema_errors(self) -> list[str]:
+        errors: list[str] = []
+        schemas = _check_schemas(self.root, errors)
+        self.assertEqual(set(schemas), SCHEMA_FILES)
+        self.assertNotIn(CONTENT_SAFETY_SCHEMA_NAME, schemas)
+        return errors
+
+    def _assert_attachment_rejected(self) -> list[str]:
+        errors: list[str] = []
+        self.assertIsNone(_check_public_content_safety_attachment(self.root, errors))
+        self.assertTrue(errors)
+        return errors
+
+    def test_exact_public_attachment_preserves_49_scg_and_10_r2_schemas(self) -> None:
+        self.assertEqual(len(SCHEMA_FILES), 49)
+        self.assertEqual(len(r2_install.R2_AUTHORITY_SCHEMA_PATHS), 10)
+        self.assertEqual(len(PUBLIC_CONTENT_SAFETY_ARTIFACTS), 13)
+        errors: list[str] = []
+        self.assertEqual(
+            _check_public_content_safety_attachment(self.root, errors),
+            self.root / SCHEMA_ROOT / CONTENT_SAFETY_SCHEMA_NAME,
+        )
+        self.assertEqual(errors, [])
+        self.assertEqual(self._schema_errors(), [])
+        r2_install._check_schemas_and_json(self.root, errors)
+        self.assertEqual(errors, [])
+
+    def test_absent_attachment_preserves_legacy_schema_checks(self) -> None:
+        for relative in PUBLIC_CONTENT_SAFETY_ARTIFACTS:
+            (self.root / relative).unlink()
+        errors: list[str] = []
+        self.assertIsNone(_check_public_content_safety_attachment(self.root, errors))
+        self.assertEqual(errors, [])
+        self.assertEqual(self._schema_errors(), [])
+
+    def test_receipt_alone_is_not_an_attachment(self) -> None:
+        for relative in PUBLIC_CONTENT_SAFETY_ARTIFACTS:
+            if Path(relative).name != CONTENT_SAFETY_SCHEMA_NAME:
+                (self.root / relative).unlink()
+        self._assert_attachment_rejected()
+        self.assertTrue(any("schema set mismatch" in error for error in self._schema_errors()))
+
+    def test_every_missing_public_artifact_is_rejected(self) -> None:
+        for relative in PUBLIC_CONTENT_SAFETY_ARTIFACTS:
+            with self.subTest(relative=relative):
+                path = self.root / relative
+                data = path.read_bytes()
+                path.unlink()
+                errors = self._assert_attachment_rejected()
+                self.assertTrue(any(relative in error for error in errors), errors)
+                self.assertTrue(self._schema_errors())
+                path.write_bytes(data)
+
+    def test_every_public_artifact_byte_drift_is_rejected(self) -> None:
+        for relative in PUBLIC_CONTENT_SAFETY_ARTIFACTS:
+            with self.subTest(relative=relative):
+                path = self.root / relative
+                data = path.read_bytes()
+                path.write_bytes(data + b"\n")
+                errors = self._assert_attachment_rejected()
+                self.assertTrue(any("byte drift" in error and relative in error for error in errors), errors)
+                path.write_bytes(data)
+
+    def test_every_r2_interface_evidence_and_control_drift_is_rejected(self) -> None:
+        for relative in self.r2_artifacts:
+            with self.subTest(relative=relative):
+                path = self.root / relative
+                data = path.read_bytes()
+                path.write_bytes(data + b"\n")
+                errors = self._assert_attachment_rejected()
+                self.assertTrue(any(relative in error for error in errors), errors)
+                self.assertTrue(any("schema set mismatch" in error for error in self._schema_errors()))
+                path.write_bytes(data)
+
+    def test_missing_r2_attachment_cannot_classify_receipt(self) -> None:
+        for relative in r2_install.UNREGISTERED_INTERFACE_ARTIFACTS:
+            (self.root / relative).unlink()
+        errors = self._assert_attachment_rejected()
+        self.assertTrue(any("R2 compatibility attachment unavailable" in error for error in errors), errors)
+        self.assertTrue(any("schema set mismatch" in error for error in self._schema_errors()))
+
+    def test_executable_modes_are_rejected_for_public_and_r2_artifacts(self) -> None:
+        for relative in set(PUBLIC_CONTENT_SAFETY_ARTIFACTS) | set(self.r2_artifacts):
+            with self.subTest(relative=relative):
+                path = self.root / relative
+                path.chmod(0o755)
+                errors = self._assert_attachment_rejected()
+                self.assertTrue(any("Git mode 100644" in error and relative in error for error in errors), errors)
+                path.chmod(0o644)
+
+    def test_nonregular_artifact_is_rejected(self) -> None:
+        path = self.root / "tools/content_safety_control.py"
+        path.unlink()
+        path.mkdir()
+        self._assert_attachment_rejected()
+
+    def test_leaf_symlinks_are_rejected(self) -> None:
+        for relative in (f"{SCHEMA_ROOT}/{CONTENT_SAFETY_SCHEMA_NAME}",
+                         "tools/content_safety_control.py",
+                         next(iter(r2_install.INTERFACE_COMPATIBILITY_ARTIFACTS))):
+            with self.subTest(relative=relative):
+                path = self.root / relative
+                saved = path.with_suffix(path.suffix + ".saved")
+                path.rename(saved)
+                path.symlink_to(saved)
+                errors = self._assert_attachment_rejected()
+                self.assertTrue(any("symlink" in error and relative in error for error in errors), errors)
+                path.unlink()
+                saved.rename(path)
+
+    def test_parent_symlink_is_rejected_even_with_identical_bytes(self) -> None:
+        path = self.root / "tools"
+        saved = self.root / "saved-tools"
+        path.rename(saved)
+        path.symlink_to(saved, target_is_directory=True)
+        errors = self._assert_attachment_rejected()
+        self.assertTrue(any("symlink artifact path" in error for error in errors), errors)
+
+    def test_unknown_schema_attachment_still_fails_exact_set(self) -> None:
+        for name in ("content-safety-receipt-v2.schema.json", "unknown.schema.json"):
+            with self.subTest(name=name):
+                path = self.root / SCHEMA_ROOT / name
+                shutil.copy2(self.root / SCHEMA_ROOT / CONTENT_SAFETY_SCHEMA_NAME, path)
+                errors = self._schema_errors()
+                self.assertTrue(any("schema set mismatch" in error and name in error for error in errors), errors)
+                path.unlink()
+
+    def test_missing_original_schema_and_frozen_byte_drift_still_fail(self) -> None:
+        path = self.root / SCHEMA_ROOT / "activation-owner-approval-v1.schema.json"
+        path.unlink()
+        errors: list[str] = []
+        schemas = _check_schemas(self.root, errors)
+        self.assertEqual(len(schemas), 48)
+        self.assertTrue(any("schema set mismatch" in error and path.name in error for error in errors), errors)
+        shutil.copy2(PROJECT_ROOT / SCHEMA_ROOT / path.name, path)
+        frozen = self.root / SCHEMA_ROOT / "change-set-v1.schema.json"
+        frozen.write_bytes(frozen.read_bytes() + b"\n")
+        self.assertTrue(any("frozen v1 schema bytes changed" in error for error in self._schema_errors()))
+
+    def test_original_metadata_checks_still_fail(self) -> None:
+        path = self.root / SCHEMA_ROOT / "activation-owner-approval-v1.schema.json"
+        schema = read_json(path)
+        schema["$schema"] = "https://invalid.example/schema"
+        schema["additionalProperties"] = True
+        schema["properties"]["schema_version"]["const"] = "invalid"
+        write_json(path, schema)
+        errors = self._schema_errors()
+        for marker in ("must declare draft 2020-12", "root unknown fields must be rejected", "explicit SemVer"):
+            self.assertTrue(any(marker in error and path.name in error for error in errors), errors)
+
+    def test_invalid_receipt_metadata_is_checked_after_hash_rejection(self) -> None:
+        path = self.root / SCHEMA_ROOT / CONTENT_SAFETY_SCHEMA_NAME
+        original = read_json(path)
+        mutations = {
+            "draft": ("$schema", "https://invalid.example/schema", "must declare draft"),
+            "identity": ("$id", "", "exact receipt schema $id"),
+            "unknown-fields": ("additionalProperties", True, "root unknown fields"),
+            "draft-metadata": ("required", "invalid", "invalid Draft 2020-12 schema"),
+            "missing-local-ref": ("$ref", "#/$defs/missing", "unresolved local $ref"),
+            "external-ref": ("$ref", "https://invalid.example/schema", "must resolve locally"),
+        }
+        for label, (field, value, marker) in mutations.items():
+            with self.subTest(label=label):
+                schema = copy.deepcopy(original)
+                schema[field] = value
+                write_json(path, schema)
+                errors = self._schema_errors()
+                self.assertTrue(any("artifact byte drift" in error for error in errors), errors)
+                self.assertTrue(any("SCG_SCHEMA_ATTACHMENT_META" in error and marker in error for error in errors), errors)
+        schema = copy.deepcopy(original)
+        schema["properties"]["schema_version"]["const"] = "2.0.0"
+        write_json(path, schema)
+        self.assertTrue(any("explicit receipt schema_version" in error for error in self._schema_errors()))
+        schema = copy.deepcopy(original)
+        schema["$id"] = read_json(self.root / SCHEMA_ROOT / "change-set-v1.schema.json")["$id"]
+        write_json(path, schema)
+        self.assertTrue(any("duplicate $id" in error for error in self._schema_errors()))
+
+    def test_invalid_receipt_json_is_rejected(self) -> None:
+        path = self.root / SCHEMA_ROOT / CONTENT_SAFETY_SCHEMA_NAME
+        for data in (b"{", b"[]", b"\xff"):
+            with self.subTest(data=data):
+                path.write_bytes(data)
+                errors = self._schema_errors()
+                self.assertTrue(any("SCG_SCHEMA_ATTACHMENT_META" in error for error in errors), errors)
+
+    def test_missing_full_metadata_dependency_fails_closed(self) -> None:
+        with patch.object(r2_install, "Draft202012Validator", None):
+            errors = self._schema_errors()
+        self.assertTrue(any("full Draft 2020-12 metadata validator unavailable" in error for error in errors), errors)
 
 
 if __name__ == "__main__":

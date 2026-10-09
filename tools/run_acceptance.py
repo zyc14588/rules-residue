@@ -13,7 +13,7 @@ import sys
 import tempfile
 from datetime import date
 
-from tools.build_package import build_package, default_output
+from tools.build_package import _quarantine_encode as build_package, default_output
 from tools.lib.common import PROJECT_ROOT, REPORT_ROOT, read_json, sha256_file, write_json
 
 
@@ -89,6 +89,7 @@ def main() -> int:
             "path": package_output.relative_to(PROJECT_ROOT).as_posix() if package_digest else None,
             "sha256": package_digest,
         },
+        "content_safety_admission": {"status":"NOT_CLAIMED", "scope":"structural tests and raw quarantined deterministic package only; production consumers require current independently received receipts"},
         "external_gates": [
             {"id":"GATE-PLATFORM-001","status":"NOT_RUN","reason":"requires TRPG_PLATFORM Lua 5.5 sandbox and Host API"},
             {"id":"GATE-CREATOR-001","status":"NOT_RUN","reason":"requires Creator Tool import/edit/export roundtrip"},
@@ -124,6 +125,7 @@ def main() -> int:
             print(item["stdout"].rstrip())
         if item["stderr"]:
             print(item["stderr"].rstrip(), file=sys.stderr)
+    print("semantic admission: NOT_CLAIMED (raw structural archive has no consumption authority)")
     print(f"deterministic build: {'PASS' if reproducible else 'FAIL'}")
     if package_digest:
         print(f"package: {package_output}")

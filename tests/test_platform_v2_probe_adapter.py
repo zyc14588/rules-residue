@@ -8,7 +8,7 @@ import unittest
 import zipfile
 from pathlib import Path
 
-from tools.build_package import build_package
+from tools.build_package import _quarantine_encode as build_package
 from tools.build_platform_v2_probe import (
     MAX_PAYLOAD_BYTES,
     MAX_SCHEMA_BYTES,
