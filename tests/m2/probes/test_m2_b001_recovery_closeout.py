@@ -5,6 +5,7 @@ import hashlib
 import json
 import shutil
 import subprocess
+import sys
 import tempfile
 import unittest
 from pathlib import Path
@@ -36,6 +37,10 @@ from validate_m2_b001_recovery_closeout import (
     PLAN_TEST_PATH_TEXT,
     PLAN_VALIDATOR_PATH_TEXT,
     PROBE_TEST_PATH_TEXT,
+    PUBLIC_CODE_SOURCE_COMMIT,
+    PUBLIC_CODE_SOURCE_PARENT,
+    PUBLIC_CODE_SOURCE_SHA256,
+    PUBLIC_CODE_SOURCE_TREE,
     RECOVERY_CANDIDATE_COMMIT,
     RECOVERY_CANDIDATE_TREE,
     RecoveryValidationError,
@@ -46,6 +51,7 @@ from validate_m2_b001_recovery_closeout import (
     validate_candidate_b_changed_paths,
     validate_candidate_checkout,
     validate_changed_paths,
+    validate_exact_public_code_reception,
     validate_historical_anchor,
     validate_historical_manifest_entries,
     validate_lifecycle_preservation_state,
@@ -1019,6 +1025,209 @@ def _install_generated_attack_tests() -> None:
 
 
 _install_generated_attack_tests()
+
+
+class ExactPublicCodeReceptionTests(unittest.TestCase):
+    commit_paths = RecoveryCloseoutTests.commit_paths
+    head_identity = RecoveryCloseoutTests.head_identity
+
+    def checkout(self, temporary: Path, source: str = PUBLIC_CODE_SOURCE_COMMIT) -> Path:
+        root = temporary / "repository"
+        subprocess.run(["git", "clone", "-q", "--no-checkout", "--no-hardlinks", str(ROOT), str(root)], check=True)
+        subprocess.run(["git", "checkout", "-q", "--detach", source], cwd=root, check=True)
+        subprocess.run(["git", "config", "user.name", "Public reception tests"], cwd=root, check=True)
+        subprocess.run(["git", "config", "user.email", "public-tests@example.invalid"], cwd=root, check=True)
+        self.assertFalse((root / ".git/objects/info/alternates").exists())
+        return root
+
+    def install_consumer(self, root: Path) -> tuple[str, str]:
+        for path_text in (VALIDATOR_PATH_TEXT, PROBE_TEST_PATH_TEXT):
+            shutil.copy2(ROOT / path_text, root / path_text)
+        return self.commit_paths(root, [VALIDATOR_PATH_TEXT, PROBE_TEST_PATH_TEXT], "public recovery consumer repair")
+
+    def cli(self, root: Path, commit: str, tree: str) -> subprocess.CompletedProcess:
+        return subprocess.run(
+            [sys.executable, "-B", VALIDATOR_PATH_TEXT, "--validate", "--mode", HISTORICAL_ACCEPTED_RECOVERY,
+             "--candidate", commit, "--candidate-tree", tree],
+            cwd=root, capture_output=True, text=True,
+        )
+
+    def test_exact_real_public_source_and_clean_consumer_successor_pass(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = self.checkout(Path(temporary))
+            validate_exact_public_code_reception(root, PUBLIC_CODE_SOURCE_COMMIT)
+            self.assertEqual(validate_recovery(root, mode=POST_ACCEPTED_NON_M2_DESCENDANT,
+                candidate=PUBLIC_CODE_SOURCE_COMMIT, candidate_tree=PUBLIC_CODE_SOURCE_TREE), POST_ACCEPTED_NON_M2_DESCENDANT)
+            commit, tree = self.install_consumer(root)
+            result = self.cli(root, commit, tree)
+            self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+            self.assertIn('"validation_status": "PASS"', result.stdout)
+            self.assertIn('"lifecycle_state": "ACCEPTED_WITH_DOWNSTREAM_BLOCKERS"', result.stdout)
+            self.assertIn('"M2-B002": "NOT_STARTED"', result.stdout)
+            self.assertIn('"formal_B002": false', result.stdout)
+
+    def test_recreated_wrong_source_parent_missing_or_extra_introduction_is_denied(self) -> None:
+        for variant in ("same bytes new source", "wrong parent", "missing path", "extra path"):
+            with self.subTest(variant=variant), tempfile.TemporaryDirectory() as temporary:
+                root = self.checkout(Path(temporary), PUBLIC_CODE_SOURCE_PARENT)
+                if variant == "wrong parent":
+                    extra = root / "docs/unbound-code-parent.txt"
+                    extra.write_text("different parent\n")
+                    self.commit_paths(root, [extra.relative_to(root).as_posix()], "unbound parent")
+                paths = list(PUBLIC_CODE_SOURCE_SHA256)
+                if variant == "missing path":
+                    paths = paths[:1]
+                for path_text in paths:
+                    (root / path_text).write_bytes(read_git_blob(ROOT, PUBLIC_CODE_SOURCE_COMMIT, path_text))
+                if variant == "extra path":
+                    extra = root / "docs/unbound-code-introduction.txt"
+                    extra.write_text("extra source path\n")
+                    paths.append(extra.relative_to(root).as_posix())
+                commit, _ = self.commit_paths(root, paths, "not the bound public source")
+                self.assertNotEqual(commit, PUBLIC_CODE_SOURCE_COMMIT)
+                with self.assertRaisesRegex(RecoveryValidationError, "exact public code introduction"):
+                    validate_exact_public_code_reception(root, commit)
+                commit, tree = self.install_consumer(root)
+                result = self.cli(root, commit, tree)
+                self.assertEqual(result.returncode, 1, result.stdout + result.stderr)
+                self.assertIn("exact public code introduction", result.stderr)
+
+    def test_current_admitted_bytes_missing_symlink_and_execute_mode_are_denied(self) -> None:
+        for path_text in PUBLIC_CODE_SOURCE_SHA256:
+            for variant in ("bytes", "missing", "symlink", "execute mode"):
+                with self.subTest(path=path_text, variant=variant), tempfile.TemporaryDirectory() as temporary:
+                    root = self.checkout(Path(temporary))
+                    path = root / path_text
+                    if variant == "bytes":
+                        path.write_bytes(path.read_bytes() + b"\n")
+                    elif variant == "missing":
+                        path.unlink()
+                    elif variant == "symlink":
+                        duplicate = Path(temporary) / "same-bytes.py"
+                        duplicate.write_bytes(path.read_bytes())
+                        path.unlink()
+                        path.symlink_to(duplicate)
+                    else:
+                        path.chmod(0o755)
+                    with self.assertRaisesRegex(RecoveryValidationError, "public code current"):
+                        validate_exact_public_code_reception(root, PUBLIC_CODE_SOURCE_COMMIT)
+
+    def test_staged_mode_and_committed_blob_mode_or_gitlink_are_denied(self) -> None:
+        for path_text in PUBLIC_CODE_SOURCE_SHA256:
+            for variant in ("staged mode", "blob", "mode", "gitlink"):
+                with self.subTest(path=path_text, variant=variant), tempfile.TemporaryDirectory() as temporary:
+                    root = self.checkout(Path(temporary))
+                    path = root / path_text
+                    if variant == "blob":
+                        path.write_bytes(path.read_bytes() + b"\n")
+                    elif variant == "mode":
+                        path.chmod(0o755)
+                    elif variant == "gitlink":
+                        subprocess.run(["git", "update-index", "--cacheinfo", "160000," + PUBLIC_CODE_SOURCE_COMMIT + "," + path_text], cwd=root, check=True)
+                    else:
+                        subprocess.run(["git", "update-index", "--chmod=+x", "--", path_text], cwd=root, check=True)
+                        with self.assertRaisesRegex(RecoveryValidationError, "staged byte/mode change"):
+                            validate_exact_public_code_reception(root, PUBLIC_CODE_SOURCE_COMMIT)
+                        continue
+                    if variant == "gitlink":
+                        subprocess.run(["git", "-c", "commit.gpgsign=false", "commit", "-q", "-m", "gitlink tamper"], cwd=root, check=True)
+                        commit, _ = self.head_identity(root)
+                    else:
+                        commit, _ = self.commit_paths(root, [path_text], "public code tamper")
+                    with self.assertRaisesRegex(RecoveryValidationError, "public code target blob/mode drift"):
+                        validate_exact_public_code_reception(root, commit)
+
+    def test_later_byte_and_mode_touch_then_restore_still_reject(self) -> None:
+        for path_text in PUBLIC_CODE_SOURCE_SHA256:
+            for mode_change in (False, True):
+                with self.subTest(path=path_text, mode=mode_change), tempfile.TemporaryDirectory() as temporary:
+                    root = self.checkout(Path(temporary))
+                    path = root / path_text
+                    original = path.read_bytes()
+                    if mode_change:
+                        path.chmod(0o755)
+                    else:
+                        path.write_bytes(original + b"\n")
+                    self.commit_paths(root, [path_text], "touch admitted code")
+                    path.write_bytes(original)
+                    path.chmod(0o644)
+                    commit, _ = self.commit_paths(root, [path_text], "restore admitted code")
+                    self.assertEqual(hashlib.sha256(path.read_bytes()).hexdigest(), PUBLIC_CODE_SOURCE_SHA256[path_text])
+                    with self.assertRaisesRegex(RecoveryValidationError, "touched after its exact introduction"):
+                        validate_exact_public_code_reception(root, commit)
+                    commit, tree = self.install_consumer(root)
+                    result = self.cli(root, commit, tree)
+                    self.assertEqual(result.returncode, 1, result.stdout + result.stderr)
+                    self.assertIn("touched after its exact introduction", result.stderr)
+
+    def test_merged_side_history_touch_and_restore_cannot_hide_in_equal_tree(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = self.checkout(Path(temporary))
+            subprocess.run(["git", "checkout", "-q", "-b", "code-tamper"], cwd=root, check=True)
+            path = root / PLAN_VALIDATOR_PATH_TEXT
+            original = path.read_bytes()
+            path.write_bytes(original + b"\n")
+            self.commit_paths(root, [PLAN_VALIDATOR_PATH_TEXT], "side touch")
+            path.write_bytes(original)
+            self.commit_paths(root, [PLAN_VALIDATOR_PATH_TEXT], "side restore")
+            subprocess.run(["git", "checkout", "-q", "--detach", PUBLIC_CODE_SOURCE_COMMIT], cwd=root, check=True)
+            marker = root / "docs/non-m2-descendant.txt"
+            marker.write_text("other branch\n")
+            self.commit_paths(root, [marker.relative_to(root).as_posix()], "other descendant")
+            subprocess.run(["git", "-c", "commit.gpgsign=false", "merge", "--no-ff", "--no-edit", "-q", "code-tamper"], cwd=root, check=True)
+            commit, _ = self.head_identity(root)
+            with self.assertRaisesRegex(RecoveryValidationError, "touched after its exact introduction"):
+                validate_exact_public_code_reception(root, commit)
+
+    def test_exact_code_reception_does_not_authorize_evidence_or_state_changes(self) -> None:
+        cases = [
+            (AUTHORIZED_ADDITIVE_EVIDENCE_BUNDLE_PATHS[0], "bundle byte"),
+            (AUTHORIZED_ADDITIVE_EVIDENCE_BUNDLE_PATHS[1], "bundle removal"),
+            (".codex/plans/m2-vertical-slice/batches.json", "B002 ready"),
+            (".codex/plans/m2-vertical-slice/batches.json", "formal B002"),
+            (".codex/plans/m2-vertical-slice/batches.json", "formal B009"),
+            (".codex/plans/m2-vertical-slice/batches.json", "blocker"),
+        ]
+        for path_text, variant in cases:
+            with self.subTest(variant=variant), tempfile.TemporaryDirectory() as temporary:
+                root = self.checkout(Path(temporary))
+                path = root / path_text
+                if variant == "bundle byte":
+                    path.write_bytes(path.read_bytes() + b"\n")
+                elif variant == "bundle removal":
+                    path.unlink()
+                else:
+                    value = _read_json(path)
+                    projection = value["lifecycle_projection"]
+                    if variant == "B002 ready":
+                        projection["M2-B002_READY"] = "YES"
+                    elif variant == "formal B002":
+                        projection["formal_B002"] = True
+                    elif variant == "formal B009":
+                        projection["formal_B009"] = True
+                    else:
+                        projection["blocking_ids"].pop()
+                    _write_json(path, value)
+                commit, tree = self.commit_paths(root, [path_text], "protected tamper")
+                validate_exact_public_code_reception(root, commit)
+                with self.assertRaises(RecoveryValidationError):
+                    validate_recovery(root, mode=POST_ACCEPTED_NON_M2_DESCENDANT, candidate=commit, candidate_tree=tree)
+                commit, tree = self.install_consumer(root)
+                result = self.cli(root, commit, tree)
+                self.assertEqual(result.returncode, 1, result.stdout + result.stderr)
+
+    def test_wrong_actual_candidate_tree_and_replaced_git_source_are_not_authority(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = self.checkout(Path(temporary))
+            commit, tree = self.install_consumer(root)
+            result = self.cli(root, commit, "0" * 40)
+            self.assertEqual(result.returncode, 1, result.stdout + result.stderr)
+            self.assertIn("wrong tree", result.stderr)
+            # Replace refs are never authority: the production readers disable them.
+            subprocess.run(["git", "replace", PUBLIC_CODE_SOURCE_COMMIT, PUBLIC_CODE_SOURCE_PARENT], cwd=root, check=True)
+            validate_exact_public_code_reception(root, commit)
+            result = self.cli(root, commit, tree)
+            self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
 
 
 if __name__ == "__main__":

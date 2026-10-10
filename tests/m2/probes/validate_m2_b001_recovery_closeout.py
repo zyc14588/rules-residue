@@ -163,6 +163,16 @@ AUTHORIZED_ADDITIVE_EVIDENCE_BUNDLE_PATHS = (
 )
 REGULAR_FILE_MODES = {"100644", "100755"}
 
+# A separate exact code introduction. It never becomes evidence in the
+# six-path add-only bundle, nor authority for any later code maintenance.
+PUBLIC_CODE_SOURCE_COMMIT = "45bcf298c19811c30c278deb1a881f673aff4159"
+PUBLIC_CODE_SOURCE_TREE = "f55158c42f27ac1320fdaf2e5b69bdd5433dd2be"
+PUBLIC_CODE_SOURCE_PARENT = "91431b1b932d84b9634eed435674d8643acc33d7"
+PUBLIC_CODE_SOURCE_SHA256 = {
+    PLAN_VALIDATOR_PATH_TEXT: "cac4b0cbaa6a0201c18eb7f99cba5e283cb37ddb18029af6dbcf735e8c700155",
+    "tests/test_m2_b019_registration.py": "ff9156c45d2f6e4e901691ff6b4eb59f287f7a76e7c57fdeb42bbb8fc25e9a1b",
+}
+
 EVOLVABLE_HISTORICAL_ARTIFACT_PATHS = {
     VALIDATOR_PATH_TEXT,
     PROBE_TEST_PATH_TEXT,
@@ -1390,6 +1400,72 @@ def _require_bundle_absent_at_lifecycle_anchor(root: Path) -> None:
         )
 
 
+def validate_exact_public_code_reception(root: Path, target: str) -> None:
+    """Verify fixed public Git objects, current bytes/modes and all later history."""
+
+    require(
+        _is_ancestor(root, PUBLIC_CODE_SOURCE_COMMIT, target),
+        "target does not descend from the exact public code introduction",
+    )
+    _validate_historical_anchor_identity(root, PUBLIC_CODE_SOURCE_COMMIT, PUBLIC_CODE_SOURCE_TREE)
+    lineage = _git(root, ["rev-list", "--parents", "-n", "1", PUBLIC_CODE_SOURCE_COMMIT]).split()
+    require(
+        lineage == [PUBLIC_CODE_SOURCE_COMMIT, PUBLIC_CODE_SOURCE_PARENT],
+        "public code introduction has the wrong source or sole parent",
+    )
+    statuses = _git(
+        root,
+        ["diff-tree", "--no-commit-id", "--name-status", "-r", "--no-renames",
+         PUBLIC_CODE_SOURCE_PARENT, PUBLIC_CODE_SOURCE_COMMIT, "--"],
+    ).splitlines()
+    require(
+        sorted(statuses) == sorted([
+            "M\t" + PLAN_VALIDATOR_PATH_TEXT,
+            "A\ttests/test_m2_b019_registration.py",
+        ]),
+        "public code introduction is not the exact two-file modification/addition",
+    )
+    source_reader = _git_object_reader(root, PUBLIC_CODE_SOURCE_COMMIT)
+    target_reader = _git_object_reader(root, target)
+    for path_text, expected_hash in PUBLIC_CODE_SOURCE_SHA256.items():
+        source_entry = _tree_entry(root, PUBLIC_CODE_SOURCE_COMMIT, path_text)
+        require(
+            source_entry is not None and source_entry[:2] == ("100644", "blob"),
+            f"public code source is not a mode100644 regular blob: {path_text}",
+        )
+        require(
+            _tree_entry(root, target, path_text) == source_entry,
+            f"public code target blob/mode drift: {path_text}",
+        )
+        require(
+            hashlib.sha256(source_reader(path_text)).hexdigest() == expected_hash
+            and hashlib.sha256(target_reader(path_text)).hexdigest() == expected_hash,
+            f"public code fixed byte drift: {path_text}",
+        )
+        path = root / path_text
+        require(
+            not path.is_symlink() and path.is_file()
+            and stat.S_ISREG(path.stat().st_mode) and not (path.stat().st_mode & 0o111),
+            f"public code current file is not a mode100644 regular file: {path_text}",
+        )
+        require(
+            hashlib.sha256(path.read_bytes()).hexdigest() == expected_hash,
+            f"public code current byte drift: {path_text}",
+        )
+    paths = list(PUBLIC_CODE_SOURCE_SHA256)
+    later_touches = _git(
+        root,
+        ["log", "--format=%H", "--full-history", "--no-renames",
+         f"{PUBLIC_CODE_SOURCE_COMMIT}..{target}", "--", *paths],
+    ).splitlines()
+    require(not later_touches, f"public code was touched after its exact introduction: {later_touches}")
+    require(
+        not _git(root, ["diff", "--name-only", target, "--", *paths])
+        and not _git(root, ["diff", "--cached", "--name-only", target, "--", *paths]),
+        "public code has an uncommitted or staged byte/mode change",
+    )
+
+
 def _first_bundle_add_commit(root: Path, target: str, path_text: str) -> str:
     commits = _git(
         root,
@@ -1661,6 +1737,9 @@ def validate_post_accepted_descendant(
     )
     protected_change_set = set(protected_changes)
     additive_bundle_set = set(AUTHORIZED_ADDITIVE_EVIDENCE_BUNDLE_PATHS)
+    if PLAN_VALIDATOR_PATH_TEXT in protected_change_set:
+        validate_exact_public_code_reception(root, target)
+        protected_change_set.difference_update(PUBLIC_CODE_SOURCE_SHA256)
     require(
         not protected_change_set or protected_change_set == additive_bundle_set,
         "post-accepted descendant changed protected M2 state/evidence outside the "
