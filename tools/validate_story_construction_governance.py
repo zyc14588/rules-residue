@@ -1277,6 +1277,16 @@ def _check_role_migration(root: Path, errors: list[str]) -> None:
 
 
 def _check_m2_preservation(root: Path, errors: list[str]) -> None:
+    # Source authentication precedes any scheduling/lifecycle projection read.
+    proof = None
+    if (root / ".git").exists():
+        from tools.validate_m2_plan import _native_consumer_revision, validated_current_m2_proof
+        try:
+            if _native_consumer_revision(root) is not None:
+                proof = validated_current_m2_proof(root)
+        except (OSError, ValueError, TypeError, KeyError, subprocess.CalledProcessError) as exc:
+            errors.append("M2 pending action drift: " + str(exc))
+            return
     milestone = read_json(root / ".codex/state/MILESTONE_PLAN.yaml")
     projection = milestone.get("active_plan", {}).get("lifecycle_projection", {})
     expected = {
@@ -1295,7 +1305,9 @@ def _check_m2_preservation(root: Path, errors: list[str]) -> None:
         errors.append("M2 preservation drift: M2-B002")
     if milestone.get("state") != "ACCEPTED" or milestone.get("batch_id") != "M2-B001":
         errors.append("M2-B001 lifecycle acceptance drift")
-    if milestone.get("active_plan", {}).get("next_allowed_action") != "PLAN_REMAINING_M2_B002_BLOCKERS_R2_INT_011_R2_INT_012_DEFER_R2_C14_001":
+    expected_action = (proof["lifecycle"]["next_allowed_action"] if proof is not None else
+                       "PLAN_REMAINING_M2_B002_BLOCKERS_R2_INT_011_R2_INT_012_DEFER_R2_C14_001")
+    if milestone.get("active_plan", {}).get("next_allowed_action") != expected_action:
         errors.append("M2 pending action drift")
 
 

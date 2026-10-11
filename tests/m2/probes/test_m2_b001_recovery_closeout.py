@@ -99,6 +99,28 @@ def _replace_blockers(value: dict[str, Any], blockers: list[str]) -> None:
 class RecoveryCloseoutTests(unittest.TestCase):
     maxDiff = None
 
+    def test_current_public_native_source_uses_only_bound_current_readers(self) -> None:
+        import validate_m2_b001_recovery_closeout as recovery
+        from tools import validate_m2_plan as plan
+        proof = plan.validated_current_m2_proof(ROOT)
+        head, tree = self.head_identity(ROOT)
+        self.assertIsNotNone(proof["revision"])
+        self.assertEqual(proof["source"], {"commit": head, "tree": tree})
+        for reader in (recovery._filesystem_reader(ROOT), recovery._git_object_reader(ROOT, head)):
+            validate_lifecycle_preservation_state(ROOT, artifact_reader=reader)
+        for reader in (lambda path: (ROOT / path).read_bytes(), recovery._git_object_reader(ROOT, PUBLIC_CODE_SOURCE_COMMIT)):
+            with self.subTest(reader=type(reader).__name__), self.assertRaises(RecoveryValidationError):
+                validate_lifecycle_preservation_state(ROOT, artifact_reader=reader)
+
+    def test_current_native_recovery_still_requires_exact_candidate_tree_and_mode(self) -> None:
+        head, tree = self.head_identity(ROOT)
+        self.assertEqual(validate_recovery(ROOT, mode=HISTORICAL_ACCEPTED_RECOVERY, candidate=head, candidate_tree=tree), POST_ACCEPTED_NON_M2_DESCENDANT)
+        for mode, commit, digest in ((CURRENT_RECOVERY_CANDIDATE, head, tree),
+                                     (HISTORICAL_ACCEPTED_RECOVERY, head, "0" * 40),
+                                     (HISTORICAL_ACCEPTED_RECOVERY, RECOVERY_CANDIDATE_COMMIT, RECOVERY_CANDIDATE_TREE)):
+            with self.subTest(mode=mode, commit=commit), self.assertRaises(RecoveryValidationError):
+                validate_recovery(ROOT, mode=mode, candidate=commit, candidate_tree=digest)
+
     def make_fixture(self, temporary_root: Path) -> None:
         paths = list(IMMUTABLE_HASHES) + ARTIFACT_PATHS + [MANIFEST_PATH_TEXT]
         for relative in dict.fromkeys(paths):

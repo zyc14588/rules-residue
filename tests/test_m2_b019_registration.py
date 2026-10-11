@@ -34,6 +34,182 @@ def sha(raw):
     return hashlib.sha256(raw).hexdigest()
 
 
+class CurrentNativeConsumerSourceTests(unittest.TestCase):
+    """Real public source tests run every gate without a signature mock."""
+    real_root = Path(__file__).resolve().parents[1]
+
+    def fixture(self):
+        proof = plan.validated_current_m2_proof(self.real_root)
+        self.assertIsNotNone(proof["revision"])
+        temporary = tempfile.TemporaryDirectory(prefix="rr-public-native-")
+        self.addCleanup(temporary.cleanup)
+        root = Path(temporary.name) / "repository"
+        subprocess.run(["git", "clone", "--quiet", "--no-hardlinks", "--no-checkout", str(self.real_root), str(root)], check=True, capture_output=True)
+        subprocess.run(["git", "checkout", "--quiet", "--detach", proof["source"]["commit"]], cwd=root, check=True, capture_output=True)
+        return root
+
+    def git(self, root, *args):
+        return subprocess.check_output(["git", *args], cwd=root, stderr=subprocess.PIPE,
+                                       env={**os.environ, "GIT_NO_REPLACE_OBJECTS": "1"})
+
+    def commit(self, root, paths, message):
+        self.git(root, "add", "--", *paths)
+        self.git(root, "-c", "commit.gpgsign=false", "-c", "user.name=TEST_ONLY",
+                 "-c", "user.email=test@example.invalid", "commit", "--quiet", "-m", message)
+        return self.git(root, "rev-parse", "HEAD").decode().strip()
+
+    def test_exact_five_path_source_binds_all_bytes_modes_and_current_controls(self):
+        root = self.fixture()
+        proof = plan.validated_current_m2_proof(root)
+        self.assertEqual(set(proof["revision"]["expected"]), set(plan.NATIVE_CONSUMER_PATHS))
+        self.assertEqual(len(proof["batches"]["batches"]), 16)
+        self.assertEqual(proof["lifecycle"]["next_allowed_action"], plan.SCHEMA_ACCEPTED_ACTION)
+        for relative in plan.NATIVE_CONSUMER_PATHS + plan.SUFFIX_CONTROL_PATHS:
+            path = root / relative; raw = path.read_bytes(); mode = path.stat().st_mode
+            for fault in ("bytes", "mode", "missing", "symlink"):
+                with self.subTest(path=relative, fault=fault):
+                    try:
+                        if fault == "bytes": path.write_bytes(raw + b"\n")
+                        elif fault == "mode": path.chmod(mode | 0o111)
+                        elif fault == "missing": path.unlink()
+                        else:
+                            path.unlink(); path.symlink_to("missing-native-test-reader")
+                        with self.assertRaises((ValueError, OSError)):
+                            plan.validated_current_m2_proof(root)
+                    finally:
+                        if path.is_symlink(): path.unlink()
+                        path.write_bytes(raw); path.chmod(mode)
+        self.assertEqual(plan.collect_errors(root), [])
+
+    def test_staged_native_code_and_control_mode_changes_are_denied(self):
+        root = self.fixture()
+        for path in plan.NATIVE_CONSUMER_PATHS + plan.SUFFIX_CONTROL_PATHS:
+            with self.subTest(path=path):
+                try:
+                    self.git(root, "update-index", "--chmod=+x", "--", path)
+                    with self.assertRaises(ValueError): plan.validated_current_m2_proof(root)
+                finally:
+                    self.git(root, "update-index", "--chmod=-x", "--", path)
+
+    def test_old_source_reader_and_restored_old_code_are_not_current_authority(self):
+        root = self.fixture()
+        for relative in plan.NATIVE_CONSUMER_PATHS:
+            path = root / relative; raw = path.read_bytes()
+            try:
+                path.write_bytes(self.git(root, "show", plan.NATIVE_CONSUMER_BASE["commit"] + ":" + relative))
+                with self.assertRaises(ValueError): plan.validated_current_m2_proof(root)
+            finally: path.write_bytes(raw)
+        proof = plan.validated_current_m2_proof(root)
+        preserved = {p: sha((root / p).read_bytes()) for p in plan._native_preserved_entries(root)}
+        plan._native_receipt_candidate(root, proof["source"]["commit"], preserved)
+        with self.assertRaises(subprocess.CalledProcessError):
+            plan._native_receipt_candidate(root, plan.NATIVE_CONSUMER_BASE["commit"], preserved)
+
+    def test_unknown_descriptor_parent_tree_hash_or_path_is_denied(self):
+        root = self.fixture()
+        faults = [lambda r: r.update(parent={"commit": "0" * 40, "tree": "0" * 40}),
+                  lambda r: r.update(tree="0" * 40),
+                  lambda r: r["artifacts"].update({plan.NATIVE_CONSUMER_PATHS[1]: "0" * 64}),
+                  lambda r: r["artifacts"].pop(plan.NATIVE_CONSUMER_PATHS[-1]),
+                  lambda r: r["artifacts"].update({"tools/future-reader.py": "0" * 64}),
+                  lambda r: r.update(commit="future")]
+        for fault in faults:
+            revision = copy.deepcopy(plan.NATIVE_CONSUMER_REVISION); fault(revision)
+            with self.subTest(revision=revision), mock.patch.object(plan, "NATIVE_CONSUMER_REVISION", revision):
+                with self.assertRaises(ValueError): plan._native_consumer_revision(root)
+
+    def test_current_unsigned_successor_and_code_touch_revert_are_denied(self):
+        root = self.fixture()
+        marker = root / "docs/public-native-test-only.txt"; marker.write_bytes(b"TEST_ONLY unsigned source\n")
+        self.commit(root, [marker.relative_to(root).as_posix()], "TEST_ONLY unsigned public successor")
+        with self.assertRaisesRegex(ValueError, "signature verification failed"):
+            plan.validated_current_m2_proof(root)
+        root = self.fixture()
+        path = root / plan.NATIVE_CONSUMER_PATHS[1]; raw = path.read_bytes()
+        for value, message in ((raw + b"\n", "touch"), (raw, "restore")):
+            path.write_bytes(value); self.commit(root, [plan.NATIVE_CONSUMER_PATHS[1]], "TEST_ONLY code " + message)
+        self.assertEqual(path.read_bytes(), raw)
+        with self.assertRaisesRegex(ValueError, "code history touched/reverted"):
+            plan.validated_current_m2_proof(root)
+
+    def test_complete_public_proof_precedes_old_action_and_control_lifecycle_reads(self):
+        from tools import validate_story_construction_governance as story
+        root = self.fixture()
+        proof = plan.validated_current_m2_proof(root)
+        path = root / plan.SUFFIX_JSON_PATHS[3]; raw = path.read_bytes()
+        for value, message in ((raw + b"\n", "touch"), (raw, "restore")):
+            path.write_bytes(value); self.commit(root, [plan.SUFFIX_JSON_PATHS[3]], "TEST_ONLY control " + message)
+        with self.assertRaisesRegex(ValueError, "complete six-file transition"):
+            plan._current_suffix_history(root, proof["suffix"], proof["revision"])
+        errors = []; story._check_m2_preservation(root, errors)
+        self.assertTrue(any("M2 pending action drift" in error for error in errors), errors)
+
+    def test_current_preserved_inputs_reject_mode_byte_and_history_drift(self):
+        root = self.fixture()
+        relative = "tools/run_acceptance.py"; path = root / relative
+        raw = path.read_bytes(); mode = path.stat().st_mode
+        for fault in ("byte", "mode"):
+            try:
+                if fault == "byte": path.write_bytes(raw + b"\n")
+                else: path.chmod(mode | 0o111)
+                with self.assertRaisesRegex(ValueError, "preserved input byte/mode drift"):
+                    plan.validated_current_m2_proof(root)
+            finally: path.write_bytes(raw); path.chmod(mode)
+        for value, message in ((raw + b"\n", "touch"), (raw, "restore")):
+            path.write_bytes(value); self.commit(root, [relative], "TEST_ONLY preserved " + message)
+        with self.assertRaises(ValueError): plan.validated_current_m2_proof(root)
+
+    def test_recreated_unsigned_implementation_and_wrong_sole_parent_are_denied(self):
+        for wrong_parent in (False, True):
+            root = self.fixture()
+            revision = copy.deepcopy(plan.NATIVE_CONSUMER_REVISION)
+            parent = (self.git(root, "rev-parse", plan.NATIVE_CONSUMER_BASE["commit"] + "^").decode().strip()
+                      if wrong_parent else plan.NATIVE_CONSUMER_BASE["commit"])
+            candidate = self.git(root, "-c", "user.name=TEST_ONLY", "-c", "user.email=test@example.invalid",
+                                 "-c", "commit.gpgsign=false", "commit-tree", revision["tree"], "-p", parent,
+                                 "-m", "TEST_ONLY recreated public implementation").decode().strip()
+            self.git(root, "checkout", "--quiet", "--detach", candidate)
+            revision["commit"] = candidate
+            diagnostic = "sole parent mismatch" if wrong_parent else "signature verification failed"
+            with self.subTest(parent=parent), mock.patch.object(plan, "NATIVE_CONSUMER_REVISION", revision):
+                with self.assertRaisesRegex(ValueError, diagnostic): plan._native_consumer_revision(root)
+
+    def test_legacy_source_anchors_preserve_absent_paths_and_refuse_changed_readers(self):
+        root = self.fixture()
+        for anchor in plan.NATIVE_LEGACY_CODE_ANCHORS:
+            self.git(root, "checkout", "--quiet", "--detach", anchor["commit"])
+            self.assertIsNone(plan._native_consumer_revision(root))
+            for relative in plan.NATIVE_CONSUMER_PATHS:
+                path = root / relative
+                if not path.exists():
+                    try:
+                        path.parent.mkdir(parents=True, exist_ok=True); path.write_bytes(b"TEST_ONLY extra reader\n")
+                        with self.assertRaisesRegex(ValueError, "extra legacy code path"): plan._native_consumer_revision(root)
+                    finally: path.unlink()
+                else:
+                    raw = path.read_bytes(); mode = path.stat().st_mode
+                    for fault in ("byte", "mode"):
+                        try:
+                            if fault == "byte": path.write_bytes(raw + b"\n")
+                            else: path.chmod(mode | 0o111)
+                            with self.assertRaisesRegex(ValueError, "legacy code byte/mode drift"): plan._native_consumer_revision(root)
+                        finally: path.write_bytes(raw); path.chmod(mode)
+            self.assertIsNone(plan._native_consumer_revision(root))
+
+    def test_exact_old16_recovery_compatibility_cannot_admit_changed_current_code(self):
+        root = self.fixture()
+        spec = importlib.util.spec_from_file_location("public_old16_recovery", self.real_root / "tests/m2/probes/validate_m2_b001_recovery_closeout.py")
+        recovery = importlib.util.module_from_spec(spec); spec.loader.exec_module(recovery)
+        self.git(root, "checkout", "--quiet", "--detach", recovery.LIFECYCLE_CLOSEOUT_COMMIT)
+        paths = [recovery.VALIDATOR_PATH_TEXT, recovery.PROBE_TEST_PATH_TEXT]
+        for path in paths: shutil.copy2(self.real_root / path, root / path)
+        candidate = self.commit(root, paths, "TEST_ONLY bounded old16 recovery consumer")
+        tree = self.git(root, "rev-parse", "HEAD^{tree}").decode().strip()
+        self.assertEqual(recovery.validate_recovery(root, mode=recovery.POST_ACCEPTED_NON_M2_DESCENDANT,
+                                                   candidate=candidate, candidate_tree=tree), recovery.POST_ACCEPTED_NON_M2_DESCENDANT)
+        with self.assertRaisesRegex(ValueError, "code history touched/reverted"): plan.validated_current_m2_proof(root)
+
+
 class RegisteredSuffixTests(unittest.TestCase):
     real_root = Path(__file__).resolve().parents[1]
 
@@ -91,6 +267,7 @@ class RegisteredSuffixTests(unittest.TestCase):
             "SCHEMA_PREPARATION_REBIND_TEST": "legacy/rebind.py",
             "SCHEMA_PREPARATION_REBIND_TEST_SHA256": sha(b"# synthetic legacy input; never imported\n"),
             "PROJECT_ROOT": self.root, "PLAN_ROOT": self.root / ".codex/plans/m2-vertical-slice",
+            "NATIVE_CONSUMER_REVISION": None,
         }
         for name, value in pins.items():
             stack.enter_context(mock.patch.object(plan, name, value))
@@ -236,7 +413,17 @@ class RegisteredSuffixTests(unittest.TestCase):
         self.assertEqual(plan._raw_batch_rows((self.root / plan.SUFFIX_JSON_PATHS[0]).read_bytes())[:18],
                          plan._raw_batch_rows(self.base_controls[plan.SUFFIX_JSON_PATHS[0]]))
         for path in plan.SUFFIX_MARKDOWN_PATHS:
-            self.put(path, self.base_controls[path] + b"".join(c["appendices"][path].encode() for c in self.contracts))
+            raw = self.base_controls[path] + b"".join(c["appendices"][path].encode() for c in self.contracts)
+            references = [{k: e[k] for k in ("id", "plan_acceptance", "implementation_acceptance")} for e in self.entries]
+            if any(r["plan_acceptance"] is not None or r["implementation_acceptance"] is not None for r in references):
+                projection = {"lifecycle": state, "receipts": references}
+                digest = sha(json.dumps(projection, sort_keys=True, ensure_ascii=False, separators=(",", ":")).encode())
+                section = "PLAN" if path == plan.SUFFIX_MARKDOWN_PATHS[0] else "ROUTES"
+                raw += ("\n<!-- SECTION-ID: M2-SUFFIX-RECEIPT-LIFECYCLE-" + section + " -->\n"
+                        "# Registered suffix receipt lifecycle\n\n"
+                        "Validated receipt references and lifecycle SHA-256: `" + digest + "`.\n\n```json\n"
+                        + json.dumps(projection, sort_keys=True, ensure_ascii=False, indent=2) + "\n```\n").encode()
+            self.put(path, raw)
 
     def receive(self, batch_id, phase, candidate, source, mutate=None):
         index = next(i for i, entry in enumerate(self.entries) if entry["id"] == batch_id)
@@ -260,7 +447,10 @@ class RegisteredSuffixTests(unittest.TestCase):
         self.entries[index]["plan_acceptance" if phase == "PLAN" else "implementation_acceptance"] = ref
         self.receipts.setdefault(batch_id, {})[phase] = receipt
         self.write_controls()
-        return self.commit("synthetic received phase successor", list(plan.SUFFIX_CONTROL_PATHS))
+        result = self.commit("synthetic received phase successor", list(plan.SUFFIX_CONTROL_PATHS))
+        self.assertEqual(sorted(self.git("diff", "--name-only", proof_source["commit"], result["commit"]).decode().splitlines()),
+                         sorted(plan.SUFFIX_CONTROL_PATHS))
+        return result
 
     def received_plan(self):
         batch_id = self.add_contract()
@@ -347,9 +537,24 @@ class RegisteredSuffixTests(unittest.TestCase):
         original = path.read_bytes()
         value = json.loads(original)
         original_rows = installed._raw_batch_rows(original)
+        # Remove the registration from the actual JSON bytes as well as the
+        # expected value. Keep every pre-existing raw row slice unchanged.
+        if "registered_suffix" in value:
+            import re
+            text = original.decode()
+            match = re.search(r'"registered_suffix"\s*:\s*', text)
+            self.assertIsNotNone(match)
+            _, consumed = json.JSONDecoder().raw_decode(text[match.end():])
+            end = match.end() + consumed
+            trailing = re.match(r"\s*,", text[end:])
+            if trailing:
+                original = (text[:match.start()] + text[end + trailing.end():]).encode()
+            else:
+                start = text.rfind(",", 0, match.start())
+                self.assertGreaterEqual(start, 0)
+                original = (text[:start] + text[end:]).encode()
+            value.pop("registered_suffix")
         value["batches"].append(copy.deepcopy(undeclared_row))
-        value["registered_suffix"] = {"scope": "test-only removed registration"}
-        value.pop("registered_suffix")
         self.assertTrue(original_rows)
         self.assertEqual(original.count(original_rows[-1]), 1)
         end = original.index(original_rows[-1]) + len(original_rows[-1])
@@ -358,9 +563,12 @@ class RegisteredSuffixTests(unittest.TestCase):
         self.assertEqual(json.loads(path.read_bytes()), value)
         self.assertEqual(installed._raw_batch_rows(path.read_bytes())[:-1], original_rows)
         self.assertEqual(json.loads(installed._raw_batch_rows(path.read_bytes())[-1]), undeclared_row)
-        with mock.patch.object(installed, "_b018_source_bytes", wraps=installed._b018_source_bytes) as history:
-            with mock.patch.object(installed, "_b018_git", wraps=installed._b018_git) as git_reads:
-                errors, state = installed.collect_validation(root)
+        # Authenticate only current code before observing the negative data
+        # path. The original assertions still forbid selecting old state.
+        with installed._native_revision_context(root):
+            with mock.patch.object(installed, "_b018_source_bytes", wraps=installed._b018_source_bytes) as history:
+                with mock.patch.object(installed, "_b018_git", wraps=installed._b018_git) as git_reads:
+                    errors, state = installed.collect_validation(root)
         self.assertTrue(errors)
         if len(original_rows) == 18:
             self.assertEqual(errors, [
@@ -524,6 +732,67 @@ class RegisteredSuffixTests(unittest.TestCase):
         self.assertEqual(self.cli("--batch", batch_id, "--implementation-source", received["commit"])[0], 0)
         self.put("outside.txt", b"unauthorized\n"); self.commit("outside synthetic scope", ["outside.txt"])
         self.assertTrue(plan.registered_suffix_batch_errors(self.root, batch_id, received["commit"]))
+
+    def test_receipt_projection_preserves_prefix_and_appendix_and_binds_both_Markdowns(self):
+        import re
+        self.add_contract()
+        original = {p: (self.root / p).read_bytes() for p in plan.SUFFIX_MARKDOWN_PATHS}
+        for path in original:
+            self.assertEqual(original[path], self.base_controls[path] + self.contracts[0]["appendices"][path].encode())
+        candidate = self.commit("pending frozen synthetic PLAN", list(plan.SUFFIX_CONTROL_PATHS))
+        self.receive("M2-B019", "PLAN", candidate, self.preparations[0])
+        proof = plan._load_registered_suffix(self.root)
+        payloads = []
+        for path in plan.SUFFIX_MARKDOWN_PATHS:
+            raw = (self.root / path).read_bytes()
+            self.assertTrue(raw.startswith(original[path]))
+            projection_raw = re.search(rb"```json\n(.*?)\n```", raw[len(original[path]):], re.DOTALL).group(1)
+            payload = json.loads(projection_raw)
+            self.assertEqual(payload["lifecycle"], proof["lifecycle"])
+            self.assertEqual(payload["receipts"][0]["plan_acceptance"], proof["entries"][0]["plan_acceptance"])
+            canonical = json.dumps(payload, sort_keys=True, ensure_ascii=False, separators=(",", ":")).encode()
+            self.assertIn(sha(canonical).encode(), raw[len(original[path]):])
+            payloads.append(projection_raw)
+        self.assertEqual(payloads[0], payloads[1])
+
+    def test_receipt_Markdown_missing_reference_digest_lifecycle_or_prefix_is_rejected(self):
+        self.received_plan()
+        for relative in plan.SUFFIX_MARKDOWN_PATHS:
+            path = self.root / relative; raw = path.read_bytes()
+            start = raw.index(b"\n<!-- SECTION-ID: M2-SUFFIX-RECEIPT-LIFECYCLE-")
+            mutations = [raw[:start], raw.replace(b"IMPLEMENT_M2-B019", b"ACCEPT_PLAN_M2-B019"),
+                         raw.replace(self.entries[0]["plan_acceptance"]["sha256"].encode(), b"0" * 64),
+                         raw[:start] + raw[start:].replace(b"SHA-256: `", b"SHA-256: `0", 1),
+                         b"changed old prefix\n" + raw]
+            for altered in mutations:
+                with self.subTest(path=relative, mutation=sha(altered)):
+                    try:
+                        path.write_bytes(altered); self.assert_rejected_before_legacy()
+                    finally:
+                        path.write_bytes(raw)
+
+    def test_implementation_receipt_changes_both_receipt_projections_atomically(self):
+        batch_id, frozen = self.received_plan()
+        before = {p: (self.root / p).read_bytes() for p in plan.SUFFIX_CONTROL_PATHS}
+        for path in self.contracts[0]["batch"]["allowed_paths"]:
+            self.put(path, b"TEST_ONLY synthetic implementation for receipt lifecycle\n")
+        candidate = self.commit("synthetic bounded implementation", self.contracts[0]["batch"]["allowed_paths"])
+        self.receive(batch_id, "IMPLEMENT", candidate, frozen)
+        proof = plan._load_registered_suffix(self.root)
+        self.assertEqual(proof["lifecycle"]["accepted_batches"], [batch_id])
+        for path in plan.SUFFIX_CONTROL_PATHS:
+            self.assertNotEqual(before[path], (self.root / path).read_bytes())
+        for path in plan.SUFFIX_MARKDOWN_PATHS:
+            self.assertIn(self.entries[0]["implementation_acceptance"]["sha256"].encode(), (self.root / path).read_bytes())
+
+    def test_receipt_touch_then_revert_is_refused_even_with_identical_current_bytes(self):
+        self.received_plan()
+        reference = self.entries[0]["plan_acceptance"]
+        path = self.root / reference["path"]; raw = path.read_bytes()
+        self.put(reference["path"], raw + b"\n"); self.commit("synthetic receipt touch", [reference["path"]])
+        self.put(reference["path"], raw); self.commit("synthetic receipt byte revert", [reference["path"]])
+        self.assertEqual(path.read_bytes(), raw)
+        self.assert_rejected_before_legacy()
 
     def test_self_acceptance_FAIL_missing_checks_and_candidate_hash_mismatch_are_denied(self):
         cases = [lambda r: r.update(reviewer=r["producer"]), lambda r: r.update(decision="FAIL"),

@@ -1303,6 +1303,272 @@ _SUFFIX_VIEW = ContextVar("validated_m2_suffix_view", default=None)
 _SUFFIX_AUDIT_STACK = ContextVar("m2_suffix_receipt_source_stack", default=())
 
 
+# The public grant binds only this signed implementation and its single
+# canonical binding successor. It is code provenance, never a batch receipt.
+NATIVE_CONSUMER_BASE = {"commit": "35688e789822bffcf35d4d40288b5c4a8332dd4a",
+                        "tree": "33902e312e29658cd72e64438ec0d69ca7a141e3"}
+NATIVE_CONSUMER_PATHS = (
+    "tools/validate_m2_plan.py",
+    "tools/validate_story_construction_governance.py",
+    "tests/test_m2_b019_registration.py",
+    "tests/m2/probes/validate_m2_b001_recovery_closeout.py",
+    "tests/m2/probes/test_m2_b001_recovery_closeout.py",
+)
+NATIVE_PUBLIC_SIGNER = {
+    "public_key": "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHJZDkynhU9W7HUJvvVniwsft8BhUvrtT05dJgrEbsFh",
+    "fingerprint": "SHA256:zR55HATrI3+mzVZW3uc8MsCxE+g5fyImXdD8X7WKkt4",
+}
+NATIVE_LEGACY_CODE_ANCHORS = (
+    {"commit": "e90a717d3863e4fb0e5e1a0fcc01661f24d2157d",
+     "tree": "7a1ce74ad0b82c7c288b94c47c966028e916137d"},
+    {"commit": "45bcf298c19811c30c278deb1a881f673aff4159",
+     "tree": "f55158c42f27ac1320fdaf2e5b69bdd5433dd2be"},
+    NATIVE_CONSUMER_BASE,
+)
+# BEGIN EXACT NATIVE CONSUMER REVISION
+NATIVE_CONSUMER_REVISION = None
+# END EXACT NATIVE CONSUMER REVISION
+_NATIVE_REVISION_VIEW = ContextVar("exact_public_native_consumer_revision", default=None)
+
+
+def _native_binding_bytes(implementation: bytes, revision: dict[str, Any]) -> bytes:
+    placeholder = b"# BEGIN EXACT NATIVE CONSUMER REVISION\nNATIVE_CONSUMER_REVISION = None\n# END EXACT NATIVE CONSUMER REVISION"
+    _suffix_require(implementation.count(placeholder) == 1, "native implementation binding placeholder drift")
+    binding = ("# BEGIN EXACT NATIVE CONSUMER REVISION\nNATIVE_CONSUMER_REVISION = "
+               + json.dumps(revision, sort_keys=True, indent=4)
+               + "\n# END EXACT NATIVE CONSUMER REVISION").encode()
+    return implementation.replace(placeholder, binding)
+
+
+def _native_tree_entries(root: Path, source: str) -> dict[str, tuple[str, str, str]]:
+    entries = {}
+    for line in _b018_git(root, "ls-tree", "-r", source).decode().splitlines():
+        metadata, path = line.split("\t", 1)
+        mode, kind, blob = metadata.split()
+        entries[path] = (mode, kind, blob)
+    return entries
+
+
+def _native_preserved_entries(root: Path) -> dict[str, tuple[str, str, str]]:
+    return {path: entry for path, entry in _native_tree_entries(root, NATIVE_CONSUMER_BASE["commit"]).items()
+            if path not in NATIVE_CONSUMER_PATHS and path not in SUFFIX_CONTROL_PATHS}
+
+
+def _native_regular_matches(root: Path, path: str, entry: tuple[str, str, str]) -> bool:
+    raw = _actual_regular_bytes(root, path)
+    mode, kind, blob = entry
+    observed = hashlib.sha1(b"blob " + str(len(raw)).encode() + b"\0" + raw).hexdigest()
+    return (kind == "blob" and mode in {"100644", "100755"} and observed == blob
+            and bool((root / path).stat().st_mode & 0o111) == (mode == "100755"))
+
+
+def _native_legacy_code_source(root: Path) -> None:
+    """Historical data keeps only its finite source objects and unchanged code."""
+    base = NATIVE_CONSUMER_BASE
+    _suffix_require(_b018_git(root, "rev-parse", base["commit"] + "^{tree}").decode().strip() == base["tree"],
+                    "native legacy public base tree mismatch")
+    _verify_schema_accepted_signatures(root, NATIVE_PUBLIC_SIGNER, (base["commit"],))
+    head = _b018_git(root, "rev-parse", "HEAD").decode().strip()
+    anchor = None
+    for historical in reversed(NATIVE_LEGACY_CODE_ANCHORS):
+        ancestry = subprocess.run(["git", "merge-base", "--is-ancestor", historical["commit"], head],
+                                  cwd=root, capture_output=True, env={**os.environ, "GIT_NO_REPLACE_OBJECTS": "1"})
+        if ancestry.returncode == 0:
+            anchor = historical
+            break
+    _suffix_require(anchor is not None, "native current revision source/ancestry mismatch: unknown legacy code history")
+    _b018_git(root, "merge-base", "--is-ancestor", anchor["commit"], base["commit"])
+    _suffix_require(_b018_git(root, "rev-parse", anchor["commit"] + "^{tree}").decode().strip() == anchor["tree"],
+                    "native legacy fixed source tree mismatch")
+    _suffix_require(not _b018_git(root, "log", "--format=%H", "--full-history", "--no-renames",
+                                  anchor["commit"] + ".." + head, "--", *NATIVE_CONSUMER_PATHS).strip(),
+                    "native current revision source/ancestry mismatch: code history touched/reverted")
+    fixed = _native_tree_entries(root, anchor["commit"])
+    actual = _native_tree_entries(root, head)
+    for path in NATIVE_CONSUMER_PATHS:
+        _suffix_require(actual.get(path) == fixed.get(path), "native legacy fixed source object drift: " + path)
+        current = root / path
+        if path not in fixed:
+            _suffix_require(not current.exists() and not current.is_symlink(), "native extra legacy code path: " + path)
+        else:
+            _suffix_require(_native_regular_matches(root, path, fixed[path]), "native legacy code byte/mode drift: " + path)
+
+
+def _native_consumer_revision(root: Path) -> dict[str, Any] | None:
+    """Authenticate the actual finite public implementation and binding."""
+    root = root.resolve()
+    active = _NATIVE_REVISION_VIEW.get()
+    if active is not None and active[0] == root:
+        return active[1]
+    revision = NATIVE_CONSUMER_REVISION
+    if revision is None or not (root / ".git").exists():
+        return None
+    _suffix_keys(revision, {"commit", "tree", "parent", "artifacts"}, "native consumer revision")
+    commit = _suffix_hash(revision["commit"], 40)
+    _suffix_hash(revision["tree"], 40)
+    _suffix_require(_suffix_json_equal(revision["parent"], NATIVE_CONSUMER_BASE), "native consumer fixed parent mismatch")
+    _suffix_keys(revision["artifacts"], set(NATIVE_CONSUMER_PATHS), "native consumer finite artifacts")
+    ancestry = subprocess.run(["git", "merge-base", "--is-ancestor", commit, "HEAD"],
+                              cwd=root, capture_output=True, env={**os.environ, "GIT_NO_REPLACE_OBJECTS": "1"})
+    if ancestry.returncode:
+        _native_legacy_code_source(root)
+        return None
+    base = NATIVE_CONSUMER_BASE
+    _suffix_require(_b018_git(root, "rev-parse", commit + "^{tree}").decode().strip() == revision["tree"],
+                    "native implementation tree mismatch")
+    _suffix_require(_b018_git(root, "rev-parse", base["commit"] + "^{tree}").decode().strip() == base["tree"],
+                    "native public base tree mismatch")
+    _suffix_require(_b018_git(root, "rev-list", "--parents", "-n", "1", commit).decode().split() == [commit, base["commit"]],
+                    "native implementation sole parent mismatch")
+    changed = _b018_git(root, "diff", "--name-only", "--no-renames", base["commit"], commit).decode().splitlines()
+    _suffix_require(set(changed) == set(NATIVE_CONSUMER_PATHS), "native implementation exact five-path boundary mismatch")
+    _verify_schema_accepted_signatures(root, NATIVE_PUBLIC_SIGNER, (base["commit"], commit))
+    expected = {}
+    for path, digest in revision["artifacts"].items():
+        raw = _b018_git(root, "show", commit + ":" + path)
+        _suffix_require(hashlib.sha256(raw).hexdigest() == _suffix_hash(digest), "native implementation file hash mismatch: " + path)
+        expected[path] = _native_binding_bytes(raw, revision) if path == NATIVE_CONSUMER_PATHS[0] else raw
+    touches = _b018_git(root, "log", "--format=%H", "--full-history", "--no-renames",
+                        commit + "..HEAD", "--", *NATIVE_CONSUMER_PATHS).decode().splitlines()
+    _suffix_require(len(touches) == 1, "native binding missing or code history touched/reverted")
+    binding = touches[0]
+    _suffix_require(_b018_git(root, "rev-list", "--parents", "-n", "1", binding).decode().split() == [binding, commit],
+                    "native binding sole parent mismatch")
+    _suffix_require(_b018_git(root, "diff", "--name-only", "--no-renames", commit, binding).decode().splitlines()
+                    == [NATIVE_CONSUMER_PATHS[0]], "native binding changed other paths")
+    head = _b018_git(root, "rev-parse", "HEAD").decode().strip()
+    _verify_schema_accepted_signatures(root, NATIVE_PUBLIC_SIGNER, tuple(dict.fromkeys((binding, head))))
+    for source in (commit, binding, head):
+        entries = _native_tree_entries(root, source)
+        for path in NATIVE_CONSUMER_PATHS:
+            _suffix_require(entries.get(path, ())[:2] == ("100644", "blob"), "native source mode mismatch: " + path)
+            if source != commit:
+                _suffix_require(_b018_git(root, "show", source + ":" + path) == expected[path], "native bound source bytes mismatch: " + path)
+    _suffix_require(not _b018_git(root, "diff", "--name-only", head, "--", *NATIVE_CONSUMER_PATHS).strip()
+                    and not _b018_git(root, "diff", "--cached", "--name-only", head, "--", *NATIVE_CONSUMER_PATHS).strip(),
+                    "native current code staged or uncommitted change")
+    for path, raw in expected.items():
+        _suffix_require(_actual_regular_bytes(root, path) == raw and not (root / path).stat().st_mode & 0o111,
+                        "native current code byte/mode drift: " + path)
+    preserved = _native_preserved_entries(root)
+    entries = _native_tree_entries(root, head)
+    for path, entry in preserved.items():
+        _suffix_require(entries.get(path) == entry and _native_regular_matches(root, path, entry),
+                        "native preserved input byte/mode drift: " + path)
+    _suffix_require(not _b018_git(root, "log", "--format=%H", "--full-history", "--no-renames",
+                                  base["commit"] + "..HEAD", "--", *sorted(preserved)).strip(),
+                    "native preserved input history touched/reverted")
+    return {"revision": revision, "binding_commit": binding, "head": head, "expected": expected,
+            "current_sha256": {path: hashlib.sha256(raw).hexdigest() for path, raw in expected.items()}}
+
+
+@contextmanager
+def _native_revision_context(root: Path):
+    proof = _native_consumer_revision(root)
+    token = _NATIVE_REVISION_VIEW.set((root.resolve(), proof))
+    try:
+        yield proof
+    finally:
+        _NATIVE_REVISION_VIEW.reset(token)
+
+
+def _current_pin_matches(root: Path, path: str, digest: str, raw: bytes | None = None) -> bool:
+    current = _regular_bytes(root, path) if raw is None else raw
+    observed = hashlib.sha256(current).hexdigest()
+    if observed == digest:
+        return True
+    if path not in NATIVE_CONSUMER_PATHS:
+        return False
+    old = _b018_git(root, "show", NATIVE_CONSUMER_BASE["commit"] + ":" + path)
+    if hashlib.sha256(old).hexdigest() != digest:
+        return False
+    proof = _native_consumer_revision(root)
+    return proof is not None and observed == proof["current_sha256"][path]
+
+
+def _native_receipt_candidate(root: Path, candidate: str, preserved: dict[str, str]) -> None:
+    """A receipt cannot substitute an old reader or unbound candidate source."""
+    proof = _native_consumer_revision(root)
+    if proof is not None:
+        _b018_git(root, "merge-base", "--is-ancestor", proof["binding_commit"], candidate)
+        _verify_schema_accepted_signatures(root, NATIVE_PUBLIC_SIGNER, (candidate,))
+        _suffix_require(not _b018_git(root, "log", "--format=%H", "--full-history", "--no-renames",
+                                      proof["binding_commit"] + ".." + candidate, "--", *NATIVE_CONSUMER_PATHS).strip(),
+                        "suffix candidate native source history touched/reverted")
+        entries = _native_tree_entries(root, candidate)
+        for path, raw in proof["expected"].items():
+            _suffix_require(entries.get(path, ())[:2] == ("100644", "blob")
+                            and _b018_git(root, "show", candidate + ":" + path) == raw,
+                            "suffix candidate native source byte/mode mismatch: " + path)
+    for path, digest in preserved.items():
+        wanted = proof["current_sha256"][path] if proof is not None and path in proof["expected"] else digest
+        _suffix_require(hashlib.sha256(_b018_git(root, "show", candidate + ":" + path)).hexdigest() == wanted,
+                        "suffix accepted candidate changed a preserved current business/evidence file")
+
+
+def _current_suffix_history(root: Path, proof: dict[str, Any] | None, revision: dict[str, Any] | None) -> None:
+    if revision is None:
+        return
+    anchor = revision["binding_commit"]
+    commits = _b018_git(root, "rev-list", "--reverse", "--full-history", anchor + "..HEAD", "--", *SUFFIX_CONTROL_PATHS).decode().splitlines()
+    if not commits:
+        _suffix_require(proof is None, "native current control history/registration mismatch")
+        return
+    previous = []
+    seen = {tuple(hashlib.sha256(_b018_git(root, "show", anchor + ":" + path)).hexdigest()
+                  for path in SUFFIX_CONTROL_PATHS)}
+    for commit in commits:
+        parents = _b018_git(root, "rev-list", "--parents", "-n", "1", commit).decode().split()
+        _suffix_require(len(parents) == 2, "native control history merge/parent mismatch")
+        changed = _b018_git(root, "diff", "--name-only", "--no-renames", parents[1], commit, "--", *SUFFIX_CONTROL_PATHS).decode().splitlines()
+        _suffix_require(set(changed) == set(SUFFIX_CONTROL_PATHS), "native control history requires the complete six-file transition")
+        _verify_schema_accepted_signatures(root, _suffix_signer(root), (commit,))
+        historical = _load_registered_suffix(root, commit)
+        _suffix_require(historical is not None, "native control history contains an unregistered/reverted state")
+        observed = historical["entries"]
+        _suffix_require(len(observed) >= len(previous), "native control history removed registration")
+        for old, new in zip(previous, observed):
+            _suffix_require(old["id"] == new["id"] and old["contract"] == new["contract"],
+                            "native control history rebound an immutable registration")
+            for field in ("plan_acceptance", "implementation_acceptance"):
+                _suffix_require(old[field] is None or old[field] == new[field], "native control history removed/rebound a receipt")
+        hashes = tuple(hashlib.sha256(historical["control_bytes"][path]).hexdigest() for path in SUFFIX_CONTROL_PATHS)
+        _suffix_require(hashes not in seen and observed != previous, "native control history touched/reverted without a proven lifecycle transition")
+        for path in SUFFIX_CONTROL_PATHS:
+            entry = _b018_git(root, "ls-tree", commit, "--", path).decode().strip()
+            _suffix_require(entry.split("\t")[-1] == path and entry.split()[:2] == ["100644", "blob"], "native control history mode drift")
+        seen.add(hashes)
+        previous = observed
+    _suffix_require(previous == (proof["entries"] if proof else []), "native current control history/registration mismatch")
+
+
+def validated_current_m2_proof(root: Path) -> dict[str, Any]:
+    """Current consumers receive only authenticated real source/control data."""
+    root = root.resolve()
+    with _native_revision_context(root) as revision:
+        errors, _ = collect_validation(root)
+        _suffix_require(not errors, "; ".join(errors))
+        proof = _load_registered_suffix(root)
+        _current_suffix_history(root, proof, revision)
+        head = _b018_git(root, "rev-parse", "HEAD").decode().strip()
+        tree = _b018_git(root, "rev-parse", "HEAD^{tree}").decode().strip()
+        _verify_schema_accepted_signatures(root, NATIVE_PUBLIC_SIGNER, (head,))
+        control_bytes = {path: _actual_regular_bytes(root, path) for path in SUFFIX_CONTROL_PATHS}
+        for path, raw in control_bytes.items():
+            entry = _b018_git(root, "ls-tree", head, "--", path).decode().strip()
+            _suffix_require(entry.split("\t")[-1] == path and entry.split()[:2] == ["100644", "blob"]
+                            and not (root / path).stat().st_mode & 0o111
+                            and _b018_git(root, "show", head + ":" + path) == raw,
+                            "native current control source/byte/mode mismatch: " + path)
+        _suffix_require(not _b018_git(root, "diff", "--cached", "--name-only", head, "--", *SUFFIX_CONTROL_PATHS).strip(),
+                        "native current control staged change")
+        batches = _b018_json(control_bytes[SUFFIX_JSON_PATHS[0]])
+        lifecycle = schema_preparation_lifecycle(batches, root) if len(batches.get("batches", [])) > 16 else {
+            "state": "ACCEPTED", "accepted_batches": ["M2-B001"], "next_allowed_action": SCHEMA_ACCEPTED_ACTION}
+        return {"root": root, "source": {"commit": head, "tree": tree}, "suffix": proof,
+                "revision": revision, "control_bytes": control_bytes, "batches": batches, "lifecycle": lifecycle}
+
+
 def _suffix_require(condition: bool, message: str) -> None:
     if not condition:
         raise ValueError(message)
@@ -1384,6 +1650,9 @@ def _suffix_reference(root: Path, value: Any) -> tuple[dict[str, Any], bytes]:
     _suffix_keys(value, {"source", "path", "sha256"}, "suffix immutable reference")
     _suffix_source(root, value["source"])
     raw = _suffix_bound_bytes(root, value["source"], value["path"], value["sha256"])
+    _suffix_require(not _b018_git(root, "log", "--format=%H", "--full-history", "--no-renames",
+                                  value["source"]["commit"] + "..HEAD", "--", value["path"]).strip(),
+                    "suffix immutable reference history touched/reverted: " + value["path"])
     return _b018_json(raw), raw
 
 
@@ -1452,9 +1721,7 @@ def _suffix_receipt(root: Path, reference: Any, contract: dict[str, Any], phase:
     _suffix_require(candidate != reference["source"]["commit"], "receipt must follow its distinct candidate")
     _b018_git(root, "merge-base", "--is-ancestor", receipt["source"]["commit"], candidate)
     legacy = _b018_json(_b018_git(root, "show", SUFFIX_BASE["commit"] + ":" + SUFFIX_JSON_PATHS[0]))
-    for path, digest in _suffix_preserved_inputs(root, legacy).items():
-        _suffix_require(hashlib.sha256(_b018_git(root, "show", candidate + ":" + path)).hexdigest() == digest,
-                        "suffix accepted candidate changed a preserved current business/evidence file")
+    _native_receipt_candidate(root, candidate, _suffix_preserved_inputs(root, legacy))
     _suffix_require(isinstance(receipt["control_inputs"], dict) and isinstance(receipt["artifacts"], dict)
                     and set(receipt["control_inputs"]) == set(SUFFIX_CONTROL_PATHS), "suffix receipt missing control input hashes/artifact table")
     for path, digest in receipt["control_inputs"].items():
@@ -1485,6 +1752,24 @@ def _suffix_receipt(root: Path, reference: Any, contract: dict[str, Any], phase:
     return receipt
 
 
+def _suffix_receipt_markdown(registry: dict[str, Any], lifecycle: dict[str, Any], path: str) -> bytes:
+    """Both Markdown controls project the same already validated receipts."""
+    references = [{key: entry[key] for key in ("id", "plan_acceptance", "implementation_acceptance")}
+                  for entry in registry["entries"]]
+    if not any(item["plan_acceptance"] is not None or item["implementation_acceptance"] is not None
+               for item in references):
+        return b""
+    projection = {"lifecycle": lifecycle, "receipts": references}
+    canonical = json.dumps(projection, ensure_ascii=False, sort_keys=True, separators=(",", ":")).encode()
+    digest = hashlib.sha256(canonical).hexdigest()
+    section = "PLAN" if path == SUFFIX_MARKDOWN_PATHS[0] else "ROUTES"
+    text = ("\n<!-- SECTION-ID: M2-SUFFIX-RECEIPT-LIFECYCLE-" + section + " -->\n"
+            "# Registered suffix receipt lifecycle\n\n"
+            "Validated receipt references and lifecycle SHA-256: `" + digest + "`.\n\n```json\n"
+            + json.dumps(projection, ensure_ascii=False, sort_keys=True, indent=2) + "\n```\n")
+    return text.encode()
+
+
 def _suffix_expected_controls(base: dict[str, bytes], registry: dict[str, Any], contracts: list[dict[str, Any]],
                               lifecycle: dict[str, Any]) -> dict[str, Any]:
     """Exact six-file transition; no arbitrary operations or JSON patch language."""
@@ -1510,6 +1795,9 @@ def _suffix_expected_controls(base: dict[str, bytes], registry: dict[str, Any], 
         if path == SUFFIX_JSON_PATHS[3]:
             target["accepted_batches"] = accepted
             target["frozen_batches"] = lifecycle["frozen_batches"]
+    for path in SUFFIX_MARKDOWN_PATHS:
+        expected[path] = (base[path] + b"".join(c["appendices"][path].encode() for c in contracts)
+                          + _suffix_receipt_markdown(registry, lifecycle, path))
     return expected
 
 
@@ -1718,10 +2006,10 @@ def _decode_registered_suffix(root: Path, control_source: str | None = None) -> 
                  "runtime_status": "NOT_RUN", "aggregate_M2_pass": False}
     expected = _suffix_expected_controls(base, registry, contracts, lifecycle)
     for path, wanted in expected.items():
-        _suffix_require(_suffix_json_equal(_b018_json(current_controls[path]), wanted), "suffix actual control projection drift: " + path)
-    for path in SUFFIX_MARKDOWN_PATHS:
-        wanted = base[path] + b"".join(c["appendices"][path].encode() for c in contracts)
-        _suffix_require(current_controls[path] == wanted, "suffix rewrote old Markdown or unsigned appendix: " + path)
+        if path in SUFFIX_JSON_PATHS:
+            _suffix_require(_suffix_json_equal(_b018_json(current_controls[path]), wanted), "suffix actual control projection drift: " + path)
+        else:
+            _suffix_require(current_controls[path] == wanted, "suffix rewrote old Markdown or unsigned appendix: " + path)
     # Business, consumer, schema and evidence pins are actual current files and
     # all pass before the six-control-file legacy view can be activated.
     for path, digest in _suffix_preserved_inputs(root, legacy).items():
@@ -1764,9 +2052,10 @@ def _regular_bytes(root: Path, relative: str) -> bytes:
 
 def _suffix_errors(root: Path, legacy) -> list[str]:
     try:
-        proof = _load_registered_suffix(root)
-        with _suffix_legacy_view(proof):
-            return legacy(root)
+        with _native_revision_context(root):
+            proof = _load_registered_suffix(root)
+            with _suffix_legacy_view(proof):
+                return legacy(root)
     except (OSError, UnicodeError, ValueError, TypeError, KeyError, IndexError, subprocess.CalledProcessError) as exc:
         return ["registered suffix rejected: " + str(exc)]
 
@@ -1827,11 +2116,20 @@ def _check_dag(batches: dict[str, Any], errors: list[str]) -> None:
 
 def collect_validation(project_root: Path = PROJECT_ROOT) -> tuple[list[str], str]:
     try:
-        proof = _load_registered_suffix(project_root)
-        with _suffix_legacy_view(proof):
-            # No historical implementation is imported or executed. Only the
-            # six completely checked control projections use immutable bytes.
-            return _legacy_collect_validation(project_root)
+        with _native_revision_context(project_root) as revision:
+            proof = _load_registered_suffix(project_root)
+            if proof is None:
+                # Preserve the old fail-fast unregistered-data path: reject
+                # its actual bytes before selecting any historical controls.
+                result = _legacy_collect_validation(project_root)
+                if not result[0]:
+                    _current_suffix_history(project_root, None, revision)
+                return result
+            _current_suffix_history(project_root, proof, revision)
+            with _suffix_legacy_view(proof):
+                # Current code validates every input; only the authenticated
+                # six control projections use immutable historical bytes.
+                return _legacy_collect_validation(project_root)
     except (OSError, UnicodeError, ValueError, TypeError, KeyError, IndexError, subprocess.CalledProcessError) as exc:
         return ["registered suffix rejected: " + str(exc)], INVALID_MIXED_STATE
 

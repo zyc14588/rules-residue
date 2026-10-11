@@ -17,6 +17,8 @@ from typing import Any, Callable, Iterable
 
 
 ROOT = Path(__file__).resolve().parents[3]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
 
 TASK_ID = "RULES-RESIDUE-M2-B001-RECOVERY-CLOSEOUT-IMPLEMENT-002"
 EVIDENCE_ID = "M2-B001-RECOVERY-CLOSEOUT-001-E002"
@@ -353,8 +355,21 @@ def load_json(path: Path) -> dict[str, Any]:
 ArtifactReader = Callable[[str], bytes]
 
 
+class _BoundArtifactReader:
+    """A concrete source reader, never provenance supplied by an arbitrary callable."""
+
+    def __init__(self, root: Path, revision: str | None = None):
+        self.root = root.resolve()
+        self.revision = revision
+
+    def __call__(self, path_text: str) -> bytes:
+        if self.revision is None:
+            return (self.root / path_text).read_bytes()
+        return read_git_blob(self.root, self.revision, path_text)
+
+
 def _filesystem_reader(root: Path) -> ArtifactReader:
-    return lambda path_text: (root / path_text).read_bytes()
+    return _BoundArtifactReader(root)
 
 
 def _artifact_bytes(
@@ -1060,7 +1075,7 @@ def _validate_lifecycle_anchor_structure(
 
 
 def _git_object_reader(root: Path, commit: str) -> ArtifactReader:
-    return lambda path_text: read_git_blob(root, commit, path_text)
+    return _BoundArtifactReader(root, commit)
 
 
 def validate_a2_historical_recovery(root: Path) -> None:
@@ -1107,6 +1122,50 @@ def validate_lifecycle_preservation_state(
 ) -> None:
     """Validate the accepted M2 projection without trusting summaries."""
 
+    # Historical artifact readers retain the original next action. A current
+    # scheduling transition must pass the same native envelope/source checks
+    # used by the PLAN validator; route-ID formatting is not authorization.
+    is_bound = type(artifact_reader) is _BoundArtifactReader and artifact_reader.root == root.resolve()
+    require(is_bound, "native lifecycle requires an actual source reader")
+    is_historical = artifact_reader.revision in {RECOVERY_CANDIDATE_COMMIT, LIFECYCLE_CLOSEOUT_COMMIT}
+    proof = None
+    if is_historical:
+        historical_tree = RECOVERY_CANDIDATE_TREE if artifact_reader.revision == RECOVERY_CANDIDATE_COMMIT else LIFECYCLE_CLOSEOUT_TREE
+        _validate_historical_anchor_identity(root, artifact_reader.revision, historical_tree)
+        native_batches = _artifact_json(root, ".codex/plans/m2-vertical-slice/batches.json", artifact_reader)
+    else:
+        # Authenticate the actual root independently of caller-returned rows.
+        # An old16 reader cannot hide a current native revision or control file.
+        head = _git(root, ["rev-parse", "HEAD"])
+        require(artifact_reader.revision in (None, head), "native current lifecycle reader source mismatch")
+        try:
+            from tools.validate_m2_plan import _native_consumer_revision, validated_current_m2_proof, SUFFIX_CONTROL_PATHS
+            revision = _native_consumer_revision(root)
+            native_batches = _artifact_json(root, ".codex/plans/m2-vertical-slice/batches.json", _filesystem_reader(root))
+            if revision is not None or len(native_batches.get("batches", [])) > 16:
+                proof = validated_current_m2_proof(root)
+                require(all(_artifact_bytes(root, path, artifact_reader) == proof["control_bytes"][path]
+                            for path in SUFFIX_CONTROL_PATHS), "native current lifecycle reader byte mismatch")
+                native_batches = proof["batches"]
+        except (ImportError, OSError, ValueError, TypeError, KeyError, subprocess.CalledProcessError) as exc:
+            raise RecoveryValidationError(f"native B017 allocation failed: {exc}") from exc
+    next_allowed_action = NEXT_ALLOWED_ACTION
+    accepted_batches = ["M2-B001"]
+    if isinstance(native_batches.get("batches"), list) and len(native_batches["batches"]) > 16:
+        from tools.validate_m2_plan import schema_preparation_lifecycle
+        try:
+            if is_historical:
+                lifecycle = schema_preparation_lifecycle(native_batches, root, artifact_reader)
+            else:
+                lifecycle = proof["lifecycle"]
+        except (OSError, ValueError, TypeError, KeyError, subprocess.CalledProcessError) as exc:
+            raise RecoveryValidationError(f"native B017 allocation failed: {exc}") from exc
+        next_allowed_action = lifecycle["next_allowed_action"]
+        # The original legacy projection's accepted_batches is preserved by the
+        # suffix protocol. Its distinct validated suffix_projection carries the
+        # suffix acceptances; it cannot rewrite the old B001 recovery receipt.
+        accepted_batches = ["M2-B001", "M2-B017", "M2-B018"] if not is_historical and proof["suffix"] else lifecycle["accepted_batches"]
+
     milestone = _artifact_json(
         root,
         ".codex/state/MILESTONE_PLAN.yaml",
@@ -1120,7 +1179,7 @@ def validate_lifecycle_preservation_state(
             "batch_id": "M2-B001",
             "state": "ACCEPTED",
             "implementation_state": "ACCEPTED",
-            "next_allowed_action": NEXT_ALLOWED_ACTION,
+            "next_allowed_action": next_allowed_action,
         },
         "M2 milestone active_plan",
     )
@@ -1170,7 +1229,7 @@ def validate_lifecycle_preservation_state(
             "effective_R2-INT-010": "RESOLVED_ADAPTER",
             "blocking_ids": BLOCKING_IDS,
             "active_WIP": 0,
-            "next_allowed_action": NEXT_ALLOWED_ACTION,
+            "next_allowed_action": next_allowed_action,
         },
         "M2 batches lifecycle_projection",
     )
@@ -1216,7 +1275,7 @@ def validate_lifecycle_preservation_state(
         controls.get("lifecycle_projection"),
         {
             "state": "ACCEPTED_WITH_DOWNSTREAM_BLOCKERS",
-            "accepted_batches": ["M2-B001"],
+            "accepted_batches": accepted_batches,
             "M2-B002": "PLANNED",
             "M2-B002_implementation": "NOT_STARTED",
             "M2-B002_READY": "NO",
@@ -1228,7 +1287,7 @@ def validate_lifecycle_preservation_state(
             "aggregate_external_capability_pass": False,
             "blocking_ids": BLOCKING_IDS,
             "active_WIP": 0,
-            "next_allowed_action": NEXT_ALLOWED_ACTION,
+            "next_allowed_action": next_allowed_action,
         },
         "M2 controls lifecycle_projection",
     )
@@ -1252,7 +1311,7 @@ def validate_lifecycle_preservation_state(
             "aggregate_M2_pass": False,
             "aggregate_external_capability_pass": False,
             "blocking_ids": BLOCKING_IDS,
-            "next_allowed_action": NEXT_ALLOWED_ACTION,
+            "next_allowed_action": next_allowed_action,
         },
         "M2 capability lifecycle_projection",
     )
@@ -1689,6 +1748,32 @@ def validate_candidate_checkout(
     require(_git(root, ["status", "--porcelain", "--untracked-files=all"]) == "", "dirty candidate worktree")
 
 
+def _exact_old16_post_accepted_reader(root: Path, target: str) -> ArtifactReader | None:
+    """Retain old recovery semantics only for all six exact e90 controls."""
+    historical = _git_object_reader(root, LIFECYCLE_CLOSEOUT_COMMIT)
+    _validate_historical_anchor_identity(root, LIFECYCLE_CLOSEOUT_COMMIT, LIFECYCLE_CLOSEOUT_TREE)
+    try:
+        for path in LIFECYCLE_STATE_PATHS:
+            fixed = _tree_entry(root, LIFECYCLE_CLOSEOUT_COMMIT, path)
+            current = root
+            for part in Path(path).parts:
+                current = current / part
+                if current.is_symlink():
+                    return None
+            if (fixed is None or fixed[:2] != ("100644", "blob")
+                    or _tree_entry(root, target, path) != fixed
+                    or not stat.S_ISREG(current.stat().st_mode)
+                    or current.stat().st_mode & 0o111
+                    or current.read_bytes() != historical(path)):
+                return None
+        actual = _artifact_json(root, ".codex/plans/m2-vertical-slice/batches.json", _filesystem_reader(root))
+        if type(actual.get("batches")) is not list or len(actual["batches"]) != 16:
+            return None
+    except (OSError, ValueError):
+        return None
+    return historical
+
+
 def validate_post_accepted_descendant(
     root: Path,
     candidate: str | None = None,
@@ -1737,11 +1822,24 @@ def validate_post_accepted_descendant(
     )
     protected_change_set = set(protected_changes)
     additive_bundle_set = set(AUTHORIZED_ADDITIVE_EVIDENCE_BUNDLE_PATHS)
-    if PLAN_VALIDATOR_PATH_TEXT in protected_change_set:
+    current_transition = False
+    try:
+        from tools.validate_m2_plan import NATIVE_CONSUMER_BASE, NATIVE_CONSUMER_PATHS, validated_current_m2_proof
+        current_proof = validated_current_m2_proof(root)
+        if current_proof["revision"] is not None:
+            baseline = set(collect_descendant_protected_changes(root, NATIVE_CONSUMER_BASE["commit"], include_worktree=False))
+            finite_code = {path for path in NATIVE_CONSUMER_PATHS
+                           if path in DESCENDANT_PROTECTED_PATHS or any(path.startswith(item + "/") for item in DESCENDANT_PROTECTED_PATHS)}
+            current_transition = (protected_change_set == baseline | finite_code
+                                  and target == current_proof["source"]["commit"])
+    except (ImportError, OSError, ValueError, TypeError, KeyError, subprocess.CalledProcessError):
+        current_transition = False
+    if not current_transition and PLAN_VALIDATOR_PATH_TEXT in protected_change_set:
+        # Preserve the exact historical public reception gate and diagnostics.
         validate_exact_public_code_reception(root, target)
         protected_change_set.difference_update(PUBLIC_CODE_SOURCE_SHA256)
     require(
-        not protected_change_set or protected_change_set == additive_bundle_set,
+        not protected_change_set or protected_change_set == additive_bundle_set or current_transition,
         "post-accepted descendant changed protected M2 state/evidence outside the "
         f"exact six-path additive bundle: {protected_changes}",
     )
@@ -1752,7 +1850,10 @@ def validate_post_accepted_descendant(
             target,
             include_worktree=include_worktree,
         )
-    validate_lifecycle_preservation_state(root, artifact_reader=reader)
+    # Original ancestry, protected paths and six-evidence atomicity passed.
+    # Only exact old16 controls may request the fixed historical recovery view.
+    historical_reader = _exact_old16_post_accepted_reader(root, target)
+    validate_lifecycle_preservation_state(root, artifact_reader=historical_reader or reader)
 
 
 def validate_historical_candidate_checkout(
