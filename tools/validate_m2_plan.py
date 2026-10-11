@@ -1326,7 +1326,21 @@ NATIVE_LEGACY_CODE_ANCHORS = (
     NATIVE_CONSUMER_BASE,
 )
 # BEGIN EXACT NATIVE CONSUMER REVISION
-NATIVE_CONSUMER_REVISION = None
+NATIVE_CONSUMER_REVISION = {
+    "artifacts": {
+        "tests/m2/probes/test_m2_b001_recovery_closeout.py": "81fa650d6a981f183382b5410f768cc991285dde126a48ce70944db35ef92133",
+        "tests/m2/probes/validate_m2_b001_recovery_closeout.py": "8e851f8997c3068a1144d295453a9dd5b8efd71e9f676f25d56e19b93b36ecbf",
+        "tests/test_m2_b019_registration.py": "812f757cabc76829ed97a2d00534c0107fbd7b0646a1aedaabee14e688caeff9",
+        "tools/validate_m2_plan.py": "24d96273663a3e9bc9376bcb5623a12906cb376bf080d933a86dc96744ad8396",
+        "tools/validate_story_construction_governance.py": "14888570c17443bee642cb20f1fe4b1ea7ee4c6083d01580d35582539fc0a7f0"
+    },
+    "commit": "5c7364c9f103c855689bd0ec2b32d9b64f21e97f",
+    "parent": {
+        "commit": "35688e789822bffcf35d4d40288b5c4a8332dd4a",
+        "tree": "33902e312e29658cd72e64438ec0d69ca7a141e3"
+    },
+    "tree": "89a6b64f638ecb52c65ef1ef91d5667d54890f5b"
+}
 # END EXACT NATIVE CONSUMER REVISION
 _NATIVE_REVISION_VIEW = ContextVar("exact_public_native_consumer_revision", default=None)
 
