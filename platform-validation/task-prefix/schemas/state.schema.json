@@ -1,0 +1,999 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Full indexed authoritative task-prefix State/checkpoint",
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "const": 1
+    },
+    "representation": {
+      "const": "INDEXED_STATE_V1"
+    },
+    "task_definition_revision": {
+      "const": "1"
+    },
+    "phase": {
+      "const": "C01_TASK_PREFIX"
+    },
+    "component_status": {
+      "enum": [
+        "ACTIVE",
+        "PAUSED"
+      ]
+    },
+    "tick": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 2
+    },
+    "pressure": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "fired_waves": {
+      "enum": [
+        [],
+        [
+          "echo_arrival"
+        ]
+      ]
+    },
+    "task_offered": {
+      "type": "boolean"
+    },
+    "ledger": {
+      "type": "object",
+      "properties": {
+        "opening_seats": {
+          "type": "object",
+          "propertyNames": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128,
+            "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_.-]*$"
+          },
+          "additionalProperties": {
+            "type": "object",
+            "properties": {},
+            "required": [
+              "controller_principal",
+              "authorized_character_id"
+            ],
+            "additionalProperties": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128,
+              "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_.-]*$"
+            },
+            "propertyNames": {
+              "enum": [
+                "controller_principal",
+                "authorized_character_id"
+              ]
+            }
+          },
+          "minProperties": 2,
+          "maxProperties": 6
+        },
+        "seats": {
+          "type": "object",
+          "propertyNames": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128,
+            "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_.-]*$"
+          },
+          "additionalProperties": {
+            "$ref": "#/$defs/seat"
+          },
+          "minProperties": 2,
+          "maxProperties": 6
+        },
+        "npc": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "const": "npc.lin-que"
+            },
+            "location": {
+              "const": "scene.concourse"
+            },
+            "strain": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 6
+            },
+            "private_belief": {
+              "const": "NPC_HYPOTHESIS_ONLY: 绝不能进入站台"
+            }
+          },
+          "required": [
+            "id",
+            "location",
+            "strain",
+            "private_belief"
+          ],
+          "additionalProperties": false
+        },
+        "papers": {
+          "type": "object",
+          "propertyNames": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128,
+            "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_.-]*$"
+          },
+          "additionalProperties": {
+            "$ref": "#/$defs/paper"
+          },
+          "minProperties": 2,
+          "maxProperties": 6
+        },
+        "receipts": {
+          "type": "object",
+          "propertyNames": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128,
+            "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_.-]*$"
+          },
+          "additionalProperties": {
+            "$ref": "#/$defs/receipt"
+          },
+          "minProperties": 0,
+          "maxProperties": 6
+        }
+      },
+      "required": [
+        "opening_seats",
+        "seats",
+        "npc",
+        "papers",
+        "receipts"
+      ],
+      "additionalProperties": false,
+      "oneOf": [
+        {
+          "properties": {
+            "opening_seats": {
+              "minProperties": 2,
+              "maxProperties": 2
+            },
+            "seats": {
+              "minProperties": 2,
+              "maxProperties": 2
+            },
+            "papers": {
+              "minProperties": 2,
+              "maxProperties": 2
+            }
+          }
+        },
+        {
+          "properties": {
+            "opening_seats": {
+              "minProperties": 3,
+              "maxProperties": 3
+            },
+            "seats": {
+              "minProperties": 3,
+              "maxProperties": 3
+            },
+            "papers": {
+              "minProperties": 3,
+              "maxProperties": 3
+            }
+          }
+        },
+        {
+          "properties": {
+            "opening_seats": {
+              "minProperties": 4,
+              "maxProperties": 4
+            },
+            "seats": {
+              "minProperties": 4,
+              "maxProperties": 4
+            },
+            "papers": {
+              "minProperties": 4,
+              "maxProperties": 4
+            }
+          }
+        },
+        {
+          "properties": {
+            "opening_seats": {
+              "minProperties": 5,
+              "maxProperties": 5
+            },
+            "seats": {
+              "minProperties": 5,
+              "maxProperties": 5
+            },
+            "papers": {
+              "minProperties": 5,
+              "maxProperties": 5
+            }
+          }
+        },
+        {
+          "properties": {
+            "opening_seats": {
+              "minProperties": 6,
+              "maxProperties": 6
+            },
+            "seats": {
+              "minProperties": 6,
+              "maxProperties": 6
+            },
+            "papers": {
+              "minProperties": 6,
+              "maxProperties": 6
+            }
+          }
+        }
+      ]
+    },
+    "events": {
+      "type": "object",
+      "propertyNames": {
+        "type": "string",
+        "minLength": 36,
+        "maxLength": 36,
+        "pattern": "^evt-[0-9a-f]+$"
+      },
+      "additionalProperties": {
+        "$ref": "#/$defs/event_record"
+      },
+      "minProperties": 0,
+      "maxProperties": 64
+    },
+    "execution_bindings": {
+      "type": "object",
+      "propertyNames": {
+        "type": "string",
+        "minLength": 36,
+        "maxLength": 36,
+        "pattern": "^evt-[0-9a-f]+$"
+      },
+      "additionalProperties": {
+        "oneOf": [
+          {
+            "type": "object",
+            "properties": {
+              "payload_sha256": {
+                "type": "string",
+                "minLength": 71,
+                "maxLength": 71,
+                "pattern": "^sha256:[0-9a-f]+$"
+              },
+              "payload_json": {
+                "type": "string",
+                "minLength": 2,
+                "maxLength": 16384
+              }
+            },
+            "required": [
+              "correlation_id",
+              "opening_seat_id",
+              "payload_sha256",
+              "payload_json"
+            ],
+            "additionalProperties": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128,
+              "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_.-]*$"
+            },
+            "propertyNames": {
+              "enum": [
+                "correlation_id",
+                "opening_seat_id",
+                "payload_sha256",
+                "payload_json"
+              ]
+            }
+          },
+          {
+            "const": {
+              "callback": "on_session_end",
+              "correlation_id": null,
+              "opening_seat_id": null,
+              "payload_json": "{}",
+              "payload_sha256": "sha256:44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a"
+            }
+          }
+        ]
+      },
+      "minProperties": 0,
+      "maxProperties": 64
+    },
+    "service_terminated": {
+      "const": false
+    },
+    "opening_episode_closed": {
+      "const": false
+    },
+    "campaign_terminal": {
+      "const": false
+    },
+    "native_values": {
+      "const": {
+        "empty_array": [],
+        "event": {
+          "execution_start_event_id": null,
+          "actor_seat_id": null
+        },
+        "result": {
+          "settlement_receipt": null
+        },
+        "view": {
+          "published_task": null,
+          "own_paper": null
+        },
+        "own_task": {
+          "settlement_receipt": null
+        },
+        "observation": {
+          "inspection_owner_seat_id": null
+        },
+        "paper": {
+          "text": null,
+          "write_event_id": null,
+          "source_event_id": null
+        },
+        "lifecycle_binding": {
+          "callback": "on_session_end",
+          "correlation_id": null,
+          "opening_seat_id": null,
+          "payload_json": "{}",
+          "payload_sha256": "sha256:44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a"
+        }
+      }
+    }
+  },
+  "required": [
+    "schema_version",
+    "representation",
+    "run_id",
+    "legitimate_loop_id",
+    "task_definition_revision",
+    "phase",
+    "component_status",
+    "tick",
+    "pressure",
+    "service_terminated",
+    "opening_episode_closed",
+    "campaign_terminal",
+    "fired_waves",
+    "task_offered",
+    "ledger",
+    "events",
+    "execution_bindings",
+    "native_values"
+  ],
+  "additionalProperties": {
+    "type": "string",
+    "minLength": 1,
+    "maxLength": 128,
+    "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_.-]*$"
+  },
+  "$defs": {
+    "seat": {
+      "type": "object",
+      "properties": {
+        "location": {
+          "const": "scene.concourse"
+        },
+        "strain": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 6
+        },
+        "passenger_bound": {
+          "const": false
+        },
+        "pending_repeat": {
+          "const": false
+        },
+        "private_notes": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/note"
+          },
+          "minItems": 0,
+          "maxItems": 16
+        },
+        "participation": {
+          "enum": [
+            "UNACCEPTED",
+            "ACCEPTED",
+            "DECLINED",
+            "WITHDRAWN"
+          ]
+        },
+        "actual_fulfillment_internal": {
+          "type": "boolean"
+        },
+        "settlement_receipt_id": {
+          "type": [
+            "null",
+            "string"
+          ],
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_.-]*$"
+        },
+        "closure_reason": {
+          "enum": [
+            null,
+            "VOLUNTARY_WITHDRAWAL",
+            "VOLUNTARY_REFUSAL"
+          ]
+        },
+        "access_status": {
+          "enum": [
+            "ACCESSIBLE",
+            "UNAVAILABLE_ISSUER"
+          ]
+        }
+      },
+      "required": [
+        "location",
+        "strain",
+        "passenger_bound",
+        "pending_repeat",
+        "private_notes",
+        "participation",
+        "accepted_event_id",
+        "own_inspection_event_id",
+        "submitted_claim_event_id",
+        "actual_fulfillment_internal",
+        "issuer_adjudication_event_id",
+        "settlement_receipt_id",
+        "closure_reason",
+        "access_status"
+      ],
+      "propertyNames": {
+        "enum": [
+          "location",
+          "strain",
+          "passenger_bound",
+          "pending_repeat",
+          "private_notes",
+          "participation",
+          "accepted_event_id",
+          "own_inspection_event_id",
+          "submitted_claim_event_id",
+          "actual_fulfillment_internal",
+          "issuer_adjudication_event_id",
+          "settlement_receipt_id",
+          "closure_reason",
+          "access_status"
+        ]
+      },
+      "additionalProperties": {
+        "type": [
+          "null",
+          "string"
+        ],
+        "minLength": 36,
+        "maxLength": 36,
+        "pattern": "^evt-[0-9a-f]+$"
+      }
+    },
+    "paper": {
+      "type": "object",
+      "properties": {
+        "holder_seat_id": {
+          "type": [
+            "null",
+            "string"
+          ],
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_.-]*$"
+        },
+        "write_event_id": {
+          "type": [
+            "null",
+            "string"
+          ],
+          "minLength": 36,
+          "maxLength": 36,
+          "pattern": "^evt-[0-9a-f]+$"
+        }
+      },
+      "required": [
+        "holder_seat_id",
+        "write_event_id"
+      ],
+      "additionalProperties": false,
+      "if": {
+        "properties": {
+          "holder_seat_id": {
+            "const": null
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "write_event_id": {
+            "const": null
+          }
+        }
+      }
+    },
+    "receipt": {
+      "type": "object",
+      "properties": {
+        "transfer_event_id": {
+          "type": "string",
+          "minLength": 36,
+          "maxLength": 36,
+          "pattern": "^evt-[0-9a-f]+$"
+        },
+        "source_event_ids": {
+          "$ref": "#/$defs/event_set"
+        },
+        "task_definition_revision": {
+          "const": "1"
+        }
+      },
+      "required": [
+        "transfer_event_id",
+        "source_event_ids",
+        "run_id",
+        "legitimate_loop_id",
+        "task_definition_revision",
+        "opening_seat_id",
+        "paper_id",
+        "recipient_seat_id"
+      ],
+      "propertyNames": {
+        "enum": [
+          "transfer_event_id",
+          "source_event_ids",
+          "run_id",
+          "legitimate_loop_id",
+          "task_definition_revision",
+          "opening_seat_id",
+          "paper_id",
+          "recipient_seat_id"
+        ]
+      },
+      "additionalProperties": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 128,
+        "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_.-]*$"
+      }
+    },
+    "note": {
+      "type": "object",
+      "properties": {
+        "source_event_ids": {
+          "$ref": "#/$defs/event_set"
+        },
+        "kind": {
+          "const": "PLAYER_CLAIM"
+        },
+        "text": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 2048
+        }
+      },
+      "required": [
+        "note_id",
+        "author_seat_id",
+        "source_event_ids",
+        "kind",
+        "text"
+      ],
+      "additionalProperties": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 128,
+        "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_.-]*$"
+      },
+      "propertyNames": {
+        "enum": [
+          "note_id",
+          "author_seat_id",
+          "source_event_ids",
+          "kind",
+          "text"
+        ]
+      }
+    },
+    "event_record": {
+      "type": "object",
+      "properties": {
+        "sequence": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 63
+        },
+        "tick": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 2
+        },
+        "audience": {
+          "type": "object",
+          "propertyNames": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128,
+            "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_.-]*$"
+          },
+          "additionalProperties": {
+            "const": true
+          },
+          "minProperties": 1,
+          "maxProperties": 7
+        },
+        "record": {
+          "type": "object",
+          "properties": {
+            "TASK_OFFERED": {
+              "type": "object",
+              "properties": {},
+              "required": [],
+              "additionalProperties": false
+            },
+            "TASK_PARTICIPATION": {
+              "type": "object",
+              "properties": {
+                "participation": {
+                  "enum": [
+                    "UNACCEPTED",
+                    "ACCEPTED",
+                    "DECLINED",
+                    "WITHDRAWN"
+                  ]
+                }
+              },
+              "required": [
+                "opening_seat_id",
+                "participation"
+              ],
+              "propertyNames": {
+                "enum": [
+                  "opening_seat_id",
+                  "participation"
+                ]
+              }
+            },
+            "OBSERVATION": {
+              "type": "object",
+              "properties": {
+                "text": {
+                  "const": "显示牌变动后回到同一分钟。"
+                }
+              },
+              "required": [
+                "inspection_owner_seat_id",
+                "text"
+              ],
+              "propertyNames": {
+                "enum": [
+                  "inspection_owner_seat_id",
+                  "text"
+                ]
+              }
+            },
+            "AMBIENT_WAVE": {
+              "type": "object",
+              "properties": {
+                "wave_id": {
+                  "const": "echo_arrival"
+                },
+                "text": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 2048
+                }
+              },
+              "required": [
+                "wave_id",
+                "text"
+              ],
+              "propertyNames": {
+                "enum": [
+                  "wave_id",
+                  "text"
+                ]
+              }
+            },
+            "REPORT_DELIVERED": {
+              "type": "object",
+              "properties": {
+                "recipient": {
+                  "const": "npc.lin-que"
+                },
+                "description": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 2048
+                }
+              },
+              "required": [
+                "opening_seat_id",
+                "observation_event_id",
+                "recipient",
+                "description"
+              ],
+              "propertyNames": {
+                "enum": [
+                  "opening_seat_id",
+                  "observation_event_id",
+                  "recipient",
+                  "description"
+                ]
+              }
+            },
+            "NPC_ADJUDICATION": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "enum": [
+                    "NEEDS_EVIDENCE",
+                    "ACCEPTED"
+                  ]
+                },
+                "reason": {
+                  "enum": [
+                    "MISSING_PERSONAL_INSPECTION",
+                    "MISSING_SHARED_OBSERVATION",
+                    "MISSING_SUBMISSION",
+                    "MATCHING_DELIVERED_OBSERVATION"
+                  ]
+                },
+                "evidence_event_ids": {
+                  "$ref": "#/$defs/event_set"
+                }
+              },
+              "required": [
+                "opening_seat_id",
+                "status",
+                "reason",
+                "evidence_event_ids"
+              ],
+              "propertyNames": {
+                "enum": [
+                  "opening_seat_id",
+                  "status",
+                  "reason",
+                  "evidence_event_ids"
+                ]
+              }
+            },
+            "PAPER_TRANSFER": {
+              "type": "object",
+              "properties": {},
+              "required": [
+                "opening_seat_id",
+                "paper_id",
+                "recipient_seat_id"
+              ],
+              "propertyNames": {
+                "enum": [
+                  "opening_seat_id",
+                  "paper_id",
+                  "recipient_seat_id"
+                ]
+              }
+            },
+            "PAPER_WRITTEN": {
+              "type": "object",
+              "properties": {
+                "text": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 2048
+                }
+              },
+              "required": [
+                "paper_id",
+                "holder_seat_id",
+                "source_event_id",
+                "text"
+              ],
+              "propertyNames": {
+                "enum": [
+                  "paper_id",
+                  "holder_seat_id",
+                  "source_event_id",
+                  "text"
+                ]
+              }
+            },
+            "SOURCE_SHARED": {
+              "type": "object",
+              "properties": {
+                "recipient_seat_ids": {
+                  "$ref": "#/$defs/identifier_set"
+                },
+                "record_kind": {
+                  "enum": [
+                    "RAW_OBSERVATION",
+                    "PLAYER_CLAIM",
+                    "PAPER_TEXT"
+                  ]
+                },
+                "text": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 2048
+                },
+                "recipient_order_json": {
+                  "type": "string",
+                  "minLength": 2,
+                  "maxLength": 1024
+                }
+              },
+              "required": [
+                "sender_seat_id",
+                "source_event_id",
+                "recipient_seat_ids",
+                "record_kind",
+                "text",
+                "recipient_order_json"
+              ],
+              "propertyNames": {
+                "enum": [
+                  "sender_seat_id",
+                  "source_event_id",
+                  "recipient_seat_ids",
+                  "record_kind",
+                  "text",
+                  "recipient_order_json"
+                ]
+              }
+            },
+            "COMPONENT_PAUSED": {
+              "type": "object",
+              "properties": {
+                "reason": {
+                  "enum": [
+                    "HOST_PAUSE",
+                    "PREFIX_BOUNDARY"
+                  ]
+                }
+              },
+              "required": [
+                "reason"
+              ],
+              "propertyNames": {
+                "enum": [
+                  "reason"
+                ]
+              }
+            }
+          },
+          "required": [],
+          "additionalProperties": false,
+          "minProperties": 1,
+          "maxProperties": 1,
+          "allOf": [
+            {
+              "additionalProperties": {
+                "patternProperties": {
+                  "id$": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 128,
+                    "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_.-]*$"
+                  },
+                  "nt_id$": {
+                    "type": "string",
+                    "minLength": 36,
+                    "maxLength": 36,
+                    "pattern": "^evt-[0-9a-f]+$"
+                  }
+                }
+              }
+            }
+          ]
+        },
+        "execution_start_event_id": {
+          "type": "string",
+          "minLength": 36,
+          "maxLength": 36,
+          "pattern": "^evt-[0-9a-f]+$"
+        }
+      },
+      "required": [
+        "sequence",
+        "execution_start_event_id",
+        "tick",
+        "audience",
+        "record"
+      ],
+      "additionalProperties": false
+    },
+    "event_set": {
+      "type": "object",
+      "propertyNames": {
+        "type": "string",
+        "minLength": 36,
+        "maxLength": 36,
+        "pattern": "^evt-[0-9a-f]+$"
+      },
+      "additionalProperties": {
+        "const": true
+      },
+      "minProperties": 0,
+      "maxProperties": 64
+    },
+    "identifier_set": {
+      "type": "object",
+      "propertyNames": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 128,
+        "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_.-]*$"
+      },
+      "additionalProperties": {
+        "const": true
+      },
+      "minProperties": 0,
+      "maxProperties": 64
+    }
+  },
+  "propertyNames": {
+    "enum": [
+      "schema_version",
+      "representation",
+      "run_id",
+      "legitimate_loop_id",
+      "task_definition_revision",
+      "phase",
+      "component_status",
+      "tick",
+      "pressure",
+      "service_terminated",
+      "opening_episode_closed",
+      "campaign_terminal",
+      "fired_waves",
+      "task_offered",
+      "ledger",
+      "events",
+      "execution_bindings",
+      "native_values"
+    ]
+  },
+  "if": {
+    "properties": {
+      "tick": {
+        "const": 2
+      }
+    }
+  },
+  "then": {
+    "properties": {
+      "pressure": {
+        "const": 1
+      },
+      "fired_waves": {
+        "const": [
+          "echo_arrival"
+        ]
+      }
+    }
+  },
+  "else": {
+    "properties": {
+      "pressure": {
+        "const": 0
+      },
+      "fired_waves": {
+        "const": []
+      }
+    }
+  }
+}

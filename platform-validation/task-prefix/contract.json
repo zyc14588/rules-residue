@@ -1,0 +1,385 @@
+{
+  "contract_version": 1,
+  "purpose": "M2_TEST_ONLY_PLATFORM_VALIDATION",
+  "package_id": "org.trpgplatform.rules-residue.validation/task-prefix",
+  "version": "0.1.0",
+  "host_api": {
+    "major": 1,
+    "minor": 0,
+    "lua_profile": "platform-lua-5.5-p1"
+  },
+  "manifest": {
+    "source": "manifest.yaml",
+    "encoding": "TOML",
+    "archive_path": "package.toml",
+    "sha256": "4cbada0c760d3887be318d5f35e0cdc5fa3cd23205df29d75f49f20b3abc93e2"
+  },
+  "entrypoint": {
+    "path": "lua/main.lua",
+    "status": "NOT_IMPLEMENTED"
+  },
+  "qualification": {
+    "native_parser_and_schema_proof": "EXTERNAL_SOURCE_BOUND_REQUIRED",
+    "adopted_game_archive_load": "NOT_RUN",
+    "adopted_game_callbacks": "NOT_RUN",
+    "task_gameplay": "NOT_RUN",
+    "atomic_transfer_and_replay": "NOT_RUN",
+    "restore_and_seat_projection_runtime": "NOT_RUN",
+    "real_room_initialization": "NOT_RUN"
+  },
+  "standard_callbacks": [
+    "on_session_create",
+    "on_session_restore",
+    "on_session_start",
+    "validate_command",
+    "execute_command",
+    "list_legal_actions",
+    "project_view",
+    "create_checkpoint",
+    "restore_checkpoint",
+    "resume_continuation",
+    "on_safe_migration_boundary",
+    "on_session_end",
+    "cleanup"
+  ],
+  "capabilities": {
+    "required": [
+      "host.state",
+      "host.event"
+    ],
+    "optional": [],
+    "read_only_callbacks": [
+      "project_view",
+      "list_legal_actions",
+      "create_checkpoint",
+      "on_safe_migration_boundary",
+      "cleanup"
+    ]
+  },
+  "host_contract_index": {
+    "status": "BINDING_INDEX_ONLY_NOT_HOST_WIRE_PROTOCOL",
+    "State": {
+      "package_id": "org.trpgplatform.rules-residue.validation/task-prefix",
+      "path": "schemas/state.schema.json",
+      "sha256": "734f3789b8b81e5936129f833c0a0b6c29d079e6bf03feae0c412f3d11e843a1",
+      "seed": {
+        "fixture": "initial-state.json",
+        "pointer": ""
+      }
+    },
+    "Result": {
+      "package_id": "org.trpgplatform.rules-residue.validation/task-prefix",
+      "path": "schemas/result.schema.json",
+      "sha256": "1a6e73770961fb41cf6072b1df8151541a662fcf628589e34559b148cbf134ad",
+      "seed": {
+        "fixture": "native-callback-cases.json",
+        "pointer": "/cases/3/host_case/Expected"
+      }
+    },
+    "Results": {
+      "on_session_create": {
+        "package_id": "org.trpgplatform.rules-residue.validation/task-prefix",
+        "path": "schemas/result.schema.json",
+        "sha256": "1a6e73770961fb41cf6072b1df8151541a662fcf628589e34559b148cbf134ad",
+        "seed": {
+          "fixture": "native-callback-cases.json",
+          "pointer": "/cases/0/host_case/Expected"
+        }
+      },
+      "on_session_restore": {
+        "package_id": "org.trpgplatform.rules-residue.validation/task-prefix",
+        "path": "schemas/result.schema.json",
+        "sha256": "1a6e73770961fb41cf6072b1df8151541a662fcf628589e34559b148cbf134ad",
+        "seed": {
+          "fixture": "native-callback-cases.json",
+          "pointer": "/cases/1/host_case/Expected"
+        }
+      },
+      "on_session_start": {
+        "package_id": "org.trpgplatform.rules-residue.validation/task-prefix",
+        "path": "schemas/result.schema.json",
+        "sha256": "1a6e73770961fb41cf6072b1df8151541a662fcf628589e34559b148cbf134ad",
+        "seed": {
+          "fixture": "native-callback-cases.json",
+          "pointer": "/cases/2/host_case/Expected"
+        }
+      },
+      "list_legal_actions": {
+        "package_id": "org.trpgplatform.rules-residue.validation/task-prefix",
+        "path": "schemas/result.schema.json",
+        "sha256": "1a6e73770961fb41cf6072b1df8151541a662fcf628589e34559b148cbf134ad",
+        "seed": {
+          "fixture": "native-callback-cases.json",
+          "pointer": "/cases/4/host_case/Expected"
+        }
+      },
+      "project_view": {
+        "package_id": "org.trpgplatform.rules-residue.validation/task-prefix",
+        "path": "schemas/view.schema.json",
+        "sha256": "764d3da699a1eec08e0cdb20dbdf3b9351f492fa0778faa6b298be9481d17389",
+        "seed": {
+          "fixture": "native-callback-cases.json",
+          "pointer": "/cases/5/host_case/Expected"
+        }
+      },
+      "create_checkpoint": {
+        "package_id": "org.trpgplatform.rules-residue.validation/task-prefix",
+        "path": "schemas/state.schema.json",
+        "sha256": "734f3789b8b81e5936129f833c0a0b6c29d079e6bf03feae0c412f3d11e843a1",
+        "seed": {
+          "fixture": "native-callback-cases.json",
+          "pointer": "/cases/6/host_case/Expected"
+        }
+      },
+      "restore_checkpoint": {
+        "package_id": "org.trpgplatform.rules-residue.validation/task-prefix",
+        "path": "schemas/result.schema.json",
+        "sha256": "1a6e73770961fb41cf6072b1df8151541a662fcf628589e34559b148cbf134ad",
+        "seed": {
+          "fixture": "native-callback-cases.json",
+          "pointer": "/cases/7/host_case/Expected"
+        }
+      },
+      "resume_continuation": {
+        "package_id": "org.trpgplatform.rules-residue.validation/task-prefix",
+        "path": "schemas/result.schema.json",
+        "sha256": "1a6e73770961fb41cf6072b1df8151541a662fcf628589e34559b148cbf134ad",
+        "seed": {
+          "fixture": "native-callback-cases.json",
+          "pointer": "/cases/8/host_case/Expected"
+        }
+      },
+      "on_safe_migration_boundary": {
+        "package_id": "org.trpgplatform.rules-residue.validation/task-prefix",
+        "path": "schemas/result.schema.json",
+        "sha256": "1a6e73770961fb41cf6072b1df8151541a662fcf628589e34559b148cbf134ad",
+        "seed": {
+          "fixture": "native-callback-cases.json",
+          "pointer": "/cases/9/host_case/Expected"
+        }
+      },
+      "on_session_end": {
+        "package_id": "org.trpgplatform.rules-residue.validation/task-prefix",
+        "path": "schemas/result.schema.json",
+        "sha256": "1a6e73770961fb41cf6072b1df8151541a662fcf628589e34559b148cbf134ad",
+        "seed": {
+          "fixture": "native-callback-cases.json",
+          "pointer": "/cases/10/host_case/Expected"
+        }
+      },
+      "cleanup": {
+        "package_id": "org.trpgplatform.rules-residue.validation/task-prefix",
+        "path": "schemas/result.schema.json",
+        "sha256": "1a6e73770961fb41cf6072b1df8151541a662fcf628589e34559b148cbf134ad",
+        "seed": {
+          "fixture": "native-callback-cases.json",
+          "pointer": "/cases/11/host_case/Expected"
+        }
+      }
+    },
+    "Events": {
+      "org.trpgplatform.rules-residue.validation/task-prefix/task_action": {
+        "package_id": "org.trpgplatform.rules-residue.validation/task-prefix",
+        "path": "schemas/event.schema.json",
+        "sha256": "d74f2c5a264255137d9b6f5269f47b1a25f8febccca61851d2c4a7a381cde7e9",
+        "seed": {
+          "fixture": "task-prefix-cases.json",
+          "pointer": "/emitted_events/3"
+        }
+      }
+    },
+    "Namespaces": {},
+    "Intents": {},
+    "Named": {}
+  },
+  "command_validation": {
+    "payload_schema": {
+      "package_id": "org.trpgplatform.rules-residue.validation/task-prefix",
+      "path": "schemas/command.schema.json",
+      "sha256": "bf383eb4fca7bded4b18bd01783127c0b2b90dce91dddcc3a04b765fa74a3e0d",
+      "seed": {
+        "value": {
+          "action": "WATCH",
+          "target": "target.departure_board"
+        }
+      }
+    },
+    "host_contract_command_schema_slot": false,
+    "native_lua_input_fields": [
+      "type",
+      "seat_id",
+      "correlation_id",
+      "payload"
+    ],
+    "trusted_identity_source": "Native authority validates current Principal/Identity.Seat before callback. Lua receives only the trusted seat_id in the four-field native Input and resolves its package-authorized character from the immutable trusted State roster. Principal and whole-room roster are not callback fields; fixture trusted_context predicates model preconditions only.",
+    "client_payload_authority_fields": [],
+    "order": [
+      "native trusted envelope validation",
+      "game payload schema check",
+      "future Lua.validate_command checks current sources and preconditions without mutation",
+      "future Lua.execute_command inside the native command transaction"
+    ]
+  },
+  "game_contract": {
+    "task_id": "TASK.TEST.CLOCK_OBSERVATION.V1",
+    "task_definition_revision": "1",
+    "issuer": "npc.lin-que",
+    "target": "target.departure_board",
+    "location": "scene.concourse",
+    "title": "同一分钟的观察记录",
+    "visible_contract": "我想留下一份这块显示牌的现场记录。愿意的话，请你亲自看一次它怎样变动，再把你看到的经过告诉我；我会和你一起看。这里不收原因猜测，也不要求去站台。每个完成自己这份观察说明的人可领一张空白记录纸，每人一次。你可以拒绝或放弃；缺少共同观察时先补证。",
+    "opening_seat_count": {
+      "min": 2,
+      "max": 6,
+      "exercised_fixture_count": 2
+    },
+    "start": "Fresh isolated C01, with run/loop and immutable willing opening-seat roster provisioned by trusted HostContract.State.Seed configuration. Fixture opening-seat-A/B and their controller/character values are test examples, not production authority.",
+    "supported_actions": [
+      "PUBLISH_TASK",
+      "ACCEPT_TASK",
+      "REFUSE_TASK",
+      "WITHDRAW_TASK",
+      "SUBMIT_OBSERVATION",
+      "ADJUDICATE_TASK",
+      "SETTLE_TASK",
+      "WRITE_OWN_PAPER",
+      "SHARE_SOURCE",
+      "WATCH"
+    ],
+    "admin0_actions": [
+      "PUBLISH_TASK",
+      "ACCEPT_TASK",
+      "REFUSE_TASK",
+      "WITHDRAW_TASK",
+      "SUBMIT_OBSERVATION",
+      "ADJUDICATE_TASK",
+      "SETTLE_TASK",
+      "WRITE_OWN_PAPER",
+      "SHARE_SOURCE"
+    ],
+    "watch": {
+      "tick_delta": 1,
+      "personal_inspection": true,
+      "dice": false,
+      "phenomenon": "显示牌变动后回到同一分钟。",
+      "first_fixture_order": [
+        "opening-seat-A",
+        "opening-seat-B"
+      ],
+      "tick2_order": [
+        "advance tick once",
+        "echo_arrival once: pressure +1 for actual occupants",
+        "B observation"
+      ]
+    },
+    "entitlement_key": [
+      "run_id",
+      "legitimate_loop_id",
+      "task_definition_revision",
+      "immutable_opening_seat"
+    ],
+    "state_object": "One full authoritative State object; inventory, physical holder, entitlement and immutable transfer receipt update together.",
+    "transfer_guard": [
+      "accepted local contract",
+      "eligible unconsumed immutable opening-seat entitlement",
+      "issuer actually present and willing under her finite adjudication",
+      "real paper stock >= 1"
+    ],
+    "fulfillment": "Own accepted current-run/current-loop personal WATCH, actual co-observation with issuer, and voluntarily delivered source-matching description.",
+    "npc_judgment": "Use actual issuer witnessing and received report only. No GM truth or unseen notes. SOCIAL_INFLUENCE and ACCEPTED_MISTAKEN execution are outside this prefix; the transfer guard does not query the GM fulfillment bit.",
+    "source_authority": "Only the actual host.event.emit returned ID, bound to the same execution/run/loop and legal audience or delivered explicit share. Fixture IDs are predictions, never authority.",
+    "idempotency": "Same native command replay precedes Lua; new command/correlation/request/task-instance IDs do not mint an opening-seat entitlement. Consumed entitlement returns its one immutable receipt.",
+    "paper": "Exactly one ordinary sheet per eligible entitlement. Actual holder alone may explicitly write source-linked text; private notes and shared records remain separate.",
+    "projection": "Trusted caller-seat allowlist. GM fulfillment, NPC private belief, controller identities, full ledger/history and other-seat notes never appear in player views.",
+    "checkpoint": "Full State, with source history, stock, holders and consumed entitlement receipts; never a player view. Restore preserves these fields and mints no paper.",
+    "schema_limits": "Closed types, identity formats, finite physical-inventory cardinality, atomic consumed-reference shape and wave timing are native schema constraints. Dynamic identity/source/holder/receipt joins and immutable transitions are separately checked contract relations and mandatory future Lua checks.",
+    "end": "Preserve actual state and pause the component; no invented station exit, episode closure or campaign termination.",
+    "outside_prefix": [
+      "PROBE_DISPLAY",
+      "SOCIAL_INFLUENCE",
+      "FULL_LISTEN",
+      "tick4",
+      "apparatus repair",
+      "travel",
+      "loop reset",
+      "Boss",
+      "endings",
+      "RNG",
+      "AI"
+    ],
+    "state_representation": {
+      "name": "INDEXED_STATE_V1",
+      "canonical_collections": [
+        "events keyed by actual emitted event ID",
+        "execution_bindings keyed by the first actual returned event ID",
+        "ledger papers keyed by allocated physical paper ID",
+        "ledger receipts keyed by immutable receipt ID"
+      ],
+      "stock": "Count ledger.papers whose holder_seat_id is null; paper collection size is the immutable opening-seat count. No independent stock counter.",
+      "references": "Seats reference inspection/report/adjudication/receipt IDs. Consumed and SETTLED mean settlement_receipt_id is non-null. Receipt supplies the paper ID, whose canonical paper supplies the actual holder and last write-event ID. Text/source come from that immutable write event. Unordered audience/evidence membership collections are objects with true values; SOURCE_SHARED recipient_seat_ids is unique membership and recipient_order_json independently preserves the original ordered array as compact canonical JSON. Relation checks require an ordered unique string array, exact membership equality and exact request/event order; native JSON duplicate-member rejection is required. Native audit cost is kept within the unchanged Host budget by equivalent object/null type unions, direct conditionals, and exact property-name enums with suffix-selected scalar constraints. The name enums retain the same closed field sets; all required fields and scalar constraints remain effective. Closed name enums make the short event/id suffix selectors equivalent to the original exact-name alternatives. Event array uniqueness is applied through one shared local assertion at every original array position, preserving every uniqueItems check while avoiding duplicated static audit charges. Closed-name native factoring retains explicit const-false closure properties, exact root names with common run/loop identifier validation, and exact seat/receipt names with additionalProperties applying their original scalar constraints only to the omitted known fields. These constraints remain enforced by Native Schema, not transferred into Python relations. Each typed record remains required and closed by its exact field-name enum. A separate allOf schema applies common identifier and native event-ID scalar constraints to every record member value; its id$/nt_id$ selectors can only match the original ID fields or wave_id=echo_arrival, which already implies the ordinary identifier constraint. Original opening-seat, request-binding and note ID fields use exact name enums plus common additionalProperties validation; no Native Schema checks move into Python.",
+      "history": "events.sequence orders actual emissions. Its single-key record supplies kind and detail. The authoritative State supplies run/loop/version; this operational contract supplies fixed task/item/issuer/target/terms. Each State record joins its execution_start_event_id to execution_bindings, which stores correlation (trace only), trusted opening seat and complete original payload_json and its exact visible payload hash for commands; the exact schema-constant lifecycle_binding denotes the exact empty on_session_end Input. The first emitted payload has execution_start_event_id=null. Only after emit returns is its actual event ID used as State execution key; subsequent payloads reference that already-returned ID. Reconstruct the first payload as null using event ID equality; other group members retain that start ID. Ambient wave and Host pause actors are null; other actors come from the trusted binding. Source IDs come from typed record data or the matching canonical transfer receipt. NPC witnesses are events whose actual audience includes the issuer; received reports are those witnessed REPORT_DELIVERED records. Player observations are only OBSERVATION/AMBIENT_WAVE/SOURCE_SHARED records in their actual audience.",
+      "entitlement_key": "Root run_id, legitimate_loop_id, task_definition_revision and immutable opening_seats object key. Every canonical receipt repeats this tuple for independent consistency checks.",
+      "checkpoint": "The complete indexed object includes every canonical event, execution binding, paper, receipt and private note needed to reconstruct the full logical State. Nothing comes from a player view.",
+      "native_construction": {
+        "state_path": [
+          "native_values"
+        ],
+        "template_source": "The exact initial-state.json is provisioned as install.HostContract.State.Seed by the trusted operator, using the existing SchemaReference.Seed interface. Native installation binds and validates this seed and supplies it as vm.State before on_session_create; no client payload supplies templates or identity.",
+        "consumption": "Standard host.state.get on the non-empty native_values/template path returns an ordinary Lua table with native checkpoint shape metadata. Add the required fields to that fresh table. The empty_array value supplies actual empty arrays and the empty root path for state.get/state.put. Never construct a required JSON null or empty array by assigning nil or using a new empty table.",
+        "null_semantics": "Required explicit JSON null means no value. Missing keys are invalid and never aliases for null. The const templates preserve only these absent-value keys; they supply no authority, observations, receipts, actor identity or event IDs. Non-null values still require their exact original schema and relation checks.",
+        "empty_array_semantics": "The const empty_array is an actual JSON array with zero elements. A new Lua {} is an object and is not an equivalent array. Empty object collections remain objects.",
+        "invariants": "native_values is schema-constant, survives full checkpoint/restore unchanged and is excluded from every player projection. Consuming a template returns a copy; commands cannot replace its contents.",
+        "room_configuration_status": "NOT_RUN: actual operator provisioning, occupied willing seats and production room initialization remain mandatory following-game-Lua gates.",
+        "lifecycle_binding": "The exact schema-constant native_values.lifecycle_binding stores callback=on_session_end, null opening_seat_id/correlation_id, canonical empty payload_json and its exact hash. This is the lossless representation of the no-command lifecycle binding, not a command or actor. Read a fresh object with standard host.state.get, assign it under the actual returned event ID, and put the complete State once. No dynamic null-valued map entry, transient placeholder or extra Host API is needed. Native empty-map nested-put defects remain upstream; this representation does not claim to repair them."
+      }
+    },
+    "execution_provenance": {
+      "origin": "Actual callback input plus authoritative current State and real host.event.emit returns; native Header.CommandID is outside the game callback.",
+      "first_event": "Emit with execution_start_event_id=null; no payload requires its own or a not-yet-returned event ID. After return, add the State event record and binding keyed by that returned ID.",
+      "later_events": "Use the first returned ID in subsequent same-execution payloads; append State records keyed by their own real returned IDs. Members form one contiguous sequence with the earliest member equal to the binding key.",
+      "binding": "Non-null command binding stores native correlation_id for tracing only, native seat_id mapped to immutable current State opening seat, and both payload_json and payload_sha256. payload_json preserves the complete original game payload as canonical JSON (UTF8, sorted keys, compact separators, ensure_ascii=false), including ordered arrays and exact strings; payload_sha256 hashes those exact encoded UTF8 bytes. The command schema and relation checks require the stored request to match the independently reconstructed typed response with no field loss or recipient sorting. SOURCE_SHARED records preserve independent recipient_order_json plus unique recipient_seat_ids membership. Decode the canonical array only with uniqueness and exact membership checks; typed event recipients must exactly equal the original request array. Audience remains unordered membership. This encoding avoids applying the native compiler global uniqueItems multiplier to the entire checkpoint; it does not reduce effective uniqueness checks. Command type is fixed task-prefix. The exact schema-constant lifecycle_binding denotes on_session_end with its exact empty Input: null seat/correlation, payload_json={} and its known SHA256 reconstruct without invented callback fields. The typed COMPONENT_PAUSED record distinguishes that control callback; a command execution cannot use a lifecycle binding. Neither correlation nor payload-provided ID supplies execution identity.",
+      "state_update": "All records and their source joins enter the same final authoritative State update as stock, holder, entitlement and immutable receipt. Future host command commit couples this update to actual emitted events.",
+      "native_replay": "Native host owns Header.CommandID and suppresses its replay before Lua; new native commands or repeated correlations remain separate executions without resetting an entitlement. Event grouping is never an entitlement key."
+    },
+    "run_loop_origin": "Native install.HostContract.State.Seed supplies provisioned game run_id and legitimate_loop_id; host.state.get returns current authoritative State. Full checkpoint/current State preserves them. These game IDs are not required to equal inaccessible native SessionID; initialization and restore runtime remain NOT_RUN.",
+    "initialization_precondition": "Before any game command, trusted configuration supplies fixed immutable logical opening-seat IDs and package-authorized character/controller bindings in HostContract.State.Seed. Matching trusted launch SeatRule IDs must be Required; existing launch readiness validates occupied human slots and each participant consent, readiness and safety acknowledgment, and the native bridge authorizes the current occupant as that stable slot ID. The game resolves its character by that trusted seat, without treating account identity or client fields as roster authority. Fixture A/B values are examples. These files require neither automatic dynamic roster getters nor per-room State.Seed rewriting. Missing or mismatched seed seat rejects; first commands cannot create, claim or replace an opening seat. Actual fixed-seat configuration integration, initialization and real-room adopted-game Lua remain NOT_RUN."
+  },
+  "fixture_format": {
+    "kind": "CONTRACT_VECTORS_NOT_PLAYED_HISTORY",
+    "native_case_binding": "install.Test.Host is an actual install.HostCase; Input and Expected contain native JSON converted to checkpoint.Value. validate_command/execute_command are tested only together through Callback=command.",
+    "schema_vectors": "Exact sample reference plus ordered set/delete mutations, validated by the native compiled schema.",
+    "relation_vectors": "Snapshot identity/source/conservation/projection checks; not executed game callbacks."
+  },
+  "files": {
+    "manifest.yaml": "4cbada0c760d3887be318d5f35e0cdc5fa3cd23205df29d75f49f20b3abc93e2",
+    "schemas/command.schema.json": "bf383eb4fca7bded4b18bd01783127c0b2b90dce91dddcc3a04b765fa74a3e0d",
+    "schemas/state.schema.json": "734f3789b8b81e5936129f833c0a0b6c29d079e6bf03feae0c412f3d11e843a1",
+    "schemas/result.schema.json": "1a6e73770961fb41cf6072b1df8151541a662fcf628589e34559b148cbf134ad",
+    "schemas/view.schema.json": "764d3da699a1eec08e0cdb20dbdf3b9351f492fa0778faa6b298be9481d17389",
+    "schemas/event.schema.json": "d74f2c5a264255137d9b6f5269f47b1a25f8febccca61851d2c4a7a381cde7e9",
+    "fixtures/initial-state.json": "9814d7e5386b0104da6e9b2c8b09cff2124689be86ee1689d7e363090fbe87e4",
+    "fixtures/native-callback-cases.json": "bd6f8741863c4b9b54253884b095ea0de2bc7a5a998f2911f2f3863ad2690281",
+    "fixtures/task-prefix-cases.json": "af094bf30e1ce1a9e0f7574fe6abed6dd62d0ce8f765e6799379db85d39524db"
+  },
+  "native_consumer": {
+    "interface": "archive.ManifestPath / manifest.Parse / install.HostContract / install.HostCase / hostapi.BindSchema",
+    "schema_dialect": "https://json-schema.org/draft/2020-12/schema",
+    "pre_lua_scope": "Exact manifest, schema bytes, schema references and native callback input/expected shapes. Host commit identity and producer command evidence are supplied separately.",
+    "source_files": {
+      "docs/20-architecture/LUA_RUNTIME.md": "b09fda823c73a7724fda8b67db43c6386c304ad9b9d1f9f582f2243ddd03ce96",
+      "docs/20-architecture/SESSION_RUNTIME.md": "bac19a3c0007599c1bc5d3e50f1e5a1202bd04b9226b7bfe29ec7e6e20a1c4d8",
+      "go.mod": "62dbfb0f5786aa56579cbfadf6bca0e78a8db59b5c2abfd4a7684bf636350cda",
+      "go.sum": "8cf0b6b590e5d69cd0b6eaf843cb85cc2ec45e320149119fcb8f0ef092468883",
+      "internal/hostapi/command.go": "69f4ab9634447cbb03f92640c56ccabe19b104d4ffc8520b0fd83bb316466d4f",
+      "internal/hostapi/schema.go": "b9483dee782decad53a3d4736a21e4614505e8b959d725fab8cc7775079315e9",
+      "internal/hostapi/workspace.go": "801a4e7be1705d5a90b76bbd9f96edb0e5cc9b7fb5cc5be2a5ecb8409d955195",
+      "internal/luaruntime/profile/host.go": "cf1c31b35c09eb560eeb84d567f5364e96fe0c2081ee012cbc6f71a82322ac76",
+      "internal/luaruntime/vm/package.go": "956dccabbb14900336878c4120a9f9e223b54b10a0fb8f98ac7f06708bf4481d",
+      "internal/package/extension/extension.go": "c12133f16f3e591b6a2bc0b85a8d664dcd3efed838653baad7db8f924e446b78",
+      "internal/package/extension/validation_cost.go": "0a26ee156db1b9661396160f3d556c7d0e88be50c0ed01d110ece6bfaec29815",
+      "internal/package/jsondocument/document.go": "58e6fec772cccf6cd776cec57b994a6304b013353887472195af7cedb1466a4b",
+      "internal/platform/launch/session_bridge_runtime.go": "e51eeb060570bf5e61f5a30337d35e6134bfd2f2a429d320c62e895bb17df80c",
+      "tests/integration/player/game_fixture_test.go": "3c11e6f76c71734dfb02678dc0225532a7b32f2ee01d8e6eb290be52c8ceca15"
+    }
+  }
+}

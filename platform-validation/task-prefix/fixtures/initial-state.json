@@ -1,0 +1,113 @@
+{
+  "schema_version": 1,
+  "run_id": "fixture-run-01",
+  "legitimate_loop_id": "fixture-loop-01",
+  "task_definition_revision": "1",
+  "phase": "C01_TASK_PREFIX",
+  "component_status": "ACTIVE",
+  "tick": 0,
+  "pressure": 0,
+  "service_terminated": false,
+  "opening_episode_closed": false,
+  "campaign_terminal": false,
+  "fired_waves": [],
+  "task_offered": false,
+  "representation": "INDEXED_STATE_V1",
+  "ledger": {
+    "opening_seats": {
+      "opening-seat-A": {
+        "controller_principal": "fixture-principal-A",
+        "authorized_character_id": "fixture-character-A"
+      },
+      "opening-seat-B": {
+        "controller_principal": "fixture-principal-B",
+        "authorized_character_id": "fixture-character-B"
+      }
+    },
+    "seats": {
+      "opening-seat-A": {
+        "location": "scene.concourse",
+        "strain": 0,
+        "passenger_bound": false,
+        "pending_repeat": false,
+        "private_notes": [],
+        "participation": "UNACCEPTED",
+        "accepted_event_id": null,
+        "own_inspection_event_id": null,
+        "actual_fulfillment_internal": false,
+        "closure_reason": null,
+        "access_status": "ACCESSIBLE",
+        "submitted_claim_event_id": null,
+        "issuer_adjudication_event_id": null,
+        "settlement_receipt_id": null
+      },
+      "opening-seat-B": {
+        "location": "scene.concourse",
+        "strain": 0,
+        "passenger_bound": false,
+        "pending_repeat": false,
+        "private_notes": [],
+        "participation": "UNACCEPTED",
+        "accepted_event_id": null,
+        "own_inspection_event_id": null,
+        "actual_fulfillment_internal": false,
+        "closure_reason": null,
+        "access_status": "ACCESSIBLE",
+        "submitted_claim_event_id": null,
+        "issuer_adjudication_event_id": null,
+        "settlement_receipt_id": null
+      }
+    },
+    "npc": {
+      "id": "npc.lin-que",
+      "location": "scene.concourse",
+      "strain": 0,
+      "private_belief": "NPC_HYPOTHESIS_ONLY: 绝不能进入站台"
+    },
+    "papers": {
+      "paper-fixture-A": {
+        "holder_seat_id": null,
+        "write_event_id": null
+      },
+      "paper-fixture-B": {
+        "holder_seat_id": null,
+        "write_event_id": null
+      }
+    },
+    "receipts": {}
+  },
+  "events": {},
+  "execution_bindings": {},
+  "native_values": {
+    "empty_array": [],
+    "event": {
+      "execution_start_event_id": null,
+      "actor_seat_id": null
+    },
+    "result": {
+      "settlement_receipt": null
+    },
+    "view": {
+      "published_task": null,
+      "own_paper": null
+    },
+    "own_task": {
+      "settlement_receipt": null
+    },
+    "observation": {
+      "inspection_owner_seat_id": null
+    },
+    "paper": {
+      "text": null,
+      "write_event_id": null,
+      "source_event_id": null
+    },
+    "lifecycle_binding": {
+      "callback": "on_session_end",
+      "correlation_id": null,
+      "opening_seat_id": null,
+      "payload_json": "{}",
+      "payload_sha256": "sha256:44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a"
+    }
+  }
+}

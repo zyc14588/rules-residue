@@ -1,0 +1,532 @@
+{
+  "fixture_kind": "CONTRACT_VECTORS_NOT_PLAYED_HISTORY",
+  "standard_callbacks": [
+    "on_session_create",
+    "on_session_restore",
+    "on_session_start",
+    "validate_command",
+    "execute_command",
+    "list_legal_actions",
+    "project_view",
+    "create_checkpoint",
+    "restore_checkpoint",
+    "resume_continuation",
+    "on_safe_migration_boundary",
+    "on_session_end",
+    "cleanup"
+  ],
+  "cases": [
+    {
+      "name": "native-on_session_create",
+      "callbacks": [
+        "on_session_create"
+      ],
+      "host_case": {
+        "Callback": "on_session_create",
+        "Input": {},
+        "Expected": {
+          "kind": "LIFECYCLE_RESULT",
+          "callback": "on_session_create",
+          "schema_version": 1,
+          "status": "READY",
+          "reason": "NONE"
+        },
+        "Time": 0,
+        "Random": []
+      },
+      "expected_schema": "schemas/result.schema.json"
+    },
+    {
+      "name": "native-on_session_restore",
+      "callbacks": [
+        "on_session_restore"
+      ],
+      "host_case": {
+        "Callback": "on_session_restore",
+        "Input": {},
+        "Expected": {
+          "kind": "LIFECYCLE_RESULT",
+          "callback": "on_session_restore",
+          "schema_version": 1,
+          "status": "RESTORED",
+          "reason": "NONE"
+        },
+        "Time": 0,
+        "Random": []
+      },
+      "expected_schema": "schemas/result.schema.json"
+    },
+    {
+      "name": "native-on_session_start",
+      "callbacks": [
+        "on_session_start"
+      ],
+      "host_case": {
+        "Callback": "on_session_start",
+        "Input": {},
+        "Expected": {
+          "kind": "LIFECYCLE_RESULT",
+          "callback": "on_session_start",
+          "schema_version": 1,
+          "status": "READY",
+          "reason": "NONE"
+        },
+        "Time": 0,
+        "Random": []
+      },
+      "expected_schema": "schemas/result.schema.json"
+    },
+    {
+      "name": "native-command",
+      "callbacks": [
+        "validate_command",
+        "execute_command"
+      ],
+      "host_case": {
+        "Callback": "command",
+        "Input": {
+          "type": "task-prefix",
+          "seat_id": "opening-seat-A",
+          "correlation_id": "fixture-correlation-01",
+          "payload": {
+            "action": "PUBLISH_TASK",
+            "task_id": "TASK.TEST.CLOCK_OBSERVATION.V1"
+          }
+        },
+        "Expected": {
+          "kind": "ACTION_RESULT",
+          "action": "PUBLISH_TASK",
+          "status": "ACCEPTED",
+          "reason": "NONE",
+          "tick": 0,
+          "tick_delta": 0,
+          "event_ids": [],
+          "settlement_receipt": null
+        },
+        "Time": 0,
+        "Random": []
+      },
+      "expected_schema": "schemas/result.schema.json"
+    },
+    {
+      "name": "native-list_legal_actions",
+      "callbacks": [
+        "list_legal_actions"
+      ],
+      "host_case": {
+        "Callback": "list_legal_actions",
+        "Input": {
+          "seat_id": "opening-seat-A"
+        },
+        "Expected": {
+          "kind": "LEGAL_ACTIONS",
+          "actions": [
+            {
+              "action": "PUBLISH_TASK",
+              "task_id": "TASK.TEST.CLOCK_OBSERVATION.V1"
+            },
+            {
+              "action": "WATCH",
+              "target": "target.departure_board"
+            }
+          ]
+        },
+        "Time": 0,
+        "Random": []
+      },
+      "expected_schema": "schemas/result.schema.json"
+    },
+    {
+      "name": "native-project_view",
+      "callbacks": [
+        "project_view"
+      ],
+      "host_case": {
+        "Callback": "project_view",
+        "Input": {
+          "seat_id": "opening-seat-A"
+        },
+        "Expected": {
+          "schema_version": 1,
+          "seat_id": "opening-seat-A",
+          "location": "scene.concourse",
+          "strain": 0,
+          "component_status": "ACTIVE",
+          "published_task": null,
+          "own_task": {
+            "participation": "UNACCEPTED",
+            "npc_response": "NONE",
+            "visible_reason": "NONE",
+            "settlement_status": "LOCAL_UNSETTLED",
+            "access_status": "ACCESSIBLE",
+            "settlement_receipt": null
+          },
+          "observations": [],
+          "own_notes": [],
+          "own_paper": null,
+          "received_shares": []
+        },
+        "Time": 0,
+        "Random": []
+      },
+      "expected_schema": "schemas/view.schema.json"
+    },
+    {
+      "name": "native-create_checkpoint",
+      "callbacks": [
+        "create_checkpoint"
+      ],
+      "host_case": {
+        "Callback": "create_checkpoint",
+        "Input": {},
+        "Expected": {
+          "schema_version": 1,
+          "run_id": "fixture-run-01",
+          "legitimate_loop_id": "fixture-loop-01",
+          "task_definition_revision": "1",
+          "phase": "C01_TASK_PREFIX",
+          "component_status": "ACTIVE",
+          "tick": 0,
+          "pressure": 0,
+          "service_terminated": false,
+          "opening_episode_closed": false,
+          "campaign_terminal": false,
+          "fired_waves": [],
+          "task_offered": false,
+          "representation": "INDEXED_STATE_V1",
+          "ledger": {
+            "opening_seats": {
+              "opening-seat-A": {
+                "controller_principal": "fixture-principal-A",
+                "authorized_character_id": "fixture-character-A"
+              },
+              "opening-seat-B": {
+                "controller_principal": "fixture-principal-B",
+                "authorized_character_id": "fixture-character-B"
+              }
+            },
+            "seats": {
+              "opening-seat-A": {
+                "location": "scene.concourse",
+                "strain": 0,
+                "passenger_bound": false,
+                "pending_repeat": false,
+                "private_notes": [],
+                "participation": "UNACCEPTED",
+                "accepted_event_id": null,
+                "own_inspection_event_id": null,
+                "actual_fulfillment_internal": false,
+                "closure_reason": null,
+                "access_status": "ACCESSIBLE",
+                "submitted_claim_event_id": null,
+                "issuer_adjudication_event_id": null,
+                "settlement_receipt_id": null
+              },
+              "opening-seat-B": {
+                "location": "scene.concourse",
+                "strain": 0,
+                "passenger_bound": false,
+                "pending_repeat": false,
+                "private_notes": [],
+                "participation": "UNACCEPTED",
+                "accepted_event_id": null,
+                "own_inspection_event_id": null,
+                "actual_fulfillment_internal": false,
+                "closure_reason": null,
+                "access_status": "ACCESSIBLE",
+                "submitted_claim_event_id": null,
+                "issuer_adjudication_event_id": null,
+                "settlement_receipt_id": null
+              }
+            },
+            "npc": {
+              "id": "npc.lin-que",
+              "location": "scene.concourse",
+              "strain": 0,
+              "private_belief": "NPC_HYPOTHESIS_ONLY: 绝不能进入站台"
+            },
+            "papers": {
+              "paper-fixture-A": {
+                "holder_seat_id": null,
+                "write_event_id": null
+              },
+              "paper-fixture-B": {
+                "holder_seat_id": null,
+                "write_event_id": null
+              }
+            },
+            "receipts": {}
+          },
+          "events": {},
+          "execution_bindings": {},
+          "native_values": {
+            "empty_array": [],
+            "event": {
+              "execution_start_event_id": null,
+              "actor_seat_id": null
+            },
+            "result": {
+              "settlement_receipt": null
+            },
+            "view": {
+              "published_task": null,
+              "own_paper": null
+            },
+            "own_task": {
+              "settlement_receipt": null
+            },
+            "observation": {
+              "inspection_owner_seat_id": null
+            },
+            "paper": {
+              "text": null,
+              "write_event_id": null,
+              "source_event_id": null
+            },
+            "lifecycle_binding": {
+              "callback": "on_session_end",
+              "correlation_id": null,
+              "opening_seat_id": null,
+              "payload_json": "{}",
+              "payload_sha256": "sha256:44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a"
+            }
+          }
+        },
+        "Time": 0,
+        "Random": []
+      },
+      "expected_schema": "schemas/state.schema.json"
+    },
+    {
+      "name": "native-restore_checkpoint",
+      "callbacks": [
+        "restore_checkpoint"
+      ],
+      "host_case": {
+        "Callback": "restore_checkpoint",
+        "Input": {
+          "schema_version": 1,
+          "run_id": "fixture-run-01",
+          "legitimate_loop_id": "fixture-loop-01",
+          "task_definition_revision": "1",
+          "phase": "C01_TASK_PREFIX",
+          "component_status": "ACTIVE",
+          "tick": 0,
+          "pressure": 0,
+          "service_terminated": false,
+          "opening_episode_closed": false,
+          "campaign_terminal": false,
+          "fired_waves": [],
+          "task_offered": false,
+          "representation": "INDEXED_STATE_V1",
+          "ledger": {
+            "opening_seats": {
+              "opening-seat-A": {
+                "controller_principal": "fixture-principal-A",
+                "authorized_character_id": "fixture-character-A"
+              },
+              "opening-seat-B": {
+                "controller_principal": "fixture-principal-B",
+                "authorized_character_id": "fixture-character-B"
+              }
+            },
+            "seats": {
+              "opening-seat-A": {
+                "location": "scene.concourse",
+                "strain": 0,
+                "passenger_bound": false,
+                "pending_repeat": false,
+                "private_notes": [],
+                "participation": "UNACCEPTED",
+                "accepted_event_id": null,
+                "own_inspection_event_id": null,
+                "actual_fulfillment_internal": false,
+                "closure_reason": null,
+                "access_status": "ACCESSIBLE",
+                "submitted_claim_event_id": null,
+                "issuer_adjudication_event_id": null,
+                "settlement_receipt_id": null
+              },
+              "opening-seat-B": {
+                "location": "scene.concourse",
+                "strain": 0,
+                "passenger_bound": false,
+                "pending_repeat": false,
+                "private_notes": [],
+                "participation": "UNACCEPTED",
+                "accepted_event_id": null,
+                "own_inspection_event_id": null,
+                "actual_fulfillment_internal": false,
+                "closure_reason": null,
+                "access_status": "ACCESSIBLE",
+                "submitted_claim_event_id": null,
+                "issuer_adjudication_event_id": null,
+                "settlement_receipt_id": null
+              }
+            },
+            "npc": {
+              "id": "npc.lin-que",
+              "location": "scene.concourse",
+              "strain": 0,
+              "private_belief": "NPC_HYPOTHESIS_ONLY: 绝不能进入站台"
+            },
+            "papers": {
+              "paper-fixture-A": {
+                "holder_seat_id": null,
+                "write_event_id": null
+              },
+              "paper-fixture-B": {
+                "holder_seat_id": null,
+                "write_event_id": null
+              }
+            },
+            "receipts": {}
+          },
+          "events": {},
+          "execution_bindings": {},
+          "native_values": {
+            "empty_array": [],
+            "event": {
+              "execution_start_event_id": null,
+              "actor_seat_id": null
+            },
+            "result": {
+              "settlement_receipt": null
+            },
+            "view": {
+              "published_task": null,
+              "own_paper": null
+            },
+            "own_task": {
+              "settlement_receipt": null
+            },
+            "observation": {
+              "inspection_owner_seat_id": null
+            },
+            "paper": {
+              "text": null,
+              "write_event_id": null,
+              "source_event_id": null
+            },
+            "lifecycle_binding": {
+              "callback": "on_session_end",
+              "correlation_id": null,
+              "opening_seat_id": null,
+              "payload_json": "{}",
+              "payload_sha256": "sha256:44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a"
+            }
+          }
+        },
+        "Expected": {
+          "kind": "LIFECYCLE_RESULT",
+          "callback": "restore_checkpoint",
+          "schema_version": 1,
+          "status": "RESTORED",
+          "reason": "NONE"
+        },
+        "Time": 0,
+        "Random": []
+      },
+      "expected_schema": "schemas/result.schema.json"
+    },
+    {
+      "name": "native-resume_continuation",
+      "callbacks": [
+        "resume_continuation"
+      ],
+      "host_case": {
+        "Callback": "resume_continuation",
+        "Input": {},
+        "Expected": {
+          "kind": "LIFECYCLE_RESULT",
+          "callback": "resume_continuation",
+          "schema_version": 1,
+          "status": "UNSUPPORTED",
+          "reason": "CONTINUATION_NOT_SUPPORTED"
+        },
+        "Time": 0,
+        "Random": []
+      },
+      "expected_schema": "schemas/result.schema.json"
+    },
+    {
+      "name": "native-on_safe_migration_boundary",
+      "callbacks": [
+        "on_safe_migration_boundary"
+      ],
+      "host_case": {
+        "Callback": "on_safe_migration_boundary",
+        "Input": {},
+        "Expected": {
+          "kind": "LIFECYCLE_RESULT",
+          "callback": "on_safe_migration_boundary",
+          "schema_version": 1,
+          "status": "PAUSED",
+          "reason": "NONE"
+        },
+        "Time": 0,
+        "Random": []
+      },
+      "expected_schema": "schemas/result.schema.json"
+    },
+    {
+      "name": "native-on_session_end",
+      "callbacks": [
+        "on_session_end"
+      ],
+      "host_case": {
+        "Callback": "on_session_end",
+        "Input": {},
+        "Expected": {
+          "kind": "LIFECYCLE_RESULT",
+          "callback": "on_session_end",
+          "schema_version": 1,
+          "status": "PAUSED",
+          "reason": "NONE"
+        },
+        "Time": 0,
+        "Random": []
+      },
+      "expected_schema": "schemas/result.schema.json"
+    },
+    {
+      "name": "native-cleanup",
+      "callbacks": [
+        "cleanup"
+      ],
+      "host_case": {
+        "Callback": "cleanup",
+        "Input": {},
+        "Expected": {
+          "kind": "LIFECYCLE_RESULT",
+          "callback": "cleanup",
+          "schema_version": 1,
+          "status": "CLEANED",
+          "reason": "NONE"
+        },
+        "Time": 0,
+        "Random": []
+      },
+      "expected_schema": "schemas/result.schema.json"
+    }
+  ],
+  "native_hostcase_negatives": [
+    {
+      "id": "N-HOSTCASE-VALIDATE-DIRECT",
+      "callback": "validate_command"
+    },
+    {
+      "id": "N-HOSTCASE-EXECUTE-DIRECT",
+      "callback": "execute_command"
+    },
+    {
+      "id": "N-HOSTCASE-UNKNOWN",
+      "callback": "fictional_callback"
+    },
+    {
+      "id": "N-HOSTCASE-NEGATIVE-TIME",
+      "callback": "command",
+      "time": -1
+    }
+  ]
+}

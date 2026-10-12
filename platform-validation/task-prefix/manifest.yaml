@@ -1,0 +1,23 @@
+# Native TOML source; archive destination: package.toml.
+schema_version = 1
+artifact_type = "package"
+package_id = "org.trpgplatform.rules-residue.validation/task-prefix"
+package_kind = "game-system"
+version = "0.1.0"
+display_name = "Rules Residue: observation task validation prefix"
+entrypoint = "lua/main.lua"
+lua_profile = "platform-lua-5.5-p1"
+[host_api]
+major = 1
+min_minor = 0
+max_minor = 0
+[build]
+source = "rules-residue/task-prefix"
+revision = "0.1.0"
+builder = "rules-residue-contract/1"
+[rights]
+authors = ["Rules Residue project"]
+source = "original"
+statement = "Original internal validation content; public release and final first-party licensing remain pending."
+[capabilities]
+required = ["host.state", "host.event"]

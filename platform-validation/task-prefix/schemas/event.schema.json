@@ -1,0 +1,458 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Task-prefix emitted event payload",
+  "$defs": {
+    "_identifier": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128,
+      "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_.-]*$"
+    },
+    "_event_id": {
+      "type": "string",
+      "minLength": 36,
+      "maxLength": 36,
+      "pattern": "^evt-[0-9a-f]+$"
+    },
+    "_unique_0": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/_identifier"
+      },
+      "minItems": 1,
+      "maxItems": 7,
+      "$ref": "#/$defs/unique_array"
+    },
+    "_unique_1": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/_event_id"
+      },
+      "minItems": 0,
+      "maxItems": 64,
+      "$ref": "#/$defs/unique_array"
+    },
+    "_unique_2": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/_identifier"
+      },
+      "minItems": 1,
+      "maxItems": 6,
+      "$ref": "#/$defs/unique_array"
+    },
+    "unique_array": {
+      "type": "array",
+      "uniqueItems": true
+    }
+  },
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "const": 1
+    },
+    "kind": {},
+    "run_id": {
+      "$ref": "#/$defs/_identifier"
+    },
+    "legitimate_loop_id": {
+      "$ref": "#/$defs/_identifier"
+    },
+    "tick": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 2
+    },
+    "actor_seat_id": {
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "$ref": "#/$defs/_identifier"
+        }
+      ]
+    },
+    "audience": {
+      "$ref": "#/$defs/_unique_0"
+    },
+    "source_event_ids": {
+      "$ref": "#/$defs/_unique_1"
+    },
+    "data": {},
+    "execution_start_event_id": {
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "string",
+          "minLength": 36,
+          "maxLength": 36,
+          "pattern": "^evt-[0-9a-f]+$"
+        }
+      ]
+    }
+  },
+  "required": [
+    "schema_version",
+    "kind",
+    "run_id",
+    "legitimate_loop_id",
+    "execution_start_event_id",
+    "tick",
+    "actor_seat_id",
+    "audience",
+    "source_event_ids",
+    "data"
+  ],
+  "additionalProperties": false,
+  "oneOf": [
+    {
+      "properties": {
+        "kind": {
+          "const": "TASK_OFFERED"
+        },
+        "data": {
+          "type": "object",
+          "properties": {
+            "task_id": {
+              "const": "TASK.TEST.CLOCK_OBSERVATION.V1"
+            },
+            "issuer": {
+              "const": "npc.lin-que"
+            },
+            "target": {
+              "const": "target.departure_board"
+            },
+            "terms": {
+              "const": "我想留下一份这块显示牌的现场记录。愿意的话，请你亲自看一次它怎样变动，再把你看到的经过告诉我；我会和你一起看。这里不收原因猜测，也不要求去站台。每个完成自己这份观察说明的人可领一张空白记录纸，每人一次。你可以拒绝或放弃；缺少共同观察时先补证。"
+            }
+          },
+          "required": [
+            "task_id",
+            "issuer",
+            "target",
+            "terms"
+          ],
+          "additionalProperties": false
+        }
+      }
+    },
+    {
+      "properties": {
+        "kind": {
+          "const": "TASK_PARTICIPATION"
+        },
+        "data": {
+          "type": "object",
+          "properties": {
+            "task_id": {
+              "const": "TASK.TEST.CLOCK_OBSERVATION.V1"
+            },
+            "opening_seat_id": {
+              "$ref": "#/$defs/_identifier"
+            },
+            "participation": {
+              "enum": [
+                "UNACCEPTED",
+                "ACCEPTED",
+                "DECLINED",
+                "WITHDRAWN"
+              ]
+            }
+          },
+          "required": [
+            "task_id",
+            "opening_seat_id",
+            "participation"
+          ],
+          "additionalProperties": false
+        }
+      }
+    },
+    {
+      "properties": {
+        "kind": {
+          "const": "OBSERVATION"
+        },
+        "data": {
+          "type": "object",
+          "properties": {
+            "target": {
+              "const": "target.departure_board"
+            },
+            "inspection_owner_seat_id": {
+              "$ref": "#/$defs/_identifier"
+            },
+            "phenomenon": {
+              "const": "DISPLAY_RETURN"
+            },
+            "text": {
+              "const": "显示牌变动后回到同一分钟。"
+            }
+          },
+          "required": [
+            "target",
+            "inspection_owner_seat_id",
+            "phenomenon",
+            "text"
+          ],
+          "additionalProperties": false
+        }
+      }
+    },
+    {
+      "properties": {
+        "kind": {
+          "const": "AMBIENT_WAVE"
+        },
+        "data": {
+          "type": "object",
+          "properties": {
+            "wave_id": {
+              "const": "echo_arrival"
+            },
+            "at_tick": {
+              "const": 2
+            },
+            "pressure_delta": {
+              "const": 1
+            },
+            "text": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 2048
+            }
+          },
+          "required": [
+            "wave_id",
+            "at_tick",
+            "pressure_delta",
+            "text"
+          ],
+          "additionalProperties": false
+        }
+      }
+    },
+    {
+      "properties": {
+        "kind": {
+          "const": "REPORT_DELIVERED"
+        },
+        "data": {
+          "type": "object",
+          "properties": {
+            "task_id": {
+              "const": "TASK.TEST.CLOCK_OBSERVATION.V1"
+            },
+            "opening_seat_id": {
+              "$ref": "#/$defs/_identifier"
+            },
+            "observation_event_id": {
+              "$ref": "#/$defs/_event_id"
+            },
+            "recipient": {
+              "const": "npc.lin-que"
+            },
+            "description": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 2048
+            }
+          },
+          "required": [
+            "task_id",
+            "opening_seat_id",
+            "observation_event_id",
+            "recipient",
+            "description"
+          ],
+          "additionalProperties": false
+        }
+      }
+    },
+    {
+      "properties": {
+        "kind": {
+          "const": "NPC_ADJUDICATION"
+        },
+        "data": {
+          "type": "object",
+          "properties": {
+            "task_id": {
+              "const": "TASK.TEST.CLOCK_OBSERVATION.V1"
+            },
+            "opening_seat_id": {
+              "$ref": "#/$defs/_identifier"
+            },
+            "status": {
+              "enum": [
+                "NEEDS_EVIDENCE",
+                "ACCEPTED"
+              ]
+            },
+            "reason": {
+              "enum": [
+                "MISSING_PERSONAL_INSPECTION",
+                "MISSING_SHARED_OBSERVATION",
+                "MISSING_SUBMISSION",
+                "MATCHING_DELIVERED_OBSERVATION"
+              ]
+            },
+            "evidence_event_ids": {
+              "$ref": "#/$defs/_unique_1"
+            }
+          },
+          "required": [
+            "task_id",
+            "opening_seat_id",
+            "status",
+            "reason",
+            "evidence_event_ids"
+          ],
+          "additionalProperties": false
+        }
+      }
+    },
+    {
+      "properties": {
+        "kind": {
+          "const": "PAPER_TRANSFER"
+        },
+        "data": {
+          "type": "object",
+          "properties": {
+            "task_id": {
+              "const": "TASK.TEST.CLOCK_OBSERVATION.V1"
+            },
+            "opening_seat_id": {
+              "$ref": "#/$defs/_identifier"
+            },
+            "paper_id": {
+              "$ref": "#/$defs/_identifier"
+            },
+            "item_id": {
+              "const": "TEST_ONLY.tutorial.ordinary_record_sheet"
+            },
+            "quantity": {
+              "const": 1
+            },
+            "recipient_seat_id": {
+              "$ref": "#/$defs/_identifier"
+            },
+            "issuer": {
+              "const": "npc.lin-que"
+            }
+          },
+          "required": [
+            "task_id",
+            "opening_seat_id",
+            "paper_id",
+            "item_id",
+            "quantity",
+            "recipient_seat_id",
+            "issuer"
+          ],
+          "additionalProperties": false
+        }
+      }
+    },
+    {
+      "properties": {
+        "kind": {
+          "const": "PAPER_WRITTEN"
+        },
+        "data": {
+          "type": "object",
+          "properties": {
+            "paper_id": {
+              "$ref": "#/$defs/_identifier"
+            },
+            "holder_seat_id": {
+              "$ref": "#/$defs/_identifier"
+            },
+            "source_event_id": {
+              "$ref": "#/$defs/_event_id"
+            },
+            "text": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 2048
+            }
+          },
+          "required": [
+            "paper_id",
+            "holder_seat_id",
+            "source_event_id",
+            "text"
+          ],
+          "additionalProperties": false
+        }
+      }
+    },
+    {
+      "properties": {
+        "kind": {
+          "const": "SOURCE_SHARED"
+        },
+        "data": {
+          "type": "object",
+          "properties": {
+            "sender_seat_id": {
+              "$ref": "#/$defs/_identifier"
+            },
+            "source_event_id": {
+              "$ref": "#/$defs/_event_id"
+            },
+            "recipient_seat_ids": {
+              "$ref": "#/$defs/_unique_2"
+            },
+            "record_kind": {
+              "enum": [
+                "RAW_OBSERVATION",
+                "PLAYER_CLAIM",
+                "PAPER_TEXT"
+              ]
+            },
+            "text": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 2048
+            }
+          },
+          "required": [
+            "sender_seat_id",
+            "source_event_id",
+            "recipient_seat_ids",
+            "record_kind",
+            "text"
+          ],
+          "additionalProperties": false
+        }
+      }
+    },
+    {
+      "properties": {
+        "kind": {
+          "const": "COMPONENT_PAUSED"
+        },
+        "data": {
+          "type": "object",
+          "properties": {
+            "reason": {
+              "enum": [
+                "HOST_PAUSE",
+                "PREFIX_BOUNDARY"
+              ]
+            }
+          },
+          "required": [
+            "reason"
+          ],
+          "additionalProperties": false
+        }
+      }
+    }
+  ]
+}

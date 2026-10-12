@@ -1,0 +1,378 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Trusted caller-seat allowlist projection",
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "const": 1
+    },
+    "seat_id": {
+      "$ref": "#/$defs/_identifier"
+    },
+    "location": {
+      "const": "scene.concourse"
+    },
+    "strain": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 6
+    },
+    "component_status": {
+      "enum": [
+        "ACTIVE",
+        "PAUSED"
+      ]
+    },
+    "published_task": {
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "task_id": {
+              "const": "TASK.TEST.CLOCK_OBSERVATION.V1"
+            },
+            "issuer": {
+              "const": "npc.lin-que"
+            },
+            "target": {
+              "const": "target.departure_board"
+            },
+            "terms": {
+              "const": "我想留下一份这块显示牌的现场记录。愿意的话，请你亲自看一次它怎样变动，再把你看到的经过告诉我；我会和你一起看。这里不收原因猜测，也不要求去站台。每个完成自己这份观察说明的人可领一张空白记录纸，每人一次。你可以拒绝或放弃；缺少共同观察时先补证。"
+            }
+          },
+          "required": [
+            "task_id",
+            "issuer",
+            "target",
+            "terms"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "own_task": {
+      "type": "object",
+      "properties": {
+        "participation": {
+          "enum": [
+            "UNACCEPTED",
+            "ACCEPTED",
+            "DECLINED",
+            "WITHDRAWN"
+          ]
+        },
+        "npc_response": {
+          "enum": [
+            "NONE",
+            "NEEDS_EVIDENCE",
+            "ACCEPTED"
+          ]
+        },
+        "visible_reason": {
+          "enum": [
+            "NONE",
+            "MISSING_PERSONAL_INSPECTION",
+            "MISSING_SHARED_OBSERVATION",
+            "MISSING_SUBMISSION",
+            "MATCHING_DELIVERED_OBSERVATION"
+          ]
+        },
+        "settlement_status": {
+          "enum": [
+            "LOCAL_UNSETTLED",
+            "SETTLED"
+          ]
+        },
+        "access_status": {
+          "enum": [
+            "ACCESSIBLE",
+            "UNAVAILABLE_ISSUER"
+          ]
+        },
+        "settlement_receipt": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "object",
+              "properties": {
+                "receipt_id": {
+                  "$ref": "#/$defs/_identifier"
+                },
+                "transfer_event_id": {
+                  "$ref": "#/$defs/_event_id"
+                },
+                "opening_seat_id": {
+                  "$ref": "#/$defs/_identifier"
+                },
+                "paper_id": {
+                  "$ref": "#/$defs/_identifier"
+                },
+                "item_id": {
+                  "const": "TEST_ONLY.tutorial.ordinary_record_sheet"
+                },
+                "quantity": {
+                  "const": 1
+                },
+                "issuer": {
+                  "const": "npc.lin-que"
+                },
+                "recipient_seat_id": {
+                  "$ref": "#/$defs/_identifier"
+                },
+                "statement": {
+                  "const": "NPC_ACCEPTED_AND_TRANSFERRED"
+                }
+              },
+              "required": [
+                "receipt_id",
+                "transfer_event_id",
+                "opening_seat_id",
+                "paper_id",
+                "item_id",
+                "quantity",
+                "issuer",
+                "recipient_seat_id",
+                "statement"
+              ],
+              "additionalProperties": false
+            }
+          ]
+        }
+      },
+      "required": [
+        "participation",
+        "npc_response",
+        "visible_reason",
+        "settlement_status",
+        "access_status",
+        "settlement_receipt"
+      ],
+      "additionalProperties": false
+    },
+    "observations": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "source_event_id": {
+            "$ref": "#/$defs/_event_id"
+          },
+          "observer_seat_id": {
+            "$ref": "#/$defs/_identifier"
+          },
+          "inspection_owner_seat_id": {
+            "oneOf": [
+              {
+                "type": "null"
+              },
+              {
+                "$ref": "#/$defs/_identifier"
+              }
+            ]
+          },
+          "kind": {
+            "enum": [
+              "DISPLAY_RETURN",
+              "AMBIENT_WIND",
+              "SHARED_RECORD"
+            ]
+          },
+          "text": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 2048
+          }
+        },
+        "required": [
+          "source_event_id",
+          "observer_seat_id",
+          "inspection_owner_seat_id",
+          "kind",
+          "text"
+        ],
+        "additionalProperties": false
+      },
+      "minItems": 0,
+      "maxItems": 16
+    },
+    "own_notes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "note_id": {
+            "$ref": "#/$defs/_identifier"
+          },
+          "author_seat_id": {
+            "$ref": "#/$defs/_identifier"
+          },
+          "source_event_ids": {
+            "$ref": "#/$defs/_unique_0"
+          },
+          "kind": {
+            "const": "PLAYER_CLAIM"
+          },
+          "text": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 2048
+          }
+        },
+        "required": [
+          "note_id",
+          "author_seat_id",
+          "source_event_ids",
+          "kind",
+          "text"
+        ],
+        "additionalProperties": false
+      },
+      "minItems": 0,
+      "maxItems": 16
+    },
+    "own_paper": {
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "paper_id": {
+              "$ref": "#/$defs/_identifier"
+            },
+            "item_id": {
+              "const": "TEST_ONLY.tutorial.ordinary_record_sheet"
+            },
+            "holder_seat_id": {
+              "$ref": "#/$defs/_identifier"
+            },
+            "text": {
+              "oneOf": [
+                {
+                  "type": "null"
+                },
+                {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 2048
+                }
+              ]
+            },
+            "write_event_id": {
+              "oneOf": [
+                {
+                  "type": "null"
+                },
+                {
+                  "$ref": "#/$defs/_event_id"
+                }
+              ]
+            },
+            "source_event_id": {
+              "oneOf": [
+                {
+                  "type": "null"
+                },
+                {
+                  "$ref": "#/$defs/_event_id"
+                }
+              ]
+            }
+          },
+          "required": [
+            "paper_id",
+            "item_id",
+            "holder_seat_id",
+            "text",
+            "write_event_id",
+            "source_event_id"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "received_shares": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "share_event_id": {
+            "$ref": "#/$defs/_event_id"
+          },
+          "source_event_id": {
+            "$ref": "#/$defs/_event_id"
+          },
+          "sender_seat_id": {
+            "$ref": "#/$defs/_identifier"
+          },
+          "record_kind": {
+            "enum": [
+              "RAW_OBSERVATION",
+              "PLAYER_CLAIM",
+              "PAPER_TEXT"
+            ]
+          },
+          "text": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 2048
+          }
+        },
+        "required": [
+          "share_event_id",
+          "source_event_id",
+          "sender_seat_id",
+          "record_kind",
+          "text"
+        ],
+        "additionalProperties": false
+      },
+      "minItems": 0,
+      "maxItems": 16
+    }
+  },
+  "required": [
+    "schema_version",
+    "seat_id",
+    "location",
+    "strain",
+    "component_status",
+    "published_task",
+    "own_task",
+    "observations",
+    "own_notes",
+    "own_paper",
+    "received_shares"
+  ],
+  "additionalProperties": false,
+  "$defs": {
+    "_identifier": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128,
+      "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_.-]*$"
+    },
+    "_event_id": {
+      "type": "string",
+      "minLength": 36,
+      "maxLength": 36,
+      "pattern": "^evt-[0-9a-f]+$"
+    },
+    "_unique_0": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/_event_id"
+      },
+      "minItems": 0,
+      "maxItems": 64,
+      "uniqueItems": true
+    }
+  }
+}

@@ -1,0 +1,231 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Task-prefix game command payload",
+  "oneOf": [
+    {
+      "type": "object",
+      "properties": {
+        "action": {
+          "const": "PUBLISH_TASK"
+        },
+        "task_id": {
+          "const": "TASK.TEST.CLOCK_OBSERVATION.V1"
+        }
+      },
+      "required": [
+        "action",
+        "task_id"
+      ],
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "properties": {
+        "action": {
+          "const": "ACCEPT_TASK"
+        },
+        "task_id": {
+          "const": "TASK.TEST.CLOCK_OBSERVATION.V1"
+        }
+      },
+      "required": [
+        "action",
+        "task_id"
+      ],
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "properties": {
+        "action": {
+          "const": "REFUSE_TASK"
+        },
+        "task_id": {
+          "const": "TASK.TEST.CLOCK_OBSERVATION.V1"
+        }
+      },
+      "required": [
+        "action",
+        "task_id"
+      ],
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "properties": {
+        "action": {
+          "const": "WITHDRAW_TASK"
+        },
+        "task_id": {
+          "const": "TASK.TEST.CLOCK_OBSERVATION.V1"
+        }
+      },
+      "required": [
+        "action",
+        "task_id"
+      ],
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "properties": {
+        "action": {
+          "const": "ADJUDICATE_TASK"
+        },
+        "task_id": {
+          "const": "TASK.TEST.CLOCK_OBSERVATION.V1"
+        }
+      },
+      "required": [
+        "action",
+        "task_id"
+      ],
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "properties": {
+        "action": {
+          "const": "SETTLE_TASK"
+        },
+        "task_id": {
+          "const": "TASK.TEST.CLOCK_OBSERVATION.V1"
+        }
+      },
+      "required": [
+        "action",
+        "task_id"
+      ],
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "properties": {
+        "action": {
+          "const": "WATCH"
+        },
+        "target": {
+          "const": "target.departure_board"
+        }
+      },
+      "required": [
+        "action",
+        "target"
+      ],
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "properties": {
+        "action": {
+          "const": "SUBMIT_OBSERVATION"
+        },
+        "task_id": {
+          "const": "TASK.TEST.CLOCK_OBSERVATION.V1"
+        },
+        "observation_event_id": {
+          "$ref": "#/$defs/_event_id"
+        },
+        "recipient": {
+          "const": "npc.lin-que"
+        },
+        "description": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 2048
+        }
+      },
+      "required": [
+        "action",
+        "task_id",
+        "observation_event_id",
+        "recipient",
+        "description"
+      ],
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "properties": {
+        "action": {
+          "const": "WRITE_OWN_PAPER"
+        },
+        "paper_id": {
+          "$ref": "#/$defs/_identifier"
+        },
+        "source_event_id": {
+          "$ref": "#/$defs/_event_id"
+        },
+        "text": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 2048
+        }
+      },
+      "required": [
+        "action",
+        "paper_id",
+        "source_event_id",
+        "text"
+      ],
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "properties": {
+        "action": {
+          "const": "SHARE_SOURCE"
+        },
+        "source_event_id": {
+          "$ref": "#/$defs/_event_id"
+        },
+        "recipient_seat_ids": {
+          "$ref": "#/$defs/_unique_0"
+        },
+        "record_kind": {
+          "enum": [
+            "RAW_OBSERVATION",
+            "PLAYER_CLAIM",
+            "PAPER_TEXT"
+          ]
+        },
+        "text": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 2048
+        }
+      },
+      "required": [
+        "action",
+        "source_event_id",
+        "recipient_seat_ids",
+        "record_kind",
+        "text"
+      ],
+      "additionalProperties": false
+    }
+  ],
+  "$defs": {
+    "_identifier": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128,
+      "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_.-]*$"
+    },
+    "_event_id": {
+      "type": "string",
+      "minLength": 36,
+      "maxLength": 36,
+      "pattern": "^evt-[0-9a-f]+$"
+    },
+    "_unique_0": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/_identifier"
+      },
+      "minItems": 1,
+      "maxItems": 6,
+      "uniqueItems": true
+    }
+  }
+}
