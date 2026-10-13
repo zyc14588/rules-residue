@@ -1354,7 +1354,19 @@ NATIVE_R2_PATHS = (
     "tests/test_r2_installation.py",
 )
 # BEGIN EXACT PUBLIC R2 REVISION
-NATIVE_R2_REVISION = None
+NATIVE_R2_REVISION = {
+    "artifacts": {
+        "tests/test_r2_installation.py": "f2b8acfdb95d4eab326304e8516aec56d69861650f4ae073400b84767b4910fa",
+        "tools/validate_m2_plan.py": "2f3915224ee1d6916aadbf7cf1581725c430162667efe7734cd0750c787366dc",
+        "tools/validate_r2_install.py": "28482c9f6200f4ae58bf3bfc87743fa69e9a564c408f588720f1bb20fafb83dd"
+    },
+    "commit": "92b26f02e2ec72f48c409eb7c8340f4706e47ea5",
+    "parent": {
+        "commit": "0715e252040ff336482c4ee0bbe67a8ec1d30685",
+        "tree": "bd08aae12a04c260c748705273c713c49a687760"
+    },
+    "tree": "3ee2575b57beadc55416b6dd66eafc5f3d46db66"
+}
 # END EXACT PUBLIC R2 REVISION
 
 
