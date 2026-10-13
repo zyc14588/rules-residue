@@ -4,7 +4,9 @@ import argparse
 import fnmatch
 import hashlib
 import json
+import os
 import re
+import stat
 import subprocess
 import sys
 from collections import Counter
@@ -1074,27 +1076,68 @@ def _check_conflicts_and_provenance(root: Path, errors: list[str]) -> None:
 def _check_runtime_diff(root: Path, errors: list[str]) -> None:
     if not (root / ".git").exists():
         return
+    approved_lua_paths = (
+        "platform-validation/task-prefix/lua/main.lua",
+        "platform-validation/task-prefix/lua/task_prefix.lua",
+    )
     result = subprocess.run(
-        ["git", "-C", str(root), "diff", "--name-only", PINNED_SOURCE_COMMIT, "--"],
+        ["git", "-C", str(root), "diff", "--name-only", "--no-renames", "-z", PINNED_SOURCE_COMMIT, "--"],
         capture_output=True,
-        text=True,
         check=False,
     )
     if result.returncode != 0:
-        errors.append(f"RUNTIME_UNCHANGED: cannot diff pinned source: {result.stderr.strip()}")
+        detail = result.stderr.decode(errors="replace").strip()
+        errors.append(f"RUNTIME_UNCHANGED: cannot diff pinned source: {detail}")
         return
-    paths = [line.strip() for line in result.stdout.splitlines() if line.strip()]
-    forbidden = [
-        path
-        for path in paths
-        if path == "game-package/package.lock.json"
-        or path.startswith("game-package/")
-        or path.startswith("dist/")
-        or path.endswith(".lua")
-        or path.startswith("TRPG_PLATFORM/")
-    ]
+    # NUL framing preserves each exact path, including whitespace and newlines.
+    paths = [os.fsdecode(path) for path in result.stdout.split(b"\0") if path]
+    forbidden = []
+    for path in paths:
+        if path in approved_lua_paths:
+            continue
+        # Keep legacy rejection of runtime spellings; an ambiguous spelling
+        # never receives the exception granted to an exact approved path.
+        spellings = [line.strip() for line in path.splitlines()] or [path.strip()]
+        if any(
+            spelling == "game-package/package.lock.json"
+            or spelling.startswith("game-package/")
+            or spelling.startswith("dist/")
+            or spelling.endswith(".lua")
+            or spelling.startswith("TRPG_PLATFORM/")
+            for spelling in spellings
+        ):
+            forbidden.append(path)
     if forbidden:
         errors.append(f"RUNTIME_UNCHANGED: forbidden source-to-candidate changes {forbidden}")
+
+    present_paths = []
+    for relative in approved_lua_paths:
+        try:
+            mode = (root / relative).lstat().st_mode
+        except FileNotFoundError:
+            continue
+        except OSError as exc:
+            errors.append(f"RUNTIME_UNCHANGED: cannot inspect approved Lua path {relative}: {exc}")
+            continue
+        present_paths.append(relative)
+        if not stat.S_ISREG(mode) or mode & 0o111:
+            errors.append(
+                f"RUNTIME_UNCHANGED: approved Lua path must be a regular non-executable file: {relative}"
+            )
+        for ancestor in PurePosixPath(relative).parents:
+            if ancestor == PurePosixPath("."):
+                break
+            try:
+                ancestor_mode = (root / ancestor).lstat().st_mode
+            except OSError as exc:
+                errors.append(f"RUNTIME_UNCHANGED: cannot inspect approved Lua ancestor {ancestor}: {exc}")
+                continue
+            if not stat.S_ISDIR(ancestor_mode):
+                errors.append(
+                    f"RUNTIME_UNCHANGED: approved Lua ancestor must be a non-symlink directory: {ancestor}"
+                )
+    if present_paths and len(present_paths) != len(approved_lua_paths):
+        errors.append("RUNTIME_UNCHANGED: incomplete platform-validation Lua pair")
 
 
 def validate_r2_install(

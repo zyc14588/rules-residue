@@ -1345,6 +1345,116 @@ NATIVE_CONSUMER_REVISION = {
 _NATIVE_REVISION_VIEW = ContextVar("exact_public_native_consumer_revision", default=None)
 
 
+# A separate finite transition preserves the five-file consumer proof API.
+NATIVE_R2_BASE = {"commit": "0715e252040ff336482c4ee0bbe67a8ec1d30685",
+                  "tree": "bd08aae12a04c260c748705273c713c49a687760"}
+NATIVE_R2_PATHS = (
+    "tools/validate_m2_plan.py",
+    "tools/validate_r2_install.py",
+    "tests/test_r2_installation.py",
+)
+# BEGIN EXACT PUBLIC R2 REVISION
+NATIVE_R2_REVISION = None
+# END EXACT PUBLIC R2 REVISION
+
+
+def _native_r2_binding_bytes(implementation: bytes, revision: dict[str, Any]) -> bytes:
+    placeholder = b"# BEGIN EXACT PUBLIC R2 REVISION\nNATIVE_R2_REVISION = None\n# END EXACT PUBLIC R2 REVISION"
+    _suffix_require(implementation.count(placeholder) == 1, "native R2 implementation binding placeholder drift")
+    binding = ("# BEGIN EXACT PUBLIC R2 REVISION\nNATIVE_R2_REVISION = "
+               + json.dumps(revision, sort_keys=True, indent=4)
+               + "\n# END EXACT PUBLIC R2 REVISION").encode()
+    return implementation.replace(placeholder, binding)
+
+
+def _native_r2_revision(root: Path) -> dict[str, Any] | None:
+    """Authenticate exactly one public R2 implementation and adjacent binding."""
+    head = _b018_git(root, "rev-parse", "HEAD").decode().strip()
+    base = NATIVE_R2_BASE
+    at_or_after = subprocess.run(["git", "merge-base", "--is-ancestor", base["commit"], head],
+                                 cwd=root, capture_output=True, env={**os.environ, "GIT_NO_REPLACE_OBJECTS": "1"})
+    _suffix_require(at_or_after.returncode in (0, 1), "native R2 source comparison failed")
+    revision = NATIVE_R2_REVISION
+    if revision is None:
+        _suffix_require(at_or_after.returncode == 1 or head == base["commit"], "native R2 binding missing")
+        return None
+    _suffix_keys(revision, {"commit", "tree", "parent", "artifacts"}, "native R2 revision")
+    commit = _suffix_hash(revision["commit"], 40)
+    _suffix_hash(revision["tree"], 40)
+    _suffix_require(_suffix_json_equal(revision["parent"], base), "native R2 fixed parent mismatch")
+    _suffix_keys(revision["artifacts"], set(NATIVE_R2_PATHS), "native R2 finite artifacts")
+    for digest in revision["artifacts"].values():
+        _suffix_hash(digest)
+    ancestry = subprocess.run(["git", "merge-base", "--is-ancestor", commit, head],
+                              cwd=root, capture_output=True, env={**os.environ, "GIT_NO_REPLACE_OBJECTS": "1"})
+    _suffix_require(ancestry.returncode in (0, 1), "native R2 implementation comparison failed")
+    if ancestry.returncode:
+        _suffix_require(at_or_after.returncode == 1 or head == base["commit"],
+                        "native R2 binding missing or unknown source transition")
+        return None
+    _suffix_require(_b018_git(root, "rev-parse", base["commit"] + "^{tree}").decode().strip() == base["tree"],
+                    "native R2 public source tree mismatch")
+    _suffix_require(_b018_git(root, "rev-parse", commit + "^{tree}").decode().strip() == revision["tree"],
+                    "native R2 implementation tree mismatch")
+    _suffix_require(_b018_git(root, "rev-list", "--parents", "-n", "1", commit).decode().split() == [commit, base["commit"]],
+                    "native R2 implementation sole parent mismatch")
+    changed = _b018_git(root, "diff", "--name-only", "--no-renames", "-z", base["commit"], commit).split(b"\0")
+    _suffix_require({os.fsdecode(path) for path in changed if path} == set(NATIVE_R2_PATHS),
+                    "native R2 implementation exact three-path boundary mismatch")
+    _verify_schema_accepted_signatures(root, NATIVE_PUBLIC_SIGNER, (base["commit"], commit))
+    expected = {}
+    for path, digest in revision["artifacts"].items():
+        raw = _b018_git(root, "show", commit + ":" + path)
+        _suffix_require(hashlib.sha256(raw).hexdigest() == digest, "native R2 implementation file hash mismatch: " + path)
+        expected[path] = _native_r2_binding_bytes(raw, revision) if path == NATIVE_R2_PATHS[0] else raw
+    touches = _b018_git(root, "log", "--format=%H", "--full-history", "--no-renames",
+                        commit + ".." + head, "--", *NATIVE_R2_PATHS).decode().splitlines()
+    _suffix_require(len(touches) == 1, "native R2 binding missing or code history touched/reverted")
+    binding = touches[0]
+    _suffix_require(_b018_git(root, "rev-list", "--parents", "-n", "1", binding).decode().split() == [binding, commit],
+                    "native R2 binding sole parent mismatch")
+    _suffix_require(_b018_git(root, "diff", "--name-only", "--no-renames", "-z", commit, binding).split(b"\0")
+                    == [NATIVE_R2_PATHS[0].encode(), b""], "native R2 binding changed other paths")
+    _suffix_require(not _b018_git(root, "log", "--format=%H", "--full-history", "--no-renames",
+                                  base["commit"] + ".." + head, "--", *NATIVE_CONSUMER_PATHS[1:]).strip(),
+                    "native code history touched/reverted after R2 source")
+    # Authenticate additions made between the old native base and this fixed
+    # public source separately; keep the original preserved-entry API intact.
+    fixed = _native_tree_entries(root, base["commit"])
+    original = _native_tree_entries(root, NATIVE_CONSUMER_BASE["commit"])
+    preserved = {path: entry for path, entry in fixed.items() if path not in original}
+    _suffix_require(len(preserved) == 11, "native R2 fixed public source inventory mismatch")
+    _suffix_require(not _b018_git(root, "log", "--format=%H", "--full-history", "--no-renames",
+                                  base["commit"] + ".." + head, "--", *sorted(preserved)).strip(),
+                    "native preserved input history touched/reverted after R2 source")
+    _suffix_require(not _b018_git(root, "diff", "--name-only", head, "--", *sorted(preserved)).strip()
+                    and not _b018_git(root, "diff", "--cached", "--name-only", head, "--", *sorted(preserved)).strip(),
+                    "native R2 fixed public source staged or uncommitted change")
+    entries = _native_tree_entries(root, head)
+    for path, entry in preserved.items():
+        _suffix_require(entry[:2] == ("100644", "blob") and entries.get(path) == entry
+                        and _native_regular_matches(root, path, entry),
+                        "native preserved input byte/mode drift after R2 source: " + path)
+    _verify_schema_accepted_signatures(root, NATIVE_PUBLIC_SIGNER, tuple(dict.fromkeys((binding, head))))
+    for source in (commit, binding, head):
+        entries = _native_tree_entries(root, source)
+        for path in NATIVE_R2_PATHS:
+            _suffix_require(entries.get(path, ())[:2] == ("100644", "blob"), "native R2 source mode mismatch: " + path)
+            if source != commit:
+                _suffix_require(_b018_git(root, "show", source + ":" + path) == expected[path],
+                                "native R2 bound source bytes mismatch: " + path)
+    for path, raw in expected.items():
+        _suffix_require(_actual_regular_bytes(root, path) == raw and not (root / path).stat().st_mode & 0o111,
+                        "native R2 current code byte/mode drift: " + path)
+    _suffix_require(not _b018_git(root, "diff", "--name-only", head, "--", *NATIVE_R2_PATHS).strip()
+                    and not _b018_git(root, "diff", "--cached", "--name-only", head, "--", *NATIVE_R2_PATHS).strip(),
+                    "native R2 current code staged or uncommitted change")
+    r2_expected = {path: expected[path] for path in NATIVE_R2_PATHS[1:]}
+    return {"revision": revision, "source": base, "binding_commit": binding, "head": head,
+            "reader": expected[NATIVE_R2_PATHS[0]], "expected": r2_expected, "preserved_entries": preserved,
+            "current_sha256": {path: hashlib.sha256(raw).hexdigest() for path, raw in r2_expected.items()}}
+
+
 def _native_binding_bytes(implementation: bytes, revision: dict[str, Any]) -> bytes:
     placeholder = b"# BEGIN EXACT NATIVE CONSUMER REVISION\nNATIVE_CONSUMER_REVISION = None\n# END EXACT NATIVE CONSUMER REVISION"
     _suffix_require(implementation.count(placeholder) == 1, "native implementation binding placeholder drift")
@@ -1422,7 +1532,9 @@ def _native_consumer_revision(root: Path) -> dict[str, Any] | None:
     _suffix_hash(revision["tree"], 40)
     _suffix_require(_suffix_json_equal(revision["parent"], NATIVE_CONSUMER_BASE), "native consumer fixed parent mismatch")
     _suffix_keys(revision["artifacts"], set(NATIVE_CONSUMER_PATHS), "native consumer finite artifacts")
-    ancestry = subprocess.run(["git", "merge-base", "--is-ancestor", commit, "HEAD"],
+    r2 = _native_r2_revision(root)
+    terminal = r2["source"]["commit"] if r2 is not None else "HEAD"
+    ancestry = subprocess.run(["git", "merge-base", "--is-ancestor", commit, terminal],
                               cwd=root, capture_output=True, env={**os.environ, "GIT_NO_REPLACE_OBJECTS": "1"})
     if ancestry.returncode:
         _native_legacy_code_source(root)
@@ -1443,14 +1555,14 @@ def _native_consumer_revision(root: Path) -> dict[str, Any] | None:
         _suffix_require(hashlib.sha256(raw).hexdigest() == _suffix_hash(digest), "native implementation file hash mismatch: " + path)
         expected[path] = _native_binding_bytes(raw, revision) if path == NATIVE_CONSUMER_PATHS[0] else raw
     touches = _b018_git(root, "log", "--format=%H", "--full-history", "--no-renames",
-                        commit + "..HEAD", "--", *NATIVE_CONSUMER_PATHS).decode().splitlines()
+                        commit + ".." + terminal, "--", *NATIVE_CONSUMER_PATHS).decode().splitlines()
     _suffix_require(len(touches) == 1, "native binding missing or code history touched/reverted")
     binding = touches[0]
     _suffix_require(_b018_git(root, "rev-list", "--parents", "-n", "1", binding).decode().split() == [binding, commit],
                     "native binding sole parent mismatch")
     _suffix_require(_b018_git(root, "diff", "--name-only", "--no-renames", commit, binding).decode().splitlines()
                     == [NATIVE_CONSUMER_PATHS[0]], "native binding changed other paths")
-    head = _b018_git(root, "rev-parse", "HEAD").decode().strip()
+    head = _b018_git(root, "rev-parse", terminal).decode().strip()
     _verify_schema_accepted_signatures(root, NATIVE_PUBLIC_SIGNER, tuple(dict.fromkeys((binding, head))))
     for source in (commit, binding, head):
         entries = _native_tree_entries(root, source)
@@ -1458,21 +1570,43 @@ def _native_consumer_revision(root: Path) -> dict[str, Any] | None:
             _suffix_require(entries.get(path, ())[:2] == ("100644", "blob"), "native source mode mismatch: " + path)
             if source != commit:
                 _suffix_require(_b018_git(root, "show", source + ":" + path) == expected[path], "native bound source bytes mismatch: " + path)
-    _suffix_require(not _b018_git(root, "diff", "--name-only", head, "--", *NATIVE_CONSUMER_PATHS).strip()
-                    and not _b018_git(root, "diff", "--cached", "--name-only", head, "--", *NATIVE_CONSUMER_PATHS).strip(),
-                    "native current code staged or uncommitted change")
-    for path, raw in expected.items():
-        _suffix_require(_actual_regular_bytes(root, path) == raw and not (root / path).stat().st_mode & 0o111,
-                        "native current code byte/mode drift: " + path)
+    # The original revision is closed at the fixed public source. Its entire
+    # preserved inventory and historical touches still authenticate there.
     preserved = _native_preserved_entries(root)
     entries = _native_tree_entries(root, head)
     for path, entry in preserved.items():
+        _suffix_require(entries.get(path) == entry, "native preserved input byte/mode drift: " + path)
+    _suffix_require(not _b018_git(root, "log", "--format=%H", "--full-history", "--no-renames",
+                                  base["commit"] + ".." + head, "--", *sorted(preserved)).strip(),
+                    "native preserved input history touched/reverted")
+    source_binding = binding
+    if r2 is not None:
+        expected[NATIVE_CONSUMER_PATHS[0]] = r2["reader"]
+        binding = r2["binding_commit"]
+        head = r2["head"]
+    _suffix_require(not _b018_git(root, "diff", "--name-only", head, "--", *NATIVE_CONSUMER_PATHS).strip()
+                    and not _b018_git(root, "diff", "--cached", "--name-only", head, "--", *NATIVE_CONSUMER_PATHS).strip(),
+                    "native current code staged or uncommitted change")
+    entries = _native_tree_entries(root, head)
+    for path, raw in expected.items():
+        _suffix_require(entries.get(path, ())[:2] == ("100644", "blob")
+                        and _b018_git(root, "show", head + ":" + path) == raw
+                        and _actual_regular_bytes(root, path) == raw and not (root / path).stat().st_mode & 0o111,
+                        "native current code byte/mode drift: " + path)
+    for path, entry in preserved.items():
+        # Keep every entry. Only the two separately authenticated R2 files
+        # select their one authorized new blob and exact source history.
+        if r2 is not None and path in r2["expected"]:
+            entry = _native_tree_entries(root, r2["revision"]["commit"])[path]
         _suffix_require(entries.get(path) == entry and _native_regular_matches(root, path, entry),
                         "native preserved input byte/mode drift: " + path)
-    _suffix_require(not _b018_git(root, "log", "--format=%H", "--full-history", "--no-renames",
-                                  base["commit"] + "..HEAD", "--", *sorted(preserved)).strip(),
-                    "native preserved input history touched/reverted")
-    return {"revision": revision, "binding_commit": binding, "head": head, "expected": expected,
+    if r2 is not None:
+        protected = [path for path in preserved if path not in r2["expected"]]
+        _suffix_require(not _b018_git(root, "log", "--format=%H", "--full-history", "--no-renames",
+                                      r2["source"]["commit"] + ".." + head, "--", *sorted(protected)).strip(),
+                        "native preserved input history touched/reverted")
+    return {"revision": revision, "binding_commit": binding, "source_binding_commit": source_binding,
+            "head": head, "expected": expected, "r2_revision": r2,
             "current_sha256": {path: hashlib.sha256(raw).hexdigest() for path, raw in expected.items()}}
 
 
@@ -1492,7 +1626,14 @@ def _current_pin_matches(root: Path, path: str, digest: str, raw: bytes | None =
     if observed == digest:
         return True
     if path not in NATIVE_CONSUMER_PATHS:
-        return False
+        if path not in NATIVE_R2_PATHS[1:]:
+            return False
+        old = _b018_git(root, "show", NATIVE_R2_BASE["commit"] + ":" + path)
+        if hashlib.sha256(old).hexdigest() != digest:
+            return False
+        proof = _native_consumer_revision(root)
+        r2 = proof["r2_revision"] if proof is not None else None
+        return r2 is not None and observed == r2["current_sha256"][path]
     old = _b018_git(root, "show", NATIVE_CONSUMER_BASE["commit"] + ":" + path)
     if hashlib.sha256(old).hexdigest() != digest:
         return False
@@ -1509,13 +1650,27 @@ def _native_receipt_candidate(root: Path, candidate: str, preserved: dict[str, s
         _suffix_require(not _b018_git(root, "log", "--format=%H", "--full-history", "--no-renames",
                                       proof["binding_commit"] + ".." + candidate, "--", *NATIVE_CONSUMER_PATHS).strip(),
                         "suffix candidate native source history touched/reverted")
+        r2 = proof["r2_revision"]
+        if r2 is not None:
+            _suffix_require(not _b018_git(root, "log", "--format=%H", "--full-history", "--no-renames",
+                                          r2["binding_commit"] + ".." + candidate, "--", *NATIVE_R2_PATHS[1:]).strip(),
+                            "suffix candidate R2 source history touched/reverted")
         entries = _native_tree_entries(root, candidate)
-        for path, raw in proof["expected"].items():
+        expected = dict(proof["expected"])
+        if r2 is not None:
+            expected.update(r2["expected"])
+        for path, raw in expected.items():
             _suffix_require(entries.get(path, ())[:2] == ("100644", "blob")
                             and _b018_git(root, "show", candidate + ":" + path) == raw,
                             "suffix candidate native source byte/mode mismatch: " + path)
     for path, digest in preserved.items():
         wanted = proof["current_sha256"][path] if proof is not None and path in proof["expected"] else digest
+        r2 = proof["r2_revision"] if proof is not None else None
+        if r2 is not None and path in r2["expected"]:
+            old = _b018_git(root, "show", NATIVE_R2_BASE["commit"] + ":" + path)
+            _suffix_require(digest in {hashlib.sha256(old).hexdigest(), r2["current_sha256"][path]},
+                            "suffix candidate unknown R2 preserved pin")
+            wanted = r2["current_sha256"][path]
         _suffix_require(hashlib.sha256(_b018_git(root, "show", candidate + ":" + path)).hexdigest() == wanted,
                         "suffix accepted candidate changed a preserved current business/evidence file")
 
@@ -1523,7 +1678,7 @@ def _native_receipt_candidate(root: Path, candidate: str, preserved: dict[str, s
 def _current_suffix_history(root: Path, proof: dict[str, Any] | None, revision: dict[str, Any] | None) -> None:
     if revision is None:
         return
-    anchor = revision["binding_commit"]
+    anchor = revision.get("source_binding_commit", revision["binding_commit"])
     commits = _b018_git(root, "rev-list", "--reverse", "--full-history", anchor + "..HEAD", "--", *SUFFIX_CONTROL_PATHS).decode().splitlines()
     if not commits:
         _suffix_require(proof is None, "native current control history/registration mismatch")
